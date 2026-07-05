@@ -5,7 +5,7 @@ using UnityEngine;
 public class CharController : MonoBehaviour,ICharacterController
 {
     public KinematicCharacterMotor Motor;
-
+    public CharacterAnim characterAnim;
     [Header("Stable Movement")]
     public float MaxStableMoveSpeed = 10f;
     public float StableMovementSharpness = 15f;
@@ -106,7 +106,6 @@ public class CharController : MonoBehaviour,ICharacterController
     {
         // Clamp input
         Vector3 moveInputVector = Vector3.ClampMagnitude(new Vector3(inputs.MoveAxisRight, 0f, inputs.MoveAxisForward), 1f);
-
         // Calculate camera direction and rotation on the character plane
         Vector3 cameraPlanarDirection = Vector3.ProjectOnPlane(inputs.CameraRotation * Vector3.forward, Motor.CharacterUp).normalized;
         if (cameraPlanarDirection.sqrMagnitude == 0f)
@@ -121,6 +120,9 @@ public class CharController : MonoBehaviour,ICharacterController
                 {
                     // Move and look inputs
                     _moveInputVector = cameraPlanarRotation * moveInputVector;
+                    characterAnim.isMove = moveInputVector.sqrMagnitude > 0f;
+                    characterAnim._moveX = moveInputVector.x;
+                    characterAnim._moveY = moveInputVector.z;
 
                     switch (OrientationMethod)
                     {
@@ -137,6 +139,7 @@ public class CharController : MonoBehaviour,ICharacterController
                     {
                         _timeSinceJumpRequested = 0f;
                         _jumpRequested = true;
+                        characterAnim.Jump();
                     }
 
                     // Crouching input
@@ -441,10 +444,12 @@ public class CharController : MonoBehaviour,ICharacterController
 
     public void OnGroundHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
     {
+     
     }
 
     public void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
     {
+
     }
 
     public void AddVelocity(Vector3 velocity)
@@ -465,6 +470,7 @@ public class CharController : MonoBehaviour,ICharacterController
 
     protected void OnLanded()
     {
+        characterAnim.OnLanding();
     }
 
     protected void OnLeaveStableGround()
