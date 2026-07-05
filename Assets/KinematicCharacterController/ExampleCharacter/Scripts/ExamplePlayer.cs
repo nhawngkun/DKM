@@ -17,14 +17,14 @@ namespace KinematicCharacterController.Examples
         private const string MouseScrollInput = "Mouse ScrollWheel";
         private const string HorizontalInput = "Horizontal";
         private const string VerticalInput = "Vertical";
-
+        PlayerCharacterInputs characterInputs;
         private void Start()
         {
             Cursor.lockState = CursorLockMode.Locked;
 
             // Tell camera to follow transform
             CharacterCamera.SetFollowTransform(Character.CameraFollowPoint);
-
+            characterInputs = new PlayerCharacterInputs();
             // Ignore the character's collider(s) for camera obstruction checks
             CharacterCamera.IgnoredColliders.Clear();
             CharacterCamera.IgnoredColliders.AddRange(Character.GetComponentsInChildren<Collider>());
@@ -83,7 +83,7 @@ namespace KinematicCharacterController.Examples
 
         private void HandleCharacterInput()
         {
-            PlayerCharacterInputs characterInputs = new PlayerCharacterInputs();
+           
 
    
             // Build the CharacterInputs struct
@@ -99,6 +99,12 @@ namespace KinematicCharacterController.Examples
 
             characterInputs.CrouchDown = Keyboard.current.cKey.wasPressedThisFrame;
             characterInputs.CrouchUp = Keyboard.current.cKey.wasReleasedThisFrame;
+
+            characterInputs.OrientationSwitch = Keyboard.current.fKey.wasPressedThisFrame;
+
+            characterInputs.SpeedUp = Keyboard.current.leftShiftKey.isPressed;
+
+            characterInputs.Dash = Keyboard.current.eKey.wasPressedThisFrame;
 
             // Apply inputs to character
             Character.SetInputs(ref characterInputs);

@@ -689,7 +689,7 @@ Transform:
   m_GameObject: {fileID: 910739029}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.43, z: 0}
+  m_LocalPosition: {x: 0, y: 1.258, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1381,9 +1381,11 @@ MonoBehaviour:
   Motor: {fileID: 1450244215}
   characterAnim: {fileID: 1450244219}
   MaxStableMoveSpeed: 10
+  baseMoveSpeed: 10
+  RunMoveSpeed: 30
   StableMovementSharpness: 15
   OrientationSharpness: 20
-  OrientationMethod: 0
+  OrientationMethod: 1
   MaxAirMoveSpeed: 10
   AirAccelerationSpeed: 30
   Drag: 0
@@ -1392,6 +1394,11 @@ MonoBehaviour:
   JumpScalableForwardSpeed: 0
   JumpPreGroundingGraceTime: 0.1
   JumpPostGroundingGraceTime: 0.1
+  MaxAirJumps: 1
+  DashSpeed: 150
+  DashDuration: 0.5
+  DashCooldown: 0.2
+  CanDashInAir: 1
   IgnoredColliders: []
   BonusOrientationMethod: 2
   BonusOrientationSharpness: 10
@@ -1414,6 +1421,7 @@ MonoBehaviour:
   animator: {fileID: 999842278}
   isMove: 0
   isRun: 0
+  isGrounded: 0
   _IdleId: 0
   _MoveId: 0
   _RunId: 0
@@ -1740,7 +1748,7 @@ MonoBehaviour:
   DefaultDistance: 1
   MinDistance: 1
   MaxDistance: 8
-  DistanceMovementSpeed: 5
+  DistanceMovementSpeed: 2
   DistanceMovementSharpness: 10
   InvertX: 0
   InvertY: 0

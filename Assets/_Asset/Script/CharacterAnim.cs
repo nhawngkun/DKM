@@ -5,7 +5,8 @@ public class CharacterAnim : MonoBehaviour
     public Animator animator;
     public bool isMove;
     public bool isRun;
-
+    public bool isGrounded;
+    
     public float _IdleId;
     public float _MoveId;
     public float _RunId;
@@ -19,7 +20,14 @@ public class CharacterAnim : MonoBehaviour
     {
         ApplyToAnimator();  
     }
-
+    public void Dash()
+    {
+        animator.SetTrigger(AnimatorParameters.DASHING);
+    }
+    public void EndDash()
+    {
+        animator.SetTrigger(AnimatorParameters.END_DASH);
+    }
     public void Jump()
     {
         animator.SetTrigger(AnimatorParameters.JUMP);
@@ -27,10 +35,27 @@ public class CharacterAnim : MonoBehaviour
     public void OnLanding()
     {
         animator.SetTrigger(AnimatorParameters.ON_LANDING);
+        animator.ResetTrigger(AnimatorParameters.JUMP);
     }
-    public void SetRun() 
+    public void OnGround(bool value)
     {
-        isRun = !isRun;
+        if(isGrounded == value) return;
+        isGrounded = value;
+        animator.SetBool(AnimatorParameters.IS_GROUND,isGrounded);
+    }
+
+
+    public bool ChangeOrientation(bool method)
+    {
+        animator.SetBool(AnimatorParameters.TOWARD_MOVE, method);
+        return method;
+    }
+
+
+    public void SetRun(bool value) 
+    {
+        if(isRun == value) return;
+        isRun = value; 
         animator.SetBool(AnimatorParameters.IS_RUN, isRun);
     }
     public  void ApplyToAnimator()
