@@ -24,23 +24,28 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Hair
-  m_Shader: {fileID: -6465566751694194690, guid: 5157fd56faac718409d4a88bf286b3f5, type: 3}
+  m_Shader: {fileID: 4800000, guid: 6e4ae4064600d784cac1e41a9e6f2e59, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _ALPHATEST_ON
+  - _DISABLE_DECALS
+  - _DISABLE_SSR
   - _DISABLE_SSR_TRANSPARENT
-  - _RECALCULATE_CARD_NORMALS
+  - _DOUBLESIDED_ON
+  - _MATERIAL_FEATURE_ANISOTROPY
+  - _NORMALMAP
+  - _NORMALMAP_TANGENT_SPACE
   m_InvalidKeywords:
   - _COLORMAP
   - _MATERIAL_AFFECTS_ALBEDO
   - _MATERIAL_AFFECTS_MASKMAP
   - _MATERIAL_AFFECTS_NORMAL
-  - _NORMALMAP
+  - _RECALCULATE_CARD_NORMALS
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2475
+  m_DoubleSidedGI: 1
+  m_CustomRenderQueue: 2450
   stringTagMap:
     MotionVector: User
     RenderType: TransparentCutout
@@ -57,7 +62,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Alpha_Depth:
-        m_Texture: {fileID: 2800000, guid: c37c14d1e9c5d314788efba830e1ecd4, type: 3}
+        m_Texture: {fileID: 2800000, guid: a44b431a1b97842489070cfa3ad9595a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AnisotropyMap:
@@ -109,7 +114,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Masks:
-        m_Texture: {fileID: 2800000, guid: a496d29547e56734899f08b3c8d7a21e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6d1b61ba5c25f7643916db50a792a645, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
@@ -121,7 +126,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SmoothnessMask:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 6d1b61ba5c25f7643916db50a792a645, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecularColorMap:
@@ -178,9 +183,9 @@ Material:
     - _AffectNormal: 1
     - _AffectSmoothness: 1
     - _AlbedoAffectEmissive: 0
-    - _AlphaClipThreshold: 0.542
+    - _AlphaClipThreshold: 0.3
     - _AlphaClipThresholdDepthPostpass: 0.6
-    - _AlphaClipThresholdDepthPrepass: 0.9
+    - _AlphaClipThresholdDepthPrepass: 0.429
     - _AlphaCutoff: 0.5
     - _AlphaCutoffEnable: 1
     - _AlphaCutoffPostpass: 0.5
@@ -190,15 +195,15 @@ Material:
     - _AlphaRemapMax: 1
     - _AlphaRemapMin: 0
     - _AlphaSrcBlend: 1
-    - _AlphaThresholdShadow: 0.5
+    - _AlphaThresholdShadow: 0.233
     - _Ambient_Occlusion: 0.5
     - _Anisotropy: 0
     - _Baked_Ambient_Occlusion: 0.5
     - _BlendMode: 0
     - _CoatMask: 0
     - _ConservativeDepthOffsetEnable: 1
-    - _CullMode: 2
-    - _CullModeForward: 2
+    - _CullMode: 0
+    - _CullModeForward: 0
     - _Cuticle_Angle: 3
     - _Cutoff: 0.5
     - _DecalBlend: 0.5
@@ -212,7 +217,7 @@ Material:
     - _DecalMeshViewBias: 0
     - _DecalStencilRef: 16
     - _DecalStencilWriteMask: 16
-    - _DepthOffsetEnable: 0
+    - _DepthOffsetEnable: 1
     - _Depth_Offset: 0.05
     - _DetailAlbedoScale: 1
     - _DetailNormalScale: 1
@@ -222,7 +227,7 @@ Material:
     - _DisplacementLockObjectScale: 1
     - _DisplacementLockTilingScale: 1
     - _DisplacementMode: 0
-    - _DoubleSidedEnable: 0
+    - _DoubleSidedEnable: 1
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 1
     - _DrawOrder: 0
@@ -251,10 +256,10 @@ Material:
     - _Ior: 1.5
     - _IridescenceMask: 1
     - _IridescenceThickness: 1
-    - _LightmapUV: 0
+    - _LightmapUV: 1
     - _LinkDetailsWithBase: 1
     - _MaskBlendSrc: 1
-    - _MaterialID: 1
+    - _MaterialID: 2
     - _Max_Opacity: 1
     - _Max_Smoothness: 0.6
     - _Metallic: 0
@@ -262,13 +267,13 @@ Material:
     - _MetallicRemapMin: 0
     - _Min_Smoothness: 0.4
     - _NormalBlendSrc: 0
-    - _NormalMapSpace: 1
+    - _NormalMapSpace: 0
     - _NormalScale: 1
     - _ObjectSpaceUVMapping: 0
     - _ObjectSpaceUVMappingEmissive: 0
     - _Opacity_Fading: 0.174
     - _Opacity_Multiplier: 1
-    - _Opacity_Threshold: 0.833
+    - _Opacity_Threshold: 0.272
     - _OpaqueCullMode: 2
     - _PPDLodThreshold: 5
     - _PPDMaxSamples: 15
@@ -281,7 +286,7 @@ Material:
     - _RECALCULATE_CARD_NORMALS: 1
     - _Radial_Smoothness: 0.7
     - _RayTracing: 0
-    - _ReceivesSSR: 1
+    - _ReceivesSSR: 0
     - _ReceivesSSRTransparent: 0
     - _RefractionModel: 0
     - _RenderQueueType: 1
@@ -307,17 +312,17 @@ Material:
     - _Specular_Shift: 0.1
     - _SrcBlend: 1
     - _StencilRef: 0
-    - _StencilRefDepth: 8
+    - _StencilRefDepth: 0
     - _StencilRefDistortionVec: 4
-    - _StencilRefGBuffer: 10
-    - _StencilRefMV: 40
+    - _StencilRefGBuffer: 2
+    - _StencilRefMV: 32
     - _StencilWriteMask: 6
     - _StencilWriteMaskDepth: 9
     - _StencilWriteMaskDistortionVec: 4
     - _StencilWriteMaskGBuffer: 15
-    - _StencilWriteMaskMV: 43
+    - _StencilWriteMaskMV: 41
     - _SubsurfaceMask: 1
-    - _SupportDecals: 1
+    - _SupportDecals: 0
     - _SurfaceType: 0
     - _TexWorldScale: 1
     - _TexWorldScaleEmissive: 1
@@ -359,7 +364,7 @@ Material:
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _Length_Color: {r: 1, g: 1, b: 1, a: 1}
     - _Rim_Transmittance_Color: {r: 238.85646, g: 238.85646, b: 238.85646, a: 0}
-    - _Root_Color: {r: 0.9056604, g: 0.9056604, b: 0.9056604, a: 1}
+    - _Root_Color: {r: 0.2264151, g: 0.2264151, b: 0.2264151, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _Tiling: {r: 10, g: 5, b: 0, a: 0}
@@ -369,7 +374,7 @@ Material:
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
-    - _uvBaseST: {r: 2.61, g: 1, b: 0, a: 0}
-    - _uvSmoothnessST: {r: 20, g: 5, b: 0, a: 0}
+    - _uvBaseST: {r: 1, g: 1, b: 0, a: 0}
+    - _uvSmoothnessST: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
