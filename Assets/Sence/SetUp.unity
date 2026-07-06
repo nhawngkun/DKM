@@ -359,6 +359,211 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1001 &220474646
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.6263804
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.489
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.889074
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.2663687
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.96387124
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 149.103
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8227760654816369122, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8227760654816369122, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1ce335bcdb1f4fc4c92ec78d2675f551, type: 2}
+    - target: {fileID: -8005540271645870226, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7381233697706606673, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_Name
+      value: Eyes_Bulb
+      objectReference: {fileID: 0}
+    - target: {fileID: -7148911431627016136, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_Name
+      value: beard
+      objectReference: {fileID: 0}
+    - target: {fileID: -7148911431627016136, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7004488322134491700, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_Name
+      value: Jacket
+      objectReference: {fileID: 0}
+    - target: {fileID: -6561123041460283762, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_Name
+      value: eyelid_Down
+      objectReference: {fileID: 0}
+    - target: {fileID: -6421941932927172095, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 344d3f86724cacb4aa8e38ba7085c8b3, type: 2}
+    - target: {fileID: -6294895227121009731, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_Name
+      value: eyelid_UP
+      objectReference: {fileID: 0}
+    - target: {fileID: -6282225116620300908, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_Name
+      value: Hair
+      objectReference: {fileID: 0}
+    - target: {fileID: -6207734660571893783, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_Name
+      value: Boost
+      objectReference: {fileID: 0}
+    - target: {fileID: -4396362905112379175, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 40355f923ecbbac408f68bbf33691ea2, type: 2}
+    - target: {fileID: -3475705427700213200, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_Name
+      value: Shoulder
+      objectReference: {fileID: 0}
+    - target: {fileID: -3412006061154150004, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_Name
+      value: elbow
+      objectReference: {fileID: 0}
+    - target: {fileID: -3412006061154150004, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3216026874371906711, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1575824730409855783, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 979a8cb1bb515f74284a0e63b3b21dcb, type: 2}
+    - target: {fileID: -267055132407108380, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_Name
+      value: Hand
+      objectReference: {fileID: 0}
+    - target: {fileID: 175620494213930843, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_Name
+      value: body
+      objectReference: {fileID: 0}
+    - target: {fileID: 717512128733194685, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_Name
+      value: eyelash
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_Name
+      value: Dante (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153529164367109346, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_Name
+      value: eyelash
+      objectReference: {fileID: 0}
+    - target: {fileID: 1912640974786815633, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_Name
+      value: Brown
+      objectReference: {fileID: 0}
+    - target: {fileID: 2562634515066585160, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_Name
+      value: buttonhole
+      objectReference: {fileID: 0}
+    - target: {fileID: 3369689703040853248, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_Name
+      value: Face
+      objectReference: {fileID: 0}
+    - target: {fileID: 3899700473659095540, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_Name
+      value: trousers
+      objectReference: {fileID: 0}
+    - target: {fileID: 4334380716692301781, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 979a8cb1bb515f74284a0e63b3b21dcb, type: 2}
+    - target: {fileID: 5747089455677354966, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: e0cda17468bf549409db6ef722c09c33, type: 2}
+    - target: {fileID: 6029625721267280773, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 00e263ec8685ab74885719bd5beae21b, type: 2}
+    - target: {fileID: 6945238729081199435, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: e0cda17468bf549409db6ef722c09c33, type: 2}
+    - target: {fileID: 7462525834581702499, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_Name
+      value: glove
+      objectReference: {fileID: 0}
+    - target: {fileID: 7830873247276530833, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ce7f3a5b6961a2f4bb4c27e2d0ab74f1, type: 2}
+    - target: {fileID: 8104026434084579768, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_Name
+      value: Tooth
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
 --- !u!1001 &245616619
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1153,3 +1358,4 @@ SceneRoots:
   - {fileID: 870429302}
   - {fileID: 369895154}
   - {fileID: 245616619}
+  - {fileID: 220474646}
