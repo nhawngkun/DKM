@@ -10,9 +10,9 @@ public class CharacterAnim : MonoBehaviour
     public bool isCombo1;
     public bool isCombo2;
     public bool isCombo3;
-    public bool isCombo4;
-    public bool isCombo5;
-    public bool isCombo6;
+    //public bool isCombo4;
+    //public bool isCombo5;
+    //public bool isCombo6;
 
     public float _IdleId;
     public float _MoveId;

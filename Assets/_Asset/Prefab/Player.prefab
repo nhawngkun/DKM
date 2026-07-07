@@ -252,9 +252,6 @@ MonoBehaviour:
   isCombo1: 0
   isCombo2: 0
   isCombo3: 0
-  isCombo4: 0
-  isCombo5: 0
-  isCombo6: 0
   _IdleId: 0
   _MoveId: 0
   _RunId: 0
@@ -378,12 +375,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
   Camera: {fileID: 7230155425920957111}
   FollowPointFraming: {x: 0, y: 0}
-  FollowingSharpness: 1e+9
+  FollowingSharpnessPlanar: 8
+  FollowingSharpnessVertical: 15
   DefaultDistance: 1
   MinDistance: 1
   MaxDistance: 8
   DistanceMovementSpeed: 2
   DistanceMovementSharpness: 10
+  CombatZoomOutMultiplier: 1.4
+  SpeedZoomSharpness: 3
+  CombatBlend: 0
   InvertX: 0
   InvertY: 0
   DefaultVerticalAngle: 20
@@ -392,6 +393,63 @@ MonoBehaviour:
   RotationSpeed: 1
   RotationSharpness: 10000
   RotateWithPhysicsMover: 0
+  EnableAutoAlign: 1
+  AutoAlignSharpness: 3.5
+  AutoAlignDelay: 0.4
+  AutoAlignMinMoveSpeed: 0.5
+  LockOnTarget: {fileID: 0}
+  LockOnRotationSharpness: 12
+  LockOnFrameBias: 0.4
+  BaseFov: 60
+  FovKickCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 6
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.15
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  ShakeFrequency: 25
+  ShakeFalloff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.25
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   ObstructionCheckRadius: 0.2
   ObstructionLayers:
     serializedVersion: 2
@@ -691,7 +749,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cc9668231b2d98040b4d85feda0aed02, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -887,7 +945,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b48330ca07998384e93b5eecbb6303fb, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
