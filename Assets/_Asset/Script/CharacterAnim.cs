@@ -52,12 +52,12 @@ public class CharacterAnim : MonoBehaviour
     }
 
 
-    public void SetRun(bool value) 
-    {
-        if(isRun == value) return;
-        isRun = value; 
-        animator.SetBool(AnimatorParameters.IS_RUN, isRun);
-    }
+    //public void SetRun(bool value) 
+    //{
+    //    if(isRun == value) return;
+    //    isRun = value; 
+    //    //animator.SetBool(AnimatorParameters.IS_RUN, isRun);
+    //}
     public  void ApplyToAnimator()
     {
         float deltaTime = Time.deltaTime;   
