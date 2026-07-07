@@ -102,7 +102,7 @@ namespace KinematicCharacterController.Examples
 
             characterInputs.OrientationSwitch = Keyboard.current.fKey.wasPressedThisFrame;
 
-            characterInputs.SpeedUp = Keyboard.current.leftShiftKey.isPressed;
+            //characterInputs.SpeedUp = Keyboard.current.leftShiftKey.isPressed;
 
             characterInputs.Dash = Keyboard.current.eKey.wasPressedThisFrame;
 

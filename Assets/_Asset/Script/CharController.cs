@@ -179,16 +179,16 @@ public class CharController : MonoBehaviour,ICharacterController
                        
                     }
 
-                    if (inputs.SpeedUp) 
-                    {
-                        MaxStableMoveSpeed = RunMoveSpeed;
-                        characterAnim.SetRun(true);
-                    }
-                    else 
-                    {
-                        MaxStableMoveSpeed = baseMoveSpeed;
-                        characterAnim.SetRun(false);    
-                    }
+                    //if (inputs.SpeedUp) 
+                    //{
+                    //    MaxStableMoveSpeed = RunMoveSpeed;
+                    //    characterAnim.SetRun(true);
+                    //}
+                    //else 
+                    //{
+                    //    MaxStableMoveSpeed = baseMoveSpeed;
+                    //    characterAnim.SetRun(false);    
+                    //}
 
 
                     if (inputs.OrientationSwitch)
@@ -225,12 +225,12 @@ public class CharController : MonoBehaviour,ICharacterController
         if (OrientationMethod == OrientationMethod.TowardsCamera)
         {
             OrientationMethod = OrientationMethod.TowardsMovement;
-            characterAnim.ChangeOrientation(true);
+            //characterAnim.ChangeOrientation(true);
         }
         else
         {
             OrientationMethod = OrientationMethod.TowardsCamera;
-            characterAnim.ChangeOrientation(false);
+            //characterAnim.ChangeOrientation(false);
         }
     }
 
@@ -613,7 +613,7 @@ public struct PlayerCharacterInputs
     public bool CrouchDown;
     public bool CrouchUp;
     public bool OrientationSwitch;
-    public bool SpeedUp;
+    //public bool SpeedUp;
     public bool Dash;
 }
 
