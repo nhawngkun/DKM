@@ -10,9 +10,9 @@ public class CharacterAnim : MonoBehaviour
     public bool isCombo1;
     public bool isCombo2;
     public bool isCombo3;
-    public bool isCombo4;
-    public bool isCombo5;
-    public bool isCombo6;
+    //public bool isCombo4;
+    //public bool isCombo5;
+    //public bool isCombo6;
 
     public float _IdleId;
     public float _MoveId;
@@ -79,9 +79,9 @@ public class CharacterAnim : MonoBehaviour
         animator.SetBool(AnimatorParameters.IS_Combo1, isCombo1);
         animator.SetBool(AnimatorParameters.IS_Combo2, isCombo2);
         animator.SetBool(AnimatorParameters.IS_Combo3, isCombo3);
-        animator.SetBool(AnimatorParameters.IS_Combo4, isCombo4);
-        animator.SetBool(AnimatorParameters.IS_Combo5, isCombo5);
-        animator.SetBool(AnimatorParameters.IS_Combo6, isCombo6);
+        //animator.SetBool(AnimatorParameters.IS_Combo4, isCombo4);
+        //animator.SetBool(AnimatorParameters.IS_Combo5, isCombo5);
+        //animator.SetBool(AnimatorParameters.IS_Combo6, isCombo6);
     }
 
 
