@@ -61,19 +61,13 @@ public class CharacterAnim : MonoBehaviour
     }
 
 
-    public void SetRun(bool value)
-    {
-        if (isRun == value) return;
-        isRun = value;
-        animator.SetBool(AnimatorParameters.IS_RUN, isRun);
-    }
-    public void ApplyToAnimator()
-    //public void SetRun(bool value) 
+    //public void SetRun(bool value)
     //{
-    //    if(isRun == value) return;
-    //    isRun = value; 
-    //    //animator.SetBool(AnimatorParameters.IS_RUN, isRun);
+    //    if (isRun == value) return;
+    //    isRun = value;
+    //    animator.SetBool(AnimatorParameters.IS_RUN, isRun);
     //}
+
     public  void ApplyToAnimator()
     {
         float deltaTime = Time.deltaTime;
@@ -81,8 +75,9 @@ public class CharacterAnim : MonoBehaviour
         animator.SetFloat(AnimatorParameters.MOVE__Y, _moveY, 0f, deltaTime);
         animator.SetFloat(AnimatorParameters.IDLE_ID, _IdleId, 0f, deltaTime);
         animator.SetFloat(AnimatorParameters.MOVE_ID, _MoveId, 0f, deltaTime);
-        animator.SetInteger(AnimatorParameters.Combo_ID, _ComboId);
         animator.SetBool(AnimatorParameters.IS_MOVE, isMove);
+
+        animator.SetInteger(AnimatorParameters.Combo_ID, _ComboId);
         animator.SetBool(AnimatorParameters.IS_Combo1, isCombo1);
         animator.SetBool(AnimatorParameters.IS_Combo2, isCombo2);
         animator.SetBool(AnimatorParameters.IS_Combo3, isCombo3);

@@ -1337,9 +1337,16 @@ MonoBehaviour:
   isMove: 0
   isRun: 0
   isGrounded: 0
+  isCombo1: 0
+  isCombo2: 0
+  isCombo3: 0
+  isCombo4: 0
+  isCombo5: 0
+  isCombo6: 0
   _IdleId: 0
   _MoveId: 0
   _RunId: 0
+  _ComboId: 0
   _moveX: 0
   _moveY: 0
 --- !u!1001 &1545071883
