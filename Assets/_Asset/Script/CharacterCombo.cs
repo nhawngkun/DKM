@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterCombo : MonoBehaviour
@@ -8,7 +9,7 @@ public class CharacterCombo : MonoBehaviour
     public KeyCode AttackKey = KeyCode.K;
 
     [Tooltip("Số đòn tối đa của từng combo. Index 0 = Combo1, index 1 = Combo2, ... index 5 = Combo6")]
-    public int[] ComboLengths = new int[6] { 3, 3, 3, 3, 3, 3 };
+    public List<int> ComboLengths = new List<int> { 3, 3, 3, 3, 3, 3 };
 
     public float ComboResetTime = 1.2f;      // Quá thời gian này mà không đánh tiếp -> reset về đòn 1 và random lại combo mới
 
@@ -62,7 +63,7 @@ public class CharacterCombo : MonoBehaviour
         // Nếu chưa có combo nào đang active (đầu chuỗi mới, hoặc vừa reset) -> random 1 trong 6 combo
         if (_currentComboGroup == -1)
         {
-            _currentComboGroup = Random.Range(0, ComboLengths.Length);
+            _currentComboGroup = Random.Range(0, ComboLengths.Count);
             _currentMaxCombo = Mathf.Max(1, ComboLengths[_currentComboGroup]);
             SetActiveComboFlag(_currentComboGroup);
         }
@@ -91,28 +92,56 @@ public class CharacterCombo : MonoBehaviour
         characterAnim.isCombo6 = false;
     }
 
-    public void OnComboAnimEnd()
-    {
-        _isAttacking = false;
+    // Trạng thái quyết định cho lần đánh kế tiếp, được tính ở giữa clip (OnComboWindow)
+    // nhưng CHƯA áp dụng vào animator - chỉ áp dụng thật sự ở OnComboAnimEnd (cuối clip).
+    private bool _hasPendingDecision = false;
+    private bool _pendingContinue = false; // true = đánh tiếp, false = kết thúc chuỗi
+    private int _pendingComboIndex = 0;
 
+    // Gọi bằng Animation Event đặt ở GIỮA clip (thời điểm cho phép "cancel"/chain sang đòn tiếp theo).
+    // Hàm này chỉ TÍNH TOÁN xem có nên đánh tiếp không, không đụng tới animator flags,
+    // để animation hiện tại vẫn được phép chạy tới hết clip.
+    public void OnComboWindow()
+    {
         bool stillInComboWindow = Time.time - _lastAttackTime <= ComboResetTime;
 
         if (_queuedAttack && stillInComboWindow)
         {
             int nextIndex = _comboIndex + 1;
+            _pendingContinue = true;
+            _pendingComboIndex = (nextIndex >= _currentMaxCombo) ? 0 : nextIndex;
 
+            // Nếu đòn kế vượt quá max combo hiện tại -> báo cho StartAttack random lại combo mới
             if (nextIndex >= _currentMaxCombo)
             {
-                // Đã đánh hết đòn cuối cùng của combo hiện tại rồi quay lại đòn 1 -> random combo mới
-                _comboIndex = 0;
-                _currentComboGroup = -1; // buộc StartAttack() random lại combo khác
+                _currentComboGroup = -1;
             }
-            else
-            {
-                // Còn bấm tiếp trong lúc đòn vừa rồi đang chạy -> qua đòn kế của combo hiện tại
-                _comboIndex = nextIndex;
-            }
+        }
+        else
+        {
+            _pendingContinue = false;
+        }
 
+        _hasPendingDecision = true;
+    }
+
+    // Gọi bằng Animation Event đặt ở CUỐI clip thật sự (100%).
+    // Đến đây animation đã chạy xong hoàn toàn, giờ mới áp dụng quyết định vào animator.
+    public void OnComboAnimEnd()
+    {
+        _isAttacking = false;
+
+        // Phòng trường hợp thiếu Animation Event OnComboWindow -> tự tính lại ở đây cho an toàn
+        if (!_hasPendingDecision)
+        {
+            OnComboWindow();
+        }
+        _hasPendingDecision = false;
+
+        if (_pendingContinue)
+        {
+            _comboIndex = _pendingComboIndex;
+            _queuedAttack = false;
             StartAttack();
         }
         else
