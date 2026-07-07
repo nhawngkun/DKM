@@ -1,4 +1,5 @@
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Rendering.VirtualTexturing;
 
 public class CharacterAnim : MonoBehaviour
 {
@@ -6,10 +7,17 @@ public class CharacterAnim : MonoBehaviour
     public bool isMove;
     public bool isRun;
     public bool isGrounded;
-    
+    public bool isCombo1;
+    public bool isCombo2;
+    public bool isCombo3;
+    public bool isCombo4;
+    public bool isCombo5;
+    public bool isCombo6;
+
     public float _IdleId;
     public float _MoveId;
     public float _RunId;
+    public int _ComboId;
 
 
     public float _moveX;
@@ -18,7 +26,7 @@ public class CharacterAnim : MonoBehaviour
 
     public void Update()
     {
-        ApplyToAnimator();  
+        ApplyToAnimator();
     }
     public void Dash()
     {
@@ -37,11 +45,12 @@ public class CharacterAnim : MonoBehaviour
         animator.SetTrigger(AnimatorParameters.ON_LANDING);
         animator.ResetTrigger(AnimatorParameters.JUMP);
     }
+
     public void OnGround(bool value)
     {
-        if(isGrounded == value) return;
+        if (isGrounded == value) return;
         isGrounded = value;
-        animator.SetBool(AnimatorParameters.IS_GROUND,isGrounded);
+        animator.SetBool(AnimatorParameters.IS_GROUND, isGrounded);
     }
 
 
@@ -52,20 +61,27 @@ public class CharacterAnim : MonoBehaviour
     }
 
 
-    public void SetRun(bool value) 
+    public void SetRun(bool value)
     {
-        if(isRun == value) return;
-        isRun = value; 
+        if (isRun == value) return;
+        isRun = value;
         animator.SetBool(AnimatorParameters.IS_RUN, isRun);
     }
-    public  void ApplyToAnimator()
+    public void ApplyToAnimator()
     {
-        float deltaTime = Time.deltaTime;   
-        animator.SetFloat(AnimatorParameters.MOVE__X, _moveX, 0f, deltaTime);   
-        animator.SetFloat(AnimatorParameters.MOVE__Y, _moveY, 0f, deltaTime);   
+        float deltaTime = Time.deltaTime;
+        animator.SetFloat(AnimatorParameters.MOVE__X, _moveX, 0f, deltaTime);
+        animator.SetFloat(AnimatorParameters.MOVE__Y, _moveY, 0f, deltaTime);
         animator.SetFloat(AnimatorParameters.IDLE_ID, _IdleId, 0f, deltaTime);
         animator.SetFloat(AnimatorParameters.MOVE_ID, _MoveId, 0f, deltaTime);
+        animator.SetInteger(AnimatorParameters.Combo_ID, _ComboId);
         animator.SetBool(AnimatorParameters.IS_MOVE, isMove);
+        animator.SetBool(AnimatorParameters.IS_Combo1, isCombo1);
+        animator.SetBool(AnimatorParameters.IS_Combo2, isCombo2);
+        animator.SetBool(AnimatorParameters.IS_Combo3, isCombo3);
+        animator.SetBool(AnimatorParameters.IS_Combo4, isCombo4);
+        animator.SetBool(AnimatorParameters.IS_Combo5, isCombo5);
+        animator.SetBool(AnimatorParameters.IS_Combo6, isCombo6);
     }
 
 
@@ -74,6 +90,6 @@ public class CharacterAnim : MonoBehaviour
     {
         isMove = horizontalInput != 0;
         animator.SetBool(AnimatorParameters.IS_MOVE, isMove);
-    }   
+    }
 
 }
