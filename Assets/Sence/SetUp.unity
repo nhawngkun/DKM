@@ -731,6 +731,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Character: {fileID: 1450244218}
   CharacterCamera: {fileID: 1637342615}
+  GamepadLookSensitivity: 1000
+  GamepadStickDeadzone: 0.15
 --- !u!4 &1155009444
 Transform:
   m_ObjectHideFlags: 0
@@ -1464,7 +1466,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 1000
-  field of view: 60.000004
+  field of view: 50
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -1668,7 +1670,7 @@ MonoBehaviour:
   FollowPointFraming: {x: 0, y: 0}
   FollowingSharpnessPlanar: 8
   FollowingSharpnessVertical: 15
-  DefaultDistance: 5
+  DefaultDistance: 3
   MinDistance: 1
   MaxDistance: 8
   DistanceMovementSpeed: 2
@@ -1691,7 +1693,7 @@ MonoBehaviour:
   LockOnTarget: {fileID: 0}
   LockOnRotationSharpness: 12
   LockOnFrameBias: 0.4
-  BaseFov: 60
+  BaseFov: 50
   FovKickCurve:
     serializedVersion: 2
     m_Curve:

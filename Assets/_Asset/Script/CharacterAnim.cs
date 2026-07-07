@@ -76,14 +76,6 @@ public class CharacterAnim : MonoBehaviour
         animator.SetFloat(AnimatorParameters.IDLE_ID, _IdleId, 0f, deltaTime);
         animator.SetFloat(AnimatorParameters.MOVE_ID, _MoveId, 0f, deltaTime);
         animator.SetBool(AnimatorParameters.IS_MOVE, isMove);
-
-        animator.SetInteger(AnimatorParameters.Combo_ID, _ComboId);
-        animator.SetBool(AnimatorParameters.IS_Combo1, isCombo1);
-        animator.SetBool(AnimatorParameters.IS_Combo2, isCombo2);
-        animator.SetBool(AnimatorParameters.IS_Combo3, isCombo3);
-        animator.SetBool(AnimatorParameters.IS_Combo4, isCombo4);
-        animator.SetBool(AnimatorParameters.IS_Combo5, isCombo5);
-        animator.SetBool(AnimatorParameters.IS_Combo6, isCombo6);
     }
 
 
