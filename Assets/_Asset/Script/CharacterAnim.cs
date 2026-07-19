@@ -13,7 +13,7 @@ public class CharacterAnim : MonoBehaviour
     public float _IdleId;
     public float _MoveId;
     public float _RunId;
-    public int _ComboId;
+   
 
 
     public float _moveX;

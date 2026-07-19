@@ -51645,7 +51645,14 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.43333334
+  - time: 0.3
+    functionName: AnimEvent_Hit
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0.25
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.4
     functionName: OnComboAnimEnd
     data: 
     objectReferenceParameter: {fileID: 0}
