@@ -23,7 +23,11 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<<< HEAD:Assets/Erbeilo3D/3D Model/Ground/Material/Ground_1.mat
   m_Name: Ground_1
+========
+  m_Name: Bark1.001
+>>>>>>>> origin/Dev_Hoang_Controll:Assets/Erbeilo3D/3D Model/Tree/Material/Bark1.001.mat
   m_Shader: {fileID: 4800000, guid: 6e4ae4064600d784cac1e41a9e6f2e59, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -53,7 +57,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColorMap:
+<<<<<<<< HEAD:Assets/Erbeilo3D/3D Model/Ground/Material/Ground_1.mat
         m_Texture: {fileID: 2800000, guid: f3b262b76647834469bcf745bc14ef80, type: 3}
+========
+        m_Texture: {fileID: 2800000, guid: 858781338c85a184babe31941a1f5c8f, type: 3}
+>>>>>>>> origin/Dev_Hoang_Controll:Assets/Erbeilo3D/3D Model/Tree/Material/Bark1.001.mat
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BentNormalMap:
@@ -65,7 +73,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
+<<<<<<<< HEAD:Assets/Erbeilo3D/3D Model/Ground/Material/Ground_1.mat
         m_Texture: {fileID: 2800000, guid: 10a6a432bb3cb6641aa8324aa9d2a7e9, type: 3}
+========
+        m_Texture: {fileID: 2800000, guid: d9bc2bbb651f83143aba0ef04cf9afc7, type: 3}
+>>>>>>>> origin/Dev_Hoang_Controll:Assets/Erbeilo3D/3D Model/Tree/Material/Bark1.001.mat
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CoatMaskMap:
@@ -109,6 +121,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
+<<<<<<<< HEAD:Assets/Erbeilo3D/3D Model/Ground/Material/Ground_1.mat
         m_Texture: {fileID: 2800000, guid: f3b262b76647834469bcf745bc14ef80, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -122,6 +135,21 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
         m_Texture: {fileID: 2800000, guid: 10a6a432bb3cb6641aa8324aa9d2a7e9, type: 3}
+========
+        m_Texture: {fileID: 2800000, guid: 858781338c85a184babe31941a1f5c8f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MaskMap:
+        m_Texture: {fileID: 2800000, guid: b1ca6cdc2bc811f41990fa02ba037bda, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 2800000, guid: 5cdb7e9e3bf1e2d408ca48e7ce27c395, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 2800000, guid: d9bc2bbb651f83143aba0ef04cf9afc7, type: 3}
+>>>>>>>> origin/Dev_Hoang_Controll:Assets/Erbeilo3D/3D Model/Tree/Material/Bark1.001.mat
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMapOS:
@@ -129,11 +157,19 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
+<<<<<<<< HEAD:Assets/Erbeilo3D/3D Model/Ground/Material/Ground_1.mat
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
         m_Texture: {fileID: 2800000, guid: 67a2c2f19e8fcc4499090e5b0ad66d51, type: 3}
+========
+        m_Texture: {fileID: 2800000, guid: c96aea14e2823494687aab2a9e7d5f0b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+>>>>>>>> origin/Dev_Hoang_Controll:Assets/Erbeilo3D/3D Model/Tree/Material/Bark1.001.mat
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecularColorMap:
@@ -324,3 +360,22 @@ Material:
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
+<<<<<<<< HEAD:Assets/Erbeilo3D/3D Model/Ground/Material/Ground_1.mat
+========
+--- !u!114 &7795949080927364408
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da692e001514ec24dbc4cca1949ff7e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 13
+  hdPluginSubTargetMaterialVersions:
+    m_Keys: []
+    m_Values: 
+>>>>>>>> origin/Dev_Hoang_Controll:Assets/Erbeilo3D/3D Model/Tree/Material/Bark1.001.mat

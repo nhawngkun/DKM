@@ -214,7 +214,7 @@ public class ComboCameraFeedback : MonoBehaviour
         float fovMult = Mathf.Lerp(BaseFovKickMultiplier, FinalHitFovKickMultiplier, t) * (1f + chainBonus);
 
         cameraController.TriggerShake(shakeMag);
-        cameraController.TriggerFovKick(fovMult);
+        //cameraController.TriggerFovKick(fovMult);
 
         // --- Hitstop ---
         if (isFinal && EnableHitStopOnFinalHit)

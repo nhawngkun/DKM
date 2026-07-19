@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.Rendering.VirtualTexturing;
 
 public class CharacterAnim : MonoBehaviour
@@ -55,24 +56,17 @@ public class CharacterAnim : MonoBehaviour
         return method;
     }
 
-
-    public void SetRun(bool value)
-    {
-        if (isRun == value) return;
-        isRun = value;
-       // animator.SetBool(AnimatorParameters.IS_RUN, isRun);
-    }
-    public void ApplyToAnimator()
+    public  void ApplyToAnimator()
     {
         float deltaTime = Time.deltaTime;
         animator.SetFloat(AnimatorParameters.MOVE__X, _moveX, 0f, deltaTime);
         animator.SetFloat(AnimatorParameters.MOVE__Y, _moveY, 0f, deltaTime);
         animator.SetFloat(AnimatorParameters.IDLE_ID, _IdleId, 0f, deltaTime);
         animator.SetFloat(AnimatorParameters.MOVE_ID, _MoveId, 0f, deltaTime);
-       
         animator.SetBool(AnimatorParameters.IS_MOVE, isMove);
-       
+
     }
+
 
 
 

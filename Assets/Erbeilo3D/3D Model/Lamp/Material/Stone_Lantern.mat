@@ -7,7 +7,11 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<<< HEAD:Assets/Erbeilo3D/3D Model/Lamp/Material/Stone_Lantern.mat
   m_Name: Stone_Lantern
+========
+  m_Name: Ground
+>>>>>>>> origin/Dev_Hoang_Controll:Assets/dungeon-stone1-Unity/Ground.mat
   m_Shader: {fileID: 4800000, guid: 6e4ae4064600d784cac1e41a9e6f2e59, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -18,7 +22,7 @@ Material:
   - _NORMALMAP_TANGENT_SPACE
   m_InvalidKeywords: []
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2225
   stringTagMap: {}
@@ -37,7 +41,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColorMap:
+<<<<<<<< HEAD:Assets/Erbeilo3D/3D Model/Lamp/Material/Stone_Lantern.mat
         m_Texture: {fileID: 2800000, guid: b1b68fc0622207f4d9f4075179ee1efa, type: 3}
+========
+        m_Texture: {fileID: 2800000, guid: 5ecdaeedb1487e94dad83aed9f93a5f8, type: 3}
+>>>>>>>> origin/Dev_Hoang_Controll:Assets/dungeon-stone1-Unity/Ground.mat
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BentNormalMap:
@@ -73,6 +81,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
+<<<<<<<< HEAD:Assets/Erbeilo3D/3D Model/Lamp/Material/Stone_Lantern.mat
         m_Texture: {fileID: 2800000, guid: b1b68fc0622207f4d9f4075179ee1efa, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -82,6 +91,17 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
         m_Texture: {fileID: 2800000, guid: e36d62d00b1f5b04285906f382e5f891, type: 3}
+========
+        m_Texture: {fileID: 2800000, guid: 5ecdaeedb1487e94dad83aed9f93a5f8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MaskMap:
+        m_Texture: {fileID: 2800000, guid: ea3f959aacc4a9a449b5111a0db0f0ef, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 2800000, guid: 0353726940ac921488cdc65cf4ec7e38, type: 3}
+>>>>>>>> origin/Dev_Hoang_Controll:Assets/dungeon-stone1-Unity/Ground.mat
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMapOS:
@@ -193,7 +213,7 @@ Material:
     - _MetallicRemapMax: 1
     - _MetallicRemapMin: 0
     - _NormalMapSpace: 0
-    - _NormalScale: 1
+    - _NormalScale: 0.71
     - _ObjectSpaceUVMapping: 0
     - _ObjectSpaceUVMappingEmissive: 0
     - _OpaqueCullMode: 2
@@ -265,7 +285,11 @@ Material:
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
+<<<<<<<< HEAD:Assets/Erbeilo3D/3D Model/Lamp/Material/Stone_Lantern.mat
 --- !u!114 &2776729904458926447
+========
+--- !u!114 &6786207712476983399
+>>>>>>>> origin/Dev_Hoang_Controll:Assets/dungeon-stone1-Unity/Ground.mat
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

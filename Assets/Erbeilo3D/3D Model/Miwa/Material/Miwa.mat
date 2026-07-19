@@ -7,7 +7,11 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<<< HEAD:Assets/Erbeilo3D/3D Model/Miwa/Material/Miwa.mat
   m_Name: Miwa
+========
+  m_Name: Stone_Lantern_Mossy
+>>>>>>>> origin/Dev_Hoang_Controll:Assets/Erbeilo3D/3D Model/Lamp/Material/Stone_Lantern_Mossy.mat
   m_Shader: {fileID: 4800000, guid: 6e4ae4064600d784cac1e41a9e6f2e59, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -37,7 +41,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColorMap:
+<<<<<<<< HEAD:Assets/Erbeilo3D/3D Model/Miwa/Material/Miwa.mat
         m_Texture: {fileID: 2800000, guid: 48e0ad54cc9e882449a0bf8127728482, type: 3}
+========
+        m_Texture: {fileID: 2800000, guid: c20a961fde8d9c54dadc64e2581f64ae, type: 3}
+>>>>>>>> origin/Dev_Hoang_Controll:Assets/Erbeilo3D/3D Model/Lamp/Material/Stone_Lantern_Mossy.mat
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BentNormalMap:
@@ -73,6 +81,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
+<<<<<<<< HEAD:Assets/Erbeilo3D/3D Model/Miwa/Material/Miwa.mat
         m_Texture: {fileID: 2800000, guid: 48e0ad54cc9e882449a0bf8127728482, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -82,6 +91,17 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
         m_Texture: {fileID: 2800000, guid: 9f2075cb6be92cf409ef96b615d73abe, type: 3}
+========
+        m_Texture: {fileID: 2800000, guid: c20a961fde8d9c54dadc64e2581f64ae, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MaskMap:
+        m_Texture: {fileID: 2800000, guid: 492bc1a4ffcfb4646897a7cd7fa552f3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 2800000, guid: 1232e060673e2e34aba9d734f5cc12e2, type: 3}
+>>>>>>>> origin/Dev_Hoang_Controll:Assets/Erbeilo3D/3D Model/Lamp/Material/Stone_Lantern_Mossy.mat
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMapOS:
@@ -199,7 +219,7 @@ Material:
     - _MetallicRemapMin: 0
     - _Mode: 0
     - _NormalMapSpace: 0
-    - _NormalScale: 1
+    - _NormalScale: 0.95
     - _ObjectSpaceUVMapping: 0
     - _ObjectSpaceUVMappingEmissive: 0
     - _OcclusionStrength: 1
@@ -276,7 +296,11 @@ Material:
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
+<<<<<<<< HEAD:Assets/Erbeilo3D/3D Model/Miwa/Material/Miwa.mat
 --- !u!114 &7854709560432680275
+========
+--- !u!114 &2776729904458926447
+>>>>>>>> origin/Dev_Hoang_Controll:Assets/Erbeilo3D/3D Model/Lamp/Material/Stone_Lantern_Mossy.mat
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

@@ -217,7 +217,7 @@ MonoBehaviour:
     supportSSR: 0
     supportSSRTransparent: 0
     supportSSAO: 1
-    supportSSGI: 0
+    supportSSGI: 1
     supportSubsurfaceScattering: 1
     subsurfaceScatteringAttenuation: 1
     sssSampleBudget:
@@ -234,7 +234,7 @@ MonoBehaviour:
     renderingLayerMaskBuffer: 0
     supportWater: 0
     waterSimulationResolution: 128
-    supportWaterExclusion: 0
+    supportWaterExclusion: 1
     supportWaterHorizontalDeformation: 0
     supportWaterDecals: 1
     waterDecalAtlasSize: 1024
@@ -300,7 +300,7 @@ MonoBehaviour:
       maxEnvLightsOnScreen: 32
       reflectionCacheCompressed: 1
       reflectionProbeFormat: 74
-      reflectionProbeTexCacheSize: 4096
+      reflectionProbeTexCacheSize: 8192
       reflectionProbeTexLastValidCubeMip: 3
       reflectionProbeTexLastValidPlanarMip: 0
       reflectionProbeDecreaseResToFit: 1
@@ -312,7 +312,7 @@ MonoBehaviour:
       maxDirectionalLightsOnScreen: 16
       maxPunctualLightsOnScreen: 512
       maxAreaLightsOnScreen: 64
-      maxCubeReflectionOnScreen: 32
+      maxCubeReflectionOnScreen: 64
       maxPlanarReflectionOnScreen: 16
       maxDecalsOnScreen: 512
       maxLightsPerClusterCell: 16
