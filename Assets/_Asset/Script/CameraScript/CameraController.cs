@@ -101,6 +101,7 @@ public class CameraController : MonoBehaviour
 
     // FOV kick
     private float _fovKickTime = -1f;
+    private float _fovKickIntensity = 1f;
 
     // Shake
     private float _shakeTime = -1f;
@@ -146,7 +147,17 @@ public class CameraController : MonoBehaviour
     /// </summary>
     public void TriggerFovKick()
     {
+        TriggerFovKick(1f);
+    }
+
+    /// <summary>
+    /// Bản overload cho phép scale cường độ FOV kick (ví dụ: đòn combo càng về sau càng "nặng" hơn)
+    /// </summary>
+    /// <param name="intensityMultiplier">Hệ số nhân với FovKickCurve, 1 = mặc định, &gt;1 = giật mạnh hơn</param>
+    public void TriggerFovKick(float intensityMultiplier)
+    {
         _fovKickTime = 0f;
+        _fovKickIntensity = Mathf.Max(0f, intensityMultiplier);
     }
 
     /// <summary>
@@ -361,7 +372,7 @@ public class CameraController : MonoBehaviour
                 }
                 else
                 {
-                    Camera.fieldOfView = BaseFov + FovKickCurve.Evaluate(_fovKickTime);
+                    Camera.fieldOfView = BaseFov + FovKickCurve.Evaluate(_fovKickTime) * _fovKickIntensity;
                     _fovKickTime += deltaTime;
                 }
             }

@@ -485,6 +485,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dadc2bbaa254e244ba9324e146428d8d, type: 3}
+--- !u!114 &932810561 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5715698563348872250, guid: d63f8db654a336d43b10608a4e1a3c7f, type: 3}
+  m_PrefabInstance: {fileID: 686411735328304294}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d24b7c73646c7af4797dc3b1973359b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraController
 --- !u!1 &1004948877
 GameObject:
   m_ObjectHideFlags: 0
@@ -921,12 +932,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
   Camera: {fileID: 0}
   FollowPointFraming: {x: 0, y: 0}
-  FollowingSharpness: 10000
+  FollowingSharpnessPlanar: 8
+  FollowingSharpnessVertical: 15
   DefaultDistance: 6
   MinDistance: 0
   MaxDistance: 10
   DistanceMovementSpeed: 5
   DistanceMovementSharpness: 10
+  CombatZoomOutMultiplier: 1.4
+  SpeedZoomSharpness: 3
+  CombatBlend: 0
   InvertX: 0
   InvertY: 0
   DefaultVerticalAngle: 20
@@ -935,12 +950,220 @@ MonoBehaviour:
   RotationSpeed: 1
   RotationSharpness: 10000
   RotateWithPhysicsMover: 0
+  EnableAutoAlign: 1
+  AutoAlignSharpness: 3.5
+  AutoAlignDelay: 0.4
+  AutoAlignMinMoveSpeed: 0.5
+  LockOnTarget: {fileID: 0}
+  LockOnRotationSharpness: 12
+  LockOnFrameBias: 0.4
+  BaseFov: 60
+  FovKickCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 6
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.15
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  ShakeFrequency: 25
+  ShakeFalloff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.25
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   ObstructionCheckRadius: 0.2
   ObstructionLayers:
     serializedVersion: 2
     m_Bits: 119
   ObstructionSharpness: 10000
   IgnoredColliders: []
+--- !u!1 &1678188918 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6850286244945323438, guid: d63f8db654a336d43b10608a4e1a3c7f, type: 3}
+  m_PrefabInstance: {fileID: 686411735328304294}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1678188920 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3491895342761834231, guid: d63f8db654a336d43b10608a4e1a3c7f, type: 3}
+  m_PrefabInstance: {fileID: 686411735328304294}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1678188918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf353bd1987b4b94a8401e98e6251aa6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterCombo
+--- !u!95 &1678188921 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 196724017006667118, guid: d63f8db654a336d43b10608a4e1a3c7f, type: 3}
+  m_PrefabInstance: {fileID: 686411735328304294}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1678188922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1678188918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c15ff2c830f414468a68b4ff82f6c1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ComboCameraFeedback
+  cameraController: {fileID: 932810561}
+  characterCombo: {fileID: 1678188920}
+  BaseShakeMagnitude: 0.08
+  FinalHitShakeMagnitude: 0.22
+  ShakeProgressCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  BaseFovKickMultiplier: 0.6
+  FinalHitFovKickMultiplier: 1.6
+  HitStopOnEveryHit: 1
+  EnableHitStopOnFinalHit: 0
+  MinHitStopDuration: 0.015
+  HitStopDuration: 0.5
+  HitStopDurationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  HitStopTimeScale: 0.02
+  EnableChainEscalation: 1
+  ChainWindowSeconds: 1
+  HitsForMaxChainBonus: 8
+  MaxChainBonus: 0.35
+  EnableControllerRumble: 0
+  RumbleLowFreqCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.15
+      inSlope: 0
+      outSlope: 0.45000002
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.6
+      inSlope: 0.45000002
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RumbleHighFreqCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.1
+      inSlope: 0
+      outSlope: 0.3
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.4
+      inSlope: 0.3
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RumbleDuration: 0.08
+  FinisherRumbleDuration: 0.18
+  FinisherProgressThreshold: 0.999
+  OnImpactFeedback:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &686411735328304294
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -949,6 +1172,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3491895342761834231, guid: d63f8db654a336d43b10608a4e1a3c7f, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 1678188921}
+    - target: {fileID: 3491895342761834231, guid: d63f8db654a336d43b10608a4e1a3c7f, type: 3}
+      propertyPath: ComboResetTime
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3491895342761834231, guid: d63f8db654a336d43b10608a4e1a3c7f, type: 3}
+      propertyPath: ComboLengths.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6309295390929814913, guid: d63f8db654a336d43b10608a4e1a3c7f, type: 3}
       propertyPath: m_Name
       value: Player
@@ -996,7 +1231,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6850286244945323438, guid: d63f8db654a336d43b10608a4e1a3c7f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1678188922}
   m_SourcePrefab: {fileID: 100100000, guid: d63f8db654a336d43b10608a4e1a3c7f, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
