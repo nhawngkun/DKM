@@ -249,13 +249,9 @@ MonoBehaviour:
   isMove: 0
   isRun: 0
   isGrounded: 0
-  isCombo1: 0
-  isCombo2: 0
-  isCombo3: 0
   _IdleId: 0
   _MoveId: 0
   _RunId: 0
-  _ComboId: 0
   _moveX: 0
   _moveY: 0
 --- !u!1 &5070414688065472881
@@ -620,7 +616,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6309295390929814913}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -1.9848776, z: 8.54092}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -850,6 +846,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bed0ea37935d1cb4bb9ff95bfc44c1cb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3491895342761834231}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bed0ea37935d1cb4bb9ff95bfc44c1cb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8168250661064718699}
   m_SourcePrefab: {fileID: 100100000, guid: bed0ea37935d1cb4bb9ff95bfc44c1cb, type: 3}
 --- !u!95 &196724017006667118 stripped
 Animator:
@@ -883,10 +882,145 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf353bd1987b4b94a8401e98e6251aa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterCombo
-  characterAnim: {fileID: 8725085022315040742}
+  animator: {fileID: 196724017006667118}
+  _ComboId: 0
+  isCombo1: 0
+  isCombo2: 0
+  isCombo3: 0
   AttackKey: 107
-  ComboLengths: 030000000400000005000000030000000400000007000000
-  ComboResetTime: 2
+  ComboResetTime: 3
+  ComboLengths: 030000000400000005000000
+  ComboAnimatorLayer: 0
+--- !u!114 &8168250661064718699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6850286244945323438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c15ff2c830f414468a68b4ff82f6c1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ComboCameraFeedback
+  cameraController: {fileID: 5715698563348872250}
+  characterCombo: {fileID: 3491895342761834231}
+  BaseShakeMagnitude: 0.08
+  FinalHitShakeMagnitude: 0.22
+  ShakeProgressCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  BaseFovKickMultiplier: 0.6
+  FinalHitFovKickMultiplier: 1.6
+  HitStopOnEveryHit: 1
+  EnableHitStopOnFinalHit: 0
+  MinHitStopDuration: 0.015
+  HitStopDuration: 0.5
+  HitStopDurationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  HitStopTimeScale: 0.02
+  EnableChainEscalation: 1
+  ChainWindowSeconds: 1
+  HitsForMaxChainBonus: 8
+  MaxChainBonus: 0.35
+  EnableControllerRumble: 0
+  RumbleLowFreqCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.15
+      inSlope: 0
+      outSlope: 0.45000002
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.6
+      inSlope: 0.45000002
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RumbleHighFreqCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.1
+      inSlope: 0
+      outSlope: 0.3
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.4
+      inSlope: 0.3
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RumbleDuration: 0.08
+  FinisherRumbleDuration: 0.18
+  FinisherProgressThreshold: 0.999
+  OnImpactFeedback:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &7679309531098435374
 PrefabInstance:
   m_ObjectHideFlags: 0
