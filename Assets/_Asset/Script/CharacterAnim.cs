@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.Rendering.VirtualTexturing;
 
 public class CharacterAnim : MonoBehaviour
@@ -7,12 +8,7 @@ public class CharacterAnim : MonoBehaviour
     public bool isMove;
     public bool isRun;
     public bool isGrounded;
-    public bool isCombo1;
-    public bool isCombo2;
-    public bool isCombo3;
-    //public bool isCombo4;
-    //public bool isCombo5;
-    //public bool isCombo6;
+    
 
     public float _IdleId;
     public float _MoveId;
@@ -60,14 +56,6 @@ public class CharacterAnim : MonoBehaviour
         return method;
     }
 
-
-    //public void SetRun(bool value)
-    //{
-    //    if (isRun == value) return;
-    //    isRun = value;
-    //    animator.SetBool(AnimatorParameters.IS_RUN, isRun);
-    //}
-
     public  void ApplyToAnimator()
     {
         float deltaTime = Time.deltaTime;
@@ -76,7 +64,9 @@ public class CharacterAnim : MonoBehaviour
         animator.SetFloat(AnimatorParameters.IDLE_ID, _IdleId, 0f, deltaTime);
         animator.SetFloat(AnimatorParameters.MOVE_ID, _MoveId, 0f, deltaTime);
         animator.SetBool(AnimatorParameters.IS_MOVE, isMove);
+
     }
+
 
 
 

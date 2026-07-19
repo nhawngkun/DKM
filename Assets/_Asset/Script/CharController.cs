@@ -76,6 +76,13 @@ public class CharController : MonoBehaviour,ICharacterController
         _airJumpsRemaining = MaxAirJumps;
     }
 
+
+
+
+
+
+
+
     /// <summary>
     /// Handles movement state transitions and enter/exit callbacks
     /// </summary>
@@ -613,8 +620,8 @@ public struct PlayerCharacterInputs
     public bool CrouchDown;
     public bool CrouchUp;
     public bool OrientationSwitch;
-    //public bool SpeedUp;
     public bool Dash;
+
 }
 
 public struct AICharacterInputs

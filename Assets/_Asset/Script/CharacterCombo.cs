@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 public class CharacterCombo : MonoBehaviour
 {
     public CharacterAnim characterAnim;
 
     [Header("Combo Attack")]
-    public KeyCode AttackKey = KeyCode.K;
+ 
     public float ComboResetTime = 1.2f;      // Quá thời gian này mà không đánh tiếp -> reset về đòn 1
 
     [Tooltip("Số đòn (MaxCombo) của từng combo. Index 0-5 tương ứng Combo1 -> Combo6")]
@@ -29,7 +31,7 @@ public class CharacterCombo : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(AttackKey))
+        if (Keyboard.current.kKey.wasPressedThisFrame)
         {
             OnAttackInput();
         }
@@ -144,14 +146,6 @@ public class CharacterCombo : MonoBehaviour
     // Bật/tắt đúng bool isComboX trên CharacterAnim tương ứng với combo đã chọn (0-5 -> Combo1-Combo6)
     private void SetActiveCombo(int comboIndex, bool value)
     {
-        switch (comboIndex)
-        {
-            case 0: characterAnim.isCombo1 = value; break;
-            case 1: characterAnim.isCombo2 = value; break;
-            case 2: characterAnim.isCombo3 = value; break;
-            //case 3: characterAnim.isCombo4 = value; break;
-            //case 4: characterAnim.isCombo5 = value; break;
-            //case 5: characterAnim.isCombo6 = value; break;
-        }
+        
     }
 }

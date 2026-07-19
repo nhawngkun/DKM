@@ -1,8 +1,4 @@
-﻿using KinematicCharacterController;
-using KinematicCharacterController.Examples;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace KinematicCharacterController.Examples
@@ -25,8 +21,8 @@ namespace KinematicCharacterController.Examples
             CharacterCamera.SetFollowTransform(Character.CameraFollowPoint);
             characterInputs = new PlayerCharacterInputs();
 
-            CharacterCamera.IgnoredColliders.Clear();
-            CharacterCamera.IgnoredColliders.AddRange(Character.GetComponentsInChildren<Collider>());
+            CharacterCamera.Follow.IgnoredColliders.Clear();
+            CharacterCamera.Follow.IgnoredColliders.AddRange(Character.GetComponentsInChildren<Collider>());
         }
 
         private void Update()
@@ -43,8 +39,8 @@ namespace KinematicCharacterController.Examples
         {
             if (CharacterCamera.RotateWithPhysicsMover && Character.Motor.AttachedRigidbody != null)
             {
-                CharacterCamera.PlanarDirection = Character.Motor.AttachedRigidbody.GetComponent<PhysicsMover>().RotationDeltaFromInterpolation * CharacterCamera.PlanarDirection;
-                CharacterCamera.PlanarDirection = Vector3.ProjectOnPlane(CharacterCamera.PlanarDirection, Character.Motor.CharacterUp).normalized;
+                CharacterCamera.Focus.PlanarDirection = Character.Motor.AttachedRigidbody.GetComponent<PhysicsMover>().RotationDeltaFromInterpolation * CharacterCamera.Focus.PlanarDirection;
+                CharacterCamera.Focus.PlanarDirection = Vector3.ProjectOnPlane(CharacterCamera.Focus.PlanarDirection, Character.Motor.CharacterUp).normalized;
             }
 
             HandleCameraInput();
@@ -95,7 +91,7 @@ namespace KinematicCharacterController.Examples
                 }
             }
 
-            CharacterCamera.UpdateWithInput(Time.deltaTime, scrollInput, lookInputVector);
+            CharacterCamera.UpdateCamera(Time.deltaTime, scrollInput, lookInputVector);
         }
 
         private void HandleCharacterInput()
@@ -146,7 +142,7 @@ namespace KinematicCharacterController.Examples
 
             characterInputs.MoveAxisForward = moveForward;
             characterInputs.MoveAxisRight = moveRight;
-            characterInputs.CameraRotation = CharacterCamera.Transform.rotation;
+            characterInputs.CameraRotation = CharacterCamera.transform.rotation;
             characterInputs.JumpDown = jumpDown;
             characterInputs.CrouchDown = crouchDown;
             characterInputs.CrouchUp = crouchUp;
