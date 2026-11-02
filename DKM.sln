@@ -1,6 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicaClothV2", "MagicaClothV2.csproj", "{58A9EE46-1BAB-9FB0-9F0F-7D134C0EEAB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicaClothV2.Editor", "MagicaClothV2.Editor.csproj", "{9076C4CB-E4E4-F524-57BD-528FD2EA4688}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "com.bmh.core.runtime", "com.bmh.core.runtime.csproj", "{EC7B23B3-9BD1-595D-710F-ECE5A89754AD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{D2EA0C57-5D9C-0B39-D869-8F33B8307264}"
@@ -10,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{4CBFB381-BF13-DFD8-4A28-E65767003F98}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "com.bmh.core.editor", "com.bmh.core.editor.csproj", "{CE66B9D2-C129-4882-16CB-BF127FD01538}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicaCloth2Example", "MagicaCloth2Example.csproj", "{3CBD9636-3B61-35C8-AC58-8218BF3D08F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor-firstpass", "Assembly-CSharp-Editor-firstpass.csproj", "{AC77E580-88F9-7B27-EFAC-2B1F036DE221}"
 EndProject
@@ -21,6 +27,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{58A9EE46-1BAB-9FB0-9F0F-7D134C0EEAB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58A9EE46-1BAB-9FB0-9F0F-7D134C0EEAB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58A9EE46-1BAB-9FB0-9F0F-7D134C0EEAB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58A9EE46-1BAB-9FB0-9F0F-7D134C0EEAB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9076C4CB-E4E4-F524-57BD-528FD2EA4688}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9076C4CB-E4E4-F524-57BD-528FD2EA4688}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9076C4CB-E4E4-F524-57BD-528FD2EA4688}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9076C4CB-E4E4-F524-57BD-528FD2EA4688}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EC7B23B3-9BD1-595D-710F-ECE5A89754AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EC7B23B3-9BD1-595D-710F-ECE5A89754AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC7B23B3-9BD1-595D-710F-ECE5A89754AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -41,6 +55,10 @@ Global
 		{CE66B9D2-C129-4882-16CB-BF127FD01538}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE66B9D2-C129-4882-16CB-BF127FD01538}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE66B9D2-C129-4882-16CB-BF127FD01538}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CBD9636-3B61-35C8-AC58-8218BF3D08F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CBD9636-3B61-35C8-AC58-8218BF3D08F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CBD9636-3B61-35C8-AC58-8218BF3D08F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CBD9636-3B61-35C8-AC58-8218BF3D08F9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AC77E580-88F9-7B27-EFAC-2B1F036DE221}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AC77E580-88F9-7B27-EFAC-2B1F036DE221}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC77E580-88F9-7B27-EFAC-2B1F036DE221}.Release|Any CPU.ActiveCfg = Release|Any CPU

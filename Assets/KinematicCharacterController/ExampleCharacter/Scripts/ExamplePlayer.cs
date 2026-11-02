@@ -8,11 +8,15 @@ namespace KinematicCharacterController.Examples
         public CharController Character;
         public CameraController CharacterCamera;
 
+        [Header("Mouse Settings")]
+        public float MouseSensitivity = 0.12f; // độ / pixel (delta chuột thô rất lớn, 1 là quá nhanh)
+
         [Header("Gamepad Settings")]
         public float GamepadLookSensitivity = 150f; // độ/giây khi stick full deflection
         public float GamepadStickDeadzone = 0.15f;
 
         PlayerCharacterInputs characterInputs;
+        private LockOnTarget _cameraLockTarget; // mục tiêu lock-on đã báo cho camera (chỉ gọi camera khi đổi)
 
         private void Start()
         {
@@ -27,11 +31,6 @@ namespace KinematicCharacterController.Examples
 
         private void Update()
         {
-            if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-
             HandleCharacterInput();
         }
 
@@ -43,6 +42,8 @@ namespace KinematicCharacterController.Examples
                 CharacterCamera.Focus.PlanarDirection = Vector3.ProjectOnPlane(CharacterCamera.Focus.PlanarDirection, Character.Motor.CharacterUp).normalized;
             }
 
+            // Phát rung camera/hitstop của các đòn chém đã tới frame này, trước khi camera áp hiệu ứng
+            Character.FlushCombatFeedback();
             HandleCameraInput();
         }
 
@@ -56,7 +57,7 @@ namespace KinematicCharacterController.Examples
             {
                 float mouseLookAxisUp = Mouse.current.delta.ReadValue().y;
                 float mouseLookAxisRight = Mouse.current.delta.ReadValue().x;
-                lookInputVector = new Vector3(mouseLookAxisRight, mouseLookAxisUp, 0f);
+                lookInputVector = new Vector3(mouseLookAxisRight, mouseLookAxisUp, 0f) * MouseSensitivity;
 
                 scrollInput = -Mouse.current.scroll.ReadValue().y;
 #if UNITY_WEBGL
@@ -91,7 +92,28 @@ namespace KinematicCharacterController.Examples
                 }
             }
 
-            CharacterCamera.UpdateCamera(Time.deltaTime, scrollInput, lookInputVector);
+            // Đồng bộ lock-on của nhân vật sang camera
+            if (Character.CurrentLockTarget != _cameraLockTarget)
+            {
+                _cameraLockTarget = Character.CurrentLockTarget;
+                if (_cameraLockTarget != null)
+                {
+                    CharacterCamera.SetLockOnTarget(_cameraLockTarget.LockPoint != null ? _cameraLockTarget.LockPoint : _cameraLockTarget.transform);
+                }
+                else
+                {
+                    CharacterCamera.ClearLockOnTarget();
+                }
+            }
+
+            // Truyền vận tốc + trạng thái đất để camera auto-align / cúi xuống khi rơi hoạt động
+            Vector3 velocity = Character.Motor.BaseVelocity;
+            Vector3 up = Character.Motor.CharacterUp;
+            Vector3 planarVelocity = Vector3.ProjectOnPlane(velocity, up);
+            float verticalVelocity = Vector3.Dot(velocity, up);
+
+            CharacterCamera.UpdateCamera(Time.deltaTime, scrollInput, lookInputVector,
+                planarVelocity, verticalVelocity, Character.IsGrounded);
         }
 
         private void HandleCharacterInput()
@@ -103,6 +125,10 @@ namespace KinematicCharacterController.Examples
             bool crouchUp = false;
             bool orientationSwitch = false;
             bool dash = false;
+            bool attack = false;
+            bool skill = false;
+            int weaponSwitch = 0;
+            bool lockOn = false;
 
             // --- Bàn phím ---
             if (Keyboard.current != null)
@@ -118,6 +144,24 @@ namespace KinematicCharacterController.Examples
                 crouchUp |= Keyboard.current.cKey.wasReleasedThisFrame;
                 orientationSwitch |= Keyboard.current.fKey.wasPressedThisFrame;
                 dash |= Keyboard.current.eKey.wasPressedThisFrame;
+                if (Keyboard.current.tabKey.wasPressedThisFrame) weaponSwitch = 1; // Tab = đổi vũ khí
+                lockOn |= Keyboard.current.qKey.isPressed; // giữ Q để lock-on
+            }
+
+            // --- Chuột: chuột trái = đánh, chuột phải = skill ---
+            if (Mouse.current != null)
+            {
+                // Click khi con trỏ chưa khóa chỉ để khóa con trỏ, không ra đòn
+                bool leftClick = Mouse.current.leftButton.wasPressedThisFrame;
+                if (leftClick && Cursor.lockState != CursorLockMode.Locked)
+                {
+                    Cursor.lockState = CursorLockMode.Locked;
+                }
+                else
+                {
+                    attack |= leftClick;
+                }
+                skill |= Mouse.current.rightButton.wasPressedThisFrame;
             }
 
             // --- Tay cầm ---
@@ -137,7 +181,11 @@ namespace KinematicCharacterController.Examples
                 //crouchUp |= Gamepad.current.buttonEast.wasReleasedThisFrame;
                 //orientationSwitch |= Gamepad.current.buttonNorth.wasPressedThisFrame; // Y / Triangle
                 dash |= Gamepad.current.rightTrigger.wasPressedThisFrame;         // RT / R2
-                // hoặc: dash |= Gamepad.current.buttonWest.wasPressedThisFrame; // X / Square
+                attack |= Gamepad.current.buttonWest.wasPressedThisFrame;         // X / Square
+                skill |= Gamepad.current.buttonNorth.wasPressedThisFrame;         // Y / Triangle
+                if (Gamepad.current.dpad.right.wasPressedThisFrame) weaponSwitch = 1;  // D-pad phải/trái = đổi vũ khí
+                if (Gamepad.current.dpad.left.wasPressedThisFrame) weaponSwitch = -1;
+                lockOn |= Gamepad.current.rightShoulder.isPressed;                // giữ RB / R1
             }
 
             characterInputs.MoveAxisForward = moveForward;
@@ -148,6 +196,10 @@ namespace KinematicCharacterController.Examples
             characterInputs.CrouchUp = crouchUp;
             characterInputs.OrientationSwitch = orientationSwitch;
             characterInputs.Dash = dash;
+            characterInputs.Attack = attack;
+            characterInputs.Skill = skill;
+            characterInputs.WeaponSwitch = weaponSwitch;
+            characterInputs.LockOn = lockOn;
 
             Character.SetInputs(ref characterInputs);
         }

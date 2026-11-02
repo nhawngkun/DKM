@@ -126,9 +126,9 @@ public class ComboCameraFeedback : MonoBehaviour
 
     // GHI CHÚ: Trước đây script này tự subscribe vào characterCombo.OnAttackHit và bắn
     // hiệu ứng camera ngay lúc input được chấp nhận (lúc bấm nút, chưa chắc trúng địch).
-    // Đã BỎ đường tự động này. Bây giờ hiệu ứng camera CHỈ chạy khi có Animation Event
-    // gọi các hàm AnimEvent_... bên dưới, để đảm bảo khớp đúng frame vũ khí chạm địch.
-    // Nếu vẫn cần Play(ComboHitInfo) để gọi tay từ nơi khác (không qua Anim Event), xem hàm bên dưới.
+    // Đã BỎ đường tự động này. Hệ combo theo vũ khí (CharacterCombo + WeaponData) gọi Play()
+    // đúng frame chém đã phân tích từ anim (CharacterCombo.DriveCameraFeedback), còn các hàm
+    // AnimEvent_... bên dưới vẫn dùng được cho clip có gắn Animation Event.
 
     /// <summary>
     /// Áp dụng hiệu ứng camera cho 1 đòn đánh cụ thể. Chỉ nên gọi thủ công từ code nếu

@@ -22,6 +22,7 @@ public class CameraFocus : MonoBehaviour
     public float AutoAlignSharpness = 3.5f;
     public float AutoAlignDelay = 0.4f;
     public float AutoAlignMinMoveSpeed = 0.5f;
+    [Range(-1f, 1f)] public float AutoAlignMinForwardDot = 0.5f; // chỉ align khi hướng chạy lệch camera < ~60°
 
     [Header("Air Pitch (cúi xuống khi rơi)")]
     public bool EnableAirCamera = true;
@@ -114,11 +115,15 @@ public class CameraFocus : MonoBehaviour
         if (shouldAutoAlign)
         {
             Vector3 moveDir = Vector3.ProjectOnPlane(characterPlanarVelocity, followUp).normalized;
-            if (moveDir.sqrMagnitude > 0.001f)
+            // Chỉ tự xoay theo khi chạy về phía trước camera. Chạy ngang/lùi mà vẫn xoay thì
+            // hướng input đổi theo camera -> nhân vật chạy vòng tròn và camera quay liên tục (chóng mặt)
+            float forwardness = Vector3.Dot(moveDir, PlanarDirection.normalized);
+            if (moveDir.sqrMagnitude > 0.001f && forwardness > AutoAlignMinForwardDot)
             {
+                float alignWeight = Mathf.InverseLerp(AutoAlignMinForwardDot, 1f, forwardness);
                 PlanarDirection = Vector3.Slerp(
                     PlanarDirection.normalized, moveDir,
-                    1f - Mathf.Exp(-AutoAlignSharpness * deltaTime));
+                    (1f - Mathf.Exp(-AutoAlignSharpness * deltaTime)) * alignWeight);
             }
         }
 
@@ -157,6 +162,13 @@ public class CameraFocus : MonoBehaviour
             {
                 Quaternion lockRotation = Quaternion.LookRotation(lookDir.normalized, followUp);
                 desiredRotation = Quaternion.Slerp(desiredRotation, lockRotation, 1f);
+
+                // Đồng bộ hướng ngang theo mục tiêu để khi nhả lock-on camera không bị giật về hướng cũ
+                Vector3 planarLock = Vector3.ProjectOnPlane(lookDir, followUp);
+                if (planarLock.sqrMagnitude > 0.001f)
+                {
+                    PlanarDirection = planarLock.normalized;
+                }
             }
         }
 

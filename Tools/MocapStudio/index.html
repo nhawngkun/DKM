@@ -1,0 +1,1013 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mocap Studio</title>
+<style>
+  :root {
+    --bg: #15171c; --panel: #1d2027; --panel2: #252932; --line: #333845;
+    --text: #e6e8ee; --dim: #9aa1b0; --accent: #ff4d4d; --ok: #49c27a; --warn: #e8b04a;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
+    font: 13px/1.4 "Segoe UI", system-ui, sans-serif; }
+  #app { display: grid; grid-template-columns: 320px 1fr; grid-template-rows: 1fr auto; height: 100%; }
+  #side { grid-row: 1 / 3; background: var(--panel); border-right: 1px solid var(--line); overflow-y: auto; padding: 10px 12px 40px; }
+  h1 { font-size: 16px; margin: 4px 0 10px; letter-spacing: .5px; }
+  h1 b { color: var(--accent); }
+  section { background: var(--panel2); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px 10px; margin-bottom: 10px; }
+  section h2 { font-size: 12px; text-transform: uppercase; color: var(--dim); margin: 0 0 6px; letter-spacing: .6px; }
+  label.row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 5px 0; }
+  label.row > span { color: var(--dim); }
+  input[type=number], select { width: 110px; background: #111318; color: var(--text); border: 1px solid var(--line); border-radius: 4px; padding: 3px 5px; }
+  input[type=range] { width: 130px; }
+  button { background: #343a48; color: var(--text); border: 1px solid #454c5c; border-radius: 4px; padding: 6px 10px; cursor: pointer; font: inherit; }
+  button:hover:not(:disabled) { background: #3f4657; }
+  button:disabled { opacity: .45; cursor: default; }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+  button.primary:hover:not(:disabled) { background: #ff6666; }
+  .btns { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .file { display: block; margin: 4px 0; }
+  .file input { width: 100%; color: var(--dim); }
+  .note { color: var(--dim); font-size: 12px; margin: 4px 0; }
+  .progress { height: 6px; background: #111318; border-radius: 3px; overflow: hidden; margin-top: 6px; }
+  .progress > div { height: 100%; width: 0; background: var(--accent); transition: width .1s; }
+  #status { font-size: 12px; margin-top: 4px; min-height: 18px; }
+  #status.ok { color: var(--ok); } #status.err { color: var(--accent); } #status.warn { color: var(--warn); }
+  #main { position: relative; overflow: hidden; }
+  #view { position: absolute; inset: 0; }
+  #videoBox { position: absolute; top: 10px; right: 10px; width: 32%; max-width: 480px; background: #000; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  #videoBox video, #videoBox canvas { display: block; width: 100%; }
+  #videoBox canvas { position: absolute; inset: 0; height: 100%; pointer-events: none; }
+  #videoBox.hidden { display: none; }
+  #hud { position: absolute; left: 10px; top: 10px; color: var(--dim); font-size: 12px; pointer-events: none; text-shadow: 0 1px 2px #000; }
+  #timeline { background: var(--panel); border-top: 1px solid var(--line); padding: 8px 12px; display: flex; align-items: center; gap: 10px; }
+  #timeline input[type=range] { flex: 1; width: auto; }
+  #timeline .t { font-variant-numeric: tabular-nums; color: var(--dim); min-width: 150px; text-align: right; }
+  .inout { display: flex; gap: 6px; align-items: center; color: var(--dim); }
+  .inout input { width: 70px; }
+  .map { font-size: 11px; color: var(--dim); max-height: 120px; overflow-y: auto; margin-top: 4px; }
+  .map .miss { color: var(--warn); }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="app">
+  <aside id="side">
+    <h1><b>●</b> Mocap Studio</h1>
+
+    <section>
+      <h2>1. Video</h2>
+      <label class="file"><input type="file" id="videoFile" accept="video/*"></label>
+      <label class="row"><span>Bắt đầu (giây)</span><input type="number" id="scanStart" value="0" min="0" step="0.1"></label>
+      <label class="row"><span>Kết thúc (giây, 0 = hết)</span><input type="number" id="scanEnd" value="0" min="0" step="0.1"></label>
+      <label class="row"><span>FPS lấy mẫu</span><input type="number" id="scanFps" value="30" min="5" max="60" step="1"></label>
+      <label class="row"><span>Độ chính xác</span>
+        <select id="scanModel">
+          <option value="lite">Nhanh (lite)</option>
+          <option value="full" selected>Vừa (full)</option>
+          <option value="heavy">Chính xác (heavy)</option>
+        </select></label>
+      <div class="btns">
+        <button class="primary" id="btnScan" disabled>Quét chuyển động</button>
+        <button id="btnCancel" disabled>Dừng</button>
+      </div>
+      <div class="progress"><div id="scanBar"></div></div>
+      <div class="btns">
+        <button id="btnSaveCap" disabled>Lưu dữ liệu quét</button>
+        <label class="file" style="margin:0"><button id="btnLoadCapProxy">Mở dữ liệu quét…</button><input type="file" id="capFile" accept=".json" hidden></label>
+      </div>
+    </section>
+
+    <section>
+      <h2>2. Xử lý xương</h2>
+      <label class="row"><span>Làm mượt</span><input type="range" id="optSmooth" min="0" max="6" step="0.5" value="2"></label>
+      <label class="row"><span>Hướng nhân vật</span>
+        <select id="optFacing">
+          <option value="first" selected>Theo video (khung đầu nhìn thẳng)</option>
+          <option value="lock">Luôn nhìn thẳng (bỏ xoay)</option>
+          <option value="keep">Giữ nguyên hướng camera</option>
+        </select></label>
+      <label class="row"><span>Gốc (root)</span>
+        <select id="optRoot">
+          <option value="ground" selected>Tại chỗ, ghim chân xuống đất</option>
+          <option value="video">Di chuyển theo video (2D)</option>
+          <option value="fixed">Hông cố định</option>
+        </select></label>
+      <label class="row"><span>Bù nghiêng camera</span><input type="checkbox" id="optTilt" checked></label>
+      <label class="row"><span>Lật trái ↔ phải</span><input type="checkbox" id="optMirror"></label>
+      <label class="row"><span>Cúi/ngẩng đầu bù (°)</span><input type="range" id="optHeadPitch" min="-30" max="30" step="1" value="10"></label>
+      <label class="row"><span>Độ xoay bàn tay</span><input type="range" id="optHand" min="0" max="1" step="0.05" value="0.6"></label>
+      <div class="note" id="skelInfo"></div>
+    </section>
+
+    <section>
+      <h2>3. Gắn model chạy thử</h2>
+      <label class="file"><input type="file" id="modelFile" accept=".fbx,.glb,.gltf"></label>
+      <div class="note">Model humanoid dạng FBX/GLB (Mixamo, VRoid, Unity, UE, Rigify…). Tên xương được tự dò.</div>
+      <label class="row"><span>Xoay model 180°</span><input type="checkbox" id="optFlip"></label>
+      <label class="row"><span>Hiện xương quét</span><input type="checkbox" id="optShowSkel" checked></label>
+      <div class="btns"><button id="btnRemoveModel" disabled>Gỡ model</button></div>
+      <div class="map" id="mapInfo"></div>
+    </section>
+
+    <section>
+      <h2>4. Xuất cho Unity</h2>
+      <label class="row"><span>Tên clip</span><input type="text" id="clipName" value="Mocap_Clip" style="width:140px;background:#111318;color:var(--text);border:1px solid var(--line);border-radius:4px;padding:3px 5px"></label>
+      <div class="btns">
+        <button class="primary" id="btnBvh" disabled>Xuất BVH</button>
+      </div>
+      <div class="note">Đổi BVH → FBX: kéo thả file .bvh vào <b>bvh_to_fbx.bat</b> (cần Blender). Trong Unity: FBX → Rig = Humanoid → dùng clip cho mọi model humanoid.</div>
+    </section>
+
+    <div id="status"></div>
+  </aside>
+
+  <main id="main">
+    <div id="view"></div>
+    <div id="hud"></div>
+    <div id="videoBox" class="hidden"><video id="video" muted playsinline preload="auto"></video><canvas id="overlay"></canvas></div>
+  </main>
+
+  <div id="timeline">
+    <button id="btnPlay" disabled>▶</button>
+    <input type="range" id="scrub" min="0" max="0" value="0" disabled>
+    <div class="inout">Xuất từ <input type="number" id="inSec" value="0" step="0.1" min="0"> đến <input type="number" id="outSec" value="0" step="0.1" min="0"> s</div>
+    <div class="t" id="timeLabel">—</div>
+  </div>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+const MP_VER = '0.10.14';
+const MP_URL = `https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@${MP_VER}`;
+const MODEL_URL = {
+  lite: 'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task',
+  full: 'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_full/float16/1/pose_landmarker_full.task',
+  heavy: 'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_heavy/float16/1/pose_landmarker_heavy.task',
+};
+
+// Chỉ số điểm MediaPipe Pose (33 điểm)
+const L = { NOSE: 0, LEAR: 7, REAR: 8, LSH: 11, RSH: 12, LEL: 13, REL: 14, LWR: 15, RWR: 16, LPINKY: 17, RPINKY: 18,
+  LIDX: 19, RIDX: 20, LHIP: 23, RHIP: 24, LKNEE: 25, RKNEE: 26, LANK: 27, RANK: 28, LHEEL: 29, RHEEL: 30, LTOE: 31, RTOE: 32 };
+// Cặp trái/phải để lật gương
+const MIRROR_PAIRS = [[1, 4], [2, 5], [3, 6], [7, 8], [9, 10], [11, 12], [13, 14], [15, 16], [17, 18], [19, 20], [21, 22], [23, 24], [25, 26], [27, 28], [29, 30], [31, 32]];
+const POSE_LINKS = [[11, 12], [11, 13], [13, 15], [12, 14], [14, 16], [11, 23], [12, 24], [23, 24], [23, 25], [25, 27], [27, 29], [29, 31], [27, 31],
+  [24, 26], [26, 28], [28, 30], [30, 32], [28, 32], [15, 19], [16, 20], [0, 7], [0, 8]];
+
+// Xương xuất ra (tên kiểu Mixamo để Unity tự map Humanoid)
+const JOINTS = [
+  ['Hips', -1], ['Spine', 0], ['Chest', 1], ['Neck', 2], ['Head', 3],
+  ['LeftShoulder', 2], ['LeftArm', 5], ['LeftForeArm', 6], ['LeftHand', 7],
+  ['RightShoulder', 2], ['RightArm', 9], ['RightForeArm', 10], ['RightHand', 11],
+  ['LeftUpLeg', 0], ['LeftLeg', 13], ['LeftFoot', 14], ['LeftToeBase', 15],
+  ['RightUpLeg', 0], ['RightLeg', 17], ['RightFoot', 18], ['RightToeBase', 19],
+];
+const J = Object.fromEntries(JOINTS.map(([n], i) => [n, i]));
+const NJ = JOINTS.length;
+// Con "chính" của từng khớp (để biết hướng xương)
+const PRIMARY_CHILD = { Hips: 'Spine', Spine: 'Chest', Chest: 'Neck', Neck: 'Head', LeftShoulder: 'LeftArm', LeftArm: 'LeftForeArm',
+  LeftForeArm: 'LeftHand', RightShoulder: 'RightArm', RightArm: 'RightForeArm', RightForeArm: 'RightHand',
+  LeftUpLeg: 'LeftLeg', LeftLeg: 'LeftFoot', LeftFoot: 'LeftToeBase', RightUpLeg: 'RightLeg', RightLeg: 'RightFoot', RightFoot: 'RightToeBase' };
+
+const $ = id => document.getElementById(id);
+const V = (x = 0, y = 0, z = 0) => new THREE.Vector3(x, y, z);
+const status = (msg, cls = '') => { const s = $('status'); s.textContent = msg; s.className = cls; };
+
+// ======================================================================
+// Trạng thái
+// ======================================================================
+const S = {
+  videoUrl: null, videoName: 'video',
+  raw: null,      // { fps, width, height, frames: [{ t, ok, w:[99], v:[33], i:[66] }] }
+  proc: null,     // { n, fps, times, P: Float32Array[] (mỗi khung 99), root2d: Vector2[] }
+  skel: null,     // { offsets: Vector3[], ends: {jointIndex: Vector3}, hipH, ankleH }
+  anim: null,     // { q: Quaternion[n][NJ] (toàn cục), local: Quaternion[n][NJ], root: Vector3[n] }
+  frame: 0, playing: false, lastTick: 0, clock: 0,
+  scanning: false, cancel: false,
+  landmarker: null, landmarkerKind: null, tsBase: 0,
+};
+
+// ======================================================================
+// Khung cảnh 3D
+// ======================================================================
+const view = $('view');
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+view.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x1a1d23);
+const camera = new THREE.PerspectiveCamera(45, 1, 0.05, 200);
+camera.position.set(0.8, 1.4, 4.2);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 0.95, 0);
+controls.update();
+scene.add(new THREE.HemisphereLight(0xdfe8ff, 0x2a2420, 1.6));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(2, 4, 3); scene.add(sun);
+const grid = new THREE.GridHelper(10, 20, 0x555c6a, 0x2f343e); scene.add(grid);
+// Mũi tên chỉ hướng trước (+Z)
+scene.add(new THREE.ArrowHelper(V(0, 0, 1), V(0, 0.005, 0), 0.6, 0xff4d4d, 0.12, 0.06));
+
+function resize() {
+  const r = view.getBoundingClientRect();
+  renderer.setSize(r.width, r.height, false);
+  camera.aspect = r.width / Math.max(1, r.height); camera.updateProjectionMatrix();
+  layoutOverlay();
+}
+new ResizeObserver(resize).observe(view);
+
+// ======================================================================
+// Toán học
+// ======================================================================
+// Khung (x, y) -> quaternion; x được giữ nguyên, y được trực giao hoá
+function basisXY(x, y) {
+  const X = x.clone().normalize();
+  const Y = y.clone().sub(X.clone().multiplyScalar(X.dot(y))).normalize();
+  const Z = new THREE.Vector3().crossVectors(X, Y);
+  return new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(X, Y, Z));
+}
+// Khung (hướng xương d, trục a) -> quaternion
+function basisDirAxis(d, a) {
+  const Z = d.clone().normalize();
+  const X = a.clone().sub(Z.clone().multiplyScalar(Z.dot(a))).normalize();
+  const Y = new THREE.Vector3().crossVectors(Z, X);
+  return new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(X, Y, Z));
+}
+// Phép xoay đưa (d0, a0) về (d1, a1)
+function deltaDirAxis(d0, a0, d1, a1) {
+  return basisDirAxis(d1, a1).multiply(basisDirAxis(d0, a0).invert());
+}
+function median(arr) { const a = arr.filter(Number.isFinite).sort((p, q) => p - q); return a.length ? a[a.length >> 1] : 0; }
+function gaussSmooth(series, sigma) {
+  if (sigma <= 0 || series.length < 3) return series.slice();
+  const r = Math.ceil(sigma * 3), k = [];
+  let sum = 0;
+  for (let i = -r; i <= r; i++) { const w = Math.exp(-0.5 * (i / sigma) ** 2); k.push(w); sum += w; }
+  const n = series.length, out = new Array(n);
+  for (let i = 0; i < n; i++) {
+    let acc = 0;
+    for (let j = -r; j <= r; j++) acc += k[j + r] * series[Math.min(n - 1, Math.max(0, i + j))];
+    out[i] = acc / sum;
+  }
+  return out;
+}
+function unwrap(a) {
+  const out = a.slice();
+  for (let i = 1; i < out.length; i++) {
+    let d = out[i] - out[i - 1];
+    while (d > Math.PI) { out[i] -= 2 * Math.PI; d -= 2 * Math.PI; }
+    while (d < -Math.PI) { out[i] += 2 * Math.PI; d += 2 * Math.PI; }
+  }
+  return out;
+}
+
+// ======================================================================
+// 1. Quét video bằng MediaPipe Pose Landmarker
+// ======================================================================
+const video = $('video');
+$('videoFile').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  if (S.videoUrl) URL.revokeObjectURL(S.videoUrl);
+  S.videoUrl = URL.createObjectURL(f);
+  S.videoName = f.name.replace(/\.[^.]+$/, '');
+  $('clipName').value = 'Mocap_' + S.videoName.replace(/[^\w]+/g, '_');
+  video.src = S.videoUrl;
+  video.onloadedmetadata = () => {
+    $('videoBox').classList.remove('hidden');
+    $('scanEnd').value = video.duration.toFixed(2);
+    $('btnScan').disabled = false;
+    layoutOverlay();
+    status(`Video: ${video.videoWidth}×${video.videoHeight}, ${video.duration.toFixed(2)} s`, 'ok');
+  };
+});
+
+async function getLandmarker(kind) {
+  if (S.landmarker && S.landmarkerKind === kind) return S.landmarker;
+  status('Đang tải MediaPipe + model nhận dạng (lần đầu hơi lâu)…');
+  const { PoseLandmarker, FilesetResolver } = await import(`${MP_URL}/vision_bundle.mjs`);
+  const fileset = await FilesetResolver.forVisionTasks(`${MP_URL}/wasm`);
+  const make = delegate => PoseLandmarker.createFromOptions(fileset, {
+    baseOptions: { modelAssetPath: MODEL_URL[kind], delegate },
+    runningMode: 'VIDEO', numPoses: 1,
+    minPoseDetectionConfidence: 0.5, minPosePresenceConfidence: 0.5, minTrackingConfidence: 0.5,
+  });
+  if (S.landmarker) S.landmarker.close();
+  try { S.landmarker = await make('GPU'); } catch (e) { console.warn('GPU lỗi, chuyển CPU', e); S.landmarker = await make('CPU'); }
+  S.landmarkerKind = kind;
+  return S.landmarker;
+}
+
+function seek(t) {
+  return new Promise(res => {
+    const done = () => { video.removeEventListener('seeked', done); res(); };
+    video.addEventListener('seeked', done);
+    video.currentTime = t;
+  });
+}
+
+$('btnScan').addEventListener('click', scan);
+$('btnCancel').addEventListener('click', () => { S.cancel = true; });
+
+async function scan() {
+  if (!S.videoUrl || S.scanning) return;
+  stopPlay();
+  S.scanning = true; S.cancel = false;
+  $('btnScan').disabled = true; $('btnCancel').disabled = false;
+  try {
+    const lm = await getLandmarker($('scanModel').value);
+    const fps = Math.max(1, +$('scanFps').value || 30);
+    const t0 = Math.max(0, +$('scanStart').value || 0);
+    let t1 = +$('scanEnd').value || video.duration;
+    t1 = Math.min(t1, video.duration);
+    const total = Math.max(1, Math.floor((t1 - t0) * fps) + 1);
+    const frames = [];
+    let found = 0;
+    for (let k = 0; k < total && !S.cancel; k++) {
+      const t = t0 + k / fps;
+      await seek(Math.min(t, video.duration - 1e-3));
+      S.tsBase += Math.round(1000 / fps);          // timestamp phải tăng dần qua mọi lần quét
+      const res = lm.detectForVideo(video, S.tsBase);
+      const rec = { t: +(t - t0).toFixed(4), ok: false };
+      if (res.worldLandmarks && res.worldLandmarks.length) {
+        const w = res.worldLandmarks[0], im = res.landmarks[0];
+        rec.ok = true; found++;
+        rec.w = w.flatMap(p => [+p.x.toFixed(5), +p.y.toFixed(5), +p.z.toFixed(5)]);
+        rec.v = w.map(p => +(p.visibility ?? 1).toFixed(3));
+        rec.i = im.flatMap(p => [+p.x.toFixed(5), +p.y.toFixed(5)]);
+      }
+      frames.push(rec);
+      drawOverlay(rec);
+      $('scanBar').style.width = `${(100 * (k + 1) / total).toFixed(1)}%`;
+      if (k % 5 === 0) status(`Đang quét ${k + 1}/${total} khung — nhận được người ở ${found} khung`);
+    }
+    if (!found) throw new Error('Không thấy người trong video (thử đổi độ chính xác hoặc đoạn thời gian).');
+    S.raw = { version: 1, source: S.videoName, fps, t0, width: video.videoWidth, height: video.videoHeight, frames };
+    $('btnSaveCap').disabled = false;
+    rebuild();
+    status(`${S.cancel ? 'Đã dừng. ' : ''}Quét xong: ${frames.length} khung, ${found} khung có người.`, 'ok');
+  } catch (e) {
+    console.error(e); status('Lỗi: ' + e.message, 'err');
+  } finally {
+    S.scanning = false;
+    $('btnScan').disabled = !S.videoUrl; $('btnCancel').disabled = true;
+  }
+}
+
+// Lưu / mở dữ liệu quét (để khỏi quét lại)
+$('btnSaveCap').addEventListener('click', () => S.raw && download(JSON.stringify(S.raw), `${S.raw.source}.mocap.json`, 'application/json'));
+$('btnLoadCapProxy').addEventListener('click', () => $('capFile').click());
+$('capFile').addEventListener('change', async e => {
+  const f = e.target.files[0]; if (!f) return;
+  try {
+    const d = JSON.parse(await f.text());
+    if (!d.frames || !d.frames.length) throw new Error('file không đúng định dạng');
+    S.raw = d; S.videoName = d.source || f.name.replace(/\.mocap\.json$|\.json$/, '');
+    $('clipName').value = 'Mocap_' + S.videoName.replace(/[^\w]+/g, '_');
+    $('btnSaveCap').disabled = false;
+    rebuild();
+    status(`Đã mở ${d.frames.length} khung từ ${f.name}`, 'ok');
+  } catch (err) { status('Lỗi mở file: ' + err.message, 'err'); }
+  e.target.value = '';
+});
+
+function download(data, name, type) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([data], { type }));
+  a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+
+// ======================================================================
+// 2. Xử lý dữ liệu: đổi toạ độ, lấp khung hỏng, làm mượt, bù nghiêng, hướng
+// ======================================================================
+// MediaPipe world: x phải (ảnh), y xuống, z xa camera  ->  (x, -y, -z): Y lên, nhân vật nhìn camera = +Z
+function processRaw(raw, opt) {
+  const fr = raw.frames, n = fr.length;
+  const okIdx = fr.map((f, i) => f.ok ? i : -1).filter(i => i >= 0);
+  const P = Array.from({ length: n }, () => new Float32Array(99));
+  const vis = Array.from({ length: n }, () => new Float32Array(33));
+  const img = Array.from({ length: n }, () => new Float32Array(66));
+  for (const i of okIdx) {
+    const f = fr[i];
+    for (let j = 0; j < 33; j++) {
+      P[i][j * 3] = f.w[j * 3]; P[i][j * 3 + 1] = -f.w[j * 3 + 1]; P[i][j * 3 + 2] = -f.w[j * 3 + 2];
+      vis[i][j] = f.v ? f.v[j] : 1;
+      img[i][j * 2] = f.i ? f.i[j * 2] : 0.5; img[i][j * 2 + 1] = f.i ? f.i[j * 2 + 1] : 0.5;
+    }
+  }
+  // Lấp khung không nhận được người: nội suy tuyến tính giữa 2 khung tốt
+  const fillArr = (arr, stride) => {
+    for (let i = 0; i < n; i++) {
+      if (fr[i].ok) continue;
+      let a = -1, b = -1;
+      for (let k = i - 1; k >= 0; k--) if (fr[k].ok) { a = k; break; }
+      for (let k = i + 1; k < n; k++) if (fr[k].ok) { b = k; break; }
+      for (let c = 0; c < stride; c++) {
+        if (a < 0) arr[i][c] = arr[b][c];
+        else if (b < 0) arr[i][c] = arr[a][c];
+        else arr[i][c] = arr[a][c] + (arr[b][c] - arr[a][c]) * (i - a) / (b - a);
+      }
+    }
+  };
+  fillArr(P, 99); fillArr(img, 66);
+
+  // Lật gương: đổi trái/phải + đảo trục X
+  if (opt.mirror) {
+    for (let i = 0; i < n; i++) {
+      for (let j = 0; j < 33; j++) { P[i][j * 3] *= -1; img[i][j * 2] = 1 - img[i][j * 2]; }
+      for (const [a, b] of MIRROR_PAIRS) for (let c = 0; c < 3; c++) {
+        const t = P[i][a * 3 + c]; P[i][a * 3 + c] = P[i][b * 3 + c]; P[i][b * 3 + c] = t;
+      }
+      for (const [a, b] of MIRROR_PAIRS) for (let c = 0; c < 2; c++) {
+        const t = img[i][a * 2 + c]; img[i][a * 2 + c] = img[i][b * 2 + c]; img[i][b * 2 + c] = t;
+      }
+    }
+  }
+
+  // Làm mượt theo thời gian (Gauss, đối xứng nên không bị trễ)
+  if (opt.smooth > 0) {
+    for (let c = 0; c < 99; c++) {
+      const s = gaussSmooth(P.map(p => p[c]), opt.smooth);
+      for (let i = 0; i < n; i++) P[i][c] = s[i];
+    }
+  }
+
+  const get = (i, j) => V(P[i][j * 3], P[i][j * 3 + 1], P[i][j * 3 + 2]);
+  const set = (i, j, v) => { P[i][j * 3] = v.x; P[i][j * 3 + 1] = v.y; P[i][j * 3 + 2] = v.z; };
+  const mid = (i, a, b) => get(i, a).add(get(i, b)).multiplyScalar(0.5);
+
+  // Bù nghiêng camera: trung bình (giữa cổ chân -> giữa hông) phải thẳng đứng
+  if (opt.tilt) {
+    const up = V();
+    for (let i = 0; i < n; i++) up.add(mid(i, L.LHIP, L.RHIP).sub(mid(i, L.LANK, L.RANK)).normalize());
+    up.normalize();
+    const q = new THREE.Quaternion().setFromUnitVectors(up, V(0, 1, 0));
+    for (let i = 0; i < n; i++) for (let j = 0; j < 33; j++) set(i, j, get(i, j).applyQuaternion(q));
+  }
+
+  // Hướng nhân vật (góc yaw của hông)
+  let yaw = new Array(n);
+  for (let i = 0; i < n; i++) {
+    const x = get(i, L.LHIP).sub(get(i, L.RHIP)), y = mid(i, L.LSH, L.RSH).sub(mid(i, L.LHIP, L.RHIP));
+    const f = new THREE.Vector3().crossVectors(x, y);
+    yaw[i] = Math.atan2(f.x, f.z);
+  }
+  yaw = unwrap(yaw);
+  let remove = null;
+  if (opt.facing === 'first') remove = yaw.map(() => yaw[0]);
+  else if (opt.facing === 'lock') remove = gaussSmooth(yaw, 3);
+  if (remove) {
+    for (let i = 0; i < n; i++) {
+      const q = new THREE.Quaternion().setFromAxisAngle(V(0, 1, 0), -remove[i]);
+      for (let j = 0; j < 33; j++) set(i, j, get(i, j).applyQuaternion(q));
+    }
+  }
+
+  // Vị trí hông trong ảnh -> mét (để di chuyển gốc theo video)
+  const W = raw.width || 1, H = raw.height || 1;
+  const hipPx = [], mpp = [];
+  for (let i = 0; i < n; i++) {
+    const hx = (img[i][L.LHIP * 2] + img[i][L.RHIP * 2]) / 2 * W, hy = (img[i][L.LHIP * 2 + 1] + img[i][L.RHIP * 2 + 1]) / 2 * H;
+    const sx = (img[i][L.LSH * 2] + img[i][L.RSH * 2]) / 2 * W, sy = (img[i][L.LSH * 2 + 1] + img[i][L.RSH * 2 + 1]) / 2 * H;
+    hipPx.push([hx, hy]);
+    const torsoPx = Math.hypot(sx - hx, sy - hy);
+    mpp.push(torsoPx > 1 ? mid(i, L.LSH, L.RSH).distanceTo(mid(i, L.LHIP, L.RHIP)) / torsoPx : NaN);
+  }
+  const m = median(mpp) || 0.003;
+  const sx = gaussSmooth(hipPx.map(p => p[0]), 2), sy = gaussSmooth(hipPx.map(p => p[1]), 2);
+  const refY = median(sy);
+  const root2d = sx.map((x, i) => new THREE.Vector2((x - sx[0]) * m, -(sy[i] - refY) * m));
+
+  return { n, fps: raw.fps, times: fr.map(f => f.t), P, vis, img, root2d, get };
+}
+
+// Dựng bộ xương T-pose từ độ dài xương trung bình của dữ liệu
+function buildSkeleton(proc) {
+  const { n, get } = proc;
+  const D = (a, b) => { const r = []; for (let i = 0; i < n; i++) r.push(get(i, a).distanceTo(get(i, b))); return median(r); };
+  const avg = (a, b) => (a + b) / 2;
+  const midD = (a1, a2, b1, b2) => {
+    const r = [];
+    for (let i = 0; i < n; i++) r.push(get(i, a1).add(get(i, a2)).multiplyScalar(.5).distanceTo(get(i, b1).add(get(i, b2)).multiplyScalar(.5)));
+    return median(r);
+  };
+  const hipHalf = D(L.LHIP, L.RHIP) / 2, shHalf = D(L.LSH, L.RSH) / 2;
+  const thigh = avg(D(L.LHIP, L.LKNEE), D(L.RHIP, L.RKNEE));
+  const shin = avg(D(L.LKNEE, L.LANK), D(L.RKNEE, L.RANK));
+  const footLen = Math.max(0.08, avg(D(L.LANK, L.LTOE), D(L.RANK, L.RTOE)));
+  const ankleArr = [];
+  for (let i = 0; i < n; i++) {
+    ankleArr.push(get(i, L.LANK).y - Math.min(get(i, L.LTOE).y, get(i, L.LHEEL).y));
+    ankleArr.push(get(i, L.RANK).y - Math.min(get(i, L.RTOE).y, get(i, L.RHEEL).y));
+  }
+  const ankleH = THREE.MathUtils.clamp(median(ankleArr), 0.04, Math.min(0.12, footLen * 0.8));
+  const footFwd = Math.sqrt(Math.max(1e-4, footLen * footLen - ankleH * ankleH));
+  const torso = midD(L.LSH, L.RSH, L.LHIP, L.RHIP);
+  const upperArm = avg(D(L.LSH, L.LEL), D(L.RSH, L.REL));
+  const foreArm = avg(D(L.LEL, L.LWR), D(L.REL, L.RWR));
+  const hand = Math.max(0.06, avg(D(L.LWR, L.LIDX), D(L.RWR, L.RIDX)));
+  const shToEar = midD(L.LSH, L.RSH, L.LEAR, L.REAR);
+  const neck = Math.max(0.05, shToEar * 0.55);
+  const hipH = thigh + shin + ankleH;
+
+  const off = new Array(NJ);
+  const o = (name, x, y, z) => { off[J[name]] = V(x, y, z); };
+  o('Hips', 0, hipH, 0); o('Spine', 0, torso * 0.22, 0); o('Chest', 0, torso * 0.36, 0);
+  o('Neck', 0, torso * 0.42, 0); o('Head', 0, neck, 0);
+  for (const [side, s] of [['Left', 1], ['Right', -1]]) {
+    o(side + 'Shoulder', s * shHalf * 0.15, torso * 0.38, 0);
+    o(side + 'Arm', s * shHalf * 0.85, torso * 0.04, 0);
+    o(side + 'ForeArm', s * upperArm, 0, 0);
+    o(side + 'Hand', s * foreArm, 0, 0);
+    o(side + 'UpLeg', s * hipHalf, 0, 0);
+    o(side + 'Leg', 0, -thigh, 0);
+    o(side + 'Foot', 0, -shin, 0);
+    o(side + 'ToeBase', 0, -ankleH, footFwd);
+  }
+  const ends = {
+    [J.Head]: V(0, Math.max(0.12, shToEar * 0.9), 0),
+    [J.LeftHand]: V(hand, 0, 0), [J.RightHand]: V(-hand, 0, 0),
+    [J.LeftToeBase]: V(0, 0, 0.04), [J.RightToeBase]: V(0, 0, 0.04),
+  };
+  return { offsets: off, ends, hipH, ankleH, height: hipH + torso + shToEar + 0.12 };
+}
+
+// Tính góc xoay toàn cục của mọi khớp cho từng khung
+function solve(proc, skel, opt) {
+  const { n, get, root2d } = proc;
+  const mid = (i, a, b) => get(i, a).add(get(i, b)).multiplyScalar(0.5);
+  const qAll = [], local = [], root = [];
+  const pitchQ = new THREE.Quaternion().setFromAxisAngle(V(1, 0, 0), -THREE.MathUtils.degToRad(opt.headPitch));
+  const footRest = skel.offsets[J.LeftToeBase].clone().normalize();
+
+  for (let i = 0; i < n; i++) {
+    const G = new Array(NJ);
+    const p = j => get(i, j);
+    const hipMid = mid(i, L.LHIP, L.RHIP), shMid = mid(i, L.LSH, L.RSH);
+    const up = shMid.clone().sub(hipMid);
+
+    // Thân: hông theo đường nối 2 hông, ngực theo đường nối 2 vai, cột sống ở giữa
+    G[J.Hips] = basisXY(p(L.LHIP).sub(p(L.RHIP)), up);
+    G[J.Chest] = basisXY(p(L.LSH).sub(p(L.RSH)), up);
+    G[J.Spine] = G[J.Hips].clone().slerp(G[J.Chest], 0.5);
+    // Đầu: trục ngang = 2 tai, hướng nhìn = giữa tai -> mũi
+    const earX = p(L.LEAR).sub(p(L.REAR));
+    const face = p(L.NOSE).sub(mid(i, L.LEAR, L.REAR));
+    const headUp = new THREE.Vector3().crossVectors(face, earX);
+    G[J.Head] = basisXY(earX, headUp).multiply(pitchQ);
+    G[J.Neck] = G[J.Chest].clone().slerp(G[J.Head], 0.5);
+    G[J.LeftShoulder] = G[J.Chest].clone();
+    G[J.RightShoulder] = G[J.Chest].clone();
+
+    // Chi: giữ mặt phẳng gập khớp giữa (khuỷu/gối) để không vặn xương
+    const limb = (upper, lower, a, m, c, restDir, restAxis, parentQ) => {
+      const dU = p(m).sub(p(a)).normalize(), dL = p(c).sub(p(m)).normalize();
+      const bend = new THREE.Vector3().crossVectors(dU, dL);
+      const fall = restAxis.clone().applyQuaternion(parentQ);
+      fall.sub(dU.clone().multiplyScalar(dU.dot(fall))).normalize();
+      const w = THREE.MathUtils.smoothstep(bend.length(), 0.08, 0.3);
+      const axis = fall.multiplyScalar(1 - w).add(bend.normalize().multiplyScalar(w)).normalize();
+      G[upper] = deltaDirAxis(restDir, restAxis, dU, axis);
+      G[lower] = deltaDirAxis(restDir, restAxis, dL, axis);
+    };
+    limb(J.LeftArm, J.LeftForeArm, L.LSH, L.LEL, L.LWR, V(1, 0, 0), V(0, -1, 0), G[J.Chest]);
+    limb(J.RightArm, J.RightForeArm, L.RSH, L.REL, L.RWR, V(-1, 0, 0), V(0, 1, 0), G[J.Chest]);
+    limb(J.LeftUpLeg, J.LeftLeg, L.LHIP, L.LKNEE, L.LANK, V(0, -1, 0), V(1, 0, 0), G[J.Hips]);
+    limb(J.RightUpLeg, J.RightLeg, L.RHIP, L.RKNEE, L.RANK, V(0, -1, 0), V(1, 0, 0), G[J.Hips]);
+
+    // Bàn tay: hướng cổ tay -> giữa ngón trỏ & ngón út, mặt phẳng lòng bàn tay
+    const hand = (h, fore, wr, idx, pky, restDir, restN) => {
+      const a = p(idx).sub(p(wr)), b = p(pky).sub(p(wr));
+      const dir = a.clone().add(b), nrm = new THREE.Vector3().crossVectors(a, b);
+      if (dir.lengthSq() < 1e-8 || nrm.lengthSq() < 1e-8) { G[h] = G[fore].clone(); return; }
+      const full = deltaDirAxis(restDir, restN, dir, nrm);
+      G[h] = G[fore].clone().slerp(full, opt.hand);
+    };
+    hand(J.LeftHand, J.LeftForeArm, L.LWR, L.LIDX, L.LPINKY, V(1, 0, 0), V(0, 1, 0));
+    hand(J.RightHand, J.RightForeArm, L.RWR, L.RIDX, L.RPINKY, V(-1, 0, 0), V(0, -1, 0));
+
+    // Bàn chân: cổ chân -> mũi chân, trục ngang theo cẳng chân
+    const foot = (f, toe, leg, ank, toeL) => {
+      const d = p(toeL).sub(p(ank));
+      const side = V(1, 0, 0).applyQuaternion(G[leg]);
+      G[f] = d.lengthSq() > 1e-8 ? deltaDirAxis(footRest, V(1, 0, 0), d, side) : G[leg].clone();
+      G[toe] = G[f].clone();
+    };
+    foot(J.LeftFoot, J.LeftToeBase, J.LeftLeg, L.LANK, L.LTOE);
+    foot(J.RightFoot, J.RightToeBase, J.RightLeg, L.RANK, L.RTOE);
+
+    // Góc xoay cục bộ (so với khớp cha)
+    const lq = G.map((g, j) => {
+      const par = JOINTS[j][1];
+      return par < 0 ? g.clone() : G[par].clone().invert().multiply(g);
+    });
+    qAll.push(G); local.push(lq);
+
+    // Vị trí gốc: tính vị trí khớp chân bằng FK để ghim chân xuống đất
+    const pos = new Array(NJ);
+    pos[0] = V(0, 0, 0);
+    for (let j = 1; j < NJ; j++) pos[j] = skel.offsets[j].clone().applyQuaternion(G[JOINTS[j][1]]).add(pos[JOINTS[j][1]]);
+    const lowest = Math.min(pos[J.LeftFoot].y - skel.ankleH, pos[J.RightFoot].y - skel.ankleH, pos[J.LeftToeBase].y, pos[J.RightToeBase].y);
+    root.push(V(0, -lowest, 0));
+  }
+
+  // Làm mượt chiều cao hông + áp chế độ gốc
+  const ys = gaussSmooth(root.map(r => r.y), 1.5);
+  const baseY = median(ys);
+  for (let i = 0; i < n; i++) {
+    if (opt.root === 'ground') root[i].set(0, ys[i], 0);
+    else if (opt.root === 'video') root[i].set(root2d[i].x, baseY + root2d[i].y, 0);
+    else root[i].set(0, skel.hipH, 0);
+  }
+  return { q: qAll, local, root };
+}
+
+function readOpts() {
+  return {
+    smooth: +$('optSmooth').value, facing: $('optFacing').value, root: $('optRoot').value,
+    tilt: $('optTilt').checked, mirror: $('optMirror').checked,
+    headPitch: +$('optHeadPitch').value, hand: +$('optHand').value,
+  };
+}
+
+function rebuild() {
+  if (!S.raw) return;
+  const opt = readOpts();
+  S.proc = processRaw(S.raw, opt);
+  S.skel = buildSkeleton(S.proc);
+  S.anim = solve(S.proc, S.skel, opt);
+  buildRig(S.skel);
+  if (model) setupModelRest();
+  const n = S.proc.n, dur = (n - 1) / S.proc.fps;
+  $('scrub').max = n - 1; $('scrub').disabled = false; $('btnPlay').disabled = false; $('btnBvh').disabled = false;
+  $('inSec').max = $('outSec').max = dur.toFixed(2);
+  if (+$('outSec').value <= 0 || +$('outSec').value > dur) $('outSec').value = dur.toFixed(2);
+  if (+$('inSec').value >= +$('outSec').value) $('inSec').value = 0;
+  const sk = S.skel;
+  $('skelInfo').textContent = `Chiều cao ước tính ≈ ${(sk.height).toFixed(2)} m · hông ${(sk.hipH).toFixed(2)} m · ${n} khung @ ${S.proc.fps} fps`;
+  setFrame(Math.min(S.frame, n - 1));
+}
+for (const id of ['optSmooth', 'optFacing', 'optRoot', 'optTilt', 'optMirror', 'optHeadPitch', 'optHand'])
+  $(id).addEventListener('change', rebuild);
+
+// ======================================================================
+// Xương xem trước (bone + ống trụ)
+// ======================================================================
+let rig = null;
+const rigGroup = new THREE.Group(); scene.add(rigGroup);
+const boneMat = new THREE.MeshStandardMaterial({ color: 0xff5a4a, roughness: 0.5, metalness: 0.1 });
+const jointMat = new THREE.MeshStandardMaterial({ color: 0xf2f2f2, roughness: 0.4 });
+
+function buildRig(skel) {
+  rigGroup.clear();
+  const bones = JOINTS.map(([name]) => { const b = new THREE.Bone(); b.name = name; return b; });
+  JOINTS.forEach(([, par], j) => {
+    bones[j].position.copy(skel.offsets[j]);
+    if (par >= 0) bones[par].add(bones[j]); else rigGroup.add(bones[j]);
+  });
+  const stick = (parentBone, off) => {
+    const len = off.length(); if (len < 1e-4) return;
+    const r = Math.min(0.035, Math.max(0.012, len * 0.09));
+    const g = new THREE.CylinderGeometry(r * 0.6, r, len, 10);
+    const m = new THREE.Mesh(g, boneMat);
+    m.position.copy(off).multiplyScalar(0.5);
+    m.quaternion.setFromUnitVectors(V(0, 1, 0), off.clone().normalize());
+    parentBone.add(m);
+  };
+  JOINTS.forEach(([, par], j) => {
+    if (par >= 0) stick(bones[par], skel.offsets[j]);
+    const s = new THREE.Mesh(new THREE.SphereGeometry(0.022, 12, 8), jointMat); bones[j].add(s);
+  });
+  for (const [j, off] of Object.entries(skel.ends)) stick(bones[j], off);
+  rig = { bones };
+}
+
+function applyRig(f) {
+  if (!rig || !S.anim) return;
+  const { local, root } = S.anim;
+  for (let j = 0; j < NJ; j++) rig.bones[j].quaternion.copy(local[f][j]);
+  rig.bones[0].position.copy(root[f]);
+}
+
+// ======================================================================
+// 3. Model: nạp, dò tên xương, retarget theo góc xoay toàn cục
+// ======================================================================
+let model = null, modelPivot = new THREE.Group(), modelInfo = null;
+scene.add(modelPivot);
+
+// Danh sách tên xương thường gặp (đã chuẩn hoá: chữ thường, bỏ ký tự đặc biệt)
+const NAME_HINTS = {
+  Hips: ['hips', 'hip', 'pelvis', 'jbipchips', 'bip01pelvis'],
+  Spine: ['spine', 'spine01', 'spine1', 'jbipcspine', 'bip01spine'],
+  Chest: ['spine2', 'chest', 'upperchest', 'spine02', 'spine03', 'jbipcchest', 'jbipcupperchest', 'bip01spine1'],
+  Neck: ['neck', 'neck01', 'neck1', 'jbipcneck', 'bip01neck'],
+  Head: ['head', 'jbipchead', 'bip01head'],
+};
+for (const [side, s, S2] of [['Left', 'l', 'L'], ['Right', 'r', 'R']]) {
+  const sl = side.toLowerCase();
+  Object.assign(NAME_HINTS, {
+    [side + 'Shoulder']: [`${sl}shoulder`, `shoulder${s}`, `clavicle${s}`, `${sl}clavicle`, `${s}clavicle`, `${s}shoulder`, `jbip${s}shoulder`, `bip01${s}clavicle`],
+    [side + 'Arm']: [`${sl}arm`, `${sl}upperarm`, `upperarm${s}`, `${s}upperarm`, `${s}arm`, `arm${s}`, `jbip${s}upperarm`, `bip01${s}upperarm`],
+    [side + 'ForeArm']: [`${sl}forearm`, `${sl}lowerarm`, `forearm${s}`, `lowerarm${s}`, `${s}forearm`, `${s}lowerarm`, `jbip${s}lowerarm`, `bip01${s}forearm`],
+    [side + 'Hand']: [`${sl}hand`, `hand${s}`, `${s}hand`, `jbip${s}hand`, `bip01${s}hand`],
+    [side + 'UpLeg']: [`${sl}upleg`, `${sl}upperleg`, `${sl}thigh`, `thigh${s}`, `upperleg${s}`, `${s}thigh`, `${s}upperleg`, `jbip${s}upperleg`, `bip01${s}thigh`],
+    [side + 'Leg']: [`${sl}leg`, `${sl}lowerleg`, `${sl}shin`, `${sl}calf`, `shin${s}`, `calf${s}`, `lowerleg${s}`, `${s}calf`, `${s}lowerleg`, `${s}shin`, `jbip${s}lowerleg`, `bip01${s}calf`],
+    [side + 'Foot']: [`${sl}foot`, `foot${s}`, `${s}foot`, `jbip${s}foot`, `bip01${s}foot`],
+    [side + 'ToeBase']: [`${sl}toebase`, `${sl}toes`, `${sl}toe`, `toe${s}`, `toes${s}`, `ball${s}`, `${s}toe`, `${s}toebase`, `${s}ball`, `jbip${s}toetips`, `jbip${s}toe`, `bip01${s}toe0`],
+  });
+}
+const normName = s => s.toLowerCase().replace(/^.*[:|]/, '').replace(/^mixamorig\d*/, '').replace(/[^a-z0-9]/g, '');
+const normName2 = s => s.toLowerCase().replace(/[^a-z0-9]/g, '').replace(/^mixamorig\d*/, '');
+
+function mapBones(root) {
+  const all = [];
+  root.traverse(o => { if (o.isBone || (o.type === 'Object3D' && /hip|spine|pelvis|arm|leg|head/i.test(o.name))) all.push(o); });
+  const bones = all.filter(o => o.isBone).length > 5 ? all.filter(o => o.isBone) : all;
+  const byName = new Map();
+  for (const b of bones) for (const k of [normName(b.name), normName2(b.name)]) if (!byName.has(k)) byName.set(k, b);
+  const map = {};
+  for (const [joint, hints] of Object.entries(NAME_HINTS)) {
+    for (const h of hints) { const b = byName.get(h); if (b && !Object.values(map).includes(b)) { map[joint] = b; break; } }
+  }
+  return map;
+}
+
+$('modelFile').addEventListener('change', async e => {
+  const f = e.target.files[0]; if (!f) return;
+  try {
+    status('Đang nạp model…');
+    const buf = await f.arrayBuffer();
+    let obj;
+    if (/\.fbx$/i.test(f.name)) obj = new FBXLoader().parse(buf, '');
+    else obj = await new Promise((res, rej) => new GLTFLoader().parse(buf, '', g => res(g.scene), rej));
+    useModel(obj);
+    status(`Đã nạp model ${f.name}`, 'ok');
+  } catch (err) { console.error(err); status('Lỗi nạp model: ' + err.message, 'err'); }
+  e.target.value = '';
+});
+
+function useModel(obj) {
+  removeModel();
+  model = obj;
+  model.traverse(o => { if (o.isMesh) o.frustumCulled = false; });
+  modelPivot.add(model);
+  // Chuẩn hoá kích thước: cao ~ chiều cao xương quét (hoặc 1.8 m), đặt chân lên mặt đất
+  model.updateMatrixWorld(true);
+  const box = new THREE.Box3().setFromObject(model);
+  if (!box.isEmpty()) {
+    const h = box.max.y - box.min.y;
+    if (h > 1e-4) model.scale.multiplyScalar((S.skel ? S.skel.height : 1.8) / h);
+    model.updateMatrixWorld(true);
+    const box2 = new THREE.Box3().setFromObject(model);
+    model.position.y -= box2.min.y;
+    model.position.x -= (box2.min.x + box2.max.x) / 2;
+    model.position.z -= (box2.min.z + box2.max.z) / 2;
+  }
+  model.rotation.y += $('optFlip').checked ? Math.PI : 0;
+  // Lưu pose gốc (local) của mọi node để có thể đặt lại
+  model.userData.rest = [];
+  model.traverse(o => model.userData.rest.push([o, o.position.clone(), o.quaternion.clone()]));
+  setupModelRest();
+  $('btnRemoveModel').disabled = false;
+  layoutScene();
+}
+
+$('optFlip').addEventListener('change', () => {
+  if (!model) return;
+  resetModelPose();
+  model.rotation.y += Math.PI;
+  model.userData.rest.find(r => r[0] === model)[2].copy(model.quaternion);
+  setupModelRest();
+});
+$('btnRemoveModel').addEventListener('click', () => { removeModel(); layoutScene(); });
+$('optShowSkel').addEventListener('change', layoutScene);
+
+function removeModel() {
+  if (!model) return;
+  modelPivot.remove(model);
+  model.traverse(o => { if (o.geometry) o.geometry.dispose(); });
+  model = null; modelInfo = null;
+  $('mapInfo').innerHTML = ''; $('btnRemoveModel').disabled = true;
+}
+
+function resetModelPose() {
+  for (const [o, p, q] of model.userData.rest) { o.position.copy(p); o.quaternion.copy(q); }
+  model.updateMatrixWorld(true);
+}
+
+// Ghi nhận pose gốc của model (giả định model nhìn +Z, đứng thẳng)
+function setupModelRest() {
+  resetModelPose();
+  const map = mapBones(model);
+  const pivotInv = new THREE.Quaternion();
+  const relQ = o => { modelPivot.getWorldQuaternion(pivotInv); pivotInv.invert(); return pivotInv.clone().multiply(o.getWorldQuaternion(new THREE.Quaternion())); };
+  const relP = o => modelPivot.worldToLocal(o.getWorldPosition(V()));
+  const entries = [];
+  for (const [name] of JOINTS) {
+    const b = map[name]; if (!b) continue;
+    const j = J[name];
+    const restQ = relQ(b);
+    // Bù khác biệt hướng xương giữa model (vd A-pose) và xương quét (T-pose)
+    let corr = new THREE.Quaternion();
+    const child = PRIMARY_CHILD[name];
+    const isTorso = ['Hips', 'Spine', 'Chest', 'Neck', 'Head'].includes(name);
+    if (!isTorso && child && map[child] && S.skel) {
+      const md = relP(map[child]).sub(relP(b)).normalize();
+      const od = S.skel.offsets[J[child]].clone().normalize();
+      corr = new THREE.Quaternion().setFromUnitVectors(md, od);
+    }
+    entries.push({ j, bone: b, target: corr.multiply(restQ), depth: depthOf(b) });
+  }
+  entries.sort((a, b) => a.depth - b.depth);
+  const hips = map.Hips;
+  modelInfo = { map, entries, hips, hipsRest: hips ? relP(hips) : null };
+  const missing = JOINTS.map(([n]) => n).filter(n => !map[n]);
+  const essential = ['Hips', 'Spine', 'Head', 'LeftArm', 'LeftForeArm', 'RightArm', 'RightForeArm', 'LeftUpLeg', 'LeftLeg', 'RightUpLeg', 'RightLeg'];
+  const lacks = essential.filter(n => !map[n]);
+  $('mapInfo').innerHTML = `Đã nhận ${NJ - missing.length}/${NJ} xương.` +
+    (missing.length ? ` <span class="miss">Thiếu: ${missing.join(', ')}</span>` : '');
+  if (lacks.length) status('Model thiếu xương chính (' + lacks.join(', ') + ') — kiểm tra tên xương.', 'warn');
+  applyModel(S.frame);
+}
+function depthOf(o) { let d = 0; while (o.parent) { d++; o = o.parent; } return d; }
+
+function applyModel(f) {
+  if (!model || !modelInfo || !S.anim) return;
+  const G = S.anim.q[f];
+  const pivotQ = modelPivot.getWorldQuaternion(new THREE.Quaternion());
+  const pq = new THREE.Quaternion();
+  for (const e of modelInfo.entries) {
+    // Góc toàn cục mong muốn = (xoay của xương quét) * (pose gốc đã bù) — trong không gian pivot
+    const want = pivotQ.clone().multiply(G[e.j]).multiply(e.target);
+    e.bone.parent.getWorldQuaternion(pq);
+    e.bone.quaternion.copy(pq.invert().multiply(want));
+    e.bone.updateMatrixWorld(true);
+  }
+  const hb = modelInfo.hips;
+  if (hb && S.skel) {
+    const s = modelInfo.hipsRest.y / S.skel.hipH;
+    const r = S.anim.root[f];
+    const p = modelInfo.hipsRest.clone().add(V(r.x * s, (r.y - S.skel.hipH) * s, r.z * s));
+    const w = modelPivot.localToWorld(p);
+    hb.parent.updateMatrixWorld(true);
+    hb.position.copy(hb.parent.worldToLocal(w));
+  }
+}
+
+// Đặt xương quét và model cạnh nhau
+function layoutScene() {
+  const show = $('optShowSkel').checked;
+  rigGroup.visible = show || !model;
+  if (model && rigGroup.visible) { rigGroup.position.x = -0.6; modelPivot.position.x = 0.6; }
+  else { rigGroup.position.x = 0; modelPivot.position.x = 0; }
+}
+
+// ======================================================================
+// Phát lại / timeline
+// ======================================================================
+const overlay = $('overlay'), octx = overlay.getContext('2d');
+function layoutOverlay() {
+  if (!video.videoWidth) return;
+  overlay.width = video.clientWidth * devicePixelRatio; overlay.height = video.clientHeight * devicePixelRatio;
+}
+function drawOverlay(rec) {
+  const w = overlay.width, h = overlay.height;
+  octx.clearRect(0, 0, w, h);
+  if (!rec || !rec.ok || !rec.i) return;
+  const pt = j => [rec.i[j * 2] * w, rec.i[j * 2 + 1] * h];
+  octx.lineWidth = 2 * devicePixelRatio; octx.strokeStyle = '#49e07a';
+  for (const [a, b] of POSE_LINKS) { const [x1, y1] = pt(a), [x2, y2] = pt(b); octx.beginPath(); octx.moveTo(x1, y1); octx.lineTo(x2, y2); octx.stroke(); }
+  octx.fillStyle = '#ff4d4d';
+  for (let j = 0; j < 33; j++) { const [x, y] = pt(j); octx.beginPath(); octx.arc(x, y, 2.5 * devicePixelRatio, 0, 7); octx.fill(); }
+}
+
+function setFrame(f, syncVideo = true) {
+  if (!S.anim) return;
+  f = Math.max(0, Math.min(S.proc.n - 1, f | 0));
+  S.frame = f;
+  applyRig(f); applyModel(f);
+  $('scrub').value = f;
+  const t = S.proc.times[f];
+  $('timeLabel').textContent = `${t.toFixed(2)} s · khung ${f + 1}/${S.proc.n}`;
+  const rec = S.raw.frames[f];
+  if (video.src && video.videoWidth && syncVideo && !S.playing && !S.scanning) video.currentTime = (S.raw.t0 || 0) + t;
+  drawOverlay(rec);
+  $('hud').textContent = rec.ok ? '' : 'Khung này không nhận được người (đã nội suy)';
+}
+$('scrub').addEventListener('input', e => { stopPlay(); setFrame(+e.target.value); });
+$('btnPlay').addEventListener('click', () => S.playing ? stopPlay() : startPlay());
+window.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+  if (e.code === 'Space') { e.preventDefault(); S.playing ? stopPlay() : startPlay(); }
+  if (e.code === 'ArrowRight') { stopPlay(); setFrame(S.frame + 1); }
+  if (e.code === 'ArrowLeft') { stopPlay(); setFrame(S.frame - 1); }
+});
+function startPlay() {
+  if (!S.anim || S.scanning) return;
+  S.playing = true; $('btnPlay').textContent = '❚❚';
+  S.clock = S.proc.times[S.frame]; S.lastTick = performance.now();
+  if (S.frame >= S.proc.n - 1) S.clock = 0;
+  if (video.src && video.videoWidth) { video.currentTime = (S.raw.t0 || 0) + S.clock; video.play().catch(() => {}); }
+}
+function stopPlay() {
+  if (!S.playing) return;
+  S.playing = false; $('btnPlay').textContent = '▶';
+  if (!video.paused) video.pause();
+}
+function tick(now) {
+  if (S.playing && S.anim) {
+    const usingVideo = video.src && video.videoWidth && !video.paused;
+    if (usingVideo) S.clock = video.currentTime - (S.raw.t0 || 0);
+    else S.clock += (now - S.lastTick) / 1000;
+    S.lastTick = now;
+    const endT = S.proc.times[S.proc.n - 1];
+    if (S.clock > endT || (video.src && video.ended)) {
+      S.clock = 0;
+      if (video.src && video.videoWidth) { video.currentTime = (S.raw.t0 || 0); video.play().catch(() => {}); }
+    }
+    setFrame(Math.round(S.clock * S.proc.fps), false);
+  }
+  controls.update();
+  renderer.render(scene, camera);
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+
+// ======================================================================
+// 4. Xuất BVH (Unity nhập qua FBX: dùng bvh_to_fbx.bat)
+// ======================================================================
+$('btnBvh').addEventListener('click', () => {
+  if (!S.anim) return;
+  const fps = S.proc.fps;
+  const a = Math.max(0, Math.round(+$('inSec').value * fps));
+  const b = Math.min(S.proc.n - 1, Math.round(+$('outSec').value * fps));
+  if (b <= a) { status('Đoạn xuất không hợp lệ', 'err'); return; }
+  const name = ($('clipName').value || 'Mocap_Clip').replace(/[^\w\-]+/g, '_');
+  download(writeBvh(a, b), name + '.bvh', 'text/plain');
+  status(`Đã xuất ${name}.bvh (${b - a + 1} khung, ${((b - a) / fps).toFixed(2)} s)`, 'ok');
+});
+
+function writeBvh(a, b) {
+  const sk = S.skel, f6 = x => x.toFixed(6);
+  const children = JOINTS.map((_, j) => JOINTS.map((jj, k) => jj[1] === j ? k : -1).filter(k => k >= 0));
+  const lines = ['HIERARCHY'];
+  const writeJoint = (j, ind) => {
+    const pad = '  '.repeat(ind), [name, par] = JOINTS[j], o = sk.offsets[j];
+    lines.push(`${pad}${par < 0 ? 'ROOT' : 'JOINT'} ${name}`, `${pad}{`);
+    lines.push(`${pad}  OFFSET ${f6(o.x)} ${f6(o.y)} ${f6(o.z)}`);
+    lines.push(`${pad}  CHANNELS ${par < 0 ? '6 Xposition Yposition Zposition ' : '3 '}Zrotation Xrotation Yrotation`);
+    for (const c of children[j]) writeJoint(c, ind + 1);
+    if (!children[j].length) {
+      const e = sk.ends[j] || V(0, 0.05, 0);
+      lines.push(`${pad}  End Site`, `${pad}  {`, `${pad}    OFFSET ${f6(e.x)} ${f6(e.y)} ${f6(e.z)}`, `${pad}  }`);
+    }
+    lines.push(`${pad}}`);
+  };
+  writeJoint(0, 0);
+  // Thứ tự kênh trong MOTION = thứ tự duyệt cây (DFS)
+  const order = [];
+  const dfs = j => { order.push(j); for (const c of children[j]) dfs(c); };
+  dfs(0);
+  lines.push('MOTION', `Frames: ${b - a + 1}`, `Frame Time: ${(1 / S.proc.fps).toFixed(6)}`);
+  const prev = new Array(NJ).fill(null);
+  const eul = new THREE.Euler();
+  const near = (v, p) => { if (p === null) return v; while (v - p > 180) v -= 360; while (v - p < -180) v += 360; return v; };
+  for (let f = a; f <= b; f++) {
+    const vals = [];
+    for (const j of order) {
+      if (j === 0) { const r = S.anim.root[f]; vals.push(f6(r.x), f6(r.y), f6(r.z)); }
+      // BVH "Zrotation Xrotation Yrotation" = R = Rz·Rx·Ry = Euler 'ZXY' của three.js
+      eul.setFromQuaternion(S.anim.local[f][j], 'ZXY');
+      const d = THREE.MathUtils.radToDeg;
+      let z = d(eul.z), x = d(eul.x), y = d(eul.y);
+      if (prev[j]) { z = near(z, prev[j][0]); x = near(x, prev[j][1]); y = near(y, prev[j][2]); }
+      prev[j] = [z, x, y];
+      vals.push(z.toFixed(4), x.toFixed(4), y.toFixed(4));
+    }
+    lines.push(vals.join(' '));
+  }
+  return lines.join('\n') + '\n';
+}
+
+// Mở nhanh để thử: ?video=<url> hoặc ?capture=<url>
+const qs = new URLSearchParams(location.search);
+if (qs.get('capture')) fetch(qs.get('capture')).then(r => r.json()).then(d => { S.raw = d; S.videoName = d.source || 'capture'; $('btnSaveCap').disabled = false; rebuild(); });
+if (qs.get('video')) { video.src = qs.get('video'); S.videoUrl = video.src; S.videoName = qs.get('video').split('/').pop().replace(/\.[^.]+$/, '');
+  video.onloadedmetadata = () => { $('videoBox').classList.remove('hidden'); $('scanEnd').value = video.duration.toFixed(2); $('btnScan').disabled = false; layoutOverlay(); }; }
+
+window.__mocap = { S, rebuild, setFrame, writeBvh, useModel, THREE, get model() { return model; } };
+status('Chọn video có 1 người, quay toàn thân, rồi bấm "Quét chuyển động".');
+</script>
+</body>
+</html>

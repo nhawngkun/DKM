@@ -107,3 +107,10 @@ InitTestScene*.unity*
 UserSettings
 Assembly-CSharp.csproj
 *.csproj
+
+# Matrix MCP: per-machine files (the port derives from the project path)
+/.mcp.json
+/.codex/config.toml
+
+# Test case handoff cho Matrix Bridge
+/TestCases/
