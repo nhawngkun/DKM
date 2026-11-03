@@ -5,6 +5,7 @@ using UnityEngine;
 /// Physic áo choàng / tóc Dante trên các chuỗi xương có sẵn trong model DMC5 (CoatCloth_xx, CoatCoverCloth_xx,
 /// WaistCloth, HairCloth...). Anim humanoid không điều khiển các xương này -> tự mô phỏng lò xo (Verlet):
 /// quán tính khi chạy/dash, trọng lực, kéo về pose gốc, va chạm capsule chân để vạt áo không xuyên đùi.
+/// Khớp áo cao hơn hông được ghim theo body (ôm người), chỉ phần đuôi dưới hông mới bay.
 /// Đặt CÙNG GameObject với Animator. Chạy sau Animator + PlayerIK + nội suy KCC (LateUpdate order 200).
 /// Hitstop (Time.timeScale = 0) thì áo đứng yên theo.
 /// </summary>
@@ -23,6 +24,7 @@ public class CoatPhysics : MonoBehaviour
         [Range(0f, 1f)] public float Elasticity = 0.08f;   // Giữ hình dạng so với xương cha
         [Range(0f, 1f)] public float Damping = 0.12f;
         [Range(0f, 1f)] public float Inertia = 0.35f;      // 1 = áo đi theo người hoàn toàn, 0 = bị bỏ lại phía sau
+        [Range(0f, 1f)] public float RotationInertia = 0.85f; // Áo xoay theo khi người quay; thấp quá thì quay gấp áo lật xuyên chân
         public Vector3 Gravity = new Vector3(0f, -4f, 0f);
         public float Radius = 0.03f;
         public bool Collide = true;
@@ -36,10 +38,16 @@ public class CoatPhysics : MonoBehaviour
         new ChainGroup { NameContains = "HairCloth", Stiffness = AnimationCurve.Linear(0f, 0.6f, 1f, 0.3f), Gravity = new Vector3(0f, -1f, 0f), Inertia = 0.6f, Radius = 0.01f, Collide = false },
     };
 
+    [Header("Ghim theo body (độ cao so với xương Hips, đo lúc khởi tạo)")]
+    [Tooltip("Khớp cao hơn mức này bám chặt body, không mô phỏng")]
+    public float PinAboveHip = 0f;
+    [Tooltip("Khớp thấp hơn mức này bay tự do; ở giữa thì chuyển dần")]
+    public float FreeBelowHip = -0.2f;
+
     [Header("Va chạm (capsule theo xương humanoid)")]
-    public float HipRadius = 0.08f;
-    public float ThighRadius = 0.08f;
-    public float ShinRadius = 0.07f;
+    public float HipRadius = 0.09f;
+    public float ThighRadius = 0.09f;
+    public float ShinRadius = 0.075f;
 
     [Header("Mô phỏng")]
     public float UpdateRate = 60f;
@@ -56,6 +64,7 @@ public class CoatPhysics : MonoBehaviour
         public int Child = -1;        // Xương con duy nhất dùng để xoay xương này (-1 = không xoay)
         public ChainGroup Group;
         public float Depth;           // 0..1 dọc theo chuỗi
+        public float Pin;             // 1 = bám theo pose gốc hoàn toàn, 0 = bay tự do
         public Vector3 InitLocalPos;
         public Quaternion InitLocalRot;
         public Vector3 AnimPos;       // Vị trí theo pose gốc frame này
@@ -72,13 +81,18 @@ public class CoatPhysics : MonoBehaviour
     private readonly List<Particle> _particles = new List<Particle>();
     private readonly List<Capsule> _capsules = new List<Capsule>();
     private Vector3 _lastRootPos;
+    private Quaternion _lastRootRot = Quaternion.identity;
     private float _accumulator;
 
     private void Awake()
     {
         var anim = GetComponent<Animator>();
         BuildChains();
-        if (anim.isHuman) BuildCapsules(anim);
+        if (anim.isHuman)
+        {
+            BuildCapsules(anim);
+            BuildPins(anim.GetBoneTransform(HumanBodyBones.Hips));
+        }
     }
 
     private void OnEnable() => ResetParticles();
@@ -126,6 +140,17 @@ public class CoatPhysics : MonoBehaviour
         foreach (Transform c in t) AddParticle(c, index, g, depth + 1, maxDepth);
     }
 
+    // Pose lúc khởi tạo là pose gốc của áo (Animator không điều khiển các xương này)
+    private void BuildPins(Transform hips)
+    {
+        if (hips == null) return;
+        foreach (var p in _particles)
+        {
+            float height = Vector3.Dot(p.Transform.position - hips.position, transform.up);
+            p.Pin = Mathf.InverseLerp(FreeBelowHip, PinAboveHip, height);
+        }
+    }
+
     private void BuildCapsules(Animator anim)
     {
         _capsules.Clear();
@@ -161,7 +186,9 @@ public class CoatPhysics : MonoBehaviour
         foreach (var p in _particles) p.AnimPos = p.Transform.position;
 
         Vector3 rootMove = transform.position - _lastRootPos;
+        Quaternion rootTurn = transform.rotation * Quaternion.Inverse(_lastRootRot);
         _lastRootPos = transform.position;
+        _lastRootRot = transform.rotation;
         if (rootMove.sqrMagnitude > TeleportDistance * TeleportDistance)
         {
             ResetParticles();
@@ -174,19 +201,34 @@ public class CoatPhysics : MonoBehaviour
         _accumulator -= steps * step;
 
         Vector3 movePerStep = steps > 0 ? rootMove / steps : Vector3.zero;
-        for (int s = 0; s < steps; s++) Step(step, movePerStep);
+        Quaternion turnPerStep = steps > 0 ? Quaternion.Slerp(Quaternion.identity, rootTurn, 1f / steps) : Quaternion.identity;
+        for (int s = 0; s < steps; s++) Step(step, movePerStep, turnPerStep);
 
         if (steps == 0)
         {
             // Không đủ thời gian cho 1 bước (hitstop / FPS cao): vẫn kéo theo người để áo không bị bỏ lại
             foreach (var p in _particles)
-                if (p.Parent >= 0) { p.Pos += rootMove; p.PrevPos += rootMove; }
+                if (p.Parent >= 0)
+                {
+                    TurnAroundRoot(p, rootTurn);
+                    p.Pos = Vector3.Lerp(p.Pos + rootMove, p.AnimPos, p.Pin);
+                    p.PrevPos += rootMove;
+                }
         }
 
         Apply();
     }
 
-    private void Step(float dt, Vector3 rootMove)
+    // Xoay áo quanh nhân vật theo phần người vừa quay
+    private void TurnAroundRoot(Particle p, Quaternion rootTurn)
+    {
+        Quaternion turn = Quaternion.Slerp(Quaternion.identity, rootTurn, p.Group.RotationInertia);
+        Vector3 pivot = transform.position;
+        p.Pos = pivot + turn * (p.Pos - pivot);
+        p.PrevPos = pivot + turn * (p.PrevPos - pivot);
+    }
+
+    private void Step(float dt, Vector3 rootMove, Quaternion rootTurn)
     {
         for (int i = 0; i < _particles.Count; i++)
         {
@@ -201,23 +243,31 @@ public class CoatPhysics : MonoBehaviour
             var g = p.Group;
             var pp = _particles[p.Parent];
 
+            TurnAroundRoot(p, rootTurn);
             Vector3 velocity = (p.Pos - p.PrevPos) * (1f - g.Damping);
             p.PrevPos = p.Pos + rootMove * g.Inertia;
             p.Pos += velocity + rootMove * g.Inertia + g.Gravity * (dt * dt);
 
-            // Kéo về pose gốc + giữ hình dạng so với xương cha
-            p.Pos += (p.AnimPos - p.Pos) * g.Stiffness.Evaluate(p.Depth);
+            // Kéo về pose gốc + giữ hình dạng so với xương cha. Khớp ghim hẳn -> trùng pose gốc
+            p.Pos += (p.AnimPos - p.Pos) * Mathf.Lerp(g.Stiffness.Evaluate(p.Depth), 1f, p.Pin);
+            if (p.Pin >= 1f) continue;
             Vector3 restPos = pp.Pos + (p.AnimPos - pp.AnimPos);
             p.Pos += (restPos - p.Pos) * g.Elasticity;
 
-            if (g.Collide)
-                foreach (var c in _capsules) PushOutCapsule(ref p.Pos, c.A.position, c.B.position, c.Radius + g.Radius);
+            Collide(p);
 
-            // Giữ chiều dài xương
+            // Giữ chiều dài xương, rồi đẩy ra lần nữa vì kéo chiều dài có thể kéo khớp lọt lại vào chân
             Vector3 dir = p.Pos - pp.Pos;
             float len = dir.magnitude;
             p.Pos = len > 1e-5f ? pp.Pos + dir * (p.Length / len) : pp.Pos + (p.AnimPos - pp.AnimPos);
+            Collide(p);
         }
+    }
+
+    private void Collide(Particle p)
+    {
+        if (!p.Group.Collide) return;
+        foreach (var c in _capsules) PushOutCapsule(ref p.Pos, c.A.position, c.B.position, c.Radius + p.Group.Radius);
     }
 
     private void Apply()
@@ -255,6 +305,7 @@ public class CoatPhysics : MonoBehaviour
             p.Pos = p.PrevPos = p.Transform.position;
         }
         _lastRootPos = transform.position;
+        _lastRootRot = transform.rotation;
         _accumulator = 0f;
     }
     #endregion
