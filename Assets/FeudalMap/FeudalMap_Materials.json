@@ -1,0 +1,648 @@
+{
+ "items": [
+  {
+   "name": "M_bark",
+   "tid": "sakura_bark",
+   "baseMap": "sakura_bark_diff_2k.jpg",
+   "normalStrength": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.5,
+   "cutout": false,
+   "color": [
+    1,
+    1,
+    1
+   ],
+   "alpha": 1.0,
+   "emission": [
+    0,
+    0,
+    0
+   ],
+   "emissionStrength": 0.0,
+   "normalMap": "bark_nor_2k.jpg",
+   "maskMap": "bark_mask_2k.png"
+  },
+  {
+   "name": "M_beam_blue",
+   "tid": "",
+   "baseMap": "",
+   "normalStrength": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.7,
+   "cutout": false,
+   "color": [
+    0.2,
+    0.45,
+    1.0
+   ],
+   "alpha": 0.15,
+   "emission": [
+    0.1,
+    0.35,
+    1.0
+   ],
+   "emissionStrength": 2.5,
+   "normalMap": "",
+   "maskMap": ""
+  },
+  {
+   "name": "M_beam_gold",
+   "tid": "",
+   "baseMap": "",
+   "normalStrength": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.7,
+   "cutout": false,
+   "color": [
+    1.0,
+    0.7,
+    0.3
+   ],
+   "alpha": 0.15,
+   "emission": [
+    1.0,
+    0.6,
+    0.2
+   ],
+   "emissionStrength": 2.5,
+   "normalMap": "",
+   "maskMap": ""
+  },
+  {
+   "name": "M_beam_purple",
+   "tid": "",
+   "baseMap": "",
+   "normalStrength": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.7,
+   "cutout": false,
+   "color": [
+    0.5,
+    0.2,
+    1.0
+   ],
+   "alpha": 0.2,
+   "emission": [
+    0.45,
+    0.12,
+    1.0
+   ],
+   "emissionStrength": 2.5,
+   "normalMap": "",
+   "maskMap": ""
+  },
+  {
+   "name": "M_black",
+   "tid": "dark_wood",
+   "baseMap": "W_black_7b4a6e43_diff.png",
+   "normalStrength": 0.5,
+   "metallic": 0.0,
+   "smoothness": 0.5,
+   "cutout": false,
+   "color": [
+    1,
+    1,
+    1
+   ],
+   "alpha": 1.0,
+   "emission": [
+    0,
+    0,
+    0
+   ],
+   "emissionStrength": 0.0,
+   "normalMap": "black_nor_2k.png",
+   "maskMap": "black_mask_2k.png"
+  },
+  {
+   "name": "M_blossom",
+   "tid": "",
+   "baseMap": "T_SakuraCard.png",
+   "normalStrength": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.4,
+   "cutout": true,
+   "color": [
+    1,
+    1,
+    1
+   ],
+   "alpha": 1.0,
+   "emission": [
+    0.95,
+    0.7,
+    0.78
+   ],
+   "emissionStrength": 0.22,
+   "normalMap": "",
+   "maskMap": ""
+  },
+  {
+   "name": "M_boss_red",
+   "tid": "",
+   "baseMap": "",
+   "normalStrength": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.7,
+   "cutout": false,
+   "color": [
+    1.0,
+    0.1,
+    0.05
+   ],
+   "alpha": 1.0,
+   "emission": [
+    1.0,
+    0.08,
+    0.03
+   ],
+   "emissionStrength": 14.0,
+   "normalMap": "",
+   "maskMap": ""
+  },
+  {
+   "name": "M_deck",
+   "tid": "hinoki_planks",
+   "baseMap": "W_deck_7a0d57a7_diff.png",
+   "normalStrength": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.5,
+   "cutout": false,
+   "color": [
+    1,
+    1,
+    1
+   ],
+   "alpha": 1.0,
+   "emission": [
+    0,
+    0,
+    0
+   ],
+   "emissionStrength": 0.0,
+   "normalMap": "deck_nor_2k.png",
+   "maskMap": "deck_mask_2k.png"
+  },
+  {
+   "name": "M_flame",
+   "tid": "",
+   "baseMap": "",
+   "normalStrength": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.4,
+   "cutout": false,
+   "color": [
+    1.0,
+    0.4,
+    0.08
+   ],
+   "alpha": 1.0,
+   "emission": [
+    1.0,
+    0.3,
+    0.05
+   ],
+   "emissionStrength": 7.0,
+   "normalMap": "",
+   "maskMap": ""
+  },
+  {
+   "name": "M_floor",
+   "tid": "monastery_stone_floor",
+   "baseMap": "W_floor_7e870d7e_diff.png",
+   "normalStrength": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.5,
+   "cutout": false,
+   "color": [
+    1,
+    1,
+    1
+   ],
+   "alpha": 1.0,
+   "emission": [
+    0,
+    0,
+    0
+   ],
+   "emissionStrength": 0.0,
+   "normalMap": "floor_nor_2k.png",
+   "maskMap": "floor_mask_2k.png"
+  },
+  {
+   "name": "M_gold",
+   "tid": "",
+   "baseMap": "",
+   "normalStrength": 1.0,
+   "metallic": 1.0,
+   "smoothness": 0.72,
+   "cutout": false,
+   "color": [
+    0.85,
+    0.62,
+    0.28
+   ],
+   "alpha": 1.0,
+   "emission": [
+    0,
+    0,
+    0
+   ],
+   "emissionStrength": 0.0,
+   "normalMap": "",
+   "maskMap": ""
+  },
+  {
+   "name": "M_mossrock",
+   "tid": "mossy_rock",
+   "baseMap": "mossy_rock_diff_2k.jpg",
+   "normalStrength": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.5,
+   "cutout": false,
+   "color": [
+    1,
+    1,
+    1
+   ],
+   "alpha": 1.0,
+   "emission": [
+    0,
+    0,
+    0
+   ],
+   "emissionStrength": 0.0,
+   "normalMap": "mossrock_nor_2k.jpg",
+   "maskMap": "mossrock_mask_2k.png"
+  },
+  {
+   "name": "M_needles",
+   "tid": "",
+   "baseMap": "T_PineCard.png",
+   "normalStrength": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.4,
+   "cutout": true,
+   "color": [
+    1,
+    1,
+    1
+   ],
+   "alpha": 1.0,
+   "emission": [
+    0,
+    0,
+    0
+   ],
+   "emissionStrength": 0.0,
+   "normalMap": "",
+   "maskMap": ""
+  },
+  {
+   "name": "M_paper",
+   "tid": "",
+   "baseMap": "",
+   "normalStrength": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.4,
+   "cutout": false,
+   "color": [
+    1.0,
+    0.35,
+    0.15
+   ],
+   "alpha": 1.0,
+   "emission": [
+    1.0,
+    0.32,
+    0.1
+   ],
+   "emissionStrength": 5.0,
+   "normalMap": "",
+   "maskMap": ""
+  },
+  {
+   "name": "M_path",
+   "tid": "stone_tiles_02",
+   "baseMap": "W_path_3a51065d_diff.png",
+   "normalStrength": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.5,
+   "cutout": false,
+   "color": [
+    1,
+    1,
+    1
+   ],
+   "alpha": 1.0,
+   "emission": [
+    0,
+    0,
+    0
+   ],
+   "emissionStrength": 0.0,
+   "normalMap": "path_nor_2k.png",
+   "maskMap": "path_mask_2k.png"
+  },
+  {
+   "name": "M_pinebark",
+   "tid": "pine_bark",
+   "baseMap": "pine_bark_diff_2k.jpg",
+   "normalStrength": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.5,
+   "cutout": false,
+   "color": [
+    1,
+    1,
+    1
+   ],
+   "alpha": 1.0,
+   "emission": [
+    0,
+    0,
+    0
+   ],
+   "emissionStrength": 0.0,
+   "normalMap": "pinebark_nor_2k.jpg",
+   "maskMap": "pinebark_mask_2k.png"
+  },
+  {
+   "name": "M_plaster",
+   "tid": "white_plaster_rough_01",
+   "baseMap": "W_plaster_2cf276a4_diff.png",
+   "normalStrength": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.5,
+   "cutout": false,
+   "color": [
+    1,
+    1,
+    1
+   ],
+   "alpha": 1.0,
+   "emission": [
+    0,
+    0,
+    0
+   ],
+   "emissionStrength": 0.0,
+   "normalMap": "plaster_nor_2k.png",
+   "maskMap": "plaster_mask_2k.png"
+  },
+  {
+   "name": "M_plaza",
+   "tid": "granite_tile",
+   "baseMap": "W_plaza_eca025df_diff.png",
+   "normalStrength": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.5,
+   "cutout": false,
+   "color": [
+    1,
+    1,
+    1
+   ],
+   "alpha": 1.0,
+   "emission": [
+    0,
+    0,
+    0
+   ],
+   "emissionStrength": 0.0,
+   "normalMap": "plaza_nor_2k.png",
+   "maskMap": "plaza_mask_2k.png"
+  },
+  {
+   "name": "M_portal_blue",
+   "tid": "",
+   "baseMap": "",
+   "normalStrength": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.7,
+   "cutout": false,
+   "color": [
+    0.2,
+    0.5,
+    1.0
+   ],
+   "alpha": 1.0,
+   "emission": [
+    0.15,
+    0.45,
+    1.0
+   ],
+   "emissionStrength": 18.0,
+   "normalMap": "",
+   "maskMap": ""
+  },
+  {
+   "name": "M_portal_purple",
+   "tid": "",
+   "baseMap": "",
+   "normalStrength": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.7,
+   "cutout": false,
+   "color": [
+    0.6,
+    0.2,
+    1.0
+   ],
+   "alpha": 1.0,
+   "emission": [
+    0.55,
+    0.18,
+    1.0
+   ],
+   "emissionStrength": 18.0,
+   "normalMap": "",
+   "maskMap": ""
+  },
+  {
+   "name": "M_red",
+   "tid": "dark_wood",
+   "baseMap": "W_red_dda9f37c_diff.png",
+   "normalStrength": 0.5,
+   "metallic": 0.0,
+   "smoothness": 0.5,
+   "cutout": false,
+   "color": [
+    1,
+    1,
+    1
+   ],
+   "alpha": 1.0,
+   "emission": [
+    0,
+    0,
+    0
+   ],
+   "emissionStrength": 0.0,
+   "normalMap": "red_nor_2k.png",
+   "maskMap": "red_mask_2k.png"
+  },
+  {
+   "name": "M_rock",
+   "tid": "cliff_side",
+   "baseMap": "W_rock_5bb9efba_diff.png",
+   "normalStrength": 1.5,
+   "metallic": 0.0,
+   "smoothness": 0.5,
+   "cutout": false,
+   "color": [
+    1,
+    1,
+    1
+   ],
+   "alpha": 1.0,
+   "emission": [
+    0,
+    0,
+    0
+   ],
+   "emissionStrength": 0.0,
+   "normalMap": "rock_nor_2k.png",
+   "maskMap": "rock_mask_2k.png"
+  },
+  {
+   "name": "M_roof",
+   "tid": "grey_roof_tiles",
+   "baseMap": "W_roof_482a23de_diff.png",
+   "normalStrength": 1.6,
+   "metallic": 0.0,
+   "smoothness": 0.5,
+   "cutout": false,
+   "color": [
+    1,
+    1,
+    1
+   ],
+   "alpha": 1.0,
+   "emission": [
+    0,
+    0,
+    0
+   ],
+   "emissionStrength": 0.0,
+   "normalMap": "roof_nor_2k.png",
+   "maskMap": "roof_mask_2k.png"
+  },
+  {
+   "name": "M_roofcap",
+   "tid": "grey_roof_tiles_02",
+   "baseMap": "W_roofcap_e4b44aeb_diff.png",
+   "normalStrength": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.5,
+   "cutout": false,
+   "color": [
+    1,
+    1,
+    1
+   ],
+   "alpha": 1.0,
+   "emission": [
+    0,
+    0,
+    0
+   ],
+   "emissionStrength": 0.0,
+   "normalMap": "roofcap_nor_2k.png",
+   "maskMap": "roofcap_mask_2k.png"
+  },
+  {
+   "name": "M_shoji",
+   "tid": "",
+   "baseMap": "",
+   "normalStrength": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.4,
+   "cutout": false,
+   "color": [
+    1.0,
+    0.78,
+    0.52
+   ],
+   "alpha": 1.0,
+   "emission": [
+    1.0,
+    0.62,
+    0.32
+   ],
+   "emissionStrength": 2.2,
+   "normalMap": "",
+   "maskMap": ""
+  },
+  {
+   "name": "M_wallstone",
+   "tid": "japanese_stone_wall",
+   "baseMap": "W_wallstone_7af5cca8_diff.png",
+   "normalStrength": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.5,
+   "cutout": false,
+   "color": [
+    1,
+    1,
+    1
+   ],
+   "alpha": 1.0,
+   "emission": [
+    0,
+    0,
+    0
+   ],
+   "emissionStrength": 0.0,
+   "normalMap": "wallstone_nor_2k.png",
+   "maskMap": "wallstone_mask_2k.png"
+  },
+  {
+   "name": "M_water",
+   "tid": "",
+   "baseMap": "",
+   "normalStrength": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.9,
+   "cutout": false,
+   "color": [
+    0.75,
+    0.82,
+    0.9
+   ],
+   "alpha": 0.75,
+   "emission": [
+    0.4,
+    0.5,
+    0.7
+   ],
+   "emissionStrength": 0.4,
+   "normalMap": "",
+   "maskMap": ""
+  },
+  {
+   "name": "M_wood",
+   "tid": "dark_wood",
+   "baseMap": "W_wood_0aee36bc_diff.png",
+   "normalStrength": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.5,
+   "cutout": false,
+   "color": [
+    1,
+    1,
+    1
+   ],
+   "alpha": 1.0,
+   "emission": [
+    0,
+    0,
+    0
+   ],
+   "emissionStrength": 0.0,
+   "normalMap": "wood_nor_2k.png",
+   "maskMap": "wood_mask_2k.png"
+  }
+ ]
+}

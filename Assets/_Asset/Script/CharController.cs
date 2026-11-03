@@ -7,9 +7,6 @@ public class CharController : MonoBehaviour,ICharacterController
     public KinematicCharacterMotor Motor;
     public CharacterAnim characterAnim;
     [Header("Stable Movement")]
-    public float MaxStableMoveSpeed = 10f;
-    public float baseMoveSpeed = 10f;   
-    public float RunMoveSpeed = 15f;
     public float StableMovementSharpness = 15f;
     public float OrientationSharpness = 10f;
     public OrientationMethod OrientationMethod = OrientationMethod.TowardsMovement;
@@ -114,7 +111,6 @@ public class CharController : MonoBehaviour,ICharacterController
     public bool IsDashing => _isDashing;
     public bool IsAttacking => characterCombo != null && characterCombo.IsAttacking;
     public bool HasMoveInput => _moveInputVector.sqrMagnitude > 0.0001f;
-    public Vector3 CameraForward => _cameraForward;
 
     private Vector3 _cameraForward = Vector3.forward;
     private float _targetMoveSpeed = 0f;
@@ -130,7 +126,6 @@ public class CharController : MonoBehaviour,ICharacterController
     private float _lastDashEndTime = -999f;
 
     private Collider[] _probedColliders = new Collider[8];
-    private RaycastHit[] _probedHits = new RaycastHit[8];
     private Vector3 _moveInputVector;
     private Vector3 _lookInputVector;
     private bool _jumpRequested = false;
@@ -141,9 +136,6 @@ public class CharController : MonoBehaviour,ICharacterController
     private Vector3 _internalVelocityAdd = Vector3.zero;
     private bool _shouldBeCrouching = false;
     private bool _isCrouching = false;
-
-    private Vector3 lastInnerNormal = Vector3.zero;
-    private Vector3 lastOuterNormal = Vector3.zero;
 
     private void Awake()
     {
@@ -191,6 +183,31 @@ public class CharController : MonoBehaviour,ICharacterController
         if (weapon != null) characterAnim.SetWeapon(weapon.AnimSetId, weapon.IdleId);
     }
 
+    /// <summary>Vector (trên mặt phẳng nhân vật) từ nhân vật tới mục tiêu lock-on.</summary>
+    private Vector3 PlanarToLockTarget()
+    {
+        return Vector3.ProjectOnPlane(CurrentLockTarget.transform.position - Motor.TransientPosition, Motor.CharacterUp);
+    }
+
+    /// <summary>Kết thúc dash: cancelled = bị nhảy hủy (anim CancelDash), ngược lại EndDash.</summary>
+    private void StopDash(bool cancelled = false)
+    {
+        _isDashing = false;
+        _lastDashEndTime = Time.time;
+        if (cancelled) characterAnim.CancelDash();
+        else characterAnim.EndDash();
+    }
+
+    /// <summary>Cộng lực đẩy ngoài (knockback...) đã tích lũy qua AddVelocity.</summary>
+    private void ApplyInternalVelocityAdd(ref Vector3 currentVelocity)
+    {
+        if (_internalVelocityAdd.sqrMagnitude > 0f)
+        {
+            currentVelocity += _internalVelocityAdd;
+            _internalVelocityAdd = Vector3.zero;
+        }
+    }
+
     /// <summary>Gọi từ ExamplePlayer.LateUpdate: phát impact của đòn chém đã tới frame này.</summary>
     public void FlushCombatFeedback()
     {
@@ -211,7 +228,7 @@ public class CharController : MonoBehaviour,ICharacterController
 
         if (IsLockedOn)
         {
-            Vector3 toTarget = Vector3.ProjectOnPlane(CurrentLockTarget.transform.position - Motor.TransientPosition, Motor.CharacterUp);
+            Vector3 toTarget = PlanarToLockTarget();
             float distance = toTarget.magnitude;
             if (distance > 0.01f)
             {
@@ -258,7 +275,7 @@ public class CharController : MonoBehaviour,ICharacterController
 
         if (IsLockedOn && _moveInputVector.sqrMagnitude > DirectionalAttackThreshold * DirectionalAttackThreshold)
         {
-            Vector3 toTarget = Vector3.ProjectOnPlane(CurrentLockTarget.transform.position - Motor.TransientPosition, Motor.CharacterUp).normalized;
+            Vector3 toTarget = PlanarToLockTarget().normalized;
             float dot = Vector3.Dot(_moveInputVector.normalized, toTarget);
             if (dot < -DirectionalAttackThreshold) return AttackContext.Launcher;
             if (dot > DirectionalAttackThreshold) return AttackContext.Dash;
@@ -293,9 +310,9 @@ public class CharController : MonoBehaviour,ICharacterController
         foreach (LockOnTarget target in LockOnTarget.All)
         {
             Vector3 toTarget = target.transform.position - Motor.TransientPosition;
-            float distance = toTarget.magnitude;
-            if (distance > LockOnRadius) continue;
+            if (toTarget.sqrMagnitude > LockOnRadius * LockOnRadius) continue;
 
+            float distance = toTarget.magnitude;
             float angle = Vector3.Angle(_cameraForward, Vector3.ProjectOnPlane(toTarget, Motor.CharacterUp));
             float score = distance * (1f + angle / 90f);
             if (score < bestScore)
@@ -305,13 +322,6 @@ public class CharController : MonoBehaviour,ICharacterController
             }
         }
     }
-
-
-
-
-
-
-
 
     /// <summary>
     /// Handles movement state transitions and enter/exit callbacks
@@ -418,9 +428,7 @@ public class CharController : MonoBehaviour,ICharacterController
                             if (context == AttackContext.Dash && _isDashing)
                             {
                                 // Đánh ngay trong lúc dash -> dừng lướt, chuyển thẳng sang dash attack
-                                _isDashing = false;
-                                _lastDashEndTime = Time.time;
-                                characterAnim.EndDash();
+                                StopDash();
                             }
                             characterCombo.OnAttackInput(context);
                         }
@@ -445,10 +453,8 @@ public class CharController : MonoBehaviour,ICharacterController
                             // Nhảy hủy dash ngay (không chờ hết dash mới bật lên)
                             if (_isDashing && (Motor.GroundingStatus.IsStableOnGround || _airJumpsRemaining > 0))
                             {
-                                _isDashing = false;
-                                _lastDashEndTime = Time.time;
+                                StopDash(cancelled: true);
                                 _jumpCancelledDash = true;
-                                characterAnim.CancelDash();
                             }
                             // Anim chỉ chạy khi nhảy thật sự (UpdateVelocity), tránh trigger thừa khi hết lượt nhảy
                             _timeSinceJumpRequested = 0f;
@@ -458,7 +464,6 @@ public class CharController : MonoBehaviour,ICharacterController
 
                     if (inputs.Dash)
                     {
-
                         // Chỉ cho dash nếu hết cooldown, chưa đang dash, và (nếu đang trên không thì phải cho phép dash trên không)
                         bool groundedOk = Motor.GroundingStatus.IsStableOnGround || CanDashInAir;
                         bool attackOk = !IsAttacking || CanCancelAttackWithDash;
@@ -471,26 +476,12 @@ public class CharController : MonoBehaviour,ICharacterController
                             }
                             _dashRequested = true;
                         }
-
                     }
-
-                    //if (inputs.SpeedUp) 
-                    //{
-                    //    MaxStableMoveSpeed = RunMoveSpeed;
-                    //    characterAnim.SetRun(true);
-                    //}
-                    //else 
-                    //{
-                    //    MaxStableMoveSpeed = baseMoveSpeed;
-                    //    characterAnim.SetRun(false);    
-                    //}
-
 
                     if (inputs.OrientationSwitch)
                     {
                         SwitchOrientation();
                     }
-
 
                     // Crouching input
                     if (inputs.CrouchDown)
@@ -513,7 +504,6 @@ public class CharController : MonoBehaviour,ICharacterController
                 }
         }
     }
-
 
     /// <summary>
     /// Chọn tốc độ đi / chạy / chạy nhanh theo lực stick và thời gian chạy liên tục,
@@ -568,19 +558,10 @@ public class CharController : MonoBehaviour,ICharacterController
 
     public void SwitchOrientation()
     {
-        if (OrientationMethod == OrientationMethod.TowardsCamera)
-        {
-            OrientationMethod = OrientationMethod.TowardsMovement;
-            //characterAnim.ChangeOrientation(true);
-        }
-        else
-        {
-            OrientationMethod = OrientationMethod.TowardsCamera;
-            //characterAnim.ChangeOrientation(false);
-        }
+        OrientationMethod = OrientationMethod == OrientationMethod.TowardsCamera
+            ? OrientationMethod.TowardsMovement
+            : OrientationMethod.TowardsCamera;
     }
-
-
 
     /// <summary>
     /// This is called every frame by the AI script in order to tell the character what its inputs are
@@ -590,8 +571,6 @@ public class CharController : MonoBehaviour,ICharacterController
         _moveInputVector = inputs.MoveVector;
         _lookInputVector = inputs.LookVector;
     }
-
-    private Quaternion _tmpTransientRot;
 
     /// <summary>
     /// (Called by KinematicCharacterMotor during its update cycle)
@@ -627,7 +606,7 @@ public class CharController : MonoBehaviour,ICharacterController
                     }
                     else if (IsLockedOn)
                     {
-                        Vector3 toTarget = Vector3.ProjectOnPlane(CurrentLockTarget.transform.position - Motor.TransientPosition, Motor.CharacterUp);
+                        Vector3 toTarget = PlanarToLockTarget();
                         if (toTarget.sqrMagnitude > 0.01f)
                         {
                             desiredLook = toTarget.normalized;
@@ -644,34 +623,23 @@ public class CharController : MonoBehaviour,ICharacterController
                     }
 
                     Vector3 currentUp = (currentRotation * Vector3.up);
-                    if (BonusOrientationMethod == BonusOrientationMethod.TowardsGravity)
+                    float bonusT = 1 - Mathf.Exp(-BonusOrientationSharpness * deltaTime);
+                    if (BonusOrientationMethod == BonusOrientationMethod.TowardsGroundSlopeAndGravity && Motor.GroundingStatus.IsStableOnGround)
                     {
-                        // Rotate from current up to invert gravity
-                        Vector3 smoothedGravityDir = Vector3.Slerp(currentUp, -Gravity.normalized, 1 - Mathf.Exp(-BonusOrientationSharpness * deltaTime));
-                        currentRotation = Quaternion.FromToRotation(currentUp, smoothedGravityDir) * currentRotation;
-                    }
-                    else if (BonusOrientationMethod == BonusOrientationMethod.TowardsGroundSlopeAndGravity)
-                    {
-                        if (Motor.GroundingStatus.IsStableOnGround)
-                        {
-                            Vector3 initialCharacterBottomHemiCenter = Motor.TransientPosition + (currentUp * Motor.Capsule.radius);
+                        Vector3 initialCharacterBottomHemiCenter = Motor.TransientPosition + (currentUp * Motor.Capsule.radius);
 
-                            Vector3 smoothedGroundNormal = Vector3.Slerp(Motor.CharacterUp, Motor.GroundingStatus.GroundNormal, 1 - Mathf.Exp(-BonusOrientationSharpness * deltaTime));
-                            currentRotation = Quaternion.FromToRotation(currentUp, smoothedGroundNormal) * currentRotation;
+                        Vector3 smoothedGroundNormal = Vector3.Slerp(Motor.CharacterUp, Motor.GroundingStatus.GroundNormal, bonusT);
+                        currentRotation = Quaternion.FromToRotation(currentUp, smoothedGroundNormal) * currentRotation;
 
-                            // Move the position to create a rotation around the bottom hemi center instead of around the pivot
-                            Motor.SetTransientPosition(initialCharacterBottomHemiCenter + (currentRotation * Vector3.down * Motor.Capsule.radius));
-                        }
-                        else
-                        {
-                            Vector3 smoothedGravityDir = Vector3.Slerp(currentUp, -Gravity.normalized, 1 - Mathf.Exp(-BonusOrientationSharpness * deltaTime));
-                            currentRotation = Quaternion.FromToRotation(currentUp, smoothedGravityDir) * currentRotation;
-                        }
+                        // Move the position to create a rotation around the bottom hemi center instead of around the pivot
+                        Motor.SetTransientPosition(initialCharacterBottomHemiCenter + (currentRotation * Vector3.down * Motor.Capsule.radius));
                     }
                     else
                     {
-                        Vector3 smoothedGravityDir = Vector3.Slerp(currentUp, Vector3.up, 1 - Mathf.Exp(-BonusOrientationSharpness * deltaTime));
-                        currentRotation = Quaternion.FromToRotation(currentUp, smoothedGravityDir) * currentRotation;
+                        // Xoay up hiện tại về ngược trọng lực (None: về Vector3.up)
+                        Vector3 targetUp = BonusOrientationMethod == BonusOrientationMethod.None ? Vector3.up : -Gravity.normalized;
+                        Vector3 smoothedUp = Vector3.Slerp(currentUp, targetUp, bonusT);
+                        currentRotation = Quaternion.FromToRotation(currentUp, smoothedUp) * currentRotation;
                     }
                     break;
                 }
@@ -721,17 +689,11 @@ public class CharController : MonoBehaviour,ICharacterController
                         _dashTimer -= deltaTime;
                         if (_dashTimer <= 0f)
                         {
-                            _isDashing = false;
-                            _lastDashEndTime = Time.time;
-                            characterAnim.EndDash();
+                            StopDash();
                         }
 
                         // Vẫn cho phép lực đẩy ngoài (knockback...) cộng vào trong lúc dash
-                        if (_internalVelocityAdd.sqrMagnitude > 0f)
-                        {
-                            currentVelocity += _internalVelocityAdd;
-                            _internalVelocityAdd = Vector3.zero;
-                        }
+                        ApplyInternalVelocityAdd(ref currentVelocity);
 
                         break; // Bỏ qua toàn bộ logic ground/air movement + jump bên dưới trong lúc đang dash
                     }
@@ -750,9 +712,8 @@ public class CharController : MonoBehaviour,ICharacterController
                         currentVelocity = Motor.GetDirectionTangentToSurface(currentVelocity, effectiveGroundNormal) * currentVelocityMagnitude;
 
                         Vector3 inputRight = Vector3.Cross(_moveInputVector, Motor.CharacterUp);
-                        Vector3 reorientedInput = Vector3.Cross(effectiveGroundNormal, inputRight).normalized * _moveInputVector.magnitude;
                         // Tốc độ do UpdateLocomotionSpeed chọn (đi/chạy/chạy nhanh/strafe), không nhân lực stick nữa
-                        Vector3 targetMovementVelocity = reorientedInput.normalized * _targetMoveSpeed;
+                        Vector3 targetMovementVelocity = Vector3.Cross(effectiveGroundNormal, inputRight).normalized * _targetMoveSpeed;
 
                         currentVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, 1f - Mathf.Exp(-StableMovementSharpness * deltaTime));
                     }
@@ -857,11 +818,7 @@ public class CharController : MonoBehaviour,ICharacterController
                         }
                     }
 
-                    if (_internalVelocityAdd.sqrMagnitude > 0f)
-                    {
-                        currentVelocity += _internalVelocityAdd;
-                        _internalVelocityAdd = Vector3.zero;
-                    }
+                    ApplyInternalVelocityAdd(ref currentVelocity);
                     break;
                 }
         }
@@ -885,7 +842,7 @@ public class CharController : MonoBehaviour,ICharacterController
         // Lock-on: không để anim đẩy xuyên qua mục tiêu
         if (IsLockedOn)
         {
-            Vector3 toTarget = Vector3.ProjectOnPlane(CurrentLockTarget.transform.position - Motor.TransientPosition, up);
+            Vector3 toTarget = PlanarToLockTarget();
             float distance = toTarget.magnitude;
             if (distance > 0.01f && distance < AttackStopDistance)
             {
@@ -895,18 +852,14 @@ public class CharController : MonoBehaviour,ICharacterController
             }
         }
 
-        if (_attackLungeDelay > 0f)
-        {
-            _attackLungeDelay -= deltaTime;
-            planarVelocity = Vector3.Lerp(planarVelocity, rootPlanar, 1f - Mathf.Exp(-RootMotionSharpness * deltaTime));
-        }
-        else if (_attackLungeTimer > 0f)
+        if (_attackLungeDelay <= 0f && _attackLungeTimer > 0f)
         {
             planarVelocity = _attackFacing * AttackLungeSpeed * _attackLungeScale + rootPlanar;
             _attackLungeTimer -= deltaTime;
         }
         else
         {
+            if (_attackLungeDelay > 0f) _attackLungeDelay -= deltaTime;
             planarVelocity = Vector3.Lerp(planarVelocity, rootPlanar, 1f - Mathf.Exp(-RootMotionSharpness * deltaTime));
         }
 
@@ -961,35 +914,32 @@ public class CharController : MonoBehaviour,ICharacterController
         {
             case CharacterState.Default:
                 {
-                    // Handle jump-related values
+                    // Handle jumping pre-ground grace period
+                    if (_jumpRequested && _timeSinceJumpRequested > JumpPreGroundingGraceTime)
                     {
-                        // Handle jumping pre-ground grace period
-                        if (_jumpRequested && _timeSinceJumpRequested > JumpPreGroundingGraceTime)
-                        {
-                            _jumpRequested = false;
-                            _jumpCancelledDash = false;
-                        }
+                        _jumpRequested = false;
+                        _jumpCancelledDash = false;
+                    }
 
-                        if (AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : Motor.GroundingStatus.IsStableOnGround)
+                    if (AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : Motor.GroundingStatus.IsStableOnGround)
+                    {
+                        // If we're on a ground surface, reset jumping values
+                        if (!_jumpedThisFrame)
                         {
-                            // If we're on a ground surface, reset jumping values
-                            if (!_jumpedThisFrame)
-                            {
-                                _jumpConsumed = false;
-                            }
-                            _timeSinceLastAbleToJump = 0f;
-                            _airJumpsRemaining = MaxAirJumps; // reset lượt nhảy phụ khi vừa chạm đất
+                            _jumpConsumed = false;
                         }
-                        else
-                        {
-                            _timeSinceLastAbleToJump += deltaTime;
+                        _timeSinceLastAbleToJump = 0f;
+                        _airJumpsRemaining = MaxAirJumps; // reset lượt nhảy phụ khi vừa chạm đất
+                    }
+                    else
+                    {
+                        _timeSinceLastAbleToJump += deltaTime;
 
-                            // Đi khỏi mép (không nhảy) -> anim rơi, tiếp đất có landing
-                            if (!_jumpConsumed && !_fallAnimPlayed && !IsAttacking && !_isDashing && _timeSinceLastAbleToJump > FallAnimDelay)
-                            {
-                                _fallAnimPlayed = true;
-                                characterAnim.Fall();
-                            }
+                        // Đi khỏi mép (không nhảy) -> anim rơi, tiếp đất có landing
+                        if (!_jumpConsumed && !_fallAnimPlayed && !IsAttacking && !_isDashing && _timeSinceLastAbleToJump > FallAnimDelay)
+                        {
+                            _fallAnimPlayed = true;
+                            characterAnim.Fall();
                         }
                     }
 
@@ -1035,17 +985,7 @@ public class CharController : MonoBehaviour,ICharacterController
 
     public bool IsColliderValidForCollisions(Collider coll)
     {
-        if (IgnoredColliders.Count == 0)
-        {
-            return true;
-        }
-
-        if (IgnoredColliders.Contains(coll))
-        {
-            return false;
-        }
-
-        return true;
+        return !IgnoredColliders.Contains(coll);
     }
 
     public void OnGroundHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
@@ -1055,7 +995,6 @@ public class CharController : MonoBehaviour,ICharacterController
 
     public void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
     {
-
     }
 
     public void AddVelocity(Vector3 velocity)
@@ -1135,7 +1074,6 @@ public struct PlayerCharacterInputs
     public bool Skill;
     public int WeaponSwitch; // -1 / +1 = đổi vũ khí trước / sau
     public bool LockOn; // Giữ nút = lock-on
-
 }
 
 public struct AICharacterInputs
