@@ -254,29 +254,6 @@
    "maskMap": ""
   },
   {
-   "name": "M_halo",
-   "tid": "",
-   "baseMap": "",
-   "normalStrength": 1.0,
-   "metallic": 1.0,
-   "smoothness": 0.7,
-   "cutout": false,
-   "color": [
-    0.9,
-    0.6,
-    0.3
-   ],
-   "alpha": 1.0,
-   "emission": [
-    1.0,
-    0.45,
-    0.12
-   ],
-   "emissionStrength": 1.6,
-   "normalMap": "",
-   "maskMap": ""
-  },
-  {
    "name": "M_iron",
    "tid": "",
    "baseMap": "",
@@ -288,6 +265,29 @@
     0.08,
     0.075,
     0.07
+   ],
+   "alpha": 1.0,
+   "emission": [
+    0,
+    0,
+    0
+   ],
+   "emissionStrength": 0.0,
+   "normalMap": "",
+   "maskMap": ""
+  },
+  {
+   "name": "M_ivory",
+   "tid": "",
+   "baseMap": "",
+   "normalStrength": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.5,
+   "cutout": false,
+   "color": [
+    0.72,
+    0.66,
+    0.55
    ],
    "alpha": 1.0,
    "emission": [
