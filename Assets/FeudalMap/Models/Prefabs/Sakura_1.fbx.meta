@@ -7,6 +7,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: M_bambooleaf
+    second: {fileID: 2100000, guid: 4087542e46a498a4ab3f602c1aa7f8e1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: M_bark
     second: {fileID: 2100000, guid: a08e87ca5075017458dec8cddf6f6f40, type: 2}
   - first:
@@ -39,6 +44,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: M_boss_red
     second: {fileID: 2100000, guid: 57ca8429c55ff524194dff58225d7ecb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_culm
+    second: {fileID: 2100000, guid: d8c164c339bbc474593abe4d0ac04caf, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -172,7 +182,10 @@ ModelImporter:
     clipAnimations: []
     isReadable: 0
   meshes:
-    lODScreenPercentages: []
+    lODScreenPercentages:
+    - 0.25
+    - 0.125
+    - 0.01
     globalScale: 1
     meshCompression: 0
     addColliders: 0

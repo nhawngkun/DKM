@@ -12,7 +12,7 @@ namespace FeudalMap.EditorTools
             if (!InPackage(assetPath)) return;
             var ti = (TextureImporter)assetImporter;
             var file = Path.GetFileNameWithoutExtension(assetPath);
-            ti.maxTextureSize = 2048;
+            ti.maxTextureSize = 4096; // floor weathering is baked at 4k over two source tiles
             if (assetPath.Contains("/Sky/"))
             {
                 ti.textureShape = TextureImporterShape.TextureCube;
@@ -22,7 +22,7 @@ namespace FeudalMap.EditorTools
             }
             if (file.Contains("_nor_"))
                 ti.textureType = TextureImporterType.NormalMap;
-            else if (file.Contains("_mask_"))
+            else if (file.Contains("_mask_") || file.EndsWith("_detail"))
                 ti.sRGBTexture = false;
             else if (file.EndsWith("Card"))
                 ti.alphaIsTransparency = true;
