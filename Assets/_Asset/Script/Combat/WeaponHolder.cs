@@ -18,6 +18,16 @@ public class WeaponHolder : MonoBehaviour
     [Tooltip("Thời gian chuyển giữa cách cầm lúc đứng và lúc chém (giây)")]
     public float GripBlendTime = 0.12f;
 
+    [Header("Cất vũ khí sau lưng (ngoài chiến đấu)")]
+    [Tooltip("Để trống = xương ngực của humanoid")]
+    public Transform BackBone;
+    public Vector3 BackPosition;
+    public Vector3 BackRotation;
+    public float SheathBlendTime = 0.25f;
+
+    private CharController _character;
+    private bool _sheathed;
+    private float _blendDuration;
     private Transform _socket;
     private GameObject _weaponInstance;
     private WeaponData _weapon;
@@ -36,6 +46,12 @@ public class WeaponHolder : MonoBehaviour
         if (animator == null) animator = GetComponent<Animator>();
         if (characterCombo == null) characterCombo = GetComponent<CharacterCombo>();
         if (Hand == null && animator != null) Hand = animator.GetBoneTransform(HumanBodyBones.RightHand);
+        if (BackBone == null && animator != null)
+        {
+            BackBone = animator.GetBoneTransform(HumanBodyBones.UpperChest);
+            if (BackBone == null) BackBone = animator.GetBoneTransform(HumanBodyBones.Chest);
+        }
+        _character = GetComponentInParent<CharController>();
 
         _socket = new GameObject("WeaponSocket").transform;
         _socket.SetParent(Hand, false);
@@ -90,23 +106,37 @@ public class WeaponHolder : MonoBehaviour
             targetRot = _weapon.IdleGripRotation;
         }
 
-        // Đổi đòn / vào-ra trạng thái đánh -> blend từ cách cầm hiện tại sang cách cầm mới
-        AttackStep step = characterCombo != null ? characterCombo.CurrentStep : null;
-        if (attacking != _wasAttacking || step != _lastStep)
+        bool sheathed = BackBone != null && _character != null && !attacking && !_character.IsInCombat;
+        if (sheathed)
         {
+            targetPos = BackPosition;
+            targetRot = Quaternion.Euler(BackRotation);
+        }
+
+        // Đổi đòn / vào-ra trạng thái đánh / rút-cất kiếm -> blend từ vị trí hiện tại sang vị trí mới
+        AttackStep step = characterCombo != null ? characterCombo.CurrentStep : null;
+        if (attacking != _wasAttacking || step != _lastStep || sheathed != _sheathed)
+        {
+            if (sheathed != _sheathed)
+            {
+                _socket.SetParent(sheathed ? BackBone : Hand, true);
+            }
             _fromPos = _socket.localPosition;
             _fromRot = _socket.localRotation;
-            _blendTimer = step != null ? Mathf.Max(characterCombo.CurrentFade, 0.01f) : Mathf.Max(GripBlendTime, 0.01f);
+            _blendDuration = sheathed != _sheathed && step == null ? SheathBlendTime
+                : step != null ? characterCombo.CurrentFade : GripBlendTime;
+            _blendDuration = Mathf.Max(_blendDuration, 0.01f);
+            _blendTimer = _blendDuration;
             _wasAttacking = attacking;
             _lastStep = step;
+            _sheathed = sheathed;
         }
 
         float t = 1f;
         if (_blendTimer > 0f)
         {
-            float duration = step != null ? Mathf.Max(characterCombo.CurrentFade, 0.01f) : Mathf.Max(GripBlendTime, 0.01f);
             _blendTimer -= Time.deltaTime;
-            t = Mathf.SmoothStep(0f, 1f, 1f - Mathf.Clamp01(_blendTimer / duration));
+            t = Mathf.SmoothStep(0f, 1f, 1f - Mathf.Clamp01(_blendTimer / _blendDuration));
         }
 
         _socket.localPosition = Vector3.Lerp(_fromPos, targetPos, t);

@@ -13,6 +13,17 @@ public class CharacterAnim : MonoBehaviour
     public float _IdleId;
     [Tooltip("Thời gian blend idle khi đổi vũ khí (giây)")]
     public float IdleBlendTime = 0.25f;
+
+    [Header("Idle thường (ngoài chiến đấu)")]
+    public bool inCombat;
+    [Tooltip("Số clip trong blend tree idle thường")]
+    public int NormalIdleCount = 3;
+    public float NormalIdleMinTime = 8f;
+    public float NormalIdleMaxTime = 15f;
+    public float CombatBlendTime = 0.3f;
+    private int _normalIdleId;
+    private float _normalIdleTimer;
+
     public float _MoveId;
     public float _RunId;
    
@@ -41,7 +52,26 @@ public class CharacterAnim : MonoBehaviour
 
     public void Update()
     {
+        UpdateNormalIdle();
         ApplyToAnimator();
+    }
+
+    /// <summary>Đổi idle thường khi hết thời gian, hoặc khi vừa chạy xong dừng lại.</summary>
+    private void UpdateNormalIdle()
+    {
+        if (isMove || inCombat)
+        {
+            _normalIdleTimer = 0f;
+            return;
+        }
+        _normalIdleTimer -= Time.deltaTime;
+        if (_normalIdleTimer > 0f) return;
+
+        _normalIdleTimer = Random.Range(NormalIdleMinTime, NormalIdleMaxTime);
+        if (NormalIdleCount > 1)
+        {
+            _normalIdleId = (_normalIdleId + Random.Range(1, NormalIdleCount)) % NormalIdleCount;
+        }
     }
     public void Dash()
     {
@@ -114,6 +144,8 @@ public class CharacterAnim : MonoBehaviour
         animator.SetFloat(AnimatorParameters.MOVE__X, _moveX, LocomotionDampTime, deltaTime);
         animator.SetFloat(AnimatorParameters.MOVE__Y, _moveY, LocomotionDampTime, deltaTime);
         animator.SetFloat(AnimatorParameters.IDLE_ID, _IdleId, IdleBlendTime, deltaTime);
+        animator.SetFloat(AnimatorParameters.NORMAL_IDLE_ID, _normalIdleId, IdleBlendTime, deltaTime);
+        animator.SetFloat(AnimatorParameters.IN_COMBAT, inCombat ? 1f : 0f, CombatBlendTime, deltaTime);
         animator.SetFloat(AnimatorParameters.MOVE_ID, _MoveId, 0f, deltaTime);
         animator.SetBool(AnimatorParameters.IS_MOVE, isMove);
         animator.SetFloat(AnimatorParameters.MOVE_SPEED, moveSpeed, SpeedDampTime, deltaTime);

@@ -129,6 +129,7 @@ namespace KinematicCharacterController.Examples
             bool skill = false;
             int weaponSwitch = 0;
             bool lockOn = false;
+            bool sprint = false;
 
             // --- Bàn phím ---
             if (Keyboard.current != null)
@@ -146,6 +147,7 @@ namespace KinematicCharacterController.Examples
                 dash |= Keyboard.current.eKey.wasPressedThisFrame;
                 if (Keyboard.current.tabKey.wasPressedThisFrame) weaponSwitch = 1; // Tab = đổi vũ khí
                 lockOn |= Keyboard.current.qKey.isPressed; // giữ Q để lock-on
+                sprint |= Keyboard.current.shiftKey.isPressed; // giữ Shift để chạy nhanh
             }
 
             // --- Chuột: chuột trái = đánh, chuột phải = skill ---
@@ -186,6 +188,7 @@ namespace KinematicCharacterController.Examples
                 if (Gamepad.current.dpad.right.wasPressedThisFrame) weaponSwitch = 1;  // D-pad phải/trái = đổi vũ khí
                 if (Gamepad.current.dpad.left.wasPressedThisFrame) weaponSwitch = -1;
                 lockOn |= Gamepad.current.rightShoulder.isPressed;                // giữ RB / R1
+                sprint |= Gamepad.current.leftStickButton.isPressed;              // giữ L3
             }
 
             characterInputs.MoveAxisForward = moveForward;
@@ -200,6 +203,7 @@ namespace KinematicCharacterController.Examples
             characterInputs.Skill = skill;
             characterInputs.WeaponSwitch = weaponSwitch;
             characterInputs.LockOn = lockOn;
+            characterInputs.Sprint = sprint;
 
             Character.SetInputs(ref characterInputs);
         }

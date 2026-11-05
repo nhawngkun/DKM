@@ -14,8 +14,7 @@ public class CharController : MonoBehaviour,ICharacterController
     [Header("Locomotion (DMC)")]
     public float WalkSpeed = 2f;            // Stick đẩy nhẹ
     public float RunSpeed = 5.5f;           // Stick đẩy mạnh / bàn phím
-    public float SprintSpeed = 8f;          // Chạy liên tục quá SprintDelay -> tăng tốc như Dante
-    public float SprintDelay = 0.8f;
+    public float SprintSpeed = 8f;          // Đang chạy + giữ Shift (tay cầm: nhấn L3) -> tăng tốc
     public float LockOnMoveSpeed = 2.5f;    // Strafe khi lock-on
     [Range(0f, 1f)] public float WalkInputThreshold = 0.5f;
 
@@ -88,6 +87,10 @@ public class CharController : MonoBehaviour,ICharacterController
     public float DashAttackWindow = 0.35f;
     [Range(0f, 1f)] public float DirectionalAttackThreshold = 0.6f; // Lock-on: lực stick tới/lùi để ra Stinger/Launcher
 
+    [Tooltip("Hết đánh / hết lock-on bao lâu (giây) thì ra khỏi chế độ chiến đấu: về idle thường, cất vũ khí")]
+    public float CombatHoldTime = 6f;
+    private float _combatTimer = 0f;
+
     [Header("Lock On")]
     public float LockOnRadius = 15f;
     public float LockOnBreakRadius = 22f;
@@ -111,10 +114,11 @@ public class CharController : MonoBehaviour,ICharacterController
     public bool IsDashing => _isDashing;
     public bool IsAttacking => characterCombo != null && characterCombo.IsAttacking;
     public bool HasMoveInput => _moveInputVector.sqrMagnitude > 0.0001f;
+    public bool IsInCombat => _combatTimer > 0f;
 
     private Vector3 _cameraForward = Vector3.forward;
     private float _targetMoveSpeed = 0f;
-    private float _runTimer = 0f;
+    private bool _isSprinting = false;
     private Vector3 _attackFacing = Vector3.forward;
     private float _attackLungeTimer = 0f;
     private float _attackLungeDelay = 0f;
@@ -281,8 +285,7 @@ public class CharController : MonoBehaviour,ICharacterController
             if (dot > DirectionalAttackThreshold) return AttackContext.Dash;
         }
 
-        bool sprinting = _runTimer >= SprintDelay && HasMoveInput;
-        if (_isDashing || sprinting || Time.time - _lastDashEndTime <= DashAttackWindow)
+        if (_isDashing || _isSprinting || Time.time - _lastDashEndTime <= DashAttackWindow)
         {
             return AttackContext.Dash;
         }
@@ -389,6 +392,9 @@ public class CharController : MonoBehaviour,ICharacterController
         }
         _wasAttacking = attacking;
 
+        _combatTimer = attacking || IsLockedOn || inputs.Attack || inputs.Skill ? CombatHoldTime : _combatTimer - Time.deltaTime;
+        characterAnim.inCombat = IsInCombat;
+
         switch (CurrentCharacterState)
         {
             case CharacterState.Default:
@@ -402,7 +408,7 @@ public class CharController : MonoBehaviour,ICharacterController
                     characterAnim.isMove = moveInputVector.sqrMagnitude > 0f;
                     characterAnim._moveX = localMove.x;
                     characterAnim._moveY = localMove.z;
-                    UpdateLocomotionSpeed(moveInputVector.magnitude);
+                    UpdateLocomotionSpeed(moveInputVector.magnitude, inputs.Sprint);
 
                     switch (OrientationMethod)
                     {
@@ -491,7 +497,7 @@ public class CharController : MonoBehaviour,ICharacterController
                         if (!_isCrouching)
                         {
                             _isCrouching = true;
-                            Motor.SetCapsuleDimensions(0.5f, CrouchedCapsuleHeight, CrouchedCapsuleHeight * 0.5f);
+                            Motor.SetCapsuleDimensions(Motor.Capsule.radius,CrouchedCapsuleHeight, CrouchedCapsuleHeight * 0.5f);
                             MeshRoot.localScale = new Vector3(1f, 0.5f, 1f);
                         }
                     }
@@ -510,29 +516,27 @@ public class CharController : MonoBehaviour,ICharacterController
     /// rồi đẩy tốc độ THẬT sang Animator để blend Walk/Run/RunFast và chỉnh tốc độ phát anim
     /// (anim là Inplace) -> bước chân khớp mặt đất, không bị trượt.
     /// </summary>
-    private void UpdateLocomotionSpeed(float stick)
+    private void UpdateLocomotionSpeed(float stick, bool sprintHeld)
     {
         bool strafing = IsLockedOn || OrientationMethod == OrientationMethod.TowardsCamera;
 
+        _isSprinting = false;
         if (stick < 0.01f)
         {
-            _runTimer = 0f;
             _targetMoveSpeed = 0f;
         }
         else if (strafing)
         {
-            _runTimer = 0f;
             _targetMoveSpeed = LockOnMoveSpeed;
         }
         else if (stick < WalkInputThreshold)
         {
-            _runTimer = 0f;
             _targetMoveSpeed = WalkSpeed;
         }
         else
         {
-            _runTimer += Time.deltaTime;
-            _targetMoveSpeed = _runTimer >= SprintDelay ? SprintSpeed : RunSpeed;
+            _isSprinting = sprintHeld;
+            _targetMoveSpeed = sprintHeld ? SprintSpeed : RunSpeed;
         }
 
         float speed = Vector3.ProjectOnPlane(Motor.BaseVelocity, Motor.CharacterUp).magnitude;
@@ -947,7 +951,7 @@ public class CharController : MonoBehaviour,ICharacterController
                     if (_isCrouching && !_shouldBeCrouching)
                     {
                         // Do an overlap test with the character's standing height to see if there are any obstructions
-                        Motor.SetCapsuleDimensions(0.5f, 2f, 1f);
+                        Motor.SetCapsuleDimensions(Motor.Capsule.radius,2f, 1f);
                         if (Motor.CharacterOverlap(
                             Motor.TransientPosition,
                             Motor.TransientRotation,
@@ -956,7 +960,7 @@ public class CharController : MonoBehaviour,ICharacterController
                             QueryTriggerInteraction.Ignore) > 0)
                         {
                             // If obstructions, just stick to crouching dimensions
-                            Motor.SetCapsuleDimensions(0.5f, CrouchedCapsuleHeight, CrouchedCapsuleHeight * 0.5f);
+                            Motor.SetCapsuleDimensions(Motor.Capsule.radius,CrouchedCapsuleHeight, CrouchedCapsuleHeight * 0.5f);
                         }
                         else
                         {
@@ -1074,6 +1078,7 @@ public struct PlayerCharacterInputs
     public bool Skill;
     public int WeaponSwitch; // -1 / +1 = đổi vũ khí trước / sau
     public bool LockOn; // Giữ nút = lock-on
+    public bool Sprint; // Giữ nút khi đang chạy = chạy nhanh
 }
 
 public struct AICharacterInputs

@@ -5,6 +5,8 @@ public static class AnimatorParameters
 	//Dante
 	public static readonly int MOVE_ID = Animator.StringToHash ("MoveID");
 	public static readonly int IDLE_ID = Animator.StringToHash ("IdleID");
+	public static readonly int NORMAL_IDLE_ID = Animator.StringToHash ("NormalIdleID");  // idle thường đang chọn ngẫu nhiên
+	public static readonly int IN_COMBAT = Animator.StringToHash ("InCombat");           // 0 = idle thường, 1 = idle chiến đấu
 	public static readonly int MOVE__X = Animator.StringToHash ("Move_X");
 	public static readonly int MOVE__Y = Animator.StringToHash ("Move_Y");
 	public static readonly int IS_MOVE = Animator.StringToHash ("IsMove");

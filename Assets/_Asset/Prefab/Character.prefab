@@ -153,7 +153,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.3
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
@@ -177,12 +177,11 @@ MonoBehaviour:
   WalkSpeed: 2
   RunSpeed: 5.5
   SprintSpeed: 8
-  SprintDelay: 0.8
   LockOnMoveSpeed: 2.5
   WalkInputThreshold: 0.5
   WalkClipSpeed: 1.6
-  RunClipSpeed: 4.1
-  RunFastClipSpeed: 5.9
+  RunClipSpeed: 5.5
+  RunFastClipSpeed: 8
   StrafeClipSpeed: 1.6
   MaxAirMoveSpeed: 10
   AirAccelerationSpeed: 30
@@ -197,7 +196,7 @@ MonoBehaviour:
   AirJumpKeepHorizontal: 0
   FallGravityMultiplier: 1.2
   MaxFallSpeed: 20
-  FallAnimDelay: 0
+  FallAnimDelay: 0.15
   DashSpeed: 20
   DashDuration: 0.25
   DashCooldown: 0.2
@@ -217,11 +216,12 @@ MonoBehaviour:
   MaxRootVerticalSpeed: 25
   DashAttackWindow: 0.35
   DirectionalAttackThreshold: 0.6
+  CombatHoldTime: 6
   LockOnRadius: 15
   LockOnBreakRadius: 22
   AutoAddIK: 1
   IgnoredColliders: []
-  BonusOrientationMethod: 2
+  BonusOrientationMethod: 0
   BonusOrientationSharpness: 10
   Gravity: {x: 0, y: -20, z: 0}
   MeshRoot: {fileID: 5701033077307584129}
@@ -240,7 +240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Capsule: {fileID: 37930717378005125}
-  CapsuleRadius: 0.5
+  CapsuleRadius: 0.3
   CapsuleHeight: 2
   CapsuleYOffset: 1
   CapsulePhysicsMaterial: {fileID: 0}
@@ -255,8 +255,8 @@ MonoBehaviour:
   AllowSteppingWithoutStableGrounding: 0
   MinRequiredStepDepth: 0.1
   LedgeAndDenivelationHandling: 1
-  MaxStableDistanceFromLedge: 0.5
-  MaxVelocityForLedgeSnap: 0
+  MaxStableDistanceFromLedge: 0.3
+  MaxVelocityForLedgeSnap: 25
   MaxStableDenivelationAngle: 180
   InteractiveRigidbodyHandling: 1
   RigidbodyInteractionType: 1
@@ -288,6 +288,11 @@ MonoBehaviour:
   isGrounded: 0
   _IdleId: 0
   IdleBlendTime: 0.25
+  inCombat: 0
+  NormalIdleCount: 1
+  NormalIdleMinTime: 8
+  NormalIdleMaxTime: 15
+  CombatBlendTime: 0.3
   _MoveId: 0
   _RunId: 0
   _moveX: 0
@@ -4087,6 +4092,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 464fd11fed0fe6740a9f6b1bbf5635bb, type: 2}
     - target: {fileID: -1575824730409855783, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1575824730409855783, guid: 3f8a1390a713a1549974a9b9b83179e5, type: 3}
       propertyPath: m_RenderingLayerMask
       value: 2
       objectReference: {fileID: 0}
@@ -7143,14 +7152,17 @@ MonoBehaviour:
   GroundLayers:
     serializedVersion: 2
     m_Bits: 119
-  RaycastUp: 0.5
-  RaycastDown: 0.6
-  PelvisMaxDrop: 0.45
+  RaycastUp: 0.35
+  RaycastDown: 0.8
+  ToeProbeDistance: 0.18
+  PelvisMaxDrop: 0.35
   PelvisSharpness: 10
   FootSharpness: 18
   WeightSharpness: 10
   AttackFootWeight: 0.6
   FlatGroundAngle: 4
+  RunMinFootSide: 0.08
+  FootSideSharpness: 10
   PlantFeetWhenIdle: 1
   PlantSharpness: 8
   PlantMaxIdleSpeed: 0.3
@@ -7158,6 +7170,11 @@ MonoBehaviour:
   PlantReleaseDistance: 0.25
   PlantMaxLift: 0.03
   PlantReleaseAngle: 30
+  StanceMaxHeightDiff: 0.1
+  StanceMaxShift: 0.45
+  StanceSharpness: 8
+  StanceDelay: 0.4
+  StanceMinSideGap: 0.08
   EnableGroundClamp: 1
   ToeMargin: 0.01
   AnkleMargin: 0.07
@@ -7170,6 +7187,7 @@ MonoBehaviour:
   AirHeadWeight: 0.5
   AttackHeadWeight: 0
   HeadWeightSharpness: 6
+  RunSpineBend: 13
 --- !u!114 &6379773510841342142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7186,6 +7204,10 @@ MonoBehaviour:
   characterCombo: {fileID: 5500469588033432054}
   Hand: {fileID: 0}
   GripBlendTime: 0.12
+  BackBone: {fileID: 0}
+  BackPosition: {x: 0.18, y: 0.22, z: -0.2}
+  BackRotation: {x: 69.0294, y: 262.50412, z: 171.97913}
+  SheathBlendTime: 0.25
 --- !u!114 &8028884720078982045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7228,6 +7250,7 @@ MonoBehaviour:
     Elasticity: 0.08
     Damping: 0.12
     Inertia: 0.35
+    RotationInertia: 0.85
     Gravity: {x: 0, y: -4, z: 0}
     Radius: 0.03
     Collide: 1
@@ -7260,6 +7283,7 @@ MonoBehaviour:
     Elasticity: 0.08
     Damping: 0.12
     Inertia: 0.35
+    RotationInertia: 0.85
     Gravity: {x: 0, y: -4, z: 0}
     Radius: 0.03
     Collide: 1
@@ -7292,6 +7316,7 @@ MonoBehaviour:
     Elasticity: 0.08
     Damping: 0.12
     Inertia: 0.35
+    RotationInertia: 0.85
     Gravity: {x: 0, y: -4, z: 0}
     Radius: 0.03
     Collide: 1
@@ -7324,9 +7349,12 @@ MonoBehaviour:
     Elasticity: 0.08
     Damping: 0.12
     Inertia: 0.6
+    RotationInertia: 0.85
     Gravity: {x: 0, y: -1, z: 0}
     Radius: 0.01
     Collide: 0
+  PinAboveHip: 0
+  FreeBelowHip: -0.2
   HipRadius: 0.08
   ThighRadius: 0.08
   ShinRadius: 0.07
