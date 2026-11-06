@@ -344,7 +344,7 @@ namespace FeudalMap.EditorTools
             }
             var light = AddHdLight(go, LightType.Point);
             light.color = color;
-            light.range = Mathf.Clamp(Mathf.Sqrt(watts) * 2.5f, 8f, 40f);
+            light.range = Mathf.Clamp(Mathf.Sqrt(watts) * 1.5f, 4.8f, 24f);
             light.shadows = watts >= ShadowedLightMinWatts ? LightShadows.Soft : LightShadows.None;
             SetLightIntensity(light, watts * LumenPerBlenderWatt, "Lumen");
             return true;
@@ -395,7 +395,7 @@ namespace FeudalMap.EditorTools
             if (follow != null) rig.AddComponent(follow);
 
             AddRigSpot(rig, "Key", new Vector3(-1.2f, 3.2f, -1.6f), new Vector3(43.53f, 36.87f, 0f),
-                new Color(1f, 0.94f, 0.88f), 55f, 80f, 40f, 0.35f, true, 0f);
+                new Color(1f, 0.94f, 0.88f), 55f, 80f, 40f, 0.35f, false, 0f);
             AddRigSpot(rig, "Fill", new Vector3(1.6f, 1.4f, -2.2f), new Vector3(2.11f, 323.97f, 0f),
                 new Color(0.92f, 0.94f, 1f), 18f, 80f, 30f, 0.8f, false, 1f);
             AddRigSpot(rig, "RimL", new Vector3(-1.7f, 1.8f, 2f), new Vector3(10.78f, 139.64f, 0f),
@@ -474,7 +474,7 @@ namespace FeudalMap.EditorTools
             SetParam(hdri, "rotation", 200f);
 
             var fog = AddOverride(profile, "Fog");
-            SetParam(fog, "enabled", true);
+            SetParam(fog, "enabled", false);
             SetParam(fog, "colorMode", "ConstantColor");
             SetParam(fog, "color", new Color(0.7f, 0.75f, 0.8f));
             SetParam(fog, "tint", new Color(0.78f, 0.84f, 0.92f));
@@ -484,11 +484,11 @@ namespace FeudalMap.EditorTools
             SetParam(fog, "maximumHeight", 60f);
             SetParam(fog, "albedo", new Color(0.75f, 0.78f, 0.82f));
             SetParam(fog, "globalLightProbeDimmer", 0.8f);
-            SetParam(fog, "enableVolumetricFog", true);
+            SetParam(fog, "enableVolumetricFog", false);
             SetParam(fog, "anisotropy", 0.35f);
 
             var clouds = AddOverride(profile, "VolumetricClouds");
-            SetParam(clouds, "enable", true);
+            SetParam(clouds, "enable", false);
             SetParam(clouds, "shadows", true);
             SetParam(clouds, "shadowOpacity", 0.7f);
 
@@ -522,6 +522,11 @@ namespace FeudalMap.EditorTools
             var ao = AddOverride(profile, "ScreenSpaceAmbientOcclusion");
             SetParam(ao, "intensity", 1.1f);
             SetParam(ao, "radius", 1.5f);
+            ao.active = false;
+
+            var shadows = AddOverride(profile, "HDShadowSettings");
+            SetParam(shadows, "maxShadowDistance", 50f);
+            SetParam(shadows, "cascadeShadowSplitCount", 2);
 
             SetParam(AddOverride(profile, "MotionBlur"), "intensity", 0.2f);
             SetParam(AddOverride(profile, "FilmGrain"), "intensity", 0.06f);
