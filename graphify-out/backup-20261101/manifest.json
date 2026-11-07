@@ -1,0 +1,986 @@
+{
+  "Assets/KinematicCharacterController/Core/Editor/KinematicCharacterMotorEditor.cs": {
+    "mtime": 1793494175.331465,
+    "seen": 1793495730.7174273,
+    "ast_hash": "301354073bfa9abecd470a3575b79cd7",
+    "semantic_hash": "301354073bfa9abecd470a3575b79cd7"
+  },
+  "Assets/KinematicCharacterController/Core/Editor/ReadOnlyPropertyDrawer.cs": {
+    "mtime": 1793494175.331465,
+    "seen": 1793495730.7174344,
+    "ast_hash": "b82dfb3df28b6db4e6f537da233ee42b",
+    "semantic_hash": "b82dfb3df28b6db4e6f537da233ee42b"
+  },
+  "Assets/KinematicCharacterController/Core/ICharacterController.cs": {
+    "mtime": 1793494175.3324637,
+    "seen": 1793495730.7174363,
+    "ast_hash": "ccf27b310bf40fe35073a143ed6ee333",
+    "semantic_hash": "ccf27b310bf40fe35073a143ed6ee333"
+  },
+  "Assets/KinematicCharacterController/Core/IMoverController.cs": {
+    "mtime": 1793494175.3324637,
+    "seen": 1793495730.7174375,
+    "ast_hash": "b96f5d3fa01c96cae8d89b85e822d60c",
+    "semantic_hash": "b96f5d3fa01c96cae8d89b85e822d60c"
+  },
+  "Assets/KinematicCharacterController/Core/KCCSettings.cs": {
+    "mtime": 1793494175.3324637,
+    "seen": 1793495730.7174382,
+    "ast_hash": "f7be1494312377d4b10658c7b9e08222",
+    "semantic_hash": "f7be1494312377d4b10658c7b9e08222"
+  },
+  "Assets/KinematicCharacterController/Core/KinematicCharacterMotor.cs": {
+    "mtime": 1793494175.333914,
+    "seen": 1793495730.717439,
+    "ast_hash": "141b386943b319612221999d2b4adfd4",
+    "semantic_hash": "141b386943b319612221999d2b4adfd4"
+  },
+  "Assets/KinematicCharacterController/Core/KinematicCharacterSystem.cs": {
+    "mtime": 1793494175.333914,
+    "seen": 1793495730.7174397,
+    "ast_hash": "5034c1904bc3dff2916af82c27f4408a",
+    "semantic_hash": "5034c1904bc3dff2916af82c27f4408a"
+  },
+  "Assets/KinematicCharacterController/Core/PhysicsMover.cs": {
+    "mtime": 1793494175.333914,
+    "seen": 1793495730.7174406,
+    "ast_hash": "a97e88d7a9c530fb65961edc8b10117c",
+    "semantic_hash": "a97e88d7a9c530fb65961edc8b10117c"
+  },
+  "Assets/KinematicCharacterController/Core/ReadOnlyAttribute.cs": {
+    "mtime": 1793494175.333914,
+    "seen": 1793495730.7174413,
+    "ast_hash": "fb98ca99a7935756dd6fa2d6c34710fd",
+    "semantic_hash": "fb98ca99a7935756dd6fa2d6c34710fd"
+  },
+  "Assets/KinematicCharacterController/ExampleCharacter/Scripts/ExampleCharacterCamera.cs": {
+    "mtime": 1793494175.3367004,
+    "seen": 1793495730.7174418,
+    "ast_hash": "8696b35929cd4ec55eaec3e6a3079ddc",
+    "semantic_hash": "8696b35929cd4ec55eaec3e6a3079ddc"
+  },
+  "Assets/KinematicCharacterController/ExampleCharacter/Scripts/ExampleCharacterController.cs": {
+    "mtime": 1793494175.3367004,
+    "seen": 1793495730.7174425,
+    "ast_hash": "ea809734d78dcc0ae31e0bd0b97ff3c4",
+    "semantic_hash": "ea809734d78dcc0ae31e0bd0b97ff3c4"
+  },
+  "Assets/KinematicCharacterController/ExampleCharacter/Scripts/ExamplePlayer.cs": {
+    "mtime": 1793494175.3367004,
+    "seen": 1793495730.717443,
+    "ast_hash": "3c1ef2208be9a2ae319281fd6e7fc8ff",
+    "semantic_hash": "3c1ef2208be9a2ae319281fd6e7fc8ff"
+  },
+  "Assets/KinematicCharacterController/Examples/Scripts/BuildManager.cs": {
+    "mtime": 1793494175.3645825,
+    "seen": 1793495730.717444,
+    "ast_hash": "1a8e77b62b59384694d7d10b9e1f72d4",
+    "semantic_hash": "1a8e77b62b59384694d7d10b9e1f72d4"
+  },
+  "Assets/KinematicCharacterController/Examples/Scripts/Editor/PauseStateHandler.cs": {
+    "mtime": 1793494175.3645825,
+    "seen": 1793495730.7174444,
+    "ast_hash": "0ee45c1e0da7cd19d577dff5c9704607",
+    "semantic_hash": "0ee45c1e0da7cd19d577dff5c9704607"
+  },
+  "Assets/KinematicCharacterController/Examples/Scripts/ExampleAIController.cs": {
+    "mtime": 1793494175.3645825,
+    "seen": 1793495730.7174451,
+    "ast_hash": "15f2327982bf48afc83018f65effc83e",
+    "semantic_hash": "15f2327982bf48afc83018f65effc83e"
+  },
+  "Assets/KinematicCharacterController/Examples/Scripts/ExampleMovingPlatform.cs": {
+    "mtime": 1793494175.3655822,
+    "seen": 1793495730.7174456,
+    "ast_hash": "e89412e350d70d2bad13755f67002c72",
+    "semantic_hash": "e89412e350d70d2bad13755f67002c72"
+  },
+  "Assets/KinematicCharacterController/Examples/Scripts/FrameratePanel.cs": {
+    "mtime": 1793494175.3655822,
+    "seen": 1793495730.7174463,
+    "ast_hash": "65ae6dae2a8ad30e29731a4eb7065b79",
+    "semantic_hash": "65ae6dae2a8ad30e29731a4eb7065b79"
+  },
+  "Assets/KinematicCharacterController/Examples/Scripts/PlanetManager.cs": {
+    "mtime": 1793494175.3655822,
+    "seen": 1793495730.7174468,
+    "ast_hash": "bc8e502b15350e82bc8bf55afa73ae34",
+    "semantic_hash": "bc8e502b15350e82bc8bf55afa73ae34"
+  },
+  "Assets/KinematicCharacterController/Examples/Scripts/PlayableMover.cs": {
+    "mtime": 1793494175.3665826,
+    "seen": 1793495730.7174475,
+    "ast_hash": "764bb1372a843808b21d2a780f61064c",
+    "semantic_hash": "764bb1372a843808b21d2a780f61064c"
+  },
+  "Assets/KinematicCharacterController/Examples/Scripts/PrefabLauncher.cs": {
+    "mtime": 1793494175.3665826,
+    "seen": 1793495730.7174482,
+    "ast_hash": "df15da25b03c16d9fbb2d5b13ede086d",
+    "semantic_hash": "df15da25b03c16d9fbb2d5b13ede086d"
+  },
+  "Assets/KinematicCharacterController/Examples/Scripts/StressTestManager.cs": {
+    "mtime": 1793494175.3665826,
+    "seen": 1793495730.7174487,
+    "ast_hash": "9139c9bc1acc4165370e2dee6613a4f5",
+    "semantic_hash": "9139c9bc1acc4165370e2dee6613a4f5"
+  },
+  "Assets/KinematicCharacterController/Examples/Scripts/Teleporter.cs": {
+    "mtime": 1793494175.3665826,
+    "seen": 1793495730.7174492,
+    "ast_hash": "29fc41985d3505cc8d8b497670bac6c3",
+    "semantic_hash": "29fc41985d3505cc8d8b497670bac6c3"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/1- Player Camera Character Setup/Scripts/MyCharacterController.cs": {
+    "mtime": 1793494175.3805823,
+    "seen": 1793495730.71745,
+    "ast_hash": "7cff23d5068744ba7c4f148298126aba",
+    "semantic_hash": "7cff23d5068744ba7c4f148298126aba"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/1- Player Camera Character Setup/Scripts/MyPlayer.cs": {
+    "mtime": 1793494175.3805823,
+    "seen": 1793495730.7174509,
+    "ast_hash": "3a95d4416b456046fa027654ef039a67",
+    "semantic_hash": "3a95d4416b456046fa027654ef039a67"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/10- Multiple movement states setup/Scripts/MyCharacterController.cs": {
+    "mtime": 1793494175.3845823,
+    "seen": 1793495730.7174516,
+    "ast_hash": "9481566c138eb56af3adbe0f834e525e",
+    "semantic_hash": "9481566c138eb56af3adbe0f834e525e"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/10- Multiple movement states setup/Scripts/MyPlayer.cs": {
+    "mtime": 1793494175.3845823,
+    "seen": 1793495730.717452,
+    "ast_hash": "f97c113411449afd25e9008c298c9dc9",
+    "semantic_hash": "f97c113411449afd25e9008c298c9dc9"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/11- Charging state/Scripts/MyCharacterController.cs": {
+    "mtime": 1793494175.3875823,
+    "seen": 1793495730.7174525,
+    "ast_hash": "e7893d147bcdc5bf604e10b43abb4091",
+    "semantic_hash": "e7893d147bcdc5bf604e10b43abb4091"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/11- Charging state/Scripts/MyPlayer.cs": {
+    "mtime": 1793494175.3875823,
+    "seen": 1793495730.7174532,
+    "ast_hash": "db12bc77d103c114547c5da888572a58",
+    "semantic_hash": "db12bc77d103c114547c5da888572a58"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/12- NoClip state/Scripts/MyCharacterController.cs": {
+    "mtime": 1793494175.3905828,
+    "seen": 1793495730.7174537,
+    "ast_hash": "eb815adb14c9a53cae5780585d2ab636",
+    "semantic_hash": "eb815adb14c9a53cae5780585d2ab636"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/12- NoClip state/Scripts/MyPlayer.cs": {
+    "mtime": 1793494175.3915825,
+    "seen": 1793495730.7174544,
+    "ast_hash": "3921e0f152fecfbe90a8c70b5d3f7918",
+    "semantic_hash": "3921e0f152fecfbe90a8c70b5d3f7918"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/13- Swimming state/Scripts/MyCharacterController.cs": {
+    "mtime": 1793494175.3945823,
+    "seen": 1793495730.7174551,
+    "ast_hash": "798dda1c6ff535bb8bd7a63adf1da27b",
+    "semantic_hash": "798dda1c6ff535bb8bd7a63adf1da27b"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/13- Swimming state/Scripts/MyPlayer.cs": {
+    "mtime": 1793494175.3955827,
+    "seen": 1793495730.7174559,
+    "ast_hash": "441b6f9284688b3c0332992a4bbd80a0",
+    "semantic_hash": "441b6f9284688b3c0332992a4bbd80a0"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/14- Climbing Ladders/Scripts/MyCharacterController.cs": {
+    "mtime": 1793494175.3985825,
+    "seen": 1793495730.7174563,
+    "ast_hash": "98bb9164ed82dc1f20c4ba5859d46c20",
+    "semantic_hash": "98bb9164ed82dc1f20c4ba5859d46c20"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/14- Climbing Ladders/Scripts/MyLadder.cs": {
+    "mtime": 1793494175.3985825,
+    "seen": 1793495730.7174568,
+    "ast_hash": "aaf9d817a3cc401f701f21dae16f7db0",
+    "semantic_hash": "aaf9d817a3cc401f701f21dae16f7db0"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/14- Climbing Ladders/Scripts/MyPlayer.cs": {
+    "mtime": 1793494175.399583,
+    "seen": 1793495730.7174578,
+    "ast_hash": "944aa213ce9bb74078f2bc5f89613022",
+    "semantic_hash": "944aa213ce9bb74078f2bc5f89613022"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/15- Root motion example/Scripts/MyCharacterController.cs": {
+    "mtime": 1793494175.5589757,
+    "seen": 1793495730.7174582,
+    "ast_hash": "7b38daa04c8a45d8f6dd669cc3c12e4f",
+    "semantic_hash": "7b38daa04c8a45d8f6dd669cc3c12e4f"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/15- Root motion example/Scripts/MyPlayer.cs": {
+    "mtime": 1793494175.5599756,
+    "seen": 1793495730.7174587,
+    "ast_hash": "b6f39961d11e7a9eab1bf54e44b30c9c",
+    "semantic_hash": "b6f39961d11e7a9eab1bf54e44b30c9c"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/16- FramePerfect Rotation/Scripts/MyCharacterController.cs": {
+    "mtime": 1793494175.562984,
+    "seen": 1793495730.7174594,
+    "ast_hash": "246bfb51c5259511e012f984c116f75e",
+    "semantic_hash": "246bfb51c5259511e012f984c116f75e"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/16- FramePerfect Rotation/Scripts/MyPlayer.cs": {
+    "mtime": 1793494175.562984,
+    "seen": 1793495730.71746,
+    "ast_hash": "d4e4dd3c311b5a3040d7cc7f63023f4b",
+    "semantic_hash": "d4e4dd3c311b5a3040d7cc7f63023f4b"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/2- Basic Movement and Gravity/Scripts/MyCharacterController.cs": {
+    "mtime": 1793494175.5659773,
+    "seen": 1793495730.7174604,
+    "ast_hash": "4198e437080cd136591d6c7534613a95",
+    "semantic_hash": "4198e437080cd136591d6c7534613a95"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/2- Basic Movement and Gravity/Scripts/MyPlayer.cs": {
+    "mtime": 1793494175.5659773,
+    "seen": 1793495730.717461,
+    "ast_hash": "b8f03afb6921e3fb56af3738f30514a6",
+    "semantic_hash": "b8f03afb6921e3fb56af3738f30514a6"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/3- Jumping/Scripts/a- Simple Jumping/MyCharacterController.cs": {
+    "mtime": 1793494175.5699837,
+    "seen": 1793495730.7174618,
+    "ast_hash": "8f21e123d3672259b6aeceec61ccfac2",
+    "semantic_hash": "8f21e123d3672259b6aeceec61ccfac2"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/3- Jumping/Scripts/a- Simple Jumping/MyPlayer.cs": {
+    "mtime": 1793494175.5699837,
+    "seen": 1793495730.7174623,
+    "ast_hash": "327479663e02c2d8a4154801cde39a12",
+    "semantic_hash": "327479663e02c2d8a4154801cde39a12"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/3- Jumping/Scripts/b- Double Jumping/MyCharacterController.cs": {
+    "mtime": 1793494175.5709834,
+    "seen": 1793495730.717463,
+    "ast_hash": "9d4aad10cc1e1eee3903ebe1d6c3bb2e",
+    "semantic_hash": "9d4aad10cc1e1eee3903ebe1d6c3bb2e"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/3- Jumping/Scripts/b- Double Jumping/MyPlayer.cs": {
+    "mtime": 1793494175.5709834,
+    "seen": 1793495730.7174637,
+    "ast_hash": "909fc59d7c6495161ff86581d3a74ef9",
+    "semantic_hash": "909fc59d7c6495161ff86581d3a74ef9"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/3- Jumping/Scripts/c- Wall Jumping/MyCharacterController.cs": {
+    "mtime": 1793494175.5709834,
+    "seen": 1793495730.7174642,
+    "ast_hash": "118b20525875c823b74aa915c0554e45",
+    "semantic_hash": "118b20525875c823b74aa915c0554e45"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/3- Jumping/Scripts/c- Wall Jumping/MyPlayer.cs": {
+    "mtime": 1793494175.5719833,
+    "seen": 1793495730.717465,
+    "ast_hash": "584276e2b35c69fff88e126b19ab7435",
+    "semantic_hash": "584276e2b35c69fff88e126b19ab7435"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/4- Landing and leaving ground/Scripts/MyCharacterController.cs": {
+    "mtime": 1793494175.5749764,
+    "seen": 1793495730.7174656,
+    "ast_hash": "648d89acfb8df105249b75278324d76e",
+    "semantic_hash": "648d89acfb8df105249b75278324d76e"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/4- Landing and leaving ground/Scripts/MyPlayer.cs": {
+    "mtime": 1793494175.5749764,
+    "seen": 1793495730.717466,
+    "ast_hash": "4af788f6c805613e5e0184302783b67d",
+    "semantic_hash": "4af788f6c805613e5e0184302783b67d"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/5- Adding velocities and impulses/Scripts/MyCharacterController.cs": {
+    "mtime": 1793494175.5779755,
+    "seen": 1793495730.7174668,
+    "ast_hash": "2a0efa9e302b2c359eccd5734eebfafb",
+    "semantic_hash": "2a0efa9e302b2c359eccd5734eebfafb"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/5- Adding velocities and impulses/Scripts/MyPlayer.cs": {
+    "mtime": 1793494175.5789835,
+    "seen": 1793495730.7174675,
+    "ast_hash": "0255f5bfd51493ecc4ff58b6a32f5a98",
+    "semantic_hash": "0255f5bfd51493ecc4ff58b6a32f5a98"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/6- Crouching/Scripts/MyCharacterController.cs": {
+    "mtime": 1793494175.581977,
+    "seen": 1793495730.7174685,
+    "ast_hash": "14da67361c627ef0d28d353a352df2ea",
+    "semantic_hash": "14da67361c627ef0d28d353a352df2ea"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/6- Crouching/Scripts/MyPlayer.cs": {
+    "mtime": 1793494175.582976,
+    "seen": 1793495730.717469,
+    "ast_hash": "a6056ef39f80d0fbccfcdb9e1a5e9205",
+    "semantic_hash": "a6056ef39f80d0fbccfcdb9e1a5e9205"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/7- Orienting towards arbitrary up direction/Scripts/MyCharacterController.cs": {
+    "mtime": 1793494175.5859754,
+    "seen": 1793495730.7174697,
+    "ast_hash": "053409acabb155a8711ea152f4a2c197",
+    "semantic_hash": "053409acabb155a8711ea152f4a2c197"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/7- Orienting towards arbitrary up direction/Scripts/MyPlayer.cs": {
+    "mtime": 1793494175.586984,
+    "seen": 1793495730.7174702,
+    "ast_hash": "1bb55ebff3f7b92196675137eb402c75",
+    "semantic_hash": "1bb55ebff3f7b92196675137eb402c75"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/8- Creating a moving platform/Scripts/MyCharacterController.cs": {
+    "mtime": 1793494175.5899785,
+    "seen": 1793495730.7174706,
+    "ast_hash": "5c4ba2ba91644b3da2ad3a0cfbf69a10",
+    "semantic_hash": "5c4ba2ba91644b3da2ad3a0cfbf69a10"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/8- Creating a moving platform/Scripts/MyMovingPlatform.cs": {
+    "mtime": 1793494175.5899785,
+    "seen": 1793495730.7174716,
+    "ast_hash": "b4732aabda36f681e8ed3b84d25b8a0e",
+    "semantic_hash": "b4732aabda36f681e8ed3b84d25b8a0e"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/8- Creating a moving platform/Scripts/MyPlayer.cs": {
+    "mtime": 1793494175.5909765,
+    "seen": 1793495730.717472,
+    "ast_hash": "5f0d913311bccc270f253b63b30704b3",
+    "semantic_hash": "5f0d913311bccc270f253b63b30704b3"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/9- Custom collision filtering/Scripts/MyCharacterController.cs": {
+    "mtime": 1793494175.5939834,
+    "seen": 1793495730.7174726,
+    "ast_hash": "4831c9453ac165043091713964bd96a7",
+    "semantic_hash": "4831c9453ac165043091713964bd96a7"
+  },
+  "Assets/KinematicCharacterController/Walkthrough/9- Custom collision filtering/Scripts/MyPlayer.cs": {
+    "mtime": 1793494175.5939834,
+    "seen": 1793495730.7174733,
+    "ast_hash": "1d5ab4edce13ac2fdb7b3771d0ba2d16",
+    "semantic_hash": "1d5ab4edce13ac2fdb7b3771d0ba2d16"
+  },
+  "Assets/_Asset/Script/CameraScript/CameraCollider.cs": {
+    "mtime": 1793494180.3623626,
+    "seen": 1793495730.7174737,
+    "ast_hash": "1517e05ad2897c206b0a41a0fd273631",
+    "semantic_hash": "1517e05ad2897c206b0a41a0fd273631"
+  },
+  "Assets/_Asset/Script/CameraScript/CameraController.cs": {
+    "mtime": 1793494180.3623626,
+    "seen": 1793495730.7174742,
+    "ast_hash": "1b9aa32222887689f71b9d1d8c6dd47d",
+    "semantic_hash": "1b9aa32222887689f71b9d1d8c6dd47d"
+  },
+  "Assets/_Asset/Script/CameraScript/CameraEffect.cs": {
+    "mtime": 1793494180.3633618,
+    "seen": 1793495730.7174752,
+    "ast_hash": "8a508fcfc208e428184b516ebd52a321",
+    "semantic_hash": "8a508fcfc208e428184b516ebd52a321"
+  },
+  "Assets/_Asset/Script/CameraScript/CameraFocus.cs": {
+    "mtime": 1793494180.3633618,
+    "seen": 1793495730.7174757,
+    "ast_hash": "207789c553f095e0d8b032c9409a3e44",
+    "semantic_hash": "207789c553f095e0d8b032c9409a3e44"
+  },
+  "Assets/_Asset/Script/CameraScript/CameraFollow.cs": {
+    "mtime": 1793494180.3633618,
+    "seen": 1793495730.7174761,
+    "ast_hash": "2c2394c412a1ffcdfd5b7aee36aa6dcc",
+    "semantic_hash": "2c2394c412a1ffcdfd5b7aee36aa6dcc"
+  },
+  "Assets/_Asset/Script/CameraScript/CameraFoward.cs": {
+    "mtime": 1793494180.3633618,
+    "seen": 1793495730.7174768,
+    "ast_hash": "fb5361b930eb76809e3979a56795c583",
+    "semantic_hash": "fb5361b930eb76809e3979a56795c583"
+  },
+  "Assets/_Asset/Script/CameraScript/ComboCameraFeedback.cs": {
+    "mtime": 1793494180.364362,
+    "seen": 1793495730.7174773,
+    "ast_hash": "42e402347efaa3f11f70d9e72137ad7b",
+    "semantic_hash": "42e402347efaa3f11f70d9e72137ad7b"
+  },
+  "Assets/_Asset/Script/CameraScript/FollowPlayer.cs": {
+    "mtime": 1793494180.364362,
+    "seen": 1793495730.717478,
+    "ast_hash": "276d9fdacbf0655b943634bec73315e0",
+    "semantic_hash": "276d9fdacbf0655b943634bec73315e0"
+  },
+  "Assets/_Asset/Script/CameraScript/ShadeCamera.cs": {
+    "mtime": 1793494180.3653617,
+    "seen": 1793495730.7174788,
+    "ast_hash": "d799fd279c91459d323256766c07ea05",
+    "semantic_hash": "d799fd279c91459d323256766c07ea05"
+  },
+  "Assets/_Asset/Script/CharController.cs": {
+    "mtime": 1793494180.3653617,
+    "seen": 1793495730.7174795,
+    "ast_hash": "2fe8a2d0bf6268fcf388ab012c12cdf6",
+    "semantic_hash": "2fe8a2d0bf6268fcf388ab012c12cdf6"
+  },
+  "Assets/_Asset/Script/CharacterAnim.cs": {
+    "mtime": 1793494180.3653617,
+    "seen": 1793495730.71748,
+    "ast_hash": "2cff2f14e9b1b8d2d513a522a9f4f283",
+    "semantic_hash": "2cff2f14e9b1b8d2d513a522a9f4f283"
+  },
+  "Assets/_Asset/Script/CharacterCombo.cs": {
+    "mtime": 1793494180.366362,
+    "seen": 1793495730.7174804,
+    "ast_hash": "c26ae8ce797f391d57ee6aee2419e9ab",
+    "semantic_hash": "c26ae8ce797f391d57ee6aee2419e9ab"
+  },
+  "Assets/_Asset/Script/Contanst/AnimatorParameters.cs": {
+    "mtime": 1793494180.366362,
+    "seen": 1793495730.7174811,
+    "ast_hash": "f31338de61ae52d4acdf886dec4260a0",
+    "semantic_hash": "f31338de61ae52d4acdf886dec4260a0"
+  },
+  "Packages/core-main-main/Editor/AnimatorHashGenerator/AnimatorHashGeneratorData.cs": {
+    "mtime": 1793494180.474636,
+    "seen": 1793495730.7174816,
+    "ast_hash": "9931addf22302a3bed0eb0bdcb17f82e",
+    "semantic_hash": "9931addf22302a3bed0eb0bdcb17f82e"
+  },
+  "Packages/core-main-main/Editor/AnimatorHashGenerator/AnimatorHashGeneratorWindow.cs": {
+    "mtime": 1793494180.4756362,
+    "seen": 1793495730.7174826,
+    "ast_hash": "1b04ed7ff2a1f7fcff13978814624f7e",
+    "semantic_hash": "1b04ed7ff2a1f7fcff13978814624f7e"
+  },
+  "Packages/core-main-main/Editor/Extentions/ToolbarCallBack/EditorExtension.cs": {
+    "mtime": 1793494180.4756362,
+    "seen": 1793495730.717483,
+    "ast_hash": "36dbae39a738b03723c22aca60e24193",
+    "semantic_hash": "36dbae39a738b03723c22aca60e24193"
+  },
+  "Packages/core-main-main/Editor/Extentions/ToolbarCallBack/EditorParameters.cs": {
+    "mtime": 1793494180.4766362,
+    "seen": 1793495730.7174835,
+    "ast_hash": "2f7a520a9bb6a725acdd423f6727a45c",
+    "semantic_hash": "2f7a520a9bb6a725acdd423f6727a45c"
+  },
+  "Packages/core-main-main/Editor/Extentions/ToolbarCallBack/SceneEditor.cs": {
+    "mtime": 1793494180.4766362,
+    "seen": 1793495730.7174842,
+    "ast_hash": "0feb293823914bf1f65eff3deacceb27",
+    "semantic_hash": "0feb293823914bf1f65eff3deacceb27"
+  },
+  "Packages/core-main-main/Editor/Extentions/ToolbarCallBack/ToolbarCallback.cs": {
+    "mtime": 1793494180.4766362,
+    "seen": 1793495730.717485,
+    "ast_hash": "c71d0e48864acfa83580fb6845e47626",
+    "semantic_hash": "c71d0e48864acfa83580fb6845e47626"
+  },
+  "Packages/core-main-main/Editor/Extentions/ToolbarCallBack/ToolbarExtender.cs": {
+    "mtime": 1793494180.477636,
+    "seen": 1793495730.7174857,
+    "ast_hash": "0872650a4fa3e7682b6428c55a5af468",
+    "semantic_hash": "0872650a4fa3e7682b6428c55a5af468"
+  },
+  "Packages/core-main-main/Editor/FastPool/CoreEditorMenuItem.cs": {
+    "mtime": 1793494180.477636,
+    "seen": 1793495730.7174861,
+    "ast_hash": "981fc53e40b54e432210d961f427f6a7",
+    "semantic_hash": "981fc53e40b54e432210d961f427f6a7"
+  },
+  "Packages/core-main-main/Editor/FastPool/FPUniversalDespawnerEditor.cs": {
+    "mtime": 1793494180.477636,
+    "seen": 1793495730.7174869,
+    "ast_hash": "0ed989cc0a0a601995a0697db5ca543c",
+    "semantic_hash": "0ed989cc0a0a601995a0697db5ca543c"
+  },
+  "Packages/core-main-main/Editor/FastPool/FastPoolEditor.cs": {
+    "mtime": 1793494180.4786384,
+    "seen": 1793495730.7174873,
+    "ast_hash": "00a75158f896b2ee6583c52ec63ec1f1",
+    "semantic_hash": "00a75158f896b2ee6583c52ec63ec1f1"
+  },
+  "Packages/core-main-main/Editor/FastPool/FastPoolManagerEditor.cs": {
+    "mtime": 1793494180.4786384,
+    "seen": 1793495730.717488,
+    "ast_hash": "0881e49b78baa5f34b040cb73c0f3636",
+    "semantic_hash": "0881e49b78baa5f34b040cb73c0f3636"
+  },
+  "Packages/core-main-main/Editor/UA_UI/UAEditor.cs": {
+    "mtime": 1793494180.4786384,
+    "seen": 1793495730.7174885,
+    "ast_hash": "f891742138fa63a727ee81985b578aba",
+    "semantic_hash": "f891742138fa63a727ee81985b578aba"
+  },
+  "Packages/core-main-main/Editor/UnityConstantGenerator.cs": {
+    "mtime": 1793494180.479637,
+    "seen": 1793495730.7174895,
+    "ast_hash": "3cb7d0a58b99efdd0c8b6df2b7204863",
+    "semantic_hash": "3cb7d0a58b99efdd0c8b6df2b7204863"
+  },
+  "Packages/core-main-main/Editor/Utils/AssetUtils.cs": {
+    "mtime": 1793494180.479637,
+    "seen": 1793495730.7174904,
+    "ast_hash": "6cfceba04792b02b0220a3f78c431a77",
+    "semantic_hash": "6cfceba04792b02b0220a3f78c431a77"
+  },
+  "Packages/core-main-main/Editor/Utils/BB_EditorUtils.cs": {
+    "mtime": 1793494180.480636,
+    "seen": 1793495730.7174911,
+    "ast_hash": "7f577ab963c039d043d17b84c55d533e",
+    "semantic_hash": "7f577ab963c039d043d17b84c55d533e"
+  },
+  "Packages/core-main-main/Editor/Utils/BB_FileUtils.cs": {
+    "mtime": 1793494180.480636,
+    "seen": 1793495730.7174916,
+    "ast_hash": "216ff82557a4fea06d5e93bee9636dfb",
+    "semantic_hash": "216ff82557a4fea06d5e93bee9636dfb"
+  },
+  "Packages/core-main-main/Editor/Utils/DefineSymbolsUtils.cs": {
+    "mtime": 1793494180.480636,
+    "seen": 1793495730.7174926,
+    "ast_hash": "bdac50fb22eed73013fd5cc5f4bd7bc1",
+    "semantic_hash": "bdac50fb22eed73013fd5cc5f4bd7bc1"
+  },
+  "Packages/core-main-main/Editor/Utils/NB_GlobalDefineUtils.cs": {
+    "mtime": 1793494180.4816358,
+    "seen": 1793495730.717493,
+    "ast_hash": "2396bb83cb623ba8bb9b324203fcdb1e",
+    "semantic_hash": "2396bb83cb623ba8bb9b324203fcdb1e"
+  },
+  "Packages/core-main-main/Editor/Utils/PrefabExtention.cs": {
+    "mtime": 1793494180.4816358,
+    "seen": 1793495730.7174935,
+    "ast_hash": "b2a3bb4f94192543625983d2051982fe",
+    "semantic_hash": "b2a3bb4f94192543625983d2051982fe"
+  },
+  "Packages/core-main-main/Runtime/EventManager/Event.cs": {
+    "mtime": 1793494180.483636,
+    "seen": 1793495730.7174942,
+    "ast_hash": "51a1e570f3465af20c225d31c969d84a",
+    "semantic_hash": "51a1e570f3465af20c225d31c969d84a"
+  },
+  "Packages/core-main-main/Runtime/EventManager/EventManager.cs": {
+    "mtime": 1793494180.4846363,
+    "seen": 1793495730.7174947,
+    "ast_hash": "b8d77c1658953eac6e1d87a395eaea8c",
+    "semantic_hash": "b8d77c1658953eac6e1d87a395eaea8c"
+  },
+  "Packages/core-main-main/Runtime/EventManager/IEventHandler.cs": {
+    "mtime": 1793494180.4846363,
+    "seen": 1793495730.7174954,
+    "ast_hash": "7ab4b892e59ac5b7a8a2c0b57d46f765",
+    "semantic_hash": "7ab4b892e59ac5b7a8a2c0b57d46f765"
+  },
+  "Packages/core-main-main/Runtime/Extensions/ArrayAndListExtensions.cs": {
+    "mtime": 1793494180.4856355,
+    "seen": 1793495730.7174962,
+    "ast_hash": "0f67ce82d026fb8e8e4c5948c16d544a",
+    "semantic_hash": "0f67ce82d026fb8e8e4c5948c16d544a"
+  },
+  "Packages/core-main-main/Runtime/Extensions/AudioExtensions.cs": {
+    "mtime": 1793494180.4856355,
+    "seen": 1793495730.7174966,
+    "ast_hash": "c331461232aeb3e9c720fa9d7c0c7e04",
+    "semantic_hash": "c331461232aeb3e9c720fa9d7c0c7e04"
+  },
+  "Packages/core-main-main/Runtime/Extensions/BoolExtensions.cs": {
+    "mtime": 1793494180.4856355,
+    "seen": 1793495730.7174973,
+    "ast_hash": "180670c1d7108313884d7c168bfbddde",
+    "semantic_hash": "180670c1d7108313884d7c168bfbddde"
+  },
+  "Packages/core-main-main/Runtime/Extensions/CameraExtensions.cs": {
+    "mtime": 1793494180.4866362,
+    "seen": 1793495730.7174978,
+    "ast_hash": "71d15e6e67c42478874692606a086c2d",
+    "semantic_hash": "71d15e6e67c42478874692606a086c2d"
+  },
+  "Packages/core-main-main/Runtime/Extensions/ColorExtensions.cs": {
+    "mtime": 1793494180.4866362,
+    "seen": 1793495730.7174985,
+    "ast_hash": "efb667b848b0e14b6b4d1ec0739731cc",
+    "semantic_hash": "efb667b848b0e14b6b4d1ec0739731cc"
+  },
+  "Packages/core-main-main/Runtime/Extensions/DateTimeExtensions.cs": {
+    "mtime": 1793494180.4866362,
+    "seen": 1793495730.717499,
+    "ast_hash": "82411d4395ff48c9434a054669bbb5e1",
+    "semantic_hash": "82411d4395ff48c9434a054669bbb5e1"
+  },
+  "Packages/core-main-main/Runtime/Extensions/DictionaryExtenstions.cs": {
+    "mtime": 1793494180.4876363,
+    "seen": 1793495730.7174997,
+    "ast_hash": "f6d34645a32b66a8b1866640e126533a",
+    "semantic_hash": "f6d34645a32b66a8b1866640e126533a"
+  },
+  "Packages/core-main-main/Runtime/Extensions/FloatExtensions.cs": {
+    "mtime": 1793494180.4876363,
+    "seen": 1793495730.7175004,
+    "ast_hash": "c481e572e5659256a88deadbca530650",
+    "semantic_hash": "c481e572e5659256a88deadbca530650"
+  },
+  "Packages/core-main-main/Runtime/Extensions/IListExtensions.cs": {
+    "mtime": 1793494180.4876363,
+    "seen": 1793495730.717501,
+    "ast_hash": "0592b78988daa033cec8567cf405d892",
+    "semantic_hash": "0592b78988daa033cec8567cf405d892"
+  },
+  "Packages/core-main-main/Runtime/Extensions/RectTransformExtensions.cs": {
+    "mtime": 1793494180.488637,
+    "seen": 1793495730.7175016,
+    "ast_hash": "cb0dda5cacc46596b6e6c253df6b6c56",
+    "semantic_hash": "cb0dda5cacc46596b6e6c253df6b6c56"
+  },
+  "Packages/core-main-main/Runtime/Extensions/StringExtension.cs": {
+    "mtime": 1793494180.488637,
+    "seen": 1793495730.717502,
+    "ast_hash": "8701fa1038bc4e33f1699e5136949a7f",
+    "semantic_hash": "8701fa1038bc4e33f1699e5136949a7f"
+  },
+  "Packages/core-main-main/Runtime/Extensions/TransformExtensions.cs": {
+    "mtime": 1793494180.488637,
+    "seen": 1793495730.7175028,
+    "ast_hash": "0cd020a6c97724294cd7d0edce552c89",
+    "semantic_hash": "0cd020a6c97724294cd7d0edce552c89"
+  },
+  "Packages/core-main-main/Runtime/Extensions/VectorExtensions.cs": {
+    "mtime": 1793494180.4896376,
+    "seen": 1793495730.7175035,
+    "ast_hash": "4e9068d64801c10d140b5780b54a6ffe",
+    "semantic_hash": "4e9068d64801c10d140b5780b54a6ffe"
+  },
+  "Packages/core-main-main/Runtime/FSM/FSM.cs": {
+    "mtime": 1793494180.4896376,
+    "seen": 1793495730.717504,
+    "ast_hash": "d351a2e321fded0c681bdd898f12834d",
+    "semantic_hash": "d351a2e321fded0c681bdd898f12834d"
+  },
+  "Packages/core-main-main/Runtime/FSM/FSMAction.cs": {
+    "mtime": 1793494180.490637,
+    "seen": 1793495730.7175045,
+    "ast_hash": "ac4a598d41f4b8af70b712f53bb4f63d",
+    "semantic_hash": "ac4a598d41f4b8af70b712f53bb4f63d"
+  },
+  "Packages/core-main-main/Runtime/FSM/FSMState.cs": {
+    "mtime": 1793494180.490637,
+    "seen": 1793495730.7175052,
+    "ast_hash": "a7a4d4c22c4de4078ddb8865fad0b701",
+    "semantic_hash": "a7a4d4c22c4de4078ddb8865fad0b701"
+  },
+  "Packages/core-main-main/Runtime/FastPool/MemoryPooler.cs": {
+    "mtime": 1793494180.491636,
+    "seen": 1793495730.7175057,
+    "ast_hash": "63d3db4576db4f002b744eef2ef52b9f",
+    "semantic_hash": "63d3db4576db4f002b744eef2ef52b9f"
+  },
+  "Packages/core-main-main/Runtime/FastPool/Scripts/FastPool.cs": {
+    "mtime": 1793494180.492637,
+    "seen": 1793495730.7175064,
+    "ast_hash": "0778ed70d7220cc1e781284cf3df4a00",
+    "semantic_hash": "0778ed70d7220cc1e781284cf3df4a00"
+  },
+  "Packages/core-main-main/Runtime/FastPool/Scripts/FastPoolManager.cs": {
+    "mtime": 1793494180.492637,
+    "seen": 1793495730.717507,
+    "ast_hash": "276650c559cb30d4b6d05c1de4d9780a",
+    "semantic_hash": "276650c559cb30d4b6d05c1de4d9780a"
+  },
+  "Packages/core-main-main/Runtime/FastPool/Scripts/Stuff/FastPoolExtensions.cs": {
+    "mtime": 1793494180.493637,
+    "seen": 1793495730.7175076,
+    "ast_hash": "2436b2a1b4b3e5d86708dc81ea650591",
+    "semantic_hash": "2436b2a1b4b3e5d86708dc81ea650591"
+  },
+  "Packages/core-main-main/Runtime/FastPool/Scripts/Stuff/IFastPoolObject.cs": {
+    "mtime": 1793494180.493637,
+    "seen": 1793495730.717508,
+    "ast_hash": "10545ea1cd878a7f9e1e61791f7bd853",
+    "semantic_hash": "10545ea1cd878a7f9e1e61791f7bd853"
+  },
+  "Packages/core-main-main/Runtime/FastPool/Scripts/Tools/FPUniversalDespawner.cs": {
+    "mtime": 1793494180.493637,
+    "seen": 1793495730.7175086,
+    "ast_hash": "2f3c1504dc786eb66b8ba596ae5033f5",
+    "semantic_hash": "2f3c1504dc786eb66b8ba596ae5033f5"
+  },
+  "Packages/core-main-main/Runtime/GuideMask/GuideMask.cs": {
+    "mtime": 1793494180.4946365,
+    "seen": 1793495730.717509,
+    "ast_hash": "632ddd933a0759931ab4414a411343dd",
+    "semantic_hash": "632ddd933a0759931ab4414a411343dd"
+  },
+  "Packages/core-main-main/Runtime/Process/Process.cs": {
+    "mtime": 1793494180.4946365,
+    "seen": 1793495730.71751,
+    "ast_hash": "815a5d9dcfef9873ad3ac601c392fc4c",
+    "semantic_hash": "815a5d9dcfef9873ad3ac601c392fc4c"
+  },
+  "Packages/core-main-main/Runtime/Process/ProcessManager.cs": {
+    "mtime": 1793494180.4956365,
+    "seen": 1793495730.7175105,
+    "ast_hash": "8a04a2bf5a20353694fac32b981a8b35",
+    "semantic_hash": "8a04a2bf5a20353694fac32b981a8b35"
+  },
+  "Packages/core-main-main/Runtime/Process/ProcessRythmer.cs": {
+    "mtime": 1793494180.4956365,
+    "seen": 1793495730.717511,
+    "ast_hash": "535154076c698e151ce859d2e1a64acd",
+    "semantic_hash": "535154076c698e151ce859d2e1a64acd"
+  },
+  "Packages/core-main-main/Runtime/Process/ProcessState.cs": {
+    "mtime": 1793494180.4956365,
+    "seen": 1793495730.7175117,
+    "ast_hash": "ebcc97f5ce06a55ffe56596b12c3369c",
+    "semantic_hash": "ebcc97f5ce06a55ffe56596b12c3369c"
+  },
+  "Packages/core-main-main/Runtime/Process/Sample/CountDownProcess.cs": {
+    "mtime": 1793494180.4966378,
+    "seen": 1793495730.7175121,
+    "ast_hash": "a9a5febfc01434b6dc2d4516978ca0a4",
+    "semantic_hash": "a9a5febfc01434b6dc2d4516978ca0a4"
+  },
+  "Packages/core-main-main/Runtime/Process/Sample/CountDownProcessPause.cs": {
+    "mtime": 1793494180.4966378,
+    "seen": 1793495730.7175126,
+    "ast_hash": "dadda0f87ca77135974a25b0a5f7fa66",
+    "semantic_hash": "dadda0f87ca77135974a25b0a5f7fa66"
+  },
+  "Packages/core-main-main/Runtime/Process/Sample/FadeInProcess.cs": {
+    "mtime": 1793494180.4966378,
+    "seen": 1793495730.7175136,
+    "ast_hash": "304b4f4b94fe9af11f99105c5557f171",
+    "semantic_hash": "304b4f4b94fe9af11f99105c5557f171"
+  },
+  "Packages/core-main-main/Runtime/Process/Sample/FadeOutProcess.cs": {
+    "mtime": 1793494180.4966378,
+    "seen": 1793495730.717514,
+    "ast_hash": "5bdcf2d05a23895e1c8925d05038ad13",
+    "semantic_hash": "5bdcf2d05a23895e1c8925d05038ad13"
+  },
+  "Packages/core-main-main/Runtime/Process/Sample/InterpolateProcess.cs": {
+    "mtime": 1793494180.4976366,
+    "seen": 1793495730.7175145,
+    "ast_hash": "e3c68740b299e3bf23b18b28cf4b43a2",
+    "semantic_hash": "e3c68740b299e3bf23b18b28cf4b43a2"
+  },
+  "Packages/core-main-main/Runtime/Process/Sample/LinearInterpolateProcess.cs": {
+    "mtime": 1793494180.4976366,
+    "seen": 1793495730.7175152,
+    "ast_hash": "8023030a6946f40d9ff6de3a7111b11c",
+    "semantic_hash": "8023030a6946f40d9ff6de3a7111b11c"
+  },
+  "Packages/core-main-main/Runtime/Process/Sample/SpriteFadeProcess.cs": {
+    "mtime": 1793494180.4976366,
+    "seen": 1793495730.7175157,
+    "ast_hash": "fe9001c1aa9708aff2f733c4593d9151",
+    "semantic_hash": "fe9001c1aa9708aff2f733c4593d9151"
+  },
+  "Packages/core-main-main/Runtime/Process/Sample/TimedProcess.cs": {
+    "mtime": 1793494180.498637,
+    "seen": 1793495730.7175162,
+    "ast_hash": "658cf16755c0808c902a2e7ac9698a0d",
+    "semantic_hash": "658cf16755c0808c902a2e7ac9698a0d"
+  },
+  "Packages/core-main-main/Runtime/Process/Sample/TranformInterpolateProcess.cs": {
+    "mtime": 1793494180.498637,
+    "seen": 1793495730.7175171,
+    "ast_hash": "fc8f94144d45e58662dfb1e9b7a2c3a3",
+    "semantic_hash": "fc8f94144d45e58662dfb1e9b7a2c3a3"
+  },
+  "Packages/core-main-main/Runtime/Process/Sample/TransformInterpolateProcess.cs": {
+    "mtime": 1793494180.498637,
+    "seen": 1793495730.7175176,
+    "ast_hash": "8f57edc61203deb634c91d2be91d434f",
+    "semantic_hash": "8f57edc61203deb634c91d2be91d434f"
+  },
+  "Packages/core-main-main/Runtime/Process/Sample/TransformMoveXProcess.cs": {
+    "mtime": 1793494180.498637,
+    "seen": 1793495730.7175183,
+    "ast_hash": "6c741638ee9559b0fe74f855f0d9cd34",
+    "semantic_hash": "6c741638ee9559b0fe74f855f0d9cd34"
+  },
+  "Packages/core-main-main/Runtime/Process/Sample/TransformScaleProcess.cs": {
+    "mtime": 1793494180.499637,
+    "seen": 1793495730.7175188,
+    "ast_hash": "35b5021847282daa3856cfc21940fce8",
+    "semantic_hash": "35b5021847282daa3856cfc21940fce8"
+  },
+  "Packages/core-main-main/Runtime/Process/Sample/Vector3InterpolateProcess.cs": {
+    "mtime": 1793494180.499637,
+    "seen": 1793495730.7175195,
+    "ast_hash": "c588264089d456d3706b66d70ba7637b",
+    "semantic_hash": "c588264089d456d3706b66d70ba7637b"
+  },
+  "Packages/core-main-main/Runtime/Singletons/PrefabAttribute.cs": {
+    "mtime": 1793494180.500637,
+    "seen": 1793495730.7175202,
+    "ast_hash": "0497de08b2917156069262c1c3373ab8",
+    "semantic_hash": "0497de08b2917156069262c1c3373ab8"
+  },
+  "Packages/core-main-main/Runtime/Singletons/SerializedSingleton.cs": {
+    "mtime": 1793494180.500637,
+    "seen": 1793495730.7175207,
+    "ast_hash": "a07df3b49dec924d371f926b1dcf1216",
+    "semantic_hash": "a07df3b49dec924d371f926b1dcf1216"
+  },
+  "Packages/core-main-main/Runtime/Singletons/Singleton.cs": {
+    "mtime": 1793494180.500637,
+    "seen": 1793495730.7175212,
+    "ast_hash": "9f6b07e81e078809a8a0e183aad7cdfa",
+    "semantic_hash": "9f6b07e81e078809a8a0e183aad7cdfa"
+  },
+  "Packages/core-main-main/Runtime/Singletons/SingletonAttribute.cs": {
+    "mtime": 1793494180.500637,
+    "seen": 1793495730.717522,
+    "ast_hash": "c2f60e54816502e95aa6d44863276b88",
+    "semantic_hash": "c2f60e54816502e95aa6d44863276b88"
+  },
+  "Packages/core-main-main/Runtime/TickableManager/ITickable.cs": {
+    "mtime": 1793494180.501637,
+    "seen": 1793495730.7175224,
+    "ast_hash": "674967ee405b6377f2cd9c0271b9fc3c",
+    "semantic_hash": "674967ee405b6377f2cd9c0271b9fc3c"
+  },
+  "Packages/core-main-main/Runtime/TickableManager/TickManager.cs": {
+    "mtime": 1793494180.501637,
+    "seen": 1793495730.717523,
+    "ast_hash": "dfaab7b8cd6e919fe365fa81407b85e0",
+    "semantic_hash": "dfaab7b8cd6e919fe365fa81407b85e0"
+  },
+  "Packages/core-main-main/Runtime/TickableManager/TickableBehaviour.cs": {
+    "mtime": 1793494180.501637,
+    "seen": 1793495730.7175238,
+    "ast_hash": "84f8eb0db5c4e54da88574ec2c9a88fc",
+    "semantic_hash": "84f8eb0db5c4e54da88574ec2c9a88fc"
+  },
+  "Packages/core-main-main/Runtime/UnbiasedTime/UnbiasedTime.cs": {
+    "mtime": 1793494180.502637,
+    "seen": 1793495730.7175245,
+    "ast_hash": "839318cd68c540ba1047c4dcf1da5b60",
+    "semantic_hash": "839318cd68c540ba1047c4dcf1da5b60"
+  },
+  "Packages/core-main-main/Runtime/Utils/AutoReferencer.cs": {
+    "mtime": 1793494180.502637,
+    "seen": 1793495730.717525,
+    "ast_hash": "0da991a4674ad54d7da8406c09724653",
+    "semantic_hash": "0da991a4674ad54d7da8406c09724653"
+  },
+  "Packages/core-main-main/Runtime/Utils/CameraTools.cs": {
+    "mtime": 1793494180.5036378,
+    "seen": 1793495730.7175257,
+    "ast_hash": "d01eff53a29b92e0e4b970d04011aa97",
+    "semantic_hash": "d01eff53a29b92e0e4b970d04011aa97"
+  },
+  "Packages/core-main-main/Runtime/Utils/ColorUtils.cs": {
+    "mtime": 1793494180.5036378,
+    "seen": 1793495730.7175264,
+    "ast_hash": "79e0cf90de704f0cdead65667649b477",
+    "semantic_hash": "79e0cf90de704f0cdead65667649b477"
+  },
+  "Packages/core-main-main/Runtime/Utils/DeviceUtils.cs": {
+    "mtime": 1793494180.5046372,
+    "seen": 1793495730.7175272,
+    "ast_hash": "5eaed99a204913942f18fe3bbf847902",
+    "semantic_hash": "5eaed99a204913942f18fe3bbf847902"
+  },
+  "Packages/core-main-main/Runtime/Utils/DisplayMetricsAndroid.cs": {
+    "mtime": 1793494180.5046372,
+    "seen": 1793495730.7175276,
+    "ast_hash": "8c5b29a9b3e053a107dccdbb946c9a5e",
+    "semantic_hash": "8c5b29a9b3e053a107dccdbb946c9a5e"
+  },
+  "Packages/core-main-main/Runtime/Utils/EmailValidator.cs": {
+    "mtime": 1793494180.5046372,
+    "seen": 1793495730.7175283,
+    "ast_hash": "c821de052a5f2be7ece106c91ac5e404",
+    "semantic_hash": "c821de052a5f2be7ece106c91ac5e404"
+  },
+  "Packages/core-main-main/Runtime/Utils/EncryptionUtils.cs": {
+    "mtime": 1793494180.5046372,
+    "seen": 1793495730.717531,
+    "ast_hash": "848bbdb86bc5d27bf36d3e5e233e339f",
+    "semantic_hash": "848bbdb86bc5d27bf36d3e5e233e339f"
+  },
+  "Packages/core-main-main/Runtime/Utils/GameHelper.cs": {
+    "mtime": 1793494180.505637,
+    "seen": 1793495730.7175314,
+    "ast_hash": "aab72af7e27470e1167220c4ee56cf99",
+    "semantic_hash": "aab72af7e27470e1167220c4ee56cf99"
+  },
+  "Packages/core-main-main/Runtime/Utils/IPValidator.cs": {
+    "mtime": 1793494180.505637,
+    "seen": 1793495730.7175322,
+    "ast_hash": "e434d9fb941193589db0da1961a690d0",
+    "semantic_hash": "e434d9fb941193589db0da1961a690d0"
+  },
+  "Packages/core-main-main/Runtime/Utils/MathUtils.cs": {
+    "mtime": 1793494180.505637,
+    "seen": 1793495730.7175329,
+    "ast_hash": "3e5c1f80fa505c04b084cca690a3e39b",
+    "semantic_hash": "3e5c1f80fa505c04b084cca690a3e39b"
+  },
+  "Packages/core-main-main/Runtime/Utils/NumberConverter.cs": {
+    "mtime": 1793494180.505637,
+    "seen": 1793495730.7175336,
+    "ast_hash": "382cf84ce4fe8c5ed3127f1619c4b7a0",
+    "semantic_hash": "382cf84ce4fe8c5ed3127f1619c4b7a0"
+  },
+  "Packages/core-main-main/Runtime/Utils/Pair.cs": {
+    "mtime": 1793494180.5066366,
+    "seen": 1793495730.7175343,
+    "ast_hash": "d3562a1899fd69fb100af701db3c021c",
+    "semantic_hash": "d3562a1899fd69fb100af701db3c021c"
+  },
+  "Packages/core-main-main/Runtime/Utils/ReflectionUtils.cs": {
+    "mtime": 1793494180.5066366,
+    "seen": 1793495730.717535,
+    "ast_hash": "abd5cd1e86b9c6712632cabf0973242b",
+    "semantic_hash": "abd5cd1e86b9c6712632cabf0973242b"
+  },
+  "Packages/core-main-main/Runtime/Utils/RuntimeAssetUtils.cs": {
+    "mtime": 1793494180.5066366,
+    "seen": 1793495730.7175355,
+    "ast_hash": "e881243c0e9ec0dd43ac2bbf42d37c74",
+    "semantic_hash": "e881243c0e9ec0dd43ac2bbf42d37c74"
+  },
+  "Packages/core-main-main/Runtime/Utils/TimeUtils.cs": {
+    "mtime": 1793494180.5066366,
+    "seen": 1793495730.7175362,
+    "ast_hash": "da169df054704966c1b6470df22f64d8",
+    "semantic_hash": "da169df054704966c1b6470df22f64d8"
+  },
+  "Packages/core-main-main/Runtime/Utils/Vector3Utils.cs": {
+    "mtime": 1793494180.5066366,
+    "seen": 1793495730.717537,
+    "ast_hash": "31a5d225ae223c7b47a9ebf45689e1a5",
+    "semantic_hash": "31a5d225ae223c7b47a9ebf45689e1a5"
+  },
+  "Packages/core-main-main/Runtime/Utils/VibrationUtils.cs": {
+    "mtime": 1793494180.5076368,
+    "seen": 1793495730.7175376,
+    "ast_hash": "74679157e45aa11fd1cfa4fe3cae3248",
+    "semantic_hash": "74679157e45aa11fd1cfa4fe3cae3248"
+  },
+  "Packages/core-main-main/Runtime/Utils/WaitUtils.cs": {
+    "mtime": 1793494180.5076368,
+    "seen": 1793495730.7175384,
+    "ast_hash": "badb4bf730457d6c4fc2c51ffe4df367",
+    "semantic_hash": "badb4bf730457d6c4fc2c51ffe4df367"
+  },
+  "Packages/core-main-main/Runtime/WeightedRandomizer/WeightedChance.cs": {
+    "mtime": 1793494180.5086372,
+    "seen": 1793495730.7175388,
+    "ast_hash": "5ecab68705a231f8e7b8a3b1d29852b2",
+    "semantic_hash": "5ecab68705a231f8e7b8a3b1d29852b2"
+  },
+  "Packages/core-main-main/Runtime/WeightedRandomizer/WeightedRandomizer.cs": {
+    "mtime": 1793494180.5086372,
+    "seen": 1793495730.7175393,
+    "ast_hash": "b825e300639b11361eef4170d7e0d48c",
+    "semantic_hash": "b825e300639b11361eef4170d7e0d48c"
+  },
+  "Packages/core-main-main/package.json": {
+    "mtime": 1793494180.5086372,
+    "seen": 1793495730.71754,
+    "ast_hash": "0c8266a69876f1ff2caa7b48b1a65410",
+    "semantic_hash": "0c8266a69876f1ff2caa7b48b1a65410"
+  }
+}

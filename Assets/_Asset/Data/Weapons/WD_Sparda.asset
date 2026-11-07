@@ -405,6 +405,8 @@ MonoBehaviour:
       - {x: 0.08628152, y: 0.10213882, z: 0.9899977, w: -0.04504884}
       Weight: 0.5837085
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes: []
     - Name: 3 Combo #2
       Clip: {fileID: 7400000, guid: b80c913343c01f14096d7ce299c388df, type: 3}
       StateName: Sparda_3Combo_2
@@ -673,6 +675,8 @@ MonoBehaviour:
       - {x: 0.08628164, y: 0.10213886, z: 0.98999745, w: -0.045049068}
       Weight: 0.9176887
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes: []
     - Name: 3 Combo #3
       Clip: {fileID: 7400000, guid: 1c2a95287b4f93b44bc3a4a3270c0c16, type: 3}
       StateName: Sparda_3Combo_3
@@ -1021,6 +1025,8 @@ MonoBehaviour:
       - {x: 0.086281694, y: 0.10213881, z: 0.98999727, w: -0.04504902}
       Weight: 0.9320353
       IsFinisher: 1
+      SlamTime: -1
+      KickTimes: []
   - Name: 4 Combo A
     Context: 0
     Steps:
@@ -1308,6 +1314,8 @@ MonoBehaviour:
       - {x: 0.086281724, y: 0.1021388, z: 0.9899974, w: -0.04504891}
       Weight: 0.54915357
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes: []
     - Name: 4 Combo A #2
       Clip: {fileID: 7400000, guid: 2190a69795dd9344aa1c2a0acc351a28, type: 3}
       StateName: Sparda_4ComboA_2
@@ -1593,6 +1601,8 @@ MonoBehaviour:
       - {x: 0.086281694, y: 0.102138676, z: 0.9899973, w: -0.04504901}
       Weight: 0.708149
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes: []
     - Name: 4 Combo A #3
       Clip: {fileID: 7400000, guid: 789accfdbdd57ce4ba3a794ab0e0a8a7, type: 3}
       StateName: Sparda_4ComboA_3
@@ -1862,6 +1872,8 @@ MonoBehaviour:
       - {x: 0.08628172, y: 0.10213878, z: 0.9899973, w: -0.045048963}
       Weight: 0.5819372
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes: []
     - Name: 4 Combo A #4
       Clip: {fileID: 7400000, guid: d563f10e8e203744f9f14df93869f6bb, type: 3}
       StateName: Sparda_4ComboA_4
@@ -2211,6 +2223,8 @@ MonoBehaviour:
       - {x: 0.08628182, y: 0.10213871, z: 0.9899975, w: -0.045048967}
       Weight: 0.6655553
       IsFinisher: 1
+      SlamTime: 0.25
+      KickTimes: []
   - Name: 4 Combo B
     Context: 0
     Steps:
@@ -2538,6 +2552,8 @@ MonoBehaviour:
       - {x: 0.08628175, y: 0.10213912, z: 0.9899975, w: -0.04504926}
       Weight: 0.9183057
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes: []
     - Name: 4 Combo B #2
       Clip: {fileID: 7400000, guid: 2190a69795dd9344aa1c2a0acc351a28, type: 3}
       StateName: Sparda_4ComboB_2
@@ -2823,6 +2839,8 @@ MonoBehaviour:
       - {x: 0.086281784, y: 0.1021389, z: 0.98999727, w: -0.045049135}
       Weight: 0.7081489
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes: []
     - Name: 4 Combo B #3
       Clip: {fileID: 7400000, guid: 789accfdbdd57ce4ba3a794ab0e0a8a7, type: 3}
       StateName: Sparda_4ComboB_3
@@ -3092,6 +3110,8 @@ MonoBehaviour:
       - {x: 0.0862819, y: 0.10213885, z: 0.9899974, w: -0.045049008}
       Weight: 0.58193725
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes: []
     - Name: 4 Combo B #4
       Clip: {fileID: 7400000, guid: d563f10e8e203744f9f14df93869f6bb, type: 3}
       StateName: Sparda_4ComboB_4
@@ -3441,6 +3461,8 @@ MonoBehaviour:
       - {x: 0.08628177, y: 0.10213872, z: 0.9899975, w: -0.045049056}
       Weight: 0.6655553
       IsFinisher: 1
+      SlamTime: 0.25
+      KickTimes: []
   - Name: 7 Combo
     Context: 0
     Steps:
@@ -3817,6 +3839,8 @@ MonoBehaviour:
       - {x: 0.086281545, y: 0.10213897, z: 0.9899976, w: -0.045049265}
       Weight: 0.60722816
       IsFinisher: 0
+      SlamTime: 0.41666663
+      KickTimes: []
     - Name: 7 Combo #2
       Clip: {fileID: 7400000, guid: 8be3e9637cdec3a409bdfe9a18dc78a1, type: 3}
       StateName: Sparda_7Combo_2
@@ -4133,6 +4157,8 @@ MonoBehaviour:
       - {x: 0.08628162, y: 0.10213852, z: 0.9899972, w: -0.0450488}
       Weight: 0.7371358
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes: []
     - Name: 7 Combo #3
       Clip: {fileID: 7400000, guid: 08d72b7f9d2ed9340bde002e411cf806, type: 3}
       StateName: Sparda_7Combo_3
@@ -4569,6 +4595,8 @@ MonoBehaviour:
       - {x: 0.08628187, y: 0.10213881, z: 0.98999745, w: -0.045049172}
       Weight: 0.7786587
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes: []
     - Name: 7 Combo #4
       Clip: {fileID: 1827226128182048838, guid: 26ed62de90b9db74aa52cf8dd29d7424, type: 3}
       StateName: Sparda_7Combo_4
@@ -5037,6 +5065,8 @@ MonoBehaviour:
       - {x: 0.08611518, y: 0.09806559, z: 0.99047303, w: -0.043940447}
       Weight: 0.47601306
       IsFinisher: 0
+      SlamTime: 0.3
+      KickTimes: []
     - Name: 7 Combo #5
       Clip: {fileID: 7400000, guid: c86e29772c0bf3e49a9863c20f7b1c59, type: 3}
       StateName: Sparda_7Combo_5
@@ -5434,6 +5464,8 @@ MonoBehaviour:
       - {x: 0.08628186, y: 0.10213866, z: 0.9899972, w: -0.04504892}
       Weight: 0.53089446
       IsFinisher: 0
+      SlamTime: 0.22222221
+      KickTimes: []
     - Name: 7 Combo #6
       Clip: {fileID: 7400000, guid: d8aede77b827fe14b97dee8895cab9a5, type: 3}
       StateName: Sparda_7Combo_6
@@ -5854,6 +5886,8 @@ MonoBehaviour:
       - {x: 0.0862818, y: 0.10213883, z: 0.9899972, w: -0.04504913}
       Weight: 0.86473656
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes: []
     - Name: 7 Combo #7
       Clip: {fileID: 7400000, guid: a49d110b3c2651a4194e2d5e58436d13, type: 3}
       StateName: Sparda_7Combo_7
@@ -6450,6 +6484,8 @@ MonoBehaviour:
       - {x: 0.08628175, y: 0.10213859, z: 0.9899973, w: -0.045049004}
       Weight: 0.8780983
       IsFinisher: 1
+      SlamTime: -1
+      KickTimes: []
   - Name: Dash Attack A
     Context: 1
     Steps:
@@ -6746,6 +6782,8 @@ MonoBehaviour:
       - {x: 0.08628153, y: 0.10213878, z: 0.9899974, w: -0.045049265}
       Weight: 0.61815035
       IsFinisher: 1
+      SlamTime: -1
+      KickTimes: []
   - Name: Dash Attack B
     Context: 1
     Steps:
@@ -7017,6 +7055,8 @@ MonoBehaviour:
       - {x: 0.08628185, y: 0.10213883, z: 0.9899973, w: -0.045049228}
       Weight: 1
       IsFinisher: 1
+      SlamTime: -1
+      KickTimes: []
   - Name: Air Combo
     Context: 2
     Steps:
@@ -7368,6 +7408,10 @@ MonoBehaviour:
       - {x: 0.0862816, y: 0.10213886, z: 0.98999727, w: -0.045049362}
       Weight: 0.77113676
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes:
+      - 0.1
+      - 0.375
     - Name: Air Combo #2
       Clip: {fileID: 7400000, guid: c6682b74c650f464abf152cff106cad8, type: 3}
       StateName: Sparda_AirCombo_2
@@ -7732,6 +7776,9 @@ MonoBehaviour:
       - {x: 0.08628171, y: 0.10213873, z: 0.9899973, w: -0.045049146}
       Weight: 0.68531513
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes:
+      - 0.13414633
     - Name: Air Combo #3
       Clip: {fileID: 7400000, guid: 22ea65b02571b944dab02df23d4069f4, type: 3}
       StateName: Sparda_AirCombo_3
@@ -8056,6 +8103,9 @@ MonoBehaviour:
       - {x: 0.086281724, y: 0.102138996, z: 0.9899974, w: -0.045048747}
       Weight: 0.91817737
       IsFinisher: 1
+      SlamTime: -1
+      KickTimes:
+      - 0.13513514
   - Name: Launcher
     Context: 3
     Steps:
@@ -8712,6 +8762,8 @@ MonoBehaviour:
       - {x: 0.08627348, y: 0.10211858, z: 0.98999935, w: -0.04505829}
       Weight: 0.5147051
       IsFinisher: 1
+      SlamTime: -1
+      KickTimes: []
   - Name: Skill A
     Context: 4
     Steps:
@@ -9119,6 +9171,8 @@ MonoBehaviour:
       - {x: 0.08628182, y: 0.10213883, z: 0.9899971, w: -0.0450492}
       Weight: 0.83287907
       IsFinisher: 1
+      SlamTime: -1
+      KickTimes: []
   - Name: Skill B
     Context: 4
     Steps:
@@ -9502,6 +9556,8 @@ MonoBehaviour:
       - {x: 0.08628168, y: 0.102138944, z: 0.9899975, w: -0.045049336}
       Weight: 0.6508433
       IsFinisher: 1
+      SlamTime: -1
+      KickTimes: []
   - Name: Skill C
     Context: 4
     Steps:
@@ -10102,6 +10158,8 @@ MonoBehaviour:
       - {x: 0.086281896, y: 0.10213899, z: 0.98999745, w: -0.04504901}
       Weight: 0.5332215
       IsFinisher: 1
+      SlamTime: -1
+      KickTimes: []
   - Name: Skill D
     Context: 4
     Steps:
@@ -10477,6 +10535,10 @@ MonoBehaviour:
       - {x: 0.08628167, y: 0.1021385, z: 0.9899972, w: -0.045049317}
       Weight: 0.6120856
       IsFinisher: 1
+      SlamTime: 0.26190475
+      KickTimes:
+      - 0.45238093
+      - 0.6904761
   - Name: Skill E
     Context: 4
     Steps:
@@ -10952,6 +11014,8 @@ MonoBehaviour:
       - {x: 0.08628177, y: 0.102138795, z: 0.9899974, w: -0.045048885}
       Weight: 0.48616752
       IsFinisher: 1
+      SlamTime: -1
+      KickTimes: []
   - Name: Skill F
     Context: 4
     Steps:
@@ -11424,6 +11488,9 @@ MonoBehaviour:
       - {x: 0.08628203, y: 0.10213871, z: 0.9899972, w: -0.045049116}
       Weight: 0.6490224
       IsFinisher: 1
+      SlamTime: 0.34545454
+      KickTimes:
+      - 0.3090909
   - Name: Skill H
     Context: 4
     Steps:
@@ -11831,6 +11898,8 @@ MonoBehaviour:
       - {x: 0.0862817, y: 0.10213876, z: 0.98999715, w: -0.04504895}
       Weight: 0.69654775
       IsFinisher: 1
+      SlamTime: 0.38297874
+      KickTimes: []
   - Name: Skill I
     Context: 4
     Steps:
@@ -12238,6 +12307,8 @@ MonoBehaviour:
       - {x: 0.08628139, y: 0.10213909, z: 0.9899975, w: -0.04504925}
       Weight: 0.731804
       IsFinisher: 1
+      SlamTime: -1
+      KickTimes: []
   - Name: Skill K
     Context: 4
     Steps:
@@ -12749,6 +12820,9 @@ MonoBehaviour:
       - {x: 0.08628163, y: 0.10213897, z: 0.98999757, w: -0.045049407}
       Weight: 0.5857873
       IsFinisher: 1
+      SlamTime: -1
+      KickTimes:
+      - 0.21666667
   - Name: Skill L
     Context: 4
     Steps:
@@ -13303,6 +13377,9 @@ MonoBehaviour:
       - {x: 0.08628171, y: 0.10213886, z: 0.98999727, w: -0.045049254}
       Weight: 0.6148955
       IsFinisher: 1
+      SlamTime: 0.4923077
+      KickTimes:
+      - 0.4153846
   - Name: Skill G
     Context: 4
     Steps:
@@ -13726,6 +13803,8 @@ MonoBehaviour:
       - {x: 0.086273834, y: 0.102118954, z: 0.98999965, w: -0.045058284}
       Weight: 0.90087956
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes: []
     - Name: Skill G #2
       Clip: {fileID: 7400000, guid: 883ce4f3a06dcaf46854f40759547a67, type: 3}
       StateName: Sparda_SkillG_2
@@ -14163,6 +14242,9 @@ MonoBehaviour:
       - {x: 0.08627332, y: 0.1021187, z: 0.98999965, w: -0.045058373}
       Weight: 0.6307034
       IsFinisher: 1
+      SlamTime: -1
+      KickTimes:
+      - 0.16
   - Name: Skill J
     Context: 4
     Steps:
@@ -14715,3 +14797,5 @@ MonoBehaviour:
       - {x: 0.08628196, y: 0.1021384, z: 0.9899973, w: -0.045048986}
       Weight: 0.77965796
       IsFinisher: 1
+      SlamTime: 0.4307692
+      KickTimes: []

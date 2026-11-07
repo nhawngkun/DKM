@@ -88,6 +88,7 @@ public class PlayerIK : MonoBehaviour
 
     private Animator _animator;
     private CharController _character;
+    private PlayerBodyDynamics _bodyDynamics;
     private Collider[] _ownColliders;
     private readonly RaycastHit[] _hits = new RaycastHit[8];
     private int _ikLayer = -1;
@@ -107,6 +108,11 @@ public class PlayerIK : MonoBehaviour
     {
         _character = character;
         _ownColliders = character.GetComponentsInChildren<Collider>();
+        if (_animator == null) _animator = GetComponent<Animator>();
+        if (_animator == null || !_animator.isHuman) return;
+        _bodyDynamics = GetComponent<PlayerBodyDynamics>();
+        if (_bodyDynamics == null) _bodyDynamics = gameObject.AddComponent<PlayerBodyDynamics>();
+        _bodyDynamics.Init(character);
     }
 
     private void Awake()
@@ -133,6 +139,7 @@ public class PlayerIK : MonoBehaviour
     /// <summary>Chạy sau Animator + IK: ngẩng ngực/đầu để mặt về TargetFacePitch.</summary>
     private void LateUpdate()
     {
+        if (_bodyDynamics != null) _bodyDynamics.Solve();
         UpdateGroundClamp();
         UpdateHeadLevel();
     }

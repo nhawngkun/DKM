@@ -32,6 +32,10 @@ public class CameraFollow : MonoBehaviour
     public float ObstructionCheckRadius = 0.2f;
     public LayerMask ObstructionLayers = -1;
     public float ObstructionSharpness = 10000f;
+    [Tooltip("Vật nhỏ theo phương ngang (cột, đèn đá, cây...) dưới kích thước này (m) không đẩy camera vào sát lưng nhân vật")]
+    public float ThinObstacleSize = 2.2f;
+    [Tooltip("Tốc độ camera lùi ra lại sau khi hết vướng: chậm để không bị giật ra giật vào")]
+    public float ObstructionRecoverySharpness = 3f;
     public List<Collider> IgnoredColliders = new List<Collider>();
 
     [Header("Safe Zone")]
@@ -130,7 +134,8 @@ public class CameraFollow : MonoBehaviour
 
         for (int i = 0; i < _obstructionCount; i++)
         {
-            bool isIgnored = false;
+            Vector3 obstructionSize = _obstructions[i].collider.bounds.size;
+            bool isIgnored = Mathf.Max(obstructionSize.x, obstructionSize.z) < ThinObstacleSize;
             for (int j = 0; j < IgnoredColliders.Count; j++)
             {
                 if (IgnoredColliders[j] == _obstructions[i].collider) { isIgnored = true; break; }
@@ -149,7 +154,8 @@ public class CameraFollow : MonoBehaviour
         else
         {
             _distanceIsObstructed = false;
-            _currentDistance = Mathf.Lerp(_currentDistance, dynamicTargetDistance, 1f - Mathf.Exp(-DistanceMovementSharpness * deltaTime));
+            float distanceSharpness = dynamicTargetDistance > _currentDistance ? ObstructionRecoverySharpness : DistanceMovementSharpness;
+            _currentDistance = Mathf.Lerp(_currentDistance, dynamicTargetDistance, 1f - Mathf.Exp(-distanceSharpness * deltaTime));
         }
 
         // ---------------- FINAL POSITION + FRAMING + SAFE ZONE ----------------

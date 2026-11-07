@@ -24,10 +24,23 @@ public static class WeaponComboBuilder
     private const string GunBone = "ik_hand_gun";
     private const string OutputFolder = "Assets/_Asset/Data/Weapons";
     private const string WeaponModelFolder = "Assets/_Asset/Prefab/Weapons";
-    private const string ControllerPath = "Assets/_Asset/Animation/Player/Dante 1.controller";
-    private const string LayerName = "WeaponAttack";
+    public const string ControllerPath = "Assets/_Asset/Animation/Player/Dante 1.controller";
+    public const string LayerName = "WeaponAttack";
+    public const string LibraryPath = "Assets/_Asset/Data/WeaponLibrary.asset";
     private const string EmptyStateName = "Empty";
     private const float AnalysisRate = 60f;
+    private const float SlamHeight = 0.3f;          // mũi kiếm thấp hơn độ cao này (m) mới tính chạm đất
+    private const float SlamMinDownSpeed = 6f;      // đang lao xuống ít nhất bấy nhiêu m/s
+    private const float SlamMinVerticalRatio = 0.65f; // loại nhát quét ngang / chém chéo đi sát đất
+    private const float SlamMinDrop = 0.9f;         // rơi ít nhất bấy nhiêu m trong SlamDropWindow giây trước đó
+    private const float SlamDropWindow = 0.3f;
+    private const float SlamStopWindow = 0.1f;      // sau khi chạm, xét bấy nhiêu giây kế tiếp
+    private const float SlamBounce = 0.2f;          // kiếm được nảy lên tối đa bấy nhiêu m
+    private const float SlamMaxSpeedAfter = 0.4f;   // tốc độ còn lại so với lúc chạm
+    private const float KickMinSpeed = 8f;          // tốc độ bàn chân so với hông (m/s)
+    private const float KickMaxBelowHips = 0.3f;    // bàn chân phải nhấc lên, cách hông không quá bấy nhiêu m theo chiều dọc
+    private const float KickMinReach = 0.55f;       // chân duỗi ra xa hông theo chiều ngang (co gối lúc nhảy không tính)
+    private const float KickMinSpacing = 0.2f;      // 2 cú đá cách nhau ít nhất bấy nhiêu giây
 
     private class StepDef
     {
@@ -53,16 +66,24 @@ public static class WeaponComboBuilder
         public string Model;    // model Dante cầm trong game, null = dùng Prefab
         public string IdleClip;
         public float ComboResetTime;
+        public int AnimSetId;
         public List<ChainDef> Chains = new List<ChainDef>();
     }
 
     [MenuItem("Tools/Combat/Build Weapon Combos")]
     public static void BuildAll()
     {
+        WeaponLibrary library = FindLibrary();
+        if (library == null)
+        {
+            Debug.LogError("[WeaponComboBuilder] Chưa có WeaponLibrary. Mở Tools/Combat/Timing Window > tab 'Bộ anim & Vũ khí' > Tạo từ code.");
+            return;
+        }
+
         List<WeaponData> built = new List<WeaponData>();
         try
         {
-            foreach (WeaponDef def in Definitions())
+            foreach (WeaponDef def in Definitions(library))
             {
                 built.Add(BuildWeapon(def));
             }
@@ -75,6 +96,152 @@ public static class WeaponComboBuilder
             EditorUtility.ClearProgressBar();
             if (AnimationMode.InAnimationMode()) AnimationMode.StopAnimationMode();
         }
+    }
+
+    // chỉ cập nhật SlamTime và KickTimes, không đụng Animator và các mốc đã chỉnh tay
+    [MenuItem("Tools/Combat/Bake Slam And Kick Times")]
+    public static void BakeSlamAndKickTimes()
+    {
+        WeaponLibrary library = FindLibrary();
+        if (library == null)
+        {
+            Debug.LogError("[WeaponComboBuilder] Chưa có WeaponLibrary. Mở Tools/Combat/Timing Window > tab 'Bộ anim & Vũ khí' > Tạo từ code.");
+            return;
+        }
+
+        try
+        {
+            foreach (WeaponDef def in Definitions(library))
+            {
+                WeaponData data = AssetDatabase.LoadAssetAtPath<WeaponData>($"{OutputFolder}/WD_{def.Key}.asset");
+                if (data == null)
+                {
+                    Debug.LogWarning($"[WeaponComboBuilder] Chưa có WD_{def.Key}, chạy Build Weapon Combos trước");
+                    continue;
+                }
+
+                Dictionary<string, AnimationClip> clips = IndexClips(def.AnimFolder);
+                List<string> slams = new List<string>();
+                List<string> kicks = new List<string>();
+                using (Rig rig = new Rig(string.IsNullOrEmpty(def.Prefab) ? null : AssetDatabase.LoadAssetAtPath<GameObject>(def.Prefab)))
+                {
+                    foreach (ChainDef chainDef in def.Chains)
+                    {
+                        ComboChain chain = data.Chains.Find(c => c.Name == chainDef.Name);
+                        if (chain == null) continue;
+                        for (int i = 0; i < chainDef.Steps.Count && i < chain.Steps.Count; i++)
+                        {
+                            AttackStep step = chain.Steps[i];
+                            StepDef stepDef = chainDef.Steps[i];
+                            AnimationClip rootClip = step.Clip;
+                            if (stepDef.Root != null && clips.TryGetValue(stepDef.Root, out AnimationClip found)) rootClip = found;
+                            AnimationClip gripClip = HasGunCurve(step.Clip) ? step.Clip : (HasGunCurve(rootClip) ? rootClip : null);
+                            step.SlamTime = chain.Context == AttackContext.Air || chain.Context == AttackContext.Launcher
+                                ? -1f
+                                : FindSlamTime(SampleTips(rig, step.Clip, gripClip), step.Clip.length);
+                            if (step.SlamTime >= 0f) slams.Add($"{step.Name}@{step.SlamTime:F2}");
+                            step.KickTimes = FindKickTimes(rig, step.Clip);
+                            if (step.KickTimes.Count > 0) kicks.Add($"{step.Name}@{string.Join("/", step.KickTimes.Select(k => k.ToString("F2")))}");
+                        }
+                    }
+                }
+                EditorUtility.SetDirty(data);
+                Debug.Log($"[WeaponComboBuilder] {def.DisplayName} đòn đập đất: {(slams.Count > 0 ? string.Join(", ", slams) : "không có")}");
+                Debug.Log($"[WeaponComboBuilder] {def.DisplayName} đòn đá: {(kicks.Count > 0 ? string.Join(", ", kicks) : "không có")}");
+            }
+            AssetDatabase.SaveAssets();
+        }
+        finally
+        {
+            if (AnimationMode.InAnimationMode()) AnimationMode.StopAnimationMode();
+        }
+    }
+
+    // đo so với hông để bước chân/lướt thân không bị tính là đá; lấy đỉnh tốc độ của bàn chân đang nhấc cao
+    private static List<float> FindKickTimes(Rig rig, AnimationClip clip)
+    {
+        int frames = Mathf.Max(2, Mathf.CeilToInt(clip.length * AnalysisRate) + 1);
+        Vector3[][] feet = new Vector3[2][] { new Vector3[frames], new Vector3[frames] };
+        for (int f = 0; f < frames; f++)
+        {
+            rig.Sample(clip, Mathf.Min(f / AnalysisRate, clip.length), null);
+            rig.FootOffsets(out feet[0][f], out feet[1][f]);
+        }
+
+        List<int> peaks = new List<int>();
+        int ignore = Mathf.Max(3, Mathf.RoundToInt(frames * 0.08f));
+        int tail = frames - Mathf.Max(3, Mathf.RoundToInt(frames * 0.1f));
+        foreach (Vector3[] foot in feet)
+        {
+            for (int f = ignore; f < tail; f++)
+            {
+                float speed = SmoothedSpeed(foot, f);
+                if (speed < KickMinSpeed || foot[f].y < -KickMaxBelowHips) continue;
+                if (new Vector2(foot[f].x, foot[f].z).magnitude < KickMinReach) continue;
+                if (speed < SmoothedSpeed(foot, f - 1) || speed < SmoothedSpeed(foot, f + 1)) continue;
+                if (peaks.Any(p => Mathf.Abs(p - f) / AnalysisRate < KickMinSpacing)) continue;
+                peaks.Add(f);
+            }
+        }
+        peaks.Sort();
+        return peaks.Select(f => Mathf.Min(f / AnalysisRate, clip.length) / clip.length).ToList();
+    }
+
+    private static float SmoothedSpeed(Vector3[] points, int frame)
+    {
+        int from = Mathf.Max(frame - 2, 0);
+        int to = Mathf.Min(frame + 2, points.Length - 1);
+        return (points[to] - points[from]).magnitude * AnalysisRate / Mathf.Max(to - from, 1);
+    }
+
+    private static Vector3[] SampleTips(Rig rig, AnimationClip clip, AnimationClip gripClip)
+    {
+        int frames = Mathf.Max(2, Mathf.CeilToInt(clip.length * AnalysisRate) + 1);
+        Vector3[] tips = new Vector3[frames];
+        for (int f = 0; f < frames; f++)
+        {
+            rig.Sample(clip, Mathf.Min(f / AnalysisRate, clip.length), gripClip);
+            tips[f] = rig.TipLocal();
+        }
+        return tips;
+    }
+
+    private static float FindSlamTime(Vector3[] tips, float length)
+    {
+        int ignore = Mathf.RoundToInt(tips.Length * 0.08f); // đoạn đầu clip còn đang blend từ tư thế trước
+        for (int f = Mathf.Max(1, ignore); f < tips.Length; f++)
+        {
+            float down = (tips[f - 1].y - tips[f].y) * AnalysisRate;
+            float speed = (tips[f - 1] - tips[f]).magnitude * AnalysisRate;
+            if (tips[f].y > SlamHeight || down < SlamMinDownSpeed || down < speed * SlamMinVerticalRatio) continue;
+            if (!CameFromAbove(tips, f) || !StopsOnGround(tips, f, speed)) continue;
+            return Mathf.Min(f / AnalysisRate, length) / length;
+        }
+        return -1f;
+    }
+
+    // phải là cú bổ từ trên xuống, không phải kiếm đang đi sát đất
+    private static bool CameFromAbove(Vector3[] tips, int frame)
+    {
+        int window = Mathf.RoundToInt(SlamDropWindow * AnalysisRate);
+        for (int f = Mathf.Max(0, frame - window); f < frame; f++)
+        {
+            if (tips[f].y - tips[frame].y >= SlamMinDrop) return true;
+        }
+        return false;
+    }
+
+    // đập thật thì kiếm khựng lại và nằm sát đất, chém xuyên qua thì vẫn đi tiếp hoặc vung lên ngay
+    private static bool StopsOnGround(Vector3[] tips, int frame, float impactSpeed)
+    {
+        int window = Mathf.RoundToInt(SlamStopWindow * AnalysisRate);
+        if (frame + window >= tips.Length) return false;
+        for (int f = frame + 1; f <= frame + window; f++)
+        {
+            if (tips[f].y > SlamHeight + SlamBounce) return false;
+        }
+        float speedAfter = (tips[frame + window] - tips[frame + window - 1]).magnitude * AnalysisRate;
+        return speedAfter <= impactSpeed * SlamMaxSpeedAfter;
     }
 
     // ------------------------------------------------------------------
@@ -138,11 +305,100 @@ public static class WeaponComboBuilder
         yield return greatSword;
     }
 
+    // ------------------------------------------------------------------
+    // Thư viện vũ khí: nguồn dữ liệu thật là asset WeaponLibrary.
+    // Bảng hard-code ở trên chỉ dùng để Import lần đầu; thêm vũ khí mới = sửa asset,
+    // không sửa code.
+    // ------------------------------------------------------------------
+
+    public static WeaponLibrary FindLibrary()
+    {
+        WeaponLibrary direct = AssetDatabase.LoadAssetAtPath<WeaponLibrary>(LibraryPath);
+        if (direct != null) return direct;
+        string[] guids = AssetDatabase.FindAssets("t:WeaponLibrary");
+        return guids.Length == 0 ? null : AssetDatabase.LoadAssetAtPath<WeaponLibrary>(AssetDatabase.GUIDToAssetPath(guids[0]));
+    }
+
+    [MenuItem("Tools/Combat/Import Weapon Library From Code")]
+    public static WeaponLibrary CreateLibraryFromCode()
+    {
+        Directory.CreateDirectory(OutputFolder);
+        WeaponLibrary existing = AssetDatabase.LoadAssetAtPath<WeaponLibrary>(LibraryPath);
+        if (existing != null) AssetDatabase.DeleteAsset(LibraryPath);
+
+        WeaponLibrary library = ScriptableObject.CreateInstance<WeaponLibrary>();
+        int animSetId = 0;
+        foreach (WeaponDef def in Definitions())
+        {
+            WeaponDefinition definition = new WeaponDefinition
+            {
+                Type = def.Type,
+                Key = def.Key,
+                DisplayName = def.DisplayName,
+                AnimFolder = def.AnimFolder,
+                Prefab = AssetDatabase.LoadAssetAtPath<GameObject>(def.Prefab),
+                Model = def.Model != null ? AssetDatabase.LoadAssetAtPath<GameObject>(def.Model) : null,
+                IdleClip = def.IdleClip,
+                ComboResetTime = def.ComboResetTime,
+                AnimSetId = animSetId++,
+            };
+            foreach (ChainDef chain in def.Chains)
+            {
+                WeaponChainDefinition chainDefinition = new WeaponChainDefinition { Name = chain.Name, Context = chain.Context };
+                foreach (StepDef step in chain.Steps)
+                {
+                    chainDefinition.Steps.Add(new WeaponStepDefinition { Clip = step.Clip, Root = step.Root, Vertical = step.Vertical });
+                }
+                definition.Chains.Add(chainDefinition);
+            }
+            library.Weapons.Add(definition);
+        }
+
+        AssetDatabase.CreateAsset(library, LibraryPath);
+        AssetDatabase.SaveAssets();
+        Debug.Log("[WeaponComboBuilder] Đã tạo " + LibraryPath + " từ bảng trong code.");
+        return library;
+    }
+
+    private static IEnumerable<WeaponDef> Definitions(WeaponLibrary library)
+    {
+        foreach (WeaponDefinition source in library.Weapons)
+        {
+            if (string.IsNullOrEmpty(source.Key) || string.IsNullOrEmpty(source.AnimFolder))
+            {
+                Debug.LogError($"[WeaponComboBuilder] Vũ khí '{source.DisplayName}' thiếu Key hoặc AnimFolder — bỏ qua.");
+                continue;
+            }
+
+            WeaponDef def = new WeaponDef
+            {
+                Type = source.Type,
+                Key = source.Key,
+                DisplayName = source.DisplayName,
+                AnimFolder = source.AnimFolder,
+                Prefab = source.Prefab != null ? AssetDatabase.GetAssetPath(source.Prefab) : null,
+                Model = source.Model != null ? AssetDatabase.GetAssetPath(source.Model) : null,
+                IdleClip = source.IdleClip,
+                ComboResetTime = source.ComboResetTime,
+                AnimSetId = source.AnimSetId,
+            };
+            foreach (WeaponChainDefinition chain in source.Chains)
+            {
+                ChainDef chainDef = new ChainDef { Name = chain.Name, Context = chain.Context };
+                foreach (WeaponStepDefinition step in chain.Steps)
+                {
+                    chainDef.Steps.Add(new StepDef { Clip = step.Clip, Root = string.IsNullOrEmpty(step.Root) ? null : step.Root, Vertical = step.Vertical });
+                }
+                def.Chains.Add(chainDef);
+            }
+            yield return def;
+        }
+    }
+
     private static ChainDef Combo(string name, string prefix, int count)
     {
         return ComboNamed(name, prefix, Enumerable.Range(1, count).Select(i => i.ToString()).ToArray());
     }
-
     private static ChainDef ComboNamed(string name, string prefix, params string[] parts)
     {
         ChainDef chain = new ChainDef { Name = name, Context = AttackContext.Ground };
@@ -208,7 +464,7 @@ public static class WeaponComboBuilder
 
         Dictionary<string, AnimationClip> clips = IndexClips(def.AnimFolder);
         if (BakeHeightIntoPose(def, clips)) clips = IndexClips(def.AnimFolder);
-        GameObject weaponPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(def.Prefab);
+        GameObject weaponPrefab = string.IsNullOrEmpty(def.Prefab) ? null : AssetDatabase.LoadAssetAtPath<GameObject>(def.Prefab);
 
         using (Rig rig = new Rig(weaponPrefab))
         {
@@ -217,6 +473,7 @@ public static class WeaponComboBuilder
             GameObject model = def.Model != null ? AssetDatabase.LoadAssetAtPath<GameObject>(def.Model) : null;
             data.WeaponPrefab = model != null ? model : weaponPrefab;
             data.ComboResetTime = def.ComboResetTime;
+            data.AnimSetId = def.AnimSetId;
 
             if (clips.TryGetValue(def.IdleClip, out AnimationClip idle))
             {
@@ -263,6 +520,7 @@ public static class WeaponComboBuilder
                     }
 
                     swing[step] = Analyze(rig, step, clip, rootClip);
+                    if (chainDef.Context == AttackContext.Air || chainDef.Context == AttackContext.Launcher) step.SlamTime = -1f;
                     maxSwing = Mathf.Max(maxSwing, swing[step]);
                     chain.Steps.Add(step);
                 }
@@ -361,7 +619,6 @@ public static class WeaponComboBuilder
         int frames = Mathf.Max(2, Mathf.CeilToInt(length * AnalysisRate) + 1);
         // Đổi chỉ số frame đã phân tích (lấy mẫu mỗi 1/AnalysisRate giây) sang normalized time đúng của clip
         float Norm(int f) => Mathf.Min(f / AnalysisRate, length) / length;
-        Vector3[] tips = new Vector3[frames];
         int gripCount = Mathf.CeilToInt(length * WeaponData.RootSampleRate) + 1;
         step.GripPositions = new Vector3[gripCount];
         step.GripRotations = new Quaternion[gripCount];
@@ -369,12 +626,9 @@ public static class WeaponComboBuilder
         // Clip Inplace của vài đòn thiếu curve xương vũ khí -> lấy cách cầm từ bản root motion (cùng động tác)
         AnimationClip gripClip = HasGunCurve(clip) ? clip : (HasGunCurve(rootClip) ? rootClip : null);
 
-        for (int f = 0; f < frames; f++)
-        {
-            float t = Mathf.Min(f / AnalysisRate, length);
-            rig.Sample(clip, t, gripClip);
-            tips[f] = rig.TipLocal();
-        }
+        Vector3[] tips = SampleTips(rig, clip, gripClip);
+        step.SlamTime = FindSlamTime(tips, length);
+        step.KickTimes = FindKickTimes(rig, clip);
 
         for (int g = 0; g < gripCount; g++)
         {
@@ -676,6 +930,14 @@ public static class WeaponComboBuilder
                 pose[i] = _poseBones[i] != null ? _gHips.InverseTransformPoint(_poseBones[i].position) / _gScale : Vector3.zero;
             }
             return pose;
+        }
+
+        /// <summary>Hai bàn chân so với hông theo không gian model (chia humanScale), không xoay theo hông.</summary>
+        public void FootOffsets(out Vector3 left, out Vector3 right)
+        {
+            Vector3 hips = _grrrru.transform.InverseTransformPoint(_gHips.position);
+            left = (_grrrru.transform.InverseTransformPoint(_poseBones[2].position) - hips) / _gScale;
+            right = (_grrrru.transform.InverseTransformPoint(_poseBones[3].position) - hips) / _gScale;
         }
 
         public Vector3 TipLocal()

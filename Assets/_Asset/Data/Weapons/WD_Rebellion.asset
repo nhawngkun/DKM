@@ -373,6 +373,8 @@ MonoBehaviour:
       - {x: -0.23597322, y: 0.19853234, z: -0.63691074, w: 0.7065742}
       Weight: 0.81860584
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes: []
     - Name: 3 Combo #2
       Clip: {fileID: 7400000, guid: 0faafc763f001ca4d95fcc89fcc40111, type: 3}
       StateName: Rebellion_3Combo_2
@@ -689,6 +691,8 @@ MonoBehaviour:
       - {x: -0.23597296, y: 0.1985319, z: -0.6369111, w: 0.70657414}
       Weight: 0.70127755
       IsFinisher: 0
+      SlamTime: 0.25714284
+      KickTimes: []
     - Name: 3 Combo #3
       Clip: {fileID: 7400000, guid: f1449fb106a8289428aa593db4bedb1e, type: 3}
       StateName: Rebellion_3Combo_3
@@ -1302,6 +1306,8 @@ MonoBehaviour:
       - {x: -0.23597305, y: 0.19853199, z: -0.6369113, w: 0.70657396}
       Weight: 0.7164641
       IsFinisher: 1
+      SlamTime: -1
+      KickTimes: []
   - Name: 4 Combo
     Context: 0
     Steps:
@@ -1621,6 +1627,8 @@ MonoBehaviour:
       - {x: -0.23597299, y: 0.19853215, z: -0.6369114, w: 0.7065741}
       Weight: 0.98669493
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes: []
     - Name: 4 Combo #2
       Clip: {fileID: 7400000, guid: 23a3a31954df1c44aaaad4b2bcc0eec6, type: 3}
       StateName: Rebellion_4Combo_2
@@ -1937,6 +1945,8 @@ MonoBehaviour:
       - {x: -0.23597305, y: 0.19853207, z: -0.63691145, w: 0.7065741}
       Weight: 0.70409364
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes: []
     - Name: 4 Combo #3
       Clip: {fileID: 7400000, guid: c5e14bed6fb6ce14eb126584b6865385, type: 3}
       StateName: Rebellion_4Combo_3
@@ -2205,6 +2215,8 @@ MonoBehaviour:
       - {x: -0.23597297, y: 0.19853194, z: -0.6369113, w: 0.7065739}
       Weight: 0.53198767
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes: []
     - Name: 4 Combo #4
       Clip: {fileID: 7400000, guid: b244784cf0b076a42ad2a1b059f4a8dd, type: 3}
       StateName: Rebellion_4Combo_4
@@ -2441,6 +2453,8 @@ MonoBehaviour:
       - {x: -0.23597285, y: 0.19853227, z: -0.636911, w: 0.70657396}
       Weight: 0.6177165
       IsFinisher: 1
+      SlamTime: -1
+      KickTimes: []
   - Name: 5 Combo
     Context: 0
     Steps:
@@ -2736,6 +2750,8 @@ MonoBehaviour:
       - {x: -0.23597318, y: 0.19853222, z: -0.6369111, w: 0.70657414}
       Weight: 0.95801675
       IsFinisher: 0
+      SlamTime: 0.28787878
+      KickTimes: []
     - Name: 5 Combo #2
       Clip: {fileID: 7400000, guid: 2dd5bf9f252aa904db0af56d8273e07c, type: 3}
       StateName: Rebellion_5Combo_2
@@ -2972,6 +2988,8 @@ MonoBehaviour:
       - {x: -0.23597308, y: 0.19853197, z: -0.63691103, w: 0.70657426}
       Weight: 0.7877866
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes: []
     - Name: 5 Combo #3
       Clip: {fileID: 7400000, guid: 7f46598d4cc8dfd49b2196a1f2c4927b, type: 3}
       StateName: Rebellion_5Combo_3
@@ -3370,6 +3388,8 @@ MonoBehaviour:
       - {x: -0.23597315, y: 0.1985321, z: -0.6369108, w: 0.7065744}
       Weight: 0.34291172
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes: []
     - Name: 5 Combo #4
       Clip: {fileID: 7400000, guid: 3474f59a4c3e93a49a81a7c67caf0869, type: 3}
       StateName: Rebellion_5Combo_4
@@ -3971,6 +3991,9 @@ MonoBehaviour:
       - {x: -0.23597297, y: 0.19853209, z: -0.6369107, w: 0.70657396}
       Weight: 0.27284086
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes:
+      - 0.3642857
     - Name: 5 Combo #5
       Clip: {fileID: 7400000, guid: cfcf1746a8ac3d246bf56c1eb543ba8b, type: 3}
       StateName: Rebellion_5Combo_5
@@ -4409,6 +4432,8 @@ MonoBehaviour:
       - {x: -0.23597318, y: 0.19853221, z: -0.63691086, w: 0.7065741}
       Weight: 0.6590448
       IsFinisher: 1
+      SlamTime: -1
+      KickTimes: []
   - Name: Dash Attack A
     Context: 1
     Steps:
@@ -4728,6 +4753,8 @@ MonoBehaviour:
       - {x: -0.24112245, y: 0.20363267, z: -0.6372707, w: 0.70305103}
       Weight: 0.5900346
       IsFinisher: 1
+      SlamTime: -1
+      KickTimes: []
   - Name: Dash Attack B
     Context: 1
     Steps:
@@ -4999,6 +5026,8 @@ MonoBehaviour:
       - {x: -0.24112256, y: 0.20363264, z: -0.63727105, w: 0.7030508}
       Weight: 0.7224025
       IsFinisher: 1
+      SlamTime: -1
+      KickTimes: []
   - Name: Air Combo
     Context: 2
     Steps:
@@ -5351,6 +5380,8 @@ MonoBehaviour:
       - {x: -0.235973, y: 0.1985318, z: -0.63691115, w: 0.7065743}
       Weight: 0.77325386
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes: []
     - Name: Air Combo #2
       Clip: {fileID: 7400000, guid: 784cdf2e0a625ae488661025068dc4bb, type: 3}
       StateName: Rebellion_AirCombo_2
@@ -5620,6 +5651,8 @@ MonoBehaviour:
       - {x: -0.23597293, y: 0.19853188, z: -0.63691103, w: 0.7065737}
       Weight: 0.5926079
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes: []
     - Name: Air Combo #3
       Clip: {fileID: 7400000, guid: 42cb0a1435110a44791d012fcc847486, type: 3}
       StateName: Rebellion_AirCombo_3
@@ -5992,6 +6025,8 @@ MonoBehaviour:
       - {x: -0.23597293, y: 0.1985318, z: -0.6369112, w: 0.7065741}
       Weight: 0.5696317
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes: []
     - Name: Air Combo #4
       Clip: {fileID: 7400000, guid: 623645921eee85042ac05b8e2887634c, type: 3}
       StateName: Rebellion_AirCombo_4
@@ -6340,6 +6375,8 @@ MonoBehaviour:
       - {x: -0.23597322, y: 0.19853166, z: -0.63691103, w: 0.7065742}
       Weight: 0.5705146
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes: []
     - Name: Air Combo #5
       Clip: {fileID: 7400000, guid: f609a4e15a1325f4b8a48bded09c1a4f, type: 3}
       StateName: Rebellion_AirCombo_5
@@ -6656,6 +6693,8 @@ MonoBehaviour:
       - {x: -0.23597327, y: 0.19853188, z: -0.6369113, w: 0.7065739}
       Weight: 0.61733264
       IsFinisher: 0
+      SlamTime: -1
+      KickTimes: []
     - Name: Air Combo #6
       Clip: {fileID: 7400000, guid: dbb0ad6757a747945a85c623623566c8, type: 3}
       StateName: Rebellion_AirCombo_6
@@ -7052,6 +7091,9 @@ MonoBehaviour:
       - {x: -0.2359732, y: 0.19853187, z: -0.6369112, w: 0.706574}
       Weight: 0.72634536
       IsFinisher: 1
+      SlamTime: -1
+      KickTimes:
+      - 0.15555555
   - Name: Launcher
     Context: 3
     Steps:
@@ -7691,6 +7733,8 @@ MonoBehaviour:
       - {x: -0.23597316, y: 0.19853199, z: -0.63691115, w: 0.706574}
       Weight: 0.64640766
       IsFinisher: 1
+      SlamTime: -1
+      KickTimes: []
   - Name: Skill A
     Context: 4
     Steps:
@@ -8091,6 +8135,8 @@ MonoBehaviour:
       - {x: -0.23597303, y: 0.19853212, z: -0.6369111, w: 0.70657426}
       Weight: 0.97380805
       IsFinisher: 1
+      SlamTime: -1
+      KickTimes: []
   - Name: Skill B
     Context: 4
     Steps:
@@ -8533,6 +8579,8 @@ MonoBehaviour:
       - {x: -0.23597313, y: 0.19853184, z: -0.6369115, w: 0.70657426}
       Weight: 0.50325406
       IsFinisher: 1
+      SlamTime: -1
+      KickTimes: []
   - Name: Skill C
     Context: 4
     Steps:
@@ -8974,6 +9022,8 @@ MonoBehaviour:
       - {x: -0.23597322, y: 0.19853206, z: -0.63691115, w: 0.70657396}
       Weight: 0.63951457
       IsFinisher: 1
+      SlamTime: 0.92999995
+      KickTimes: []
   - Name: Skill D
     Context: 4
     Steps:
@@ -9527,6 +9577,8 @@ MonoBehaviour:
       - {x: -0.23597325, y: 0.1985322, z: -0.636911, w: 0.70657414}
       Weight: 0.9803901
       IsFinisher: 1
+      SlamTime: 0.5230769
+      KickTimes: []
   - Name: Skill E
     Context: 4
     Steps:
@@ -9879,6 +9931,8 @@ MonoBehaviour:
       - {x: -0.23597339, y: 0.19853202, z: -0.636911, w: 0.706574}
       Weight: 0.69840777
       IsFinisher: 1
+      SlamTime: -1
+      KickTimes: []
   - Name: Skill F
     Context: 4
     Steps:
@@ -10318,6 +10372,8 @@ MonoBehaviour:
       - {x: -0.23597302, y: 0.19853197, z: -0.6369112, w: 0.70657414}
       Weight: 0.7656784
       IsFinisher: 1
+      SlamTime: -1
+      KickTimes: []
   - Name: Skill G
     Context: 4
     Steps:
@@ -10863,6 +10919,9 @@ MonoBehaviour:
       - {x: -0.23597322, y: 0.1985321, z: -0.63691115, w: 0.7065742}
       Weight: 0.6855568
       IsFinisher: 1
+      SlamTime: 0.5079365
+      KickTimes:
+      - 0.38095236
   - Name: Skill I
     Context: 4
     Steps:
@@ -11398,6 +11457,8 @@ MonoBehaviour:
       - {x: -0.23597309, y: 0.1985325, z: -0.63691086, w: 0.7065741}
       Weight: 1
       IsFinisher: 1
+      SlamTime: 0.3145161
+      KickTimes: []
   - Name: Skill H
     Context: 4
     Steps:
@@ -11999,6 +12060,8 @@ MonoBehaviour:
       - {x: -0.23597291, y: 0.19853213, z: -0.6369111, w: 0.7065743}
       Weight: 0.73629296
       IsFinisher: 0
+      SlamTime: 0.33802816
+      KickTimes: []
     - Name: Skill H #2
       Clip: {fileID: 7400000, guid: d20fe5e5ee766a24a878c8aeb047db69, type: 3}
       StateName: Rebellion_SkillH_2
@@ -12598,3 +12661,5 @@ MonoBehaviour:
       - {x: -0.2359728, y: 0.19853216, z: -0.63691074, w: 0.7065745}
       Weight: 0.7356886
       IsFinisher: 1
+      SlamTime: 0.33802816
+      KickTimes: []

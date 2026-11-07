@@ -65,6 +65,10 @@ public class AttackStep
     [Header("Cảm giác đòn")]
     [Range(0f, 1f)] public float Weight = 0.5f;   // 0 = đòn nhẹ, 1 = đòn nặng nhất của vũ khí
     public bool IsFinisher;
+    [Tooltip("Normalized time mũi kiếm đập xuống đất (tự phân tích, chỉnh tay được). -1 = đòn này không đập đất")]
+    public float SlamTime = -1f;
+    [Tooltip("Các normalized time chân đá mạnh nhất (tự phân tích, chỉnh tay được). Rỗng = đòn này không đá")]
+    public List<float> KickTimes = new List<float>();
 
     public float Length => Clip != null ? Clip.length : 1f;
 }

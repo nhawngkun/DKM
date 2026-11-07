@@ -1,165 +1,128 @@
-﻿using UnityEngine;
+using System;
+using UnityEngine;
+
+public enum LocoState
+{
+    Idle, IdleTurnL90, IdleTurnR90, IdleTurn180,
+    Loop, Strafe,
+    StartWalk, StartJog, StartRun,
+    StartWalkL90, StartWalkR90, StartJogL90, StartJogR90, StartRunL90, StartRunR90,
+    StartWalk180, StartJog180, StartRun180,
+    StopWalk, StopRun, StopFast,
+    TurnWalkL90, TurnWalkR90, TurnJogL90, TurnJogR90,
+    TurnWalk180, TurnJog180, TurnRun180,
+    JumpStart, JumpLoop, JumpEnd, AirJumpStart, AirJumpLoop, AirJumpEnd,
+    DodgeFront, DodgeBack, DodgeLeft, DodgeRight, RunDodgeLeft, RunDodgeRight,
+    CrouchEnter, CrouchMove,
+}
+
+public static class LocoStates
+{
+    public const int Layer = 0;
+    // Danh sách prefix do tool sinh ra từ AnimSetLibrary (LocoSetPrefixes.Generated.cs), thứ tự khớp WeaponData.AnimSetId
+    public static readonly string[] SetPrefixes = LocoSetPrefixes.Values;
+    private static readonly int[,] Hashes = BuildHashes();
+
+    public static int Hash(int set, LocoState state) => Hashes[set, (int)state];
+
+    private static int[,] BuildHashes()
+    {
+        string[] names = Enum.GetNames(typeof(LocoState));
+        int[,] hashes = new int[SetPrefixes.Length, names.Length];
+        for (int set = 0; set < SetPrefixes.Length; set++)
+        {
+            for (int i = 0; i < names.Length; i++) hashes[set, i] = Animator.StringToHash(SetPrefixes[set] + names[i]);
+        }
+        return hashes;
+    }
+}
 
 public class CharacterAnim : MonoBehaviour
 {
     public Animator animator;
-    [Tooltip("Thời gian làm mượt Move_X/Move_Y (giây). 0 = giật theo input")]
-    public float LocomotionDampTime = 0.1f;
-    public bool isMove;
-    public bool isRun;
-    public bool isGrounded;
-    
+    public bool towardMove = true; // true = quay theo hướng chạy, false = strafe (PlayerIK đọc)
+    public float DefaultFade = 0.18f;
+    public float GaitDampTime = 0.2f;
+    public float DirectionDampTime = 0.12f;
 
-    public float _IdleId;
-    [Tooltip("Thời gian blend idle khi đổi vũ khí (giây)")]
-    public float IdleBlendTime = 0.25f;
+    public AnimatorRootMotion RootMotion { get; private set; }
+    private PoseBlend _poseBlend;
 
-    [Header("Idle thường (ngoài chiến đấu)")]
-    public bool inCombat;
-    [Tooltip("Số clip trong blend tree idle thường")]
-    public int NormalIdleCount = 3;
-    public float NormalIdleMinTime = 8f;
-    public float NormalIdleMaxTime = 15f;
-    public float CombatBlendTime = 0.3f;
-    private int _normalIdleId;
-    private float _normalIdleTimer;
+    private int _set;
+    private float _gait = 1f;
+    private float _moveX;
+    private float _moveY;
+    private bool _poseCaptured;
 
-    public float _MoveId;
-    public float _RunId;
-   
-
-
-    public float _moveX;
-    public float _moveY;
-
-    [Header("Locomotion")]
-    public float moveSpeed;          // m/s thật -> blend Walk / Run / RunFast
-    public float moveAnimSpeed = 1f; // hệ số phát anim để bước chân khớp tốc độ (anim là Inplace)
-    public bool towardMove = true;   // true = chạy tự do (quay theo hướng chạy), false = strafe 8 hướng (lock-on)
-    public float SpeedDampTime = 0.15f;
-
-    [Header("Air")]
-    public string JumpLayerName = "Jump";
-    [Tooltip("State vòng lặp trên không của từng bộ anim nhảy (index = WeaponData.AnimSetId)")]
-    public string[] JumpLoopStates = { "Jump_Loop_ZeroHeight", "GS_Jump_Loop" };
-    private int _animSet;
-
-    [Header("Dash")]
-    public string DashLayerName = "Dash";
-    public float DashCancelFade = 0.05f;
-    private static readonly int DashEmptyState = Animator.StringToHash("New State");
-
-
-    public void Update()
+    private void Awake()
     {
-        UpdateNormalIdle();
-        ApplyToAnimator();
+        RootMotion = animator.GetComponent<AnimatorRootMotion>();
+        if (RootMotion == null) Debug.LogError("[CharacterAnim] Thiếu AnimatorRootMotion trên Animator. Chạy Tools/Combat/Build Locomotion Animator.", this);
+        _poseBlend = animator.GetComponent<PoseBlend>();
+        if (_poseBlend == null) Debug.LogError("[CharacterAnim] Thiếu PoseBlend trên Animator. Chạy Tools/Combat/Build Locomotion Animator.", this);
+        animator.applyRootMotion = true;
     }
 
-    /// <summary>Đổi idle thường khi hết thời gian, hoặc khi vừa chạy xong dừng lại.</summary>
-    private void UpdateNormalIdle()
-    {
-        if (isMove || inCombat)
-        {
-            _normalIdleTimer = 0f;
-            return;
-        }
-        _normalIdleTimer -= Time.deltaTime;
-        if (_normalIdleTimer > 0f) return;
-
-        _normalIdleTimer = Random.Range(NormalIdleMinTime, NormalIdleMaxTime);
-        if (NormalIdleCount > 1)
-        {
-            _normalIdleId = (_normalIdleId + Random.Range(1, NormalIdleCount)) % NormalIdleCount;
-        }
-    }
-    public void Dash()
-    {
-        animator.SetTrigger(AnimatorParameters.DASHING);
-    }
-    public void EndDash()
-    {
-        animator.SetTrigger(AnimatorParameters.END_DASH);
-    }
-    /// <summary>Nhảy hủy dash: tắt nhanh layer Dash để anim nhảy hiện ra ngay.</summary>
-    public void CancelDash()
-    {
-        int layer = animator.GetLayerIndex(DashLayerName);
-        if (layer < 0) { EndDash(); return; }
-        animator.ResetTrigger(AnimatorParameters.DASHING);
-        animator.CrossFadeInFixedTime(DashEmptyState, DashCancelFade, layer);
-    }
-    public void Jump()
-    {
-        animator.ResetTrigger(AnimatorParameters.ON_LANDING);
-        animator.SetTrigger(AnimatorParameters.JUMP);
-    }
-    public void AirJump()
-    {
-        animator.SetTrigger(AnimatorParameters.DOUBLE_JUMP);
-        OnGround(false);
-    }
-    /// <summary>Rơi tự do không qua nhảy (sau đòn hất tung / air combo): vào thẳng vòng lặp trên không.</summary>
-    public void Fall()
-    {
-        int layer = animator.GetLayerIndex(JumpLayerName);
-        if (layer < 0 || JumpLoopStates.Length == 0) return;
-        string state = JumpLoopStates[Mathf.Clamp(_animSet, 0, JumpLoopStates.Length - 1)];
-        animator.CrossFadeInFixedTime(Animator.StringToHash(state), 0.15f, layer);
-        OnGround(false);
-    }
-
-    /// <summary>Đổi bộ anim idle/nhảy theo vũ khí đang cầm.</summary>
-    public void SetWeapon(int animSet, float idleId)
-    {
-        _animSet = animSet;
-        _IdleId = idleId;
-        animator.SetInteger(AnimatorParameters.WEAPON_ID, animSet);
-    }
-
-    public void OnLanding()
-    {
-        animator.SetTrigger(AnimatorParameters.ON_LANDING);
-        animator.ResetTrigger(AnimatorParameters.JUMP);
-        animator.ResetTrigger(AnimatorParameters.DOUBLE_JUMP);
-    }
-
-    public void OnGround(bool value)
-    {
-        if (isGrounded == value) return;
-        isGrounded = value;
-        animator.SetBool(AnimatorParameters.IS_GROUND, isGrounded);
-    }
-
-
-    public bool ChangeOrientation(bool method)
-    {
-        animator.SetBool(AnimatorParameters.TOWARD_MOVE, method);
-        return method;
-    }
-
-    public  void ApplyToAnimator()
+    private void Update()
     {
         float deltaTime = Time.deltaTime;
-        animator.SetFloat(AnimatorParameters.MOVE__X, _moveX, LocomotionDampTime, deltaTime);
-        animator.SetFloat(AnimatorParameters.MOVE__Y, _moveY, LocomotionDampTime, deltaTime);
-        animator.SetFloat(AnimatorParameters.IDLE_ID, _IdleId, IdleBlendTime, deltaTime);
-        animator.SetFloat(AnimatorParameters.NORMAL_IDLE_ID, _normalIdleId, IdleBlendTime, deltaTime);
-        animator.SetFloat(AnimatorParameters.IN_COMBAT, inCombat ? 1f : 0f, CombatBlendTime, deltaTime);
-        animator.SetFloat(AnimatorParameters.MOVE_ID, _MoveId, 0f, deltaTime);
-        animator.SetBool(AnimatorParameters.IS_MOVE, isMove);
-        animator.SetFloat(AnimatorParameters.MOVE_SPEED, moveSpeed, SpeedDampTime, deltaTime);
-        animator.SetFloat(AnimatorParameters.MOVE_ANIM_SPEED, moveAnimSpeed, SpeedDampTime, deltaTime);
-        animator.SetBool(AnimatorParameters.TOWARD_MOVE, towardMove);
+        animator.SetFloat(AnimatorParameters.GAIT, _gait, GaitDampTime, deltaTime);
+        animator.SetFloat(AnimatorParameters.MOVE__X, _moveX, DirectionDampTime, deltaTime);
+        animator.SetFloat(AnimatorParameters.MOVE__Y, _moveY, DirectionDampTime, deltaTime);
     }
 
+    public void SetGait(float gait) => _gait = gait;
 
-
-
-    public void Move(float horizontalInput)
+    public void SetDirection(float x, float y)
     {
-        isMove = horizontalInput != 0;
-        animator.SetBool(AnimatorParameters.IS_MOVE, isMove);
+        _moveX = x;
+        _moveY = y;
     }
 
+    // đổi bộ anim giữa chừng thì phát lại state hiện tại của bộ mới để không kẹt ở bộ cũ
+    public void SetWeapon(int animSet, LocoState current)
+    {
+        if (animSet < 0 || animSet >= LocoStates.SetPrefixes.Length)
+        {
+            Debug.LogError($"[CharacterAnim] WeaponData.AnimSetId không hợp lệ: {animSet}", this);
+            return;
+        }
+        if (_set == animSet) return;
+        _set = animSet;
+        Play(current);
+    }
+
+    public bool HasState(LocoState state) => animator.HasState(LocoStates.Layer, LocoStates.Hash(_set, state));
+
+    public void Play(LocoState state, float fade = -1f)
+    {
+        animator.CrossFadeInFixedTime(LocoStates.Hash(_set, state), fade < 0f ? DefaultFade : fade, LocoStates.Layer);
+    }
+
+    // gọi trước khi xoay motor: pose phải được chụp lúc còn đúng hướng cũ
+    public void CapturePose()
+    {
+        if (_poseBlend != null) _poseBlend.Capture();
+        _poseCaptured = true;
+    }
+
+    // chuyển tức thì: dùng sau khi xoay motor bù góc đã bake trong pose, crossfade sẽ quay lộn cả người
+    public void PlayInstant(LocoState state)
+    {
+        if (_poseBlend != null && !_poseCaptured) _poseBlend.Capture();
+        _poseCaptured = false;
+        animator.Play(LocoStates.Hash(_set, state), LocoStates.Layer, 0f);
+    }
+
+    // < 0 khi animator chưa vào state này (crossfade vừa gọi, chưa tới frame cập nhật)
+    public float GetStateProgress(LocoState state, out float remainingSeconds)
+    {
+        AnimatorStateInfo info = animator.IsInTransition(LocoStates.Layer)
+            ? animator.GetNextAnimatorStateInfo(LocoStates.Layer)
+            : animator.GetCurrentAnimatorStateInfo(LocoStates.Layer);
+        remainingSeconds = float.MaxValue;
+        if (info.shortNameHash != LocoStates.Hash(_set, state)) return -1f;
+        remainingSeconds = (1f - info.normalizedTime) * info.length;
+        return info.normalizedTime;
+    }
 }

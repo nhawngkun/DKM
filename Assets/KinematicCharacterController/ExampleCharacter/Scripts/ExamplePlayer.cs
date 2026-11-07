@@ -17,6 +17,8 @@ namespace KinematicCharacterController.Examples
 
         PlayerCharacterInputs characterInputs;
         private LockOnTarget _cameraLockTarget; // mục tiêu lock-on đã báo cho camera (chỉ gọi camera khi đổi)
+        private static readonly float[] KeyboardGaitScales = { 1f, 0.6f, 0.3f };
+        private int _keyboardGaitIndex;
 
         private void Start()
         {
@@ -140,6 +142,12 @@ namespace KinematicCharacterController.Examples
                 moveRight = Keyboard.current.dKey.isPressed ? 1f :
                             Keyboard.current.aKey.isPressed ? -1f : 0f;
 
+                // V = đổi tốc độ phím: chạy -> jog -> đi (như đẩy stick nhẹ dần)
+                if (Keyboard.current.vKey.wasPressedThisFrame) _keyboardGaitIndex = (_keyboardGaitIndex + 1) % KeyboardGaitScales.Length;
+                Vector2 keyboardMove = Vector2.ClampMagnitude(new Vector2(moveRight, moveForward), 1f) * KeyboardGaitScales[_keyboardGaitIndex];
+                moveRight = keyboardMove.x;
+                moveForward = keyboardMove.y;
+
                 jumpDown |= Keyboard.current.spaceKey.wasPressedThisFrame;
                 crouchDown |= Keyboard.current.cKey.wasPressedThisFrame;
                 crouchUp |= Keyboard.current.cKey.wasReleasedThisFrame;
@@ -193,7 +201,8 @@ namespace KinematicCharacterController.Examples
 
             characterInputs.MoveAxisForward = moveForward;
             characterInputs.MoveAxisRight = moveRight;
-            characterInputs.CameraRotation = CharacterCamera.transform.rotation;
+            // lấy hướng gốc, không lấy transform: cinematic/shake/roll không được bẻ hướng đi
+            characterInputs.CameraRotation = CharacterCamera.Focus.CurrentRotation;
             characterInputs.JumpDown = jumpDown;
             characterInputs.CrouchDown = crouchDown;
             characterInputs.CrouchUp = crouchUp;

@@ -37,6 +37,9 @@ public class CameraController : MonoBehaviour
     public void TriggerFovKick() => Effects.TriggerFovKick();
     public void TriggerSlowMotion(float scale, float duration) => Effects.TriggerSlowMotion(scale, duration);
     public void CancelSlowMotion() => Effects.CancelSlowMotion();
+    public void TriggerHitStop(float duration, float scale) => Effects.TriggerHitStop(duration, scale);
+    public void TriggerImpactPulse(float strength) => Effects.TriggerImpactPulse(strength);
+    public void TriggerCinematic(Vector3 focus, Vector3 attackDirection) => Effects.TriggerCinematic(focus, attackDirection);
 
     /// <param name="rotationInput">x = ngang, y = dọc</param>
     /// <param name="characterPlanarVelocity">Vận tốc mặt phẳng của nhân vật</param>
@@ -58,6 +61,7 @@ public class CameraController : MonoBehaviour
         Follow.UpdateFollow(deltaTime, zoomInput, Focus.CurrentRotation, Focus.AirBlend, hasLockOn, followPos, followUp);
 
         // 3) EFFECTS: áp dụng sau cùng (shake/FOV/slowmo), không làm nhiễu phép đo của Follow
+        Effects.UpdateMotion(deltaTime, characterPlanarVelocity, characterVerticalVelocity, isGrounded, hasLockOn);
         Effects.ApplyEffects(deltaTime);
     }
 }

@@ -51,6 +51,8 @@ public class CharacterCombo : MonoBehaviour
     public float FadeOut = 0.25f;
     [Tooltip("Blend khi bị hủy bằng dash/nhảy/di chuyển (giây)")]
     public float CancelFade = 0.1f;
+    [Range(0f, 1f), Tooltip("Giữ di chuyển chỉ hủy được đòn sau mốc này (normalized), chừa thời gian bấm nối đòn")]
+    public float MoveCancelMinTime = 0.75f;
 
     [Header("Combo")]
     [Tooltip("Chuỗi đầu tiên được chọn ngẫu nhiên (false = lần lượt)")]
@@ -73,11 +75,6 @@ public class CharacterCombo : MonoBehaviour
     public float MaxLinkFade = 0.25f;
     [Tooltip("Độ lệch tư thế trung bình (m, đã chia humanScale) ứng với MaxLinkFade")]
     public float PoseErrorForMaxFade = 0.35f;
-
-    [Header("Feedback")]
-    public ComboCameraFeedback cameraFeedback;
-    [Tooltip("Gọi ComboCameraFeedback đúng frame chém (thay cho Animation Event)")]
-    public bool DriveCameraFeedback = true;
 
     private int _layer = -1;
     private int _emptyHash;
@@ -116,12 +113,16 @@ public class CharacterCombo : MonoBehaviour
     public bool IsAttacking => _attacking;
 
     /// <summary>Đã qua mốc hủy hồi chiêu -> có thể hủy bằng di chuyển.</summary>
-    public bool IsInRecovery => _attacking && StepNormalizedTime >= _step.MoveCancelTime;
+    public bool IsInRecovery => _attacking && !_hasBuffered && StepNormalizedTime >= Mathf.Max(_step.MoveCancelTime, MoveCancelMinTime);
+
+    /// <summary>Đang giữa chuỗi đánh thường (kể cả trong khoảng chờ nối đòn): lần bấm tới phải nối tiếp chuỗi này.</summary>
+    public bool IsContinuingGroundChain => _attacking
+        ? _chain.Context == AttackContext.Ground
+        : _lastChain != null && _lastChain.Context == AttackContext.Ground && CurrentWeapon != null && Time.time - _lastStepEndTime <= CurrentWeapon.ComboResetTime;
 
     private void Awake()
     {
         if (animator == null) animator = GetComponent<Animator>();
-        if (cameraFeedback == null) cameraFeedback = GetComponent<ComboCameraFeedback>();
         _emptyHash = Animator.StringToHash(EmptyStateName);
         _layer = animator != null ? animator.GetLayerIndex(AttackLayerName) : -1;
         if (_layer < 0)
@@ -366,20 +367,48 @@ public class CharacterCombo : MonoBehaviour
 
     /// <summary>
     /// Phát các đòn chém đã tới trong frame này. Gọi từ ExamplePlayer.LateUpdate để
-    /// rung camera/hitstop trùng đúng frame lưỡi kiếm chạm trên màn hình.
+    /// sự kiện trùng đúng frame lưỡi kiếm vung trên màn hình. Không rung camera ở đây:
+    /// rung/hitstop chỉ xảy ra khi kiếm thật sự trúng (MeleeHitDetector).
     /// </summary>
     public void FlushImpacts()
     {
         for (int i = 0; i < _pendingImpacts.Count; i++)
         {
-            ComboHitInfo info = _pendingImpacts[i];
-            if (DriveCameraFeedback && cameraFeedback != null)
-            {
-                cameraFeedback.Play(info);
-            }
-            OnAttackImpact?.Invoke(info);
+            OnAttackImpact?.Invoke(_pendingImpacts[i]);
         }
         _pendingImpacts.Clear();
+    }
+
+    /// <summary>Nhát chém nào đang trong cửa sổ (giây clip) quanh mốc của nó, -1 = lưỡi kiếm chưa/hết nguy hiểm.</summary>
+    public int ActiveHitIndex(float before, float after)
+    {
+        return _attacking ? ActiveIndex(_step.HitTimes, before, after) : -1;
+    }
+
+    /// <summary>Cú đá nào đang trong cửa sổ (giây clip) quanh mốc của nó, -1 = chân không nguy hiểm.</summary>
+    public int ActiveKickIndex(float before, float after)
+    {
+        return _attacking ? ActiveIndex(_step.KickTimes, before, after) : -1;
+    }
+
+    private int ActiveIndex(List<float> times, float before, float after)
+    {
+        for (int i = 0; i < times.Count; i++)
+        {
+            float time = times[i] * _step.Length;
+            if (_stepTime >= time - before && _stepTime <= time + after) return i;
+        }
+        return -1;
+    }
+
+    public ComboHitInfo BuildHitInfo(int hitIndex)
+    {
+        return BuildInfo(_step.IsFinisher && hitIndex == _step.HitTimes.Count - 1);
+    }
+
+    public ComboHitInfo BuildKickInfo()
+    {
+        return BuildInfo(false);
     }
 
     private ComboHitInfo BuildInfo(bool isFinal)
@@ -424,6 +453,13 @@ public class CharacterCombo : MonoBehaviour
 
         EndAttack(CancelFade);
         _lastChain = null; // bị hủy thì lần bấm sau mở chuỗi mới
+    }
+
+    /// <summary>Di chuyển hủy phần hồi chiêu: giữ chuỗi để bấm tiếp trong ComboResetTime vẫn ra đòn kế.</summary>
+    public void CancelForMove()
+    {
+        _hasBuffered = false;
+        EndAttack(CancelFade);
     }
 
     /// <summary>
