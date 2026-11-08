@@ -6,6 +6,7 @@ public enum WeaponType
 {
     Rebellion,
     Sparda,
+    Yamato,
 }
 
 /// <summary>
@@ -123,6 +124,19 @@ public class WeaponData : ScriptableObject
     [Header("Cách cầm khi không đánh (local so với bàn tay phải)")]
     public Vector3 IdleGripPosition;
     public Quaternion IdleGripRotation = Quaternion.identity;
+
+    [Header("Tay trái (vỏ kiếm / vũ khí phụ)")]
+    [Tooltip("Model cầm ở bàn tay trái, ví dụ vỏ kiếm. Để trống = tay trái không cầm gì.")]
+    public GameObject OffHandPrefab;
+    [Tooltip("Vị trí tay trái cầm (local so với bàn tay trái)")]
+    public Vector3 OffHandGripPosition;
+    public Quaternion OffHandGripRotation = Quaternion.identity;
+
+    [Header("Tỉ lệ model (1 = giữ nguyên prefab)")]
+    [Tooltip("Tỉ lệ model cầm tay phải")]
+    public float WeaponScale = 1f;
+    [Tooltip("Tỉ lệ model cầm tay trái")]
+    public float OffHandScale = 1f;
 
     [Header("Anim di chuyển")]
     [Tooltip("Giá trị param WeaponID: chọn bộ state nhảy trong layer Jump")]

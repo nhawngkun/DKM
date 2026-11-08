@@ -19,7 +19,9 @@ using UnityEngine;
 /// </summary>
 public static class WeaponComboBuilder
 {
-    private const string PackRoot = "Assets/Grruzam Powerful Sword Animation(Great Sword, Katana)/";
+    // Pack Grruzam đã được move từ "Assets/Grruzam Powerful Sword Animation(...)/" sang Assets/Dante/.
+    // Rig phân tích clip (model T-pose có xương ik_hand_gun) nằm ở đây -> sai path là Build Weapon Combos nổ.
+    private const string PackRoot = "Assets/Dante/";
     private const string GrrrruModel = PackRoot + "Modeling/Modeling_T-Pose_Grrrru_Man(recommend).FBX";
     private const string GunBone = "ik_hand_gun";
     private const string OutputFolder = "Assets/_Asset/Data/Weapons";

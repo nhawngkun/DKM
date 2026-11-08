@@ -49,6 +49,9 @@ public class AnimSetDefinition
     public string DisplayName = "Nhân vật mới";
     [Tooltip("Thư mục chứa clip movement (FBX)")]
     public string MovementFolder = "";
+    [Tooltip("Thư mục clip dự phòng: state không tìm thấy clip trong thư mục chính sẽ lấy ở đây. " +
+             "Dùng để giữ anim cũ của bộ template -> nhiều nhân vật dùng chung một bộ.")]
+    public List<string> ExtraFolders = new List<string>();
 
     public List<LocoClipDefinition> OneShots = new List<LocoClipDefinition>();
     public List<GaitClipDefinition> Gaits = new List<GaitClipDefinition>();

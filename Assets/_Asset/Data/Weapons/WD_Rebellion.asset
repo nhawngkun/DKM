@@ -381,7 +381,7 @@ MonoBehaviour:
       Speed: 1
       FadeIn: 0.14
       HitTimes:
-      - 0.22857143
+      - 0.15714285
       LinkTime: 0.29999998
       MoveCancelTime: 0.35
       NextSeamTime: 0.6666667
@@ -691,7 +691,7 @@ MonoBehaviour:
       - {x: -0.23597296, y: 0.1985319, z: -0.6369111, w: 0.70657414}
       Weight: 0.70127755
       IsFinisher: 0
-      SlamTime: 0.25714284
+      SlamTime: -1
       KickTimes: []
     - Name: 3 Combo #3
       Clip: {fileID: 7400000, guid: f1449fb106a8289428aa593db4bedb1e, type: 3}
@@ -2464,7 +2464,7 @@ MonoBehaviour:
       Speed: 1
       FadeIn: 0.1
       HitTimes:
-      - 0.28787878
+      - 0.27272728
       LinkTime: 0.34848484
       MoveCancelTime: 0.39848486
       NextSeamTime: 0.56666666
@@ -2750,7 +2750,7 @@ MonoBehaviour:
       - {x: -0.23597318, y: 0.19853222, z: -0.6369111, w: 0.70657414}
       Weight: 0.95801675
       IsFinisher: 0
-      SlamTime: 0.28787878
+      SlamTime: -1
       KickTimes: []
     - Name: 5 Combo #2
       Clip: {fileID: 7400000, guid: 2dd5bf9f252aa904db0af56d8273e07c, type: 3}
@@ -2995,10 +2995,7 @@ MonoBehaviour:
       StateName: Rebellion_5Combo_3
       Speed: 1
       FadeIn: 0.14
-      HitTimes:
-      - 0.13333333
-      - 0.26666665
-      - 0.4666666
+      HitTimes: []
       LinkTime: 0.5222222
       MoveCancelTime: 0.79999995
       NextSeamTime: -1
@@ -3389,7 +3386,8 @@ MonoBehaviour:
       Weight: 0.34291172
       IsFinisher: 0
       SlamTime: -1
-      KickTimes: []
+      KickTimes:
+      - 0.26666665
     - Name: 5 Combo #4
       Clip: {fileID: 7400000, guid: 3474f59a4c3e93a49a81a7c67caf0869, type: 3}
       StateName: Rebellion_5Combo_4
@@ -3397,11 +3395,6 @@ MonoBehaviour:
       FadeIn: 0.14
       HitTimes:
       - 0.08571428
-      - 0.2785714
-      - 0.38571426
-      - 0.4785714
-      - 0.5571428
-      - 0.8357142
       LinkTime: 0.87857133
       MoveCancelTime: 0.99
       NextSeamTime: -1
@@ -3993,7 +3986,8 @@ MonoBehaviour:
       IsFinisher: 0
       SlamTime: -1
       KickTimes:
-      - 0.3642857
+      - 0.2785714
+      - 0.37142855
     - Name: 5 Combo #5
       Clip: {fileID: 7400000, guid: cfcf1746a8ac3d246bf56c1eb543ba8b, type: 3}
       StateName: Rebellion_5Combo_5
@@ -4001,8 +3995,6 @@ MonoBehaviour:
       FadeIn: 0.14
       HitTimes:
       - 0.21568628
-      - 0.3137255
-      - 0.82352936
       LinkTime: 0.872549
       MoveCancelTime: 0.922549
       NextSeamTime: -1
@@ -5037,7 +5029,6 @@ MonoBehaviour:
       Speed: 1
       FadeIn: 0.1
       HitTimes:
-      - 0.05
       - 0.21249999
       LinkTime: 0.275
       MoveCancelTime: 0.32500002
@@ -8146,10 +8137,7 @@ MonoBehaviour:
       Speed: 1
       FadeIn: 0.1
       HitTimes:
-      - 0.08
       - 0.34999996
-      - 0.61999995
-      - 0.9
       LinkTime: 0.94
       MoveCancelTime: 0.99
       NextSeamTime: -1
@@ -8590,7 +8578,6 @@ MonoBehaviour:
       Speed: 1
       FadeIn: 0.1
       HitTimes:
-      - 0.1
       - 0.33999997
       - 0.65999997
       LinkTime: 0.7699999
@@ -9033,7 +9020,6 @@ MonoBehaviour:
       Speed: 1
       FadeIn: 0.1
       HitTimes:
-      - 0.03846154
       - 0.23846152
       - 0.5076923
       LinkTime: 0.5476923
@@ -9577,7 +9563,7 @@ MonoBehaviour:
       - {x: -0.23597325, y: 0.1985322, z: -0.636911, w: 0.70657414}
       Weight: 0.9803901
       IsFinisher: 1
-      SlamTime: 0.5230769
+      SlamTime: 0.5384615
       KickTimes: []
   - Name: Skill E
     Context: 4
@@ -10384,7 +10370,6 @@ MonoBehaviour:
       FadeIn: 0.1
       HitTimes:
       - 0.12698412
-      - 0.4126984
       - 0.49206343
       LinkTime: 0.5320634
       MoveCancelTime: 0.58206344
@@ -10921,7 +10906,7 @@ MonoBehaviour:
       IsFinisher: 1
       SlamTime: 0.5079365
       KickTimes:
-      - 0.38095236
+      - 0.45238093
   - Name: Skill I
     Context: 4
     Steps:
@@ -11457,7 +11442,7 @@ MonoBehaviour:
       - {x: -0.23597309, y: 0.1985325, z: -0.63691086, w: 0.7065741}
       Weight: 1
       IsFinisher: 1
-      SlamTime: 0.3145161
+      SlamTime: 0.32258064
       KickTimes: []
   - Name: Skill H
     Context: 4
@@ -11470,8 +11455,7 @@ MonoBehaviour:
       HitTimes:
       - 0.14084506
       - 0.3169014
-      - 0.57042253
-      LinkTime: 0.61042255
+      LinkTime: 0.612676
       MoveCancelTime: 0.66042256
       NextSeamTime: 2.3666666
       UsePlanarRootMotion: 1
@@ -12060,7 +12044,7 @@ MonoBehaviour:
       - {x: -0.23597291, y: 0.19853213, z: -0.6369111, w: 0.7065743}
       Weight: 0.73629296
       IsFinisher: 0
-      SlamTime: 0.33802816
+      SlamTime: 0.3591549
       KickTimes: []
     - Name: Skill H #2
       Clip: {fileID: 7400000, guid: d20fe5e5ee766a24a878c8aeb047db69, type: 3}
@@ -12068,10 +12052,7 @@ MonoBehaviour:
       Speed: 1
       FadeIn: 0.14
       HitTimes:
-      - 0.14084506
       - 0.3169014
-      - 0.57042253
-      - 0.73239434
       LinkTime: 0.77239436
       MoveCancelTime: 0.8223944
       NextSeamTime: -1

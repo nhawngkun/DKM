@@ -1610,7 +1610,6 @@ MonoBehaviour:
       FadeIn: 0.14
       HitTimes:
       - 0.033333335
-      - 0.56666666
       LinkTime: 0.65
       MoveCancelTime: 0.99
       NextSeamTime: -1
@@ -2223,7 +2222,7 @@ MonoBehaviour:
       - {x: 0.08628182, y: 0.10213871, z: 0.9899975, w: -0.045048967}
       Weight: 0.6655553
       IsFinisher: 1
-      SlamTime: 0.25
+      SlamTime: 0.2875
       KickTimes: []
   - Name: 4 Combo B
     Context: 0
@@ -2847,9 +2846,8 @@ MonoBehaviour:
       Speed: 1
       FadeIn: 0.14
       HitTimes:
-      - 0.033333335
-      - 0.56666666
-      LinkTime: 0.65
+      - 0.05
+      LinkTime: 0.6166667
       MoveCancelTime: 0.99
       NextSeamTime: -1
       UsePlanarRootMotion: 1
@@ -3461,7 +3459,7 @@ MonoBehaviour:
       - {x: 0.08628177, y: 0.10213872, z: 0.9899975, w: -0.045049056}
       Weight: 0.6655553
       IsFinisher: 1
-      SlamTime: 0.25
+      SlamTime: 0.2625
       KickTimes: []
   - Name: 7 Combo
     Context: 0
@@ -3473,7 +3471,6 @@ MonoBehaviour:
       FadeIn: 0.1
       HitTimes:
       - 0.36904758
-      - 0.80952376
       LinkTime: 0.95
       MoveCancelTime: 0.99
       NextSeamTime: -1
@@ -3839,7 +3836,7 @@ MonoBehaviour:
       - {x: 0.086281545, y: 0.10213897, z: 0.9899976, w: -0.045049265}
       Weight: 0.60722816
       IsFinisher: 0
-      SlamTime: 0.41666663
+      SlamTime: 0.4285714
       KickTimes: []
     - Name: 7 Combo #2
       Clip: {fileID: 7400000, guid: 8be3e9637cdec3a409bdfe9a18dc78a1, type: 3}
@@ -5065,7 +5062,7 @@ MonoBehaviour:
       - {x: 0.08611518, y: 0.09806559, z: 0.99047303, w: -0.043940447}
       Weight: 0.47601306
       IsFinisher: 0
-      SlamTime: 0.3
+      SlamTime: 0.14545456
       KickTimes: []
     - Name: 7 Combo #5
       Clip: {fileID: 7400000, guid: c86e29772c0bf3e49a9863c20f7b1c59, type: 3}
@@ -5073,10 +5070,9 @@ MonoBehaviour:
       Speed: 1
       FadeIn: 0.14
       HitTimes:
-      - 0.18888888
-      - 0.8111111
-      LinkTime: 0.8999999
-      MoveCancelTime: 0.9499999
+      - 0.13333333
+      LinkTime: 0.7333333
+      MoveCancelTime: 0.8111111
       NextSeamTime: -1
       UsePlanarRootMotion: 1
       UseVerticalRootMotion: 0
@@ -5464,7 +5460,7 @@ MonoBehaviour:
       - {x: 0.08628186, y: 0.10213866, z: 0.9899972, w: -0.04504892}
       Weight: 0.53089446
       IsFinisher: 0
-      SlamTime: 0.22222221
+      SlamTime: -1
       KickTimes: []
     - Name: 7 Combo #6
       Clip: {fileID: 7400000, guid: d8aede77b827fe14b97dee8895cab9a5, type: 3}
@@ -6495,8 +6491,7 @@ MonoBehaviour:
       Speed: 1
       FadeIn: 0.1
       HitTimes:
-      - 0.40909088
-      - 0.80303025
+      - 0.4242424
       LinkTime: 0.95
       MoveCancelTime: 0.99
       NextSeamTime: -1
@@ -7410,8 +7405,7 @@ MonoBehaviour:
       IsFinisher: 0
       SlamTime: -1
       KickTimes:
-      - 0.1
-      - 0.375
+      - 0.125
     - Name: Air Combo #2
       Clip: {fileID: 7400000, guid: c6682b74c650f464abf152cff106cad8, type: 3}
       StateName: Sparda_AirCombo_2
@@ -8116,7 +8110,6 @@ MonoBehaviour:
       FadeIn: 0.1
       HitTimes:
       - 0.16883115
-      - 0.4480519
       LinkTime: 0.4880519
       MoveCancelTime: 0.538961
       NextSeamTime: -1
@@ -8774,6 +8767,7 @@ MonoBehaviour:
       FadeIn: 0.1
       HitTimes:
       - 0.39130434
+      - 0.7826087
       LinkTime: 0.44565216
       MoveCancelTime: 0.49565217
       NextSeamTime: -1
@@ -10535,9 +10529,9 @@ MonoBehaviour:
       - {x: 0.08628167, y: 0.1021385, z: 0.9899972, w: -0.045049317}
       Weight: 0.6120856
       IsFinisher: 1
-      SlamTime: 0.26190475
+      SlamTime: 0.35714284
       KickTimes:
-      - 0.45238093
+      - 0.46428567
       - 0.6904761
   - Name: Skill E
     Context: 4
@@ -11488,9 +11482,8 @@ MonoBehaviour:
       - {x: 0.08628203, y: 0.10213871, z: 0.9899972, w: -0.045049116}
       Weight: 0.6490224
       IsFinisher: 1
-      SlamTime: 0.34545454
-      KickTimes:
-      - 0.3090909
+      SlamTime: 0.38181818
+      KickTimes: []
   - Name: Skill H
     Context: 4
     Steps:
@@ -11898,7 +11891,7 @@ MonoBehaviour:
       - {x: 0.0862817, y: 0.10213876, z: 0.98999715, w: -0.04504895}
       Weight: 0.69654775
       IsFinisher: 1
-      SlamTime: 0.38297874
+      SlamTime: 0.393617
       KickTimes: []
   - Name: Skill I
     Context: 4
@@ -12821,8 +12814,7 @@ MonoBehaviour:
       Weight: 0.5857873
       IsFinisher: 1
       SlamTime: -1
-      KickTimes:
-      - 0.21666667
+      KickTimes: []
   - Name: Skill L
     Context: 4
     Steps:
@@ -12833,8 +12825,6 @@ MonoBehaviour:
       FadeIn: 0.1
       HitTimes:
       - 0.12307692
-      - 0.23076922
-      - 0.39999998
       - 0.47692305
       LinkTime: 0.51692307
       MoveCancelTime: 0.5669231
@@ -13377,9 +13367,8 @@ MonoBehaviour:
       - {x: 0.08628171, y: 0.10213886, z: 0.98999727, w: -0.045049254}
       Weight: 0.6148955
       IsFinisher: 1
-      SlamTime: 0.4923077
-      KickTimes:
-      - 0.4153846
+      SlamTime: 0.5
+      KickTimes: []
   - Name: Skill G
     Context: 4
     Steps:
@@ -14254,7 +14243,6 @@ MonoBehaviour:
       Speed: 1
       FadeIn: 0.1
       HitTimes:
-      - 0.16923077
       - 0.4153846
       LinkTime: 0.45538458
       MoveCancelTime: 0.50538456

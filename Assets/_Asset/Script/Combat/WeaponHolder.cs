@@ -13,6 +13,12 @@ public class WeaponHolder : MonoBehaviour
     public CharacterCombo characterCombo;
     [Tooltip("Để trống = xương RightHand của humanoid")]
     public Transform Hand;
+    [Tooltip("Tay trái cầm vỏ kiếm / vũ khí phụ. Để trống = xương LeftHand của humanoid")]
+    public Transform OffHand;
+
+    [Header("Vũ khí cầm sẵn")]
+    [Tooltip("Nhân vật chưa có CharacterCombo (chưa build layer đánh) vẫn cầm được vũ khí này")]
+    public WeaponData StarterWeapon;
 
     [Header("Blend cách cầm")]
     [Tooltip("Thời gian chuyển giữa cách cầm lúc đứng và lúc chém (giây)")]
@@ -32,6 +38,9 @@ public class WeaponHolder : MonoBehaviour
     private GameObject _weaponInstance;
     private WeaponData _weapon;
 
+    private Transform _offSocket;
+    private GameObject _offInstance;
+
     private Vector3 _fromPos;
     private Quaternion _fromRot = Quaternion.identity;
     private float _blendTimer;
@@ -46,6 +55,7 @@ public class WeaponHolder : MonoBehaviour
         if (animator == null) animator = GetComponent<Animator>();
         if (characterCombo == null) characterCombo = GetComponent<CharacterCombo>();
         if (Hand == null && animator != null) Hand = animator.GetBoneTransform(HumanBodyBones.RightHand);
+        if (OffHand == null && animator != null) OffHand = animator.GetBoneTransform(HumanBodyBones.LeftHand);
         if (BackBone == null && animator != null)
         {
             BackBone = animator.GetBoneTransform(HumanBodyBones.UpperChest);
@@ -70,12 +80,19 @@ public class WeaponHolder : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        // Nhân vật chưa gắn CharacterCombo (chưa build layer đánh) vẫn cầm được vũ khí
+        if (characterCombo == null && StarterWeapon != null) Equip(StarterWeapon);
+    }
+
     public void Equip(WeaponData weapon)
     {
         if (_weapon == weapon && _weaponInstance != null) return;
 
         if (_weaponInstance != null) Destroy(_weaponInstance);
         _weapon = weapon;
+        EquipOffHand(weapon);
         if (weapon == null || weapon.WeaponPrefab == null) return;
 
         // Trong scene mẫu của gói, model vũ khí nằm dưới xương ik_hand_gun với transform gốc
@@ -83,6 +100,7 @@ public class WeaponHolder : MonoBehaviour
         _weaponInstance.name = weapon.WeaponPrefab.name;
         _weaponInstance.transform.localPosition = Vector3.zero;
         _weaponInstance.transform.localRotation = Quaternion.identity;
+        _weaponInstance.transform.localScale = Vector3.one * Mathf.Max(0.01f, weapon.WeaponScale);
         foreach (Collider col in _weaponInstance.GetComponentsInChildren<Collider>())
         {
             col.enabled = false; // không để kiếm đẩy capsule KCC
@@ -90,6 +108,35 @@ public class WeaponHolder : MonoBehaviour
 
         _socket.localPosition = weapon.IdleGripPosition;
         _socket.localRotation = weapon.IdleGripRotation;
+    }
+
+    // Vỏ kiếm / vũ khí phụ ở tay trái: giữ cố định theo cách cầm, không blend theo đòn đánh
+    private void EquipOffHand(WeaponData weapon)
+    {
+        if (_offInstance != null)
+        {
+            Destroy(_offInstance);
+            _offInstance = null;
+        }
+        if (weapon == null || weapon.OffHandPrefab == null || OffHand == null) return;
+
+        if (_offSocket == null)
+        {
+            _offSocket = new GameObject("OffHandSocket").transform;
+            _offSocket.SetParent(OffHand, false);
+        }
+        _offSocket.localPosition = weapon.OffHandGripPosition;
+        _offSocket.localRotation = weapon.OffHandGripRotation;
+
+        _offInstance = Instantiate(weapon.OffHandPrefab, _offSocket, false);
+        _offInstance.name = weapon.OffHandPrefab.name;
+        _offInstance.transform.localPosition = Vector3.zero;
+        _offInstance.transform.localRotation = Quaternion.identity;
+        _offInstance.transform.localScale = Vector3.one * Mathf.Max(0.01f, weapon.OffHandScale);
+        foreach (Collider col in _offInstance.GetComponentsInChildren<Collider>())
+        {
+            col.enabled = false;
+        }
     }
 
     // Sau Animator (LateUpdate) để ghi đè lên pose tay mới nhất
@@ -141,5 +188,12 @@ public class WeaponHolder : MonoBehaviour
 
         _socket.localPosition = Vector3.Lerp(_fromPos, targetPos, t);
         _socket.localRotation = Quaternion.Slerp(_fromRot, targetRot, t);
+
+        // Cho phép chỉnh cách cầm tay trái trực tiếp trong Inspector lúc đang chạy
+        if (_offInstance != null)
+        {
+            _offSocket.localPosition = _weapon.OffHandGripPosition;
+            _offSocket.localRotation = _weapon.OffHandGripRotation;
+        }
     }
 }

@@ -20,9 +20,10 @@ public static class LocomotionAnimatorBuilder
     public const string LayerName = "Locomotion";
     public const string LibraryPath = "Assets/_Asset/Data/AnimSetLibrary.asset";
 
-    private const string AnimRoot = "Assets/Grruzam Powerful Sword Animation(Great Sword, Katana)/Animation/";
     private static readonly string[] OldLayers = { "Idle", "Move", "Jump", "Dash", LayerName };
-    private static readonly string[] MovementFolders = { AnimRoot + "M_Katana_Blade/1_Movements", AnimRoot + "M_Big_Sword/1_Movements" };
+    // pack Grruzam đã được move sang Assets/Dante/Animation (thư mục cũ bị xoá) -> sửa path để
+    // "Import Anim Sets From Code" tạo lại AnimSetLibrary đúng; bộ mới cho nhân vật khác thì nhân bản qua Tools/Combat/Anim Set Clone
+    private static readonly string[] MovementFolders = { "Assets/Dante/Animation/Dante_Katana_Blade/1_Movements", "Assets/Dante/Animation/Dante_Big_Sword/1_Movements" };
 
     // ------------------------------------------------------------------
     // Nguồn dữ liệu cũ (chỉ để Import lần đầu)
@@ -231,16 +232,32 @@ public static class LocomotionAnimatorBuilder
         List<Dictionary<string, AnimationClip>> clipsBySet = new List<Dictionary<string, AnimationClip>>();
         foreach (AnimSetDefinition set in library.Sets)
         {
-            Dictionary<string, AnimationClip> clips = LoadClips(set.MovementFolder);
+            Dictionary<string, AnimationClip> clips = LoadClips(set);
             ApplyImportSettings(set, clips);
             // reimport tạo lại object clip -> phải nạp lại
-            clipsBySet.Add(LoadClips(set.MovementFolder));
+            clipsBySet.Add(LoadClips(set));
         }
 
         BuildController(library, clipsBySet);
         SetupPrefab();
         AssetDatabase.SaveAssets();
         Debug.Log("[LocomotionAnimatorBuilder] Xong " + library.Sets.Count + " bộ anim.");
+    }
+
+    // Clip của bộ: thư mục chính trước, rồi tới các thư mục dự phòng (clip dùng chung với bộ template).
+    // Trùng tên thì bản trong thư mục chính thắng.
+    private static Dictionary<string, AnimationClip> LoadClips(AnimSetDefinition set)
+    {
+        Dictionary<string, AnimationClip> clips = LoadClips(set.MovementFolder);
+        foreach (string folder in set.ExtraFolders)
+        {
+            if (string.IsNullOrEmpty(folder)) continue;
+            foreach (KeyValuePair<string, AnimationClip> entry in LoadClips(folder))
+            {
+                if (!clips.ContainsKey(entry.Key)) clips[entry.Key] = entry.Value;
+            }
+        }
+        return clips;
     }
 
     private static Dictionary<string, AnimationClip> LoadClips(string folder)
@@ -273,10 +290,18 @@ public static class LocomotionAnimatorBuilder
     private static void ApplyImportSettings(AnimSetDefinition set, Dictionary<string, AnimationClip> clips)
     {
         var paths = new Dictionary<string, (bool lockXZ, bool lockY, bool loop, int firstFrame)>();
+        string primaryFolder = set.MovementFolder == null ? string.Empty : set.MovementFolder.TrimEnd('/');
+
         void Add(string clipName, bool lockXZ, bool lockY, bool loop, int firstFrame)
         {
             if (string.IsNullOrEmpty(clipName) || !clips.TryGetValue(clipName, out AnimationClip clip)) return;
-            paths[AssetDatabase.GetAssetPath(clip)] = (lockXZ, lockY, loop, firstFrame);
+
+            // clip lấy từ thư mục dự phòng (dùng chung với bộ khác): giữ nguyên import settings
+            // của bộ sở hữu, không ghi đè để không làm hỏng anim của nhân vật kia
+            string path = AssetDatabase.GetAssetPath(clip);
+            if (primaryFolder.Length > 0 && !path.StartsWith(primaryFolder + "/", StringComparison.OrdinalIgnoreCase)) return;
+
+            paths[path] = (lockXZ, lockY, loop, firstFrame);
         }
 
         foreach (LocoClipDefinition row in set.OneShots) Add(row.Clip, row.Air || row.State == LocoState.Idle, !row.Air, row.Loop, row.FirstFrame);

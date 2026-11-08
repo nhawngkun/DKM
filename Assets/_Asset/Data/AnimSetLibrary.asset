@@ -1,0 +1,979 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: AnimSetLibrary
+  m_EditorClassIdentifier: Assembly-CSharp-Editor::AnimSetLibrary
+  Sets:
+  - Prefix: KT_
+    DisplayName: Katana
+    MovementFolder: Assets/Dante/Animation/Dante_Katana_Blade/1_Movements
+    ExtraFolders: []
+    OneShots:
+    - State: 0
+      Clip: Idle_ver_A
+      Loop: 1
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 1
+      Clip: Idle_A_Turn_L90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 2
+      Clip: Idle_A_Turn_R90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 3
+      Clip: Idle_A_Turn_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 6
+      Clip: Idle_To_Walk_ver_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 7
+      Clip: Idle_A_To_Jogging_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 8
+      Clip: Idle_A_To_Run_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 9
+      Clip: Idle_A_To_Walk_A_Turn_L90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 10
+      Clip: Idle_A_To_Walk_A_Turn_R90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 11
+      Clip: Idle_A_To_Jogging_A_Turn_L90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 12
+      Clip: Idle_A_To_Jogging_A_Turn_R90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 13
+      Clip: Idle_A_To_Run_A_Turn_L90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 14
+      Clip: Idle_A_To_Run_A_Turn_R90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 15
+      Clip: Turn_in_place_Idle_A_to_Walk_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 16
+      Clip: Turn_in_place_Idle_A_to_Jog_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 17
+      Clip: Turn_in_place_Idle_A_to_Run_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 18
+      Clip: Walk_ver_A_To_Idle_ver_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 19
+      Clip: Run_Fast_To_Idle_ver_A
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: 12
+    - State: 20
+      Clip: Run_Fast_To_Idle_ver_B
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: 12
+    - State: 21
+      Clip: Walk_A_To_Walk_A_Turn_L90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 22
+      Clip: Walk_A_To_Walk_A_Turn_R90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 23
+      Clip: Jogging_A_To_Jogging_A_Turn_L90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 24
+      Clip: Jogging_A_To_Jogging_A_Turn_R90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 25
+      Clip: Turn_in_place_Walk_A_to_Walk_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 26
+      Clip: Turn_in_place_Jog_A_to_Jog_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 27
+      Clip: Turn_in_place_Run_A_to_Run_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 28
+      Clip: Jump_Start
+      Loop: 0
+      Air: 1
+      Speed: 1
+      FirstFrame: -1
+    - State: 29
+      Clip: Jump_Loop
+      Loop: 1
+      Air: 1
+      Speed: 1
+      FirstFrame: -1
+    - State: 30
+      Clip: Jump_End
+      Loop: 0
+      Air: 1
+      Speed: 1
+      FirstFrame: -1
+    - State: 31
+      Clip: Double_Jump_Start
+      Loop: 0
+      Air: 1
+      Speed: 1
+      FirstFrame: -1
+    - State: 32
+      Clip: Double_Jump_Loop
+      Loop: 1
+      Air: 1
+      Speed: 1
+      FirstFrame: -1
+    - State: 33
+      Clip: Double_Jump_End
+      Loop: 0
+      Air: 1
+      Speed: 1
+      FirstFrame: -1
+    - State: 34
+      Clip: Dodge_Front
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 35
+      Clip: Dodge_Back
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 36
+      Clip: Dodge_Left
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 37
+      Clip: Dodge_Right
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 38
+      Clip: Run_Fast_Dodge_Left
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 39
+      Clip: Run_Fast_Dodge_Right
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 40
+      Clip: Idle_ver_A_To_Crouch_ver_A_Idle_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    Gaits:
+    - Threshold: 1
+      Clip: Walk_ver_A_Front_Root
+    - Threshold: 2
+      Clip: Jogging_8Way_verA_F_Root
+    - Threshold: 3
+      Clip: Run_Root_ver_A
+    - Threshold: 4
+      Clip: Run_Fast_Root_ver_A
+    Strafe:
+    - X: 0
+      Y: 0.5
+      Clip: Walk_ver_A_Front_Root
+    - X: -0.3535
+      Y: 0.3535
+      Clip: Walk_ver_A_Front_L45_Root
+    - X: -0.5
+      Y: 0
+      Clip: Walk_ver_A_L90_Root
+    - X: -0.3535
+      Y: -0.3535
+      Clip: Walk_ver_A_Back_L45_Root
+    - X: 0
+      Y: -0.5
+      Clip: Walk_ver_A_Back_Root
+    - X: 0.3535
+      Y: -0.3535
+      Clip: Walk_ver_A_Back_R45_Root
+    - X: 0.5
+      Y: 0
+      Clip: Walk_ver_A_R90_Root
+    - X: 0.3535
+      Y: 0.3535
+      Clip: Walk_ver_A_Front_R45_Root
+    - X: 0
+      Y: 1
+      Clip: Jogging_8Way_verA_F_Root
+    - X: -0.707
+      Y: 0.707
+      Clip: Jogging_8Way_verA_FL45_Root
+    - X: -1
+      Y: 0
+      Clip: Jogging_8Way_verA_L90_Root
+    - X: -0.707
+      Y: -0.707
+      Clip: Jogging_8Way_verA_BL45_Root
+    - X: 0
+      Y: -1
+      Clip: Jogging_8Way_verA_B_Root
+    - X: 0.707
+      Y: -0.707
+      Clip: Jogging_8Way_verA_BR45_Root
+    - X: 1
+      Y: 0
+      Clip: Jogging_8Way_verA_R90_Root
+    - X: 0.707
+      Y: 0.707
+      Clip: Jogging_8Way_verA_FR45_Root
+    Crouch:
+    - X: 0
+      Y: 0
+      Clip: Crouch_ver_A_Idle_Root
+    - X: 0
+      Y: 1
+      Clip: Crouch_ver_A_Fwd_Root
+    - X: -0.707
+      Y: 0.707
+      Clip: Crouch_ver_A_FL45_Root
+    - X: -1
+      Y: 0
+      Clip: Crouch_ver_A_L90_Root
+    - X: -0.707
+      Y: -0.707
+      Clip: Crouch_ver_A_BL45_Root
+    - X: 0
+      Y: -1
+      Clip: Crouch_ver_A_Bwd_Root
+    - X: 0.707
+      Y: -0.707
+      Clip: Crouch_ver_A_BR45_Root
+    - X: 1
+      Y: 0
+      Clip: Crouch_ver_A_R90_Root
+    - X: 0.707
+      Y: 0.707
+      Clip: Crouch_ver_A_FR45_Root
+  - Prefix: GS_
+    DisplayName: Great Sword
+    MovementFolder: Assets/Dante/Animation/Dante_Big_Sword/1_Movements
+    ExtraFolders: []
+    OneShots:
+    - State: 0
+      Clip: Idle
+      Loop: 1
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 1
+      Clip: Idle_Turn_L90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 2
+      Clip: Idle_Turn_R90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 3
+      Clip: Idle_Turn_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 6
+      Clip: Idle_To_Walk_ver_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 7
+      Clip: Idle_To_Jogging_ver_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 8
+      Clip: Idle_To_Run_ver_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 9
+      Clip: Idle_To_Walk_A_Turn_L90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 10
+      Clip: Idle_To_Walk_A_Turn_R90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 11
+      Clip: Idle_To_Jogging_A_Turn_L90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 12
+      Clip: Idle_To_Jogging_A_Turn_R90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 13
+      Clip: Idle_To_Run_A_Turn_L90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 14
+      Clip: Idle_To_Run_A_Turn_R90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 15
+      Clip: Turn_in_place_Idle_to_Walk_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 16
+      Clip: Turn_in_place_Idle_to_Jog_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 17
+      Clip: Turn_in_place_Idle_to_Run_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 18
+      Clip: Walk_To_Idle_ver_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 19
+      Clip: Run_to_Idle_ver_A
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 20
+      Clip: Run_Fast_to_Idle_ver_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 21
+      Clip: Walk_A_To_Walk_A_Turn_L90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 22
+      Clip: Walk_A_To_Walk_A_Turn_R90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 23
+      Clip: Jogging_A_To_Jogging_A_Turn_L90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 24
+      Clip: Jogging_A_To_Jogging_A_Turn_R90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 25
+      Clip: Turn_in_place_Walk_A_to_Walk_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 26
+      Clip: Turn_in_place_Jog_A_to_Jog_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 27
+      Clip: Turn_in_place_Run_A_to_Run_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 28
+      Clip: Jump_Start
+      Loop: 0
+      Air: 1
+      Speed: 1
+      FirstFrame: -1
+    - State: 29
+      Clip: Jump_Loop
+      Loop: 1
+      Air: 1
+      Speed: 1
+      FirstFrame: -1
+    - State: 30
+      Clip: Jump_End
+      Loop: 0
+      Air: 1
+      Speed: 1
+      FirstFrame: -1
+    - State: 31
+      Clip: Double_Jump_Start
+      Loop: 0
+      Air: 1
+      Speed: 1
+      FirstFrame: -1
+    - State: 32
+      Clip: Double_Jump_Loop
+      Loop: 1
+      Air: 1
+      Speed: 1
+      FirstFrame: -1
+    - State: 33
+      Clip: Double_Jump_End
+      Loop: 0
+      Air: 1
+      Speed: 1
+      FirstFrame: -1
+    - State: 34
+      Clip: Dodge_Front
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 35
+      Clip: Dodge_Back
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 36
+      Clip: Dodge_Left
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 37
+      Clip: Dodge_Right
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 40
+      Clip: Idle_To_Crouch_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    Gaits:
+    - Threshold: 1
+      Clip: Walk_ver_A_Front_Root
+    - Threshold: 2
+      Clip: Jogging_8Way_verA_F_Root
+    - Threshold: 3
+      Clip: Run_ver_A_Root
+    - Threshold: 4
+      Clip: Run_Fast_ver_A_Root
+    Strafe:
+    - X: 0
+      Y: 0.5
+      Clip: Walk_ver_A_Front_Root
+    - X: -0.3535
+      Y: 0.3535
+      Clip: Walk_ver_A_Front_L45_Root
+    - X: -0.5
+      Y: 0
+      Clip: Walk_ver_A_L90_Root
+    - X: -0.3535
+      Y: -0.3535
+      Clip: Walk_ver_A_Back_L45_Root
+    - X: 0
+      Y: -0.5
+      Clip: Walk_ver_A_Back_Root
+    - X: 0.3535
+      Y: -0.3535
+      Clip: Walk_ver_A_Back_R45_Root
+    - X: 0.5
+      Y: 0
+      Clip: Walk_ver_A_R90_Root
+    - X: 0.3535
+      Y: 0.3535
+      Clip: Walk_ver_A_Front_R45_Root
+    - X: 0
+      Y: 1
+      Clip: Jogging_8Way_verA_F_Root
+    - X: -0.707
+      Y: 0.707
+      Clip: Jogging_8Way_verA_FL45_Root
+    - X: -1
+      Y: 0
+      Clip: Jogging_8Way_verA_L90_Root
+    - X: -0.707
+      Y: -0.707
+      Clip: Jogging_8Way_verA_BL45_Root
+    - X: 0
+      Y: -1
+      Clip: Jogging_8Way_verA_B_Root
+    - X: 0.707
+      Y: -0.707
+      Clip: Jogging_8Way_verA_BR45_Root
+    - X: 1
+      Y: 0
+      Clip: Jogging_8Way_verA_R90_Root
+    - X: 0.707
+      Y: 0.707
+      Clip: Jogging_8Way_verA_FR45_Root
+    Crouch:
+    - X: 0
+      Y: 0
+      Clip: Crouch_Idle_Root
+    - X: 0
+      Y: 1
+      Clip: Crouch_Fwd_Root
+    - X: -0.707
+      Y: 0.707
+      Clip: Crouch_FL45_Root
+    - X: -1
+      Y: 0
+      Clip: Crouch_L90_Root
+    - X: -0.707
+      Y: -0.707
+      Clip: Crouch_BL45_Root
+    - X: 0
+      Y: -1
+      Clip: Crouch_Bwd_Root
+    - X: 0.707
+      Y: -0.707
+      Clip: Crouch_BR45_Root
+    - X: 1
+      Y: 0
+      Clip: Crouch_R90_Root
+    - X: 0.707
+      Y: 0.707
+      Clip: Crouch_FR45_Root
+  - Prefix: VG_
+    DisplayName: Vergil
+    MovementFolder: Assets/Sword_sheath_AnimSet/Animation/Humanoid/Inplace
+    ExtraFolders:
+    - Assets/Dante/Animation/Dante_Katana_Blade/1_Movements
+    OneShots:
+    - State: 0
+      Clip: idle
+      Loop: 1
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 1
+      Clip: Idle_A_Turn_L90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 2
+      Clip: Idle_A_Turn_R90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 3
+      Clip: Idle_A_Turn_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 6
+      Clip: Idle_To_Walk_ver_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 7
+      Clip: Idle_A_To_Jogging_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 8
+      Clip: Idle_A_To_Run_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 9
+      Clip: move_walk_left
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 10
+      Clip: move_walk_right
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 11
+      Clip: move_run_left
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 12
+      Clip: move_run_right
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 13
+      Clip: move_run_left
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 14
+      Clip: move_run_right
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 15
+      Clip: Turn_in_place_Idle_A_to_Walk_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 16
+      Clip: Turn_in_place_Idle_A_to_Jog_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 17
+      Clip: Turn_in_place_Idle_A_to_Run_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 18
+      Clip: Walk_ver_A_To_Idle_ver_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 19
+      Clip: Run_Fast_To_Idle_ver_A
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: 12
+    - State: 20
+      Clip: Run_Fast_To_Idle_ver_B
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: 12
+    - State: 21
+      Clip: move_walk_left
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 22
+      Clip: move_walk_right
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 23
+      Clip: Jogging_A_To_Jogging_A_Turn_L90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 24
+      Clip: Jogging_A_To_Jogging_A_Turn_R90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 25
+      Clip: Turn_in_place_Walk_A_to_Walk_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 26
+      Clip: Turn_in_place_Jog_A_to_Jog_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 27
+      Clip: Turn_in_place_Run_A_to_Run_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 28
+      Clip: Jump_Start
+      Loop: 0
+      Air: 1
+      Speed: 1
+      FirstFrame: -1
+    - State: 29
+      Clip: jump_falling_loop
+      Loop: 1
+      Air: 1
+      Speed: 1
+      FirstFrame: -1
+    - State: 30
+      Clip: jump_landing
+      Loop: 0
+      Air: 1
+      Speed: 1
+      FirstFrame: -1
+    - State: 31
+      Clip: Double_Jump_Start
+      Loop: 0
+      Air: 1
+      Speed: 1
+      FirstFrame: -1
+    - State: 32
+      Clip: jump_falling_loop
+      Loop: 1
+      Air: 1
+      Speed: 1
+      FirstFrame: -1
+    - State: 33
+      Clip: jump_landing
+      Loop: 0
+      Air: 1
+      Speed: 1
+      FirstFrame: -1
+    - State: 34
+      Clip: avoid_front
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 35
+      Clip: avoid_back
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 36
+      Clip: avoid_left
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 37
+      Clip: avoid_right
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 38
+      Clip: Run_Fast_Dodge_Left
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 39
+      Clip: Run_Fast_Dodge_Right
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 40
+      Clip: Idle_ver_A_To_Crouch_ver_A_Idle_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    Gaits:
+    - Threshold: 1
+      Clip: move_walk_front
+    - Threshold: 2
+      Clip: move_run02
+    - Threshold: 3
+      Clip: Run_Root_ver_A
+    - Threshold: 4
+      Clip: Run_Fast_Root_ver_A
+    Strafe:
+    - X: 0
+      Y: 0.5
+      Clip: move_walk_front
+    - X: -0.3535
+      Y: 0.3535
+      Clip: move_walk_frontL45
+    - X: -0.5
+      Y: 0
+      Clip: move_walk_left
+    - X: -0.3535
+      Y: -0.3535
+      Clip: move_walk_backL45
+    - X: 0
+      Y: -0.5
+      Clip: move_walk_back
+    - X: 0.3535
+      Y: -0.3535
+      Clip: move_walk_backR45
+    - X: 0.5
+      Y: 0
+      Clip: move_walk_right
+    - X: 0.3535
+      Y: 0.3535
+      Clip: move_walk_frontR45
+    - X: 0
+      Y: 1
+      Clip: move_run02
+    - X: -0.707
+      Y: 0.707
+      Clip: move_run_frontL45
+    - X: -1
+      Y: 0
+      Clip: move_run_left
+    - X: -0.707
+      Y: -0.707
+      Clip: move_run_backL45
+    - X: 0
+      Y: -1
+      Clip: move_run02
+    - X: 0.707
+      Y: -0.707
+      Clip: move_run_backR45
+    - X: 1
+      Y: 0
+      Clip: move_run_right
+    - X: 0.707
+      Y: 0.707
+      Clip: move_run_frontR45
+    Crouch:
+    - X: 0
+      Y: 0
+      Clip: Crouch_ver_A_Idle_Root
+    - X: 0
+      Y: 1
+      Clip: Crouch_ver_A_Fwd_Root
+    - X: -0.707
+      Y: 0.707
+      Clip: Crouch_ver_A_FL45_Root
+    - X: -1
+      Y: 0
+      Clip: Crouch_ver_A_L90_Root
+    - X: -0.707
+      Y: -0.707
+      Clip: Crouch_ver_A_BL45_Root
+    - X: 0
+      Y: -1
+      Clip: Crouch_ver_A_Bwd_Root
+    - X: 0.707
+      Y: -0.707
+      Clip: Crouch_ver_A_BR45_Root
+    - X: 1
+      Y: 0
+      Clip: Crouch_ver_A_R90_Root
+    - X: 0.707
+      Y: 0.707
+      Clip: Crouch_ver_A_FR45_Root
