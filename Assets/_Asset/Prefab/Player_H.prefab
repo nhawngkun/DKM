@@ -1249,6 +1249,8 @@ MonoBehaviour:
   WalkSpeed: 2
   RunSpeed: 5.5
   SprintSpeed: 8
+  InPlaceLocomotion: 0
+  JogSpeed: 3.8
   OrientationMethod: 1
   MoveTurnRate: 540
   MoveTurnSharpness: 12
@@ -1305,6 +1307,13 @@ MonoBehaviour:
   DirectionalAttackThreshold: 0.6
   AlwaysDrawWeapon: 1
   CombatHoldTime: 6
+  CanFly: 0
+  FlyHeight: 0
+  FlySpeed: 7
+  FlyAcceleration: 5
+  FlyHeightSharpness: 4
+  FlyMaxVerticalSpeed: 8
+  FlyLandSpeed: 5
   LockOnRadius: 15
   LockOnBreakRadius: 22
   AutoAddIK: 1
@@ -1412,6 +1421,9 @@ GameObject:
   - component: {fileID: 7565624579803339161}
   - component: {fileID: 6959980523665729383}
   - component: {fileID: 4550070722849961947}
+  - component: {fileID: 6515675916031706353}
+  - component: {fileID: 2045817128674727227}
+  - component: {fileID: 7413025989822779197}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -1513,9 +1525,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d24b7c73646c7af4797dc3b1973359b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
-  Focus: {fileID: 0}
-  Follow: {fileID: 0}
-  Effects: {fileID: 0}
+  Focus: {fileID: 6515675916031706353}
+  Follow: {fileID: 2045817128674727227}
+  Effects: {fileID: 7413025989822779197}
   RotateWithPhysicsMover: 0
 --- !u!114 &4550070722849961947
 MonoBehaviour:
@@ -1656,6 +1668,240 @@ MonoBehaviour:
       data1: 0
       data2: 0
   defaultFrameSettings: 0
+--- !u!114 &6515675916031706353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7543152704842615125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f5c6b8c664af434497bad4091135bdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraFocus
+  InvertX: 0
+  InvertY: 0
+  DefaultVerticalAngle: 20
+  MinVerticalAngle: -90
+  MaxVerticalAngle: 90
+  RotationSpeed: 1
+  RotationSharpness: 15
+  EnableAutoAlign: 1
+  AutoAlignSharpness: 2
+  AutoAlignDelay: 0.8
+  AutoAlignMinMoveSpeed: 0.5
+  AutoAlignMinForwardDot: 0.5
+  EnableAirCamera: 1
+  AirMaxVerticalSpeed: 14
+  AirMaxPitchOffset: 18
+  AirPitchCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  AirBlendSharpness: 8
+  AirLockOnDampen: 0.35
+  LockOnTarget: {fileID: 0}
+  LockOnRotationSharpness: 12
+  DrawDebugGizmos: 1
+--- !u!114 &2045817128674727227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7543152704842615125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb57f143ead397c43bda269cb4b6490c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
+  Camera: {fileID: 1821642229103089384}
+  FollowPointFraming: {x: 0, y: 0}
+  FollowingSharpnessPlanar: 8
+  FollowingSharpnessVertical: 15
+  AirFollowingSharpnessVertical: 30
+  DefaultDistance: 6
+  MinDistance: 0
+  MaxDistance: 10
+  DistanceMovementSpeed: 5
+  DistanceMovementSharpness: 10
+  CombatZoomOutMultiplier: 1.4
+  CombatBlend: 0
+  AirZoomOutMultiplier: 1.2
+  ObstructionCheckRadius: 0.2
+  ObstructionLayers:
+    serializedVersion: 2
+    m_Bits: 119
+  ObstructionSharpness: 10000
+  ThinObstacleSize: 2.2
+  ObstructionRecoverySharpness: 3
+  IgnoredColliders:
+  - {fileID: 0}
+  EnableSafeZone: 1
+  SafeZoneMarginTop: 0.22
+  SafeZoneMarginBottom: 0.18
+  SafeZoneMarginLeft: 0.22
+  SafeZoneMarginRight: 0.22
+  SafeZoneCorrectionGain: 4
+  SafeZoneMaxOffset: 3
+  SafeZoneCorrectionSharpness: 8
+  DrawSafeZoneOnGameView: 1
+  SafeZoneColor: {r: 0.06, g: 0.8, b: 0.55, a: 1}
+  OutOfZoneColor: {r: 0.9, g: 0.35, b: 0.2, a: 1}
+--- !u!114 &7413025989822779197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7543152704842615125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e9e63e2047de8848a291bb7e164338a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraEffects
+  Camera: {fileID: 1821642229103089384}
+  BaseFov: 60
+  FovKickCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 6
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.15
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  ShakeFrequency: 25
+  ShakeFalloff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.25
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  SlowMotionTransitionSharpness: 10
+  CinematicBlend:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.05
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.42
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.7
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  CinematicSide: 3
+  CinematicBehind: 1.2
+  CinematicHeight: -0.2
+  CinematicFov: -10
+  CinematicMinDistance: 2.2
+  CinematicCollisionRadius: 0.2
+  CinematicObstacles:
+    serializedVersion: 2
+    m_Bits: 247
+  ImpactVolume: {fileID: 0}
+  ImpactPulseDuration: 0.25
+  SpeedFovBonus: 16
+  SpeedStartSpeed: 3.5
+  SpeedFullSpeed: 10
+  SpeedBlendSharpness: 3.5
+  SpeedSwayMagnitude: 0.025
+  SpeedSwayFrequency: 2.2
+  MaxRoll: 2.5
+  RollPerAcceleration: 0.1
+  RollPerSideSpeed: 0.15
+  RollFilter: 7
+  RollSharpness: 6
+  LockOnRollScale: 0.3
+  LandDipImpulse: 0.22
+  LandDipMax: 0.3
+  LandDipFrequency: 10
+  LandDipDamping: 0.55
 --- !u!1 &8473885949483530973
 GameObject:
   m_ObjectHideFlags: 0

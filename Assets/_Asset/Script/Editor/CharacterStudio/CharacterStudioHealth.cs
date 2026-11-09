@@ -103,7 +103,7 @@ public partial class CharacterStudioWindow
             PrefixGenerated = index < prefixes.Length && prefixes[index] == set.Prefix;
             PrefixCountMatches = prefixes.Length == sets.Sets.Count;
 
-            AnimatorController controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(LocomotionAnimatorBuilder.ControllerPath);
+            AnimatorController controller = set.Controller;
             AnimatorStateMachine machine = AnimSetCloneTool.GetLocomotionStateMachine(controller);
             if (machine != null && !string.IsNullOrEmpty(set.Prefix))
                 ControllerStates = machine.states.Count(s => s.state != null && s.state.name.StartsWith(set.Prefix, StringComparison.Ordinal));
@@ -186,7 +186,7 @@ public partial class CharacterStudioWindow
                 Detail = humanoid ? Animator.avatar.name : "anim dùng chung giữa các nhân vật cần rig Humanoid",
             });
 
-            RuntimeAnimatorController expected = AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>(LocomotionAnimatorBuilder.ControllerPath);
+            RuntimeAnimatorController expected = set.Controller;
             bool controllerOk = Animator.runtimeAnimatorController != null &&
                                 (Animator.runtimeAnimatorController == expected ||
                                  (Animator.runtimeAnimatorController is AnimatorOverrideController overrideController && overrideController.runtimeAnimatorController == expected));
@@ -194,8 +194,8 @@ public partial class CharacterStudioWindow
             {
                 State = controllerOk ? State.Ok : State.Error,
                 Label = "Animator Controller",
-                Detail = controllerOk ? Animator.runtimeAnimatorController.name : "phải dùng controller chung " + System.IO.Path.GetFileName(LocomotionAnimatorBuilder.ControllerPath),
-                Fix = controllerOk ? FixKind.None : FixKind.AssignController,
+                Detail = controllerOk ? Animator.runtimeAnimatorController.name : (expected == null ? "bộ anim chưa có Controller -> Build Locomotion Animator" : "phải dùng controller riêng " + expected.name),
+                Fix = controllerOk || expected == null ? FixKind.None : FixKind.AssignController,
                 FixLabel = "Gán",
             });
 

@@ -294,6 +294,8 @@ MonoBehaviour:
   WalkSpeed: 2
   RunSpeed: 5.5
   SprintSpeed: 8
+  InPlaceLocomotion: 0
+  JogSpeed: 3.8
   OrientationMethod: 1
   MoveTurnRate: 540
   MoveTurnSharpness: 12
@@ -303,6 +305,7 @@ MonoBehaviour:
   StartTurnAngle: 45
   ReverseAngle: 135
   SideTurnAngle: 75
+  MoveTurnClips: 0
   GroundSharpness: 18
   StopSharpness: 7
   LoopSpeedSharpness: 5
@@ -350,6 +353,14 @@ MonoBehaviour:
   DirectionalAttackThreshold: 0.6
   AlwaysDrawWeapon: 1
   CombatHoldTime: 6
+  CanFly: 0
+  AlwaysFly: 0
+  FlyHeight: 0
+  FlySpeed: 7
+  FlyAcceleration: 5
+  FlyHeightSharpness: 4
+  FlyMaxVerticalSpeed: 8
+  FlyLandSpeed: 5
   LockOnRadius: 15
   LockOnBreakRadius: 22
   AutoAddIK: 1
@@ -668,7 +679,7 @@ PrefabInstance:
     - target: {fileID: 2795829935367742544, guid: c6a429760bcbe2c4e88e92706418d7d3, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: f3605a8d73c7bde4f99f355d0a472c98, type: 2}
+      objectReference: {fileID: 9100000, guid: 166f4acdbf0e08c4497ef5210ad7ddce, type: 2}
     - target: {fileID: 2795829935367742544, guid: c6a429760bcbe2c4e88e92706418d7d3, type: 3}
       propertyPath: m_CullingMode
       value: 0
@@ -782,19 +793,10 @@ PrefabInstance:
       addedObject: {fileID: 95133902683338108}
     - targetCorrespondingSourceObject: {fileID: 8892134243957925008, guid: c6a429760bcbe2c4e88e92706418d7d3, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8657104315773183126}
-    - targetCorrespondingSourceObject: {fileID: 8892134243957925008, guid: c6a429760bcbe2c4e88e92706418d7d3, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 839965549525638827}
     - targetCorrespondingSourceObject: {fileID: 8892134243957925008, guid: c6a429760bcbe2c4e88e92706418d7d3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5927644679628712548}
-    - targetCorrespondingSourceObject: {fileID: 8892134243957925008, guid: c6a429760bcbe2c4e88e92706418d7d3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6242992128209953786}
-    - targetCorrespondingSourceObject: {fileID: 8892134243957925008, guid: c6a429760bcbe2c4e88e92706418d7d3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4773943070398411275}
     - targetCorrespondingSourceObject: {fileID: 8892134243957925008, guid: c6a429760bcbe2c4e88e92706418d7d3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1397031644651306244}
@@ -838,6 +840,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1f3fcc4ce93dbde44b23ffada87c2823, type: 2}
   CurrentWeaponIndex: 0
   AttackLayerName: WeaponAttack
+  UpperAttackLayerName: WeaponAttackUpper
   EmptyStateName: Empty
   FadeOut: 0.25
   CancelFade: 0.1
@@ -934,59 +937,6 @@ MonoBehaviour:
   OnImpactFeedback:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &8657104315773183126
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6014071856031509908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52a7e9dd07b01ad488de80fa6617bd38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerIK
-  EnableFootIK: 1
-  IKLayerName: Idle
-  GroundLayers:
-    serializedVersion: 2
-    m_Bits: 119
-  RaycastUp: 0.35
-  RaycastDown: 0.8
-  ToeProbeDistance: 0.18
-  PelvisMaxDrop: 0.35
-  PelvisSharpness: 10
-  FootSharpness: 18
-  WeightSharpness: 10
-  AttackFootWeight: 0.6
-  FlatGroundAngle: 4
-  RunMinFootSide: 0.08
-  FootSideSharpness: 10
-  PlantFeetWhenIdle: 1
-  PlantSharpness: 8
-  PlantMaxIdleSpeed: 0.3
-  PlantDelay: 0.25
-  PlantReleaseDistance: 0.25
-  PlantMaxLift: 0.03
-  PlantReleaseAngle: 30
-  StanceMaxHeightDiff: 0.1
-  StanceMaxShift: 0.45
-  StanceSharpness: 8
-  StanceDelay: 0.4
-  StanceMinSideGap: 0.08
-  EnableGroundClamp: 1
-  ToeMargin: 0.01
-  AnkleMargin: 0.07
-  EnableHeadLevel: 1
-  TargetFacePitch: 5
-  MaxHeadCorrection: 45
-  ChestShare: 0.3
-  IdleHeadWeight: 1
-  MoveHeadWeight: 0.7
-  AirHeadWeight: 0.5
-  AttackHeadWeight: 0
-  HeadWeightSharpness: 6
-  RunSpineBend: 4
 --- !u!114 &839965549525638827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1163,94 +1113,6 @@ MonoBehaviour:
   MaxSubSteps: 3
   TeleportDistance: 3
   DrawGizmos: 1
---- !u!114 &6242992128209953786
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6014071856031509908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a70e525c82ce9413fa4d940ad7fcf1db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp-firstpass::RootMotion.FinalIK.FullBodyBipedIK
-  fixTransforms: 1
-  references:
-    root: {fileID: 0}
-    pelvis: {fileID: 0}
-    leftThigh: {fileID: 0}
-    leftCalf: {fileID: 0}
-    leftFoot: {fileID: 0}
-    rightThigh: {fileID: 0}
-    rightCalf: {fileID: 0}
-    rightFoot: {fileID: 0}
-    leftUpperArm: {fileID: 0}
-    leftForearm: {fileID: 0}
-    leftHand: {fileID: 0}
-    rightUpperArm: {fileID: 0}
-    rightForearm: {fileID: 0}
-    rightHand: {fileID: 0}
-    head: {fileID: 0}
-    spine: []
-    eyes: []
-  solver:
-    executedInEditor: 0
-    IKPosition: {x: 0, y: 0, z: 0}
-    IKPositionWeight: 1
-    root: {fileID: 0}
-    iterations: 4
-    chain: []
-    effectors: []
-    spineMapping:
-      spineBones: []
-      leftUpperArmBone: {fileID: 0}
-      rightUpperArmBone: {fileID: 0}
-      leftThighBone: {fileID: 0}
-      rightThighBone: {fileID: 0}
-      iterations: 3
-      twistWeight: 1
-    boneMappings: []
-    limbMappings: []
-    FABRIKPass: 1
-    rootNode: {fileID: 0}
-    spineStiffness: 0.5
-    pullBodyVertical: 0.5
-    pullBodyHorizontal: 0
---- !u!114 &4773943070398411275
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6014071856031509908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64f99d7b853726544a49d6ed936c71d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerBodyDynamics
-  LeanPerAcceleration: 1
-  MaxSideLean: 20
-  MaxForwardLean: 10
-  MaxBackLean: 16
-  RunForwardLean: 5
-  ChestLeanShare: 0.35
-  AccelerationFilter: 9
-  LeanFrequency: 11
-  LeanDamping: 0.55
-  AirLeanPerSpeed: 1.3
-  MaxAirLean: 20
-  LandImpulse: 0.45
-  LandPitchImpulse: 15
-  LandMaxDrop: 0.35
-  LandFrequency: 14
-  LandDamping: 0.5
-  MaxHeadYaw: 40
-  ChestYawShare: 0.3
-  HeadYawSharpness: 10
-  HeadCounterRoll: 0.45
-  WeightSharpness: 12
-  GroundWeightSharpness: 14
 --- !u!114 &1397031644651306244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1447,7 +1309,7 @@ MonoBehaviour:
   SweepSteps: 4
   HitLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 247
   KickRadius: 0.2
   KickWindowBefore: 0.1
   KickWindowAfter: 0.1

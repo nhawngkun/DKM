@@ -39,7 +39,8 @@ internal sealed class CharacterCombat
     public AttackContext ResolveContext(bool skill)
     {
         CharController c = _character;
-        if (!c.IsGrounded || c.IsFlying) return AttackContext.Air;
+        // đang bay vẫn dùng chuỗi thường / kỹ năng (đánh thân trên), không ép sang air combo
+        if (!c.IsGrounded && !c.IsFlying) return AttackContext.Air;
         if (skill) return AttackContext.Skill;
         if (c.characterCombo.IsContinuingGroundChain) return AttackContext.Ground;
 

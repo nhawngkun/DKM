@@ -6,17 +6,15 @@ using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 
-// Dựng layer Locomotion trong Dante 1.controller từ AnimSetLibrary:
-// mỗi bộ (Katana = KT_, Big Sword = GS_, nhân vật mới = prefix tự đặt) là 1 AnimSetDefinition
-// có thư mục anim + bảng clip theo LocoState. Mọi chuyển state do CharController gọi CrossFade
-// nên layer không có transition nào.
+// Dựng layer Locomotion từ AnimSetLibrary: mỗi bộ (Katana = KT_, Big Sword = GS_, nhân vật mới = prefix tự đặt)
+// là 1 AnimSetDefinition có thư mục anim + bảng clip theo LocoState. Mỗi nhân vật có controller riêng
+// (AnimSetDefinition.Controller), controller chỉ chứa các bộ trỏ tới nó. Mọi chuyển state do CharController
+// gọi CrossFade nên layer không có transition nào.
 //
 // Bảng hard-code bên dưới chỉ dùng để Import lần đầu (Tools/Combat/Import Anim Sets From Code);
 // sau đó nguồn dữ liệu là asset AnimSetLibrary.
 public static class LocomotionAnimatorBuilder
 {
-    public const string ControllerPath = "Assets/_Asset/Animation/Player/Dante 1.controller";
-    public const string PrefabPath = "Assets/_Asset/Prefab/Character.prefab";
     public const string LayerName = "Locomotion";
     public const string LibraryPath = "Assets/_Asset/Data/AnimSetLibrary.asset";
 
@@ -205,6 +203,20 @@ public static class LocomotionAnimatorBuilder
         return guids.Length == 0 ? null : AssetDatabase.LoadAssetAtPath<AnimSetLibrary>(AssetDatabase.GUIDToAssetPath(guids[0]));
     }
 
+    // Controller riêng của bộ anim thứ setIndex (= WeaponData.AnimSetId)
+    public static AnimatorController ControllerOf(int setIndex)
+    {
+        AnimSetLibrary library = FindLibrary();
+        return library != null && setIndex >= 0 && setIndex < library.Sets.Count ? library.Sets[setIndex].Controller : null;
+    }
+
+    public static AnimatorController ControllerOf(string prefix)
+    {
+        AnimSetLibrary library = FindLibrary();
+        AnimSetDefinition set = library != null ? library.Sets.Find(s => s.Prefix == prefix) : null;
+        return set != null ? set.Controller : null;
+    }
+
     // ------------------------------------------------------------------
     // Build
     // ------------------------------------------------------------------
@@ -232,16 +244,26 @@ public static class LocomotionAnimatorBuilder
         List<Dictionary<string, AnimationClip>> clipsBySet = new List<Dictionary<string, AnimationClip>>();
         foreach (AnimSetDefinition set in library.Sets)
         {
+            if (set.Controller == null)
+            {
+                set.Controller = AnimatorControllerUtil.Create(string.IsNullOrEmpty(set.DisplayName) ? set.Prefix.TrimEnd('_') : set.DisplayName);
+                EditorUtility.SetDirty(library);
+            }
             Dictionary<string, AnimationClip> clips = LoadClips(set);
             ApplyImportSettings(set, clips);
             // reimport tạo lại object clip -> phải nạp lại
             clipsBySet.Add(LoadClips(set));
         }
 
-        BuildController(library, clipsBySet);
-        SetupPrefab();
+        List<string> summary = new List<string>();
+        foreach (IGrouping<AnimatorController, int> group in Enumerable.Range(0, library.Sets.Count).GroupBy(i => library.Sets[i].Controller))
+        {
+            BuildController(group.Key, library, group.ToList(), clipsBySet);
+            summary.Add(group.Key.name + ": " + string.Join(" ", group.Select(i => library.Sets[i].Prefix)));
+        }
+        SetupPrefabs(library);
         AssetDatabase.SaveAssets();
-        Debug.Log("[LocomotionAnimatorBuilder] Xong " + library.Sets.Count + " bộ anim.");
+        Debug.Log($"[LocomotionAnimatorBuilder] Xong {library.Sets.Count} bộ anim — " + string.Join(" | ", summary));
     }
 
     // Clip của bộ: thư mục chính trước, rồi tới các thư mục dự phòng (clip dùng chung với bộ template).
@@ -357,11 +379,8 @@ public static class LocomotionAnimatorBuilder
 
     #region Controller
 
-    private static void BuildController(AnimSetLibrary library, List<Dictionary<string, AnimationClip>> clipsBySet)
+    private static void BuildController(AnimatorController controller, AnimSetLibrary library, List<int> sets, List<Dictionary<string, AnimationClip>> clipsBySet)
     {
-        var controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(ControllerPath);
-        if (controller == null) throw new InvalidOperationException($"[LocomotionAnimatorBuilder] Không thấy {ControllerPath}");
-
         List<AnimatorControllerLayer> layers = controller.layers.ToList();
         foreach (AnimatorControllerLayer layer in layers.Where(l => OldLayers.Contains(l.name)).ToList())
         {
@@ -384,8 +403,8 @@ public static class LocomotionAnimatorBuilder
         };
         AssetDatabase.AddObjectToAsset(stateMachine, controller);
 
-        for (int set = 0; set < library.Sets.Count; set++) BuildSet(controller, stateMachine, library.Sets[set], clipsBySet[set], set);
-        stateMachine.defaultState = PickDefaultState(stateMachine, library.Sets[0].Prefix);
+        for (int column = 0; column < sets.Count; column++) BuildSet(controller, stateMachine, library.Sets[sets[column]], clipsBySet[sets[column]], column);
+        stateMachine.defaultState = PickDefaultState(stateMachine, library.Sets[sets[0]].Prefix);
 
         layers.Insert(0, new AnimatorControllerLayer
         {
@@ -396,6 +415,8 @@ public static class LocomotionAnimatorBuilder
             iKPass = true,
         });
         controller.layers = layers.ToArray();
+        AnimatorControllerUtil.EnsureIKLayer(controller);
+        AnimatorControllerUtil.RemoveOrphans(controller);
         EditorUtility.SetDirty(controller);
     }
 
@@ -507,21 +528,32 @@ public static class LocomotionAnimatorBuilder
 
     #region Prefab
 
-    private static void SetupPrefab()
+    // Prefab của từng bộ: đủ component root motion + Animator dùng đúng controller của nhân vật
+    private static void SetupPrefabs(AnimSetLibrary library)
     {
-        GameObject prefab = PrefabUtility.LoadPrefabContents(PrefabPath);
-        try
+        foreach (AnimSetDefinition set in library.Sets.Where(s => s.Prefab != null).GroupBy(s => s.Prefab).Select(g => g.First()))
         {
-            Animator animator = prefab.GetComponentInChildren<Animator>(true);
-            if (animator == null) throw new InvalidOperationException($"[LocomotionAnimatorBuilder] {PrefabPath} không có Animator");
-            if (animator.GetComponent<AnimatorRootMotion>() == null) animator.gameObject.AddComponent<AnimatorRootMotion>();
-            if (animator.GetComponent<PoseBlend>() == null) animator.gameObject.AddComponent<PoseBlend>();
-            animator.applyRootMotion = true;
-            PrefabUtility.SaveAsPrefabAsset(prefab, PrefabPath);
-        }
-        finally
-        {
-            PrefabUtility.UnloadPrefabContents(prefab);
+            string path = AssetDatabase.GetAssetPath(set.Prefab);
+            GameObject prefab = PrefabUtility.LoadPrefabContents(path);
+            try
+            {
+                Animator animator = prefab.GetComponentInChildren<Animator>(true);
+                if (animator == null)
+                {
+                    Debug.LogError($"[LocomotionAnimatorBuilder] {path} không có Animator");
+                    continue;
+                }
+                if (animator.GetComponent<AnimatorRootMotion>() == null) animator.gameObject.AddComponent<AnimatorRootMotion>();
+                if (animator.GetComponent<PoseBlend>() == null) animator.gameObject.AddComponent<PoseBlend>();
+                animator.applyRootMotion = true;
+                bool overridesOwn = animator.runtimeAnimatorController is AnimatorOverrideController overrideController && overrideController.runtimeAnimatorController == set.Controller;
+                if (!overridesOwn) animator.runtimeAnimatorController = set.Controller;
+                PrefabUtility.SaveAsPrefabAsset(prefab, path);
+            }
+            finally
+            {
+                PrefabUtility.UnloadPrefabContents(prefab);
+            }
         }
     }
 

@@ -11,6 +11,9 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class PlayerIK : MonoBehaviour
 {
+    [Tooltip("Tắt mọi chỉnh pose bằng code (foot IK, kẹp đất) để xem anim nguyên bản. Bật/tắt được lúc Play")]
+    public bool RawAnimation;
+
     [Header("Foot IK")]
     public bool EnableFootIK = true;
     [Tooltip("Tên layer Animator dùng để chạy IK (phải bật IK Pass, chỉ 1 layer). Layer phải có anim thật: " +
@@ -66,29 +69,8 @@ public class PlayerIK : MonoBehaviour
     private Vector3 _modelBaseLocalPos;
     private float _clampLift;
 
-    [Header("Head Level (ngẩng đầu)")]
-    [Tooltip("Anim gốc cúi mặt xuống đất (Idle ~28°, chạy ~60°). Sau Animator, xoay ngực + đầu ngẩng lên về góc mục tiêu")]
-    public bool EnableHeadLevel = true;
-    public float TargetFacePitch = 5f;       // Góc mặt mong muốn (+ = nhìn xuống), 0 = nhìn thẳng
-    public float MaxHeadCorrection = 45f;
-    [Range(0f, 1f)] public float ChestShare = 0.3f;   // Phần ngẩng chia cho ngực (còn lại cho đầu) -> tự nhiên hơn
-    [Range(0f, 1f)] public float IdleHeadWeight = 1f;
-    [Range(0f, 1f)] public float MoveHeadWeight = 0.7f;
-    [Range(0f, 1f)] public float AirHeadWeight = 0.5f;
-    [Range(0f, 1f)] public float AttackHeadWeight = 0f;  // Combo giữ nguyên chuyển động đầu của anim
-    public float HeadWeightSharpness = 6f;
-    [Tooltip("Khi chạy: gập thêm lưng trên về trước (độ). Tư thế gốc của Dante ưỡn ngực hơn model Mixamo ~26°, retarget không bù nên lưng thẳng như tấm ván")]
-    public float RunSpineBend = 13f;
-    private float _runBendWeight;
-
-    private Transform _head;
-    private Transform _chest;
-    private Vector3 _headFaceLocal = Vector3.forward; // trục "mặt" của xương đầu, lấy từ pose gốc lúc Awake
-    private float _headWeight;
-
     private Animator _animator;
     private CharController _character;
-    private PlayerBodyDynamics _bodyDynamics;
     private Collider[] _ownColliders;
     private readonly RaycastHit[] _hits = new RaycastHit[8];
     private int _ikLayer = -1;
@@ -109,24 +91,12 @@ public class PlayerIK : MonoBehaviour
         _character = character;
         _ownColliders = character.GetComponentsInChildren<Collider>();
         if (_animator == null) _animator = GetComponent<Animator>();
-        if (_animator == null || !_animator.isHuman) return;
-        _bodyDynamics = GetComponent<PlayerBodyDynamics>();
-        if (_bodyDynamics == null) _bodyDynamics = gameObject.AddComponent<PlayerBodyDynamics>();
-        _bodyDynamics.Init(character);
     }
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
         _modelBaseLocalPos = transform.localPosition;
-        if (_animator != null && _animator.isHuman)
-        {
-            _head = _animator.GetBoneTransform(HumanBodyBones.Head);
-            _chest = _animator.GetBoneTransform(HumanBodyBones.UpperChest);
-            if (_chest == null) _chest = _animator.GetBoneTransform(HumanBodyBones.Chest);
-            // Lúc Awake Animator chưa chạy -> xương đang ở pose gốc, mặt nhìn thẳng về phía trước nhân vật
-            if (_head != null) _headFaceLocal = _head.InverseTransformDirection(transform.forward).normalized;
-        }
     }
 
     // bỏ phần nâng của frame trước trước khi Animator chạy: chỗ ghim chân là toạ độ world,
@@ -136,12 +106,14 @@ public class PlayerIK : MonoBehaviour
         transform.localPosition = _modelBaseLocalPos;
     }
 
-    /// <summary>Chạy sau Animator + IK: ngẩng ngực/đầu để mặt về TargetFacePitch.</summary>
     private void LateUpdate()
     {
-        if (_bodyDynamics != null) _bodyDynamics.Solve();
+        if (RawAnimation)
+        {
+            transform.localPosition = _modelBaseLocalPos;
+            return;
+        }
         UpdateGroundClamp();
-        UpdateHeadLevel();
     }
 
     /// <summary>
@@ -194,51 +166,6 @@ public class PlayerIK : MonoBehaviour
         return ground + margin - Vector3.Dot(t.position, up);
     }
 
-    private void UpdateHeadLevel()
-    {
-        if (_head == null || _character == null) return;
-
-        Vector3 right = transform.right;
-        bool running = _character.HasMoveInput && _character.IsGrounded && !_character.IsAttacking && !_character.IsDashing;
-        float planarSpeed = Vector3.ProjectOnPlane(_character.Motor.BaseVelocity, transform.up).magnitude;
-        float bendTarget = running ? Mathf.InverseLerp(_character.WalkSpeed, _character.RunSpeed, planarSpeed) : 0f;
-        _runBendWeight = Mathf.Lerp(_runBendWeight, bendTarget, 1f - Mathf.Exp(-HeadWeightSharpness * Time.deltaTime));
-        if (_chest != null && _runBendWeight > 0.001f)
-        {
-            _chest.rotation = Quaternion.AngleAxis(RunSpineBend * _runBendWeight, right) * _chest.rotation;
-        }
-
-        float target = 0f;
-        if (EnableHeadLevel && !_character.IsDashing)
-        {
-            if (_character.IsAttacking) target = AttackHeadWeight;
-            else if (!_character.IsGrounded) target = AirHeadWeight;
-            else target = _character.HasMoveInput ? MoveHeadWeight : IdleHeadWeight;
-        }
-        _headWeight = Mathf.Lerp(_headWeight, target, 1f - Mathf.Exp(-HeadWeightSharpness * Time.deltaTime));
-        if (_headWeight < 0.001f) return;
-
-        float correction = Mathf.Clamp(FacePitch(right) - TargetFacePitch, -MaxHeadCorrection, MaxHeadCorrection) * _headWeight;
-
-        // Đang di chuyển chỉ ngẩng đầu: ngẩng cả ngực sẽ triệt tiêu dáng ngả người của anim chạy
-        if (_chest != null && ChestShare > 0f && !_character.HasMoveInput)
-        {
-            _chest.rotation = Quaternion.AngleAxis(-correction * ChestShare, right) * _chest.rotation;
-            // Đo lại sau khi ngực đã ngẩng, phần còn thiếu giao cho đầu
-            correction = Mathf.Clamp(FacePitch(right) - TargetFacePitch, -MaxHeadCorrection, MaxHeadCorrection) * _headWeight;
-        }
-        _head.rotation = Quaternion.AngleAxis(-correction, right) * _head.rotation;
-    }
-
-    /// <returns>Góc mặt so với phương ngang (+ = nhìn xuống)</returns>
-    private float FacePitch(Vector3 right)
-    {
-        Vector3 face = _head.TransformDirection(_headFaceLocal);
-        Vector3 flat = Vector3.ProjectOnPlane(face, transform.up);
-        if (flat.sqrMagnitude < 0.0001f) return 0f;
-        return Vector3.SignedAngle(flat, face, right);
-    }
-
     private void Reset()
     {
         // Mặc định bỏ qua layer Player
@@ -260,6 +187,15 @@ public class PlayerIK : MonoBehaviour
         }
         if (layerIndex != _ikLayer) return;
 
+        if (RawAnimation)
+        {
+            foreach (AvatarIKGoal goal in new[] { AvatarIKGoal.LeftFoot, AvatarIKGoal.RightFoot })
+            {
+                _animator.SetIKPositionWeight(goal, 0f);
+                _animator.SetIKRotationWeight(goal, 0f);
+            }
+            return;
+        }
         UpdateFootIK(Time.deltaTime);
     }
 

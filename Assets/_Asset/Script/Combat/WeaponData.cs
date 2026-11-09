@@ -125,6 +125,10 @@ public class WeaponData : ScriptableObject
     [Header("Cách cầm khi không đánh (local so với bàn tay phải)")]
     public Vector3 IdleGripPosition;
     public Quaternion IdleGripRotation = Quaternion.identity;
+    [Tooltip("Cách cầm idle lấy từ clip lúc build. Chênh lệch giữa IdleGrip (chỉnh tay) và giá trị này được áp lên grip của mọi đòn")]
+    [HideInInspector] public bool HasBakedIdleGrip;
+    [HideInInspector] public Vector3 BakedIdleGripPosition;
+    [HideInInspector] public Quaternion BakedIdleGripRotation = Quaternion.identity;
 
     [Header("Tay trái (vỏ kiếm / vũ khí phụ)")]
     [Tooltip("Model cầm ở bàn tay trái, ví dụ vỏ kiếm. Để trống = tay trái không cầm gì.")]
@@ -157,6 +161,26 @@ public class WeaponData : ScriptableObject
         {
             if (chain.Context == context && chain.Steps.Count > 0) yield return chain;
         }
+    }
+
+    /// <summary>Cách cầm của đòn tại giây time, đã bù phần chỉnh tay cách cầm idle (đồng bộ với trang Cầm vũ khí).</summary>
+    public bool TrySampleAttackGrip(AttackStep step, float time, out Vector3 position, out Quaternion rotation)
+    {
+        position = IdleGripPosition;
+        rotation = IdleGripRotation;
+        if (step == null || step.GripRotations == null || step.GripRotations.Length == 0) return false;
+
+        position = SampleVector(step.GripPositions, time);
+        rotation = SampleRotation(step.GripRotations, time);
+        if (!HasBakedIdleGrip) return true;
+
+        // Độ lệch tính trong khung của vũ khí: grip gốc = idle bake -> ra đúng idle chỉnh tay
+        Quaternion inverseBaked = Quaternion.Inverse(BakedIdleGripRotation);
+        Vector3 offsetPos = inverseBaked * (IdleGripPosition - BakedIdleGripPosition);
+        Quaternion offsetRot = inverseBaked * IdleGripRotation;
+        position += rotation * offsetPos;
+        rotation *= offsetRot;
+        return true;
     }
 
     // Nội suy 1 mảng mẫu đều theo thời gian (giây trong clip)

@@ -46,6 +46,8 @@ public class CharacterCombo : MonoBehaviour
 
     [Header("Animator")]
     public string AttackLayerName = "WeaponAttack";
+    [Tooltip("Layer đòn đánh chỉ thân trên (mask). CharController bật UpperBodyOnly lúc bay -> chân vẫn anim bay")]
+    public string UpperAttackLayerName = "WeaponAttackUpper";
     public string EmptyStateName = "Empty";
     [Tooltip("Thời gian blend về locomotion khi hết đòn (giây)")]
     public float FadeOut = 0.25f;
@@ -76,7 +78,13 @@ public class CharacterCombo : MonoBehaviour
     [Tooltip("Độ lệch tư thế trung bình (m, đã chia humanScale) ứng với MaxLinkFade")]
     public float PoseErrorForMaxFade = 0.35f;
 
+    // true = phát đòn ở layer thân trên (nếu controller có); đổi giữa chừng thì đòn kế chuyển layer
+    public bool UpperBodyOnly { get; set; }
+    public bool PlaysUpperBody => UpperBodyOnly && _upperLayer >= 0;
+
     private int _layer = -1;
+    private int _fullLayer = -1;
+    private int _upperLayer = -1;
     private int _emptyHash;
 
     private ComboChain _chain;
@@ -125,6 +133,8 @@ public class CharacterCombo : MonoBehaviour
         if (animator == null) animator = GetComponent<Animator>();
         _emptyHash = Animator.StringToHash(EmptyStateName);
         _layer = animator != null ? animator.GetLayerIndex(AttackLayerName) : -1;
+        _fullLayer = _layer;
+        _upperLayer = animator != null && !string.IsNullOrEmpty(UpperAttackLayerName) ? animator.GetLayerIndex(UpperAttackLayerName) : -1;
         if (_layer < 0)
         {
             Debug.LogError($"[CharacterCombo] Animator thiếu layer '{AttackLayerName}'. Chạy Tools/Combat/Build Weapon Combos.", this);
@@ -287,6 +297,12 @@ public class CharacterCombo : MonoBehaviour
         while (_nextImpact < _step.HitTimes.Count && _step.HitTimes[_nextImpact] * _step.Length < entry) _nextImpact++;
         _attacking = true;
 
+        int layer = PlaysUpperBody ? _upperLayer : _fullLayer;
+        if (layer != _layer)
+        {
+            animator.CrossFadeInFixedTime(_emptyHash, fade, _layer);
+            _layer = layer;
+        }
         animator.CrossFadeInFixedTime(Animator.StringToHash(_step.StateName), fade, _layer, entry);
 
         OnAttackHit?.Invoke(BuildInfo(false));
@@ -497,11 +513,9 @@ public class CharacterCombo : MonoBehaviour
     {
         position = Vector3.zero;
         rotation = Quaternion.identity;
-        if (!_attacking || _step.GripRotations == null || _step.GripRotations.Length == 0) return false;
-
-        position = WeaponData.SampleVector(_step.GripPositions, _stepTime);
-        rotation = WeaponData.SampleRotation(_step.GripRotations, _stepTime);
-        return true;
+        WeaponData weapon = CurrentWeapon;
+        if (!_attacking || weapon == null) return false;
+        return weapon.TrySampleAttackGrip(_step, _stepTime, out position, out rotation);
     }
 
     public void SetWeapon(int index)

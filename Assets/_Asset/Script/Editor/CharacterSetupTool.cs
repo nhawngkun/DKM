@@ -333,10 +333,10 @@ public static class CharacterSetupTool
     private static bool EnsureAnimSet(Profile profile, out int index)
     {
         index = -1;
-        AnimatorController controller = AnimSetCloneTool.FindController();
+        AnimatorController controller = LocomotionAnimatorBuilder.ControllerOf(TemplatePrefix);
         if (controller == null)
         {
-            Debug.LogError("[CharacterSetup] Không thấy Animator Controller: " + LocomotionAnimatorBuilder.ControllerPath);
+            Debug.LogError("[CharacterSetup] Bộ " + TemplatePrefix + " chưa có Controller trong AnimSetLibrary");
             return false;
         }
 
@@ -481,7 +481,7 @@ public static class CharacterSetupTool
         int index = sets != null ? AnimSetCloneTool.IndexOfPrefix(sets, profile.Prefix) : -1;
         bool inPrefixes = Array.IndexOf(LocoSetPrefixes.Values, profile.Prefix) >= 0;
 
-        AnimatorController controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(LocomotionAnimatorBuilder.ControllerPath);
+        AnimatorController controller = LocomotionAnimatorBuilder.ControllerOf(profile.Prefix);
         AnimatorStateMachine machine = AnimSetCloneTool.GetLocomotionStateMachine(controller);
         int locoStates = machine == null ? 0 : machine.states.Count(s => s.state != null && s.state.name.StartsWith(profile.Prefix, StringComparison.Ordinal));
 

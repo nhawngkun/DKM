@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Quán tính toàn thân bằng Final IK: đổ người theo gia tốc, ngả theo vận tốc khi bay, nhún gối khi tiếp đất,
 /// đầu nhìn trước vào hướng cua. Tay giữ nguyên anim (không map IK). Bàn chân giữ nguyên chỗ PlayerIK đã đặt (ghim bằng effector)
-/// nên hông đổ được mà chân không trượt. PlayerIK gọi Solve() trong LateUpdate, trước kẹp đất và ngẩng đầu.
+/// nên hông đổ được mà chân không trượt. PlayerIK gọi Solve() trong LateUpdate, trước kẹp đất.
 /// </summary>
 [RequireComponent(typeof(FullBodyBipedIK))]
 public class PlayerBodyDynamics : MonoBehaviour
@@ -80,7 +80,7 @@ public class PlayerBodyDynamics : MonoBehaviour
             _ik.SetReferences(references, null);
         }
 
-        // Giải tay trong PlayerIK để đúng thứ tự: Animator IK -> Final IK -> kẹp đất -> ngẩng đầu -> vũ khí, áo
+        // Giải tay trong PlayerIK để đúng thứ tự: Animator IK -> Final IK -> kẹp đất -> vũ khí, áo
         _ik.enabled = false;
         _ik.fixTransforms = false;
         IKSolverFullBodyBiped solver = _ik.solver;
@@ -94,6 +94,8 @@ public class PlayerBodyDynamics : MonoBehaviour
         solver.rightArmMapping.weight = 0f;
         solver.OnPreUpdate = ApplyBeforeSolve;
         solver.OnPostUpdate = ApplyAfterSolve;
+        // component bị tắt trước Start nên tự khởi tạo, không thì solver.Update gọi Initiate với root rỗng
+        if (!solver.initiated) solver.Initiate(_ik.transform);
 
         _pelvis = references.pelvis;
         _head = references.head;

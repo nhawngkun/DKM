@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 3f8a1390a713a1549974a9b9b83179e5
 ModelImporter:
-  serializedVersion: 24300
+  serializedVersion: 24200
   internalIDToNameTable: []
   externalObjects: {}
   materials:
@@ -9,7 +9,6 @@ ModelImporter:
     materialName: 0
     materialSearch: 1
     materialLocation: 1
-    searchTexturesGlobally: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -134,22 +133,6 @@ ModelImporter:
         modified: 0
     - boneName: R_Foot
       humanName: RightFoot
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: Waist
-      humanName: Spine
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: Stomach
-      humanName: Chest
       limit:
         min: {x: 0, y: 0, z: 0}
         max: {x: 0, y: 0, z: 0}
@@ -476,16 +459,32 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: Chest
-      humanName: UpperChest
+    - boneName: Head
+      humanName: Head
       limit:
         min: {x: 0, y: 0, z: 0}
         max: {x: 0, y: 0, z: 0}
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: Head
-      humanName: Head
+    - boneName: Stomach
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Chest
+      humanName: Chest
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Neck
+      humanName: Neck
       limit:
         min: {x: 0, y: 0, z: 0}
         max: {x: 0, y: 0, z: 0}
@@ -616,12 +615,12 @@ ModelImporter:
     - name: Hip
       parentName: root
       position: {x: -0, y: 1.11, z: 0.03}
-      rotation: {x: -0, y: -0, z: -0, w: 1}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: L_Thigh
       parentName: Hip
       position: {x: -0.115899995, y: -0.099699974, z: 0.008199999}
-      rotation: {x: -0, y: -0, z: -0, w: 1}
+      rotation: {x: 0.007406299, y: -1.3825374e-10, z: -0.009866801, w: 0.99992394}
       scale: {x: 1, y: 0.99999994, z: 1}
     - name: L_Knee_SR
       parentName: L_Thigh
@@ -631,12 +630,12 @@ ModelImporter:
     - name: L_Shin
       parentName: L_Thigh
       position: {x: -0.000000007627769, y: -0.40789998, z: -1.2511851e-10}
-      rotation: {x: -0, y: -0, z: -0, w: 1}
+      rotation: {x: 0.043317653, y: 6.619347e-10, z: 0.021949006, w: 0.9988203}
       scale: {x: 1, y: 1, z: 1}
     - name: L_Foot
       parentName: L_Shin
       position: {x: 0.000000015829935, y: -0.48839998, z: -0.000000001841912}
-      rotation: {x: -0, y: -0, z: -0, w: 1}
+      rotation: {x: -0.050711915, y: 0.000589967, z: -0.012092174, w: 0.99863994}
       scale: {x: 1.0000001, y: 1, z: 0.99999994}
     - name: L_Foot_SR
       parentName: L_Foot
@@ -651,7 +650,7 @@ ModelImporter:
     - name: L_Toe
       parentName: L_Foot_twist
       position: {x: -0.0000000041775916, y: 0.0000000063711694, z: 0.19659999}
-      rotation: {x: -0, y: -0, z: -0, w: 1}
+      rotation: {x: -0.0000000037252899, y: -0, z: -3.7834974e-10, w: 1}
       scale: {x: 1.0000004, y: 0.99999994, z: 1}
     - name: L_Shin_push_ST
       parentName: L_Shin
@@ -716,7 +715,7 @@ ModelImporter:
     - name: R_Thigh
       parentName: Hip
       position: {x: 0.115899995, y: -0.099699974, z: 0.008199999}
-      rotation: {x: -0, y: -0, z: -0, w: 1}
+      rotation: {x: 0.0074066804, y: 1.3825374e-10, z: 0.009867031, w: 0.99992394}
       scale: {x: 1, y: 0.99999994, z: 1}
     - name: R_Knee_SR
       parentName: R_Thigh
@@ -726,12 +725,12 @@ ModelImporter:
     - name: R_Shin
       parentName: R_Thigh
       position: {x: 0.000000007627769, y: -0.40789998, z: -1.2511851e-10}
-      rotation: {x: -0, y: -0, z: -0, w: 1}
+      rotation: {x: 0.04331448, y: -8.947648e-10, z: -0.022181079, w: 0.99881524}
       scale: {x: 1, y: 1, z: 1}
     - name: R_Foot
       parentName: R_Shin
       position: {x: -0.000000015829935, y: -0.48839998, z: -0.000000001841912}
-      rotation: {x: -0, y: -0, z: -0, w: 1}
+      rotation: {x: -0.050709084, y: -0.00059167267, z: 0.012324048, w: 0.99863726}
       scale: {x: 1.0000001, y: 1, z: 0.99999994}
     - name: R_Foot_SR
       parentName: R_Foot
@@ -746,7 +745,7 @@ ModelImporter:
     - name: R_Toe
       parentName: R_Foot_twist
       position: {x: 0.0000000041775916, y: 0.0000000063711694, z: 0.19659999}
-      rotation: {x: -0, y: -0, z: -0, w: 1}
+      rotation: {x: -0, y: -5.8207654e-11, z: 3.055902e-10, w: 1}
       scale: {x: 1.0000004, y: 0.99999994, z: 1}
     - name: R_Shin_push_ST
       parentName: R_Shin
@@ -816,7 +815,7 @@ ModelImporter:
     - name: Stomach
       parentName: Waist
       position: {x: -0, y: 0.17470002, z: 0.0013999995}
-      rotation: {x: -0.05233596, y: -0, z: -0, w: 0.99862957}
+      rotation: {x: -0.05233596, y: 0, z: 0, w: 0.99862957}
       scale: {x: 1, y: 1, z: 1}
     - name: Chest
       parentName: Stomach
@@ -1681,7 +1680,7 @@ ModelImporter:
     - name: Neck
       parentName: Chest
       position: {x: -0, y: 0.17589998, z: -0.0547}
-      rotation: {x: 0.09845134, y: -0, z: -0, w: 0.99514186}
+      rotation: {x: -0.018188925, y: 0.00000001619699, z: -0.00000020309119, w: 0.99983466}
       scale: {x: 1, y: 1, z: 1}
     - name: L_Neck_SR
       parentName: Neck
@@ -1751,7 +1750,7 @@ ModelImporter:
     - name: Head
       parentName: Neck_Middle
       position: {x: -0, y: 0.06959993, z: 0.00000002859711}
-      rotation: {x: -0.02181489, y: -0, z: -0, w: 0.99976206}
+      rotation: {x: 0.019814443, y: -0.000000024711516, z: 0.00000020223187, w: 0.9998037}
       scale: {x: 1, y: 1.0000014, z: 1.0000014}
     - name: B_HairCloth00_start
       parentName: Head

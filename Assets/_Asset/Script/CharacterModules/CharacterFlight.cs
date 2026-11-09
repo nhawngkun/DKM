@@ -1,7 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-/// Mode bay (Trish): bấm Q cất cánh, bay 8 hướng mặt theo camera, bấm lại để hạ cánh.
+/// Mode bay (Trish): bấm Q cất cánh, bay mặt theo hướng di chuyển (lock-on thì nhìn mục tiêu), bấm lại để hạ cánh.
+/// AlwaysFly thì bay luôn, không hạ cánh.
 /// Clip bay là bản Inplace, độ cao bay nằm sẵn trong pose: FlyHeight = 0 thì capsule vẫn chạy trên đất
 /// (bám địa hình như đi bộ), > 0 thì nâng capsule thêm chừng đó. Vận tốc do code, đánh dùng chuỗi Air của vũ khí.
 /// </summary>
@@ -39,6 +40,15 @@ internal sealed class CharacterFlight
             if (c.IsAttacking) c.characterCombo.CancelCombo();
             Enter(Phase.Landing, LocoState.FlyEnd, 0.15f);
         }
+    }
+
+    // nhân vật luôn bay (AlwaysFly): vào thẳng bay lơ lửng, không phát anim cất cánh
+    public void EnterHover()
+    {
+        CharController c = _character;
+        if (Hovers) c.Motor.ForceUnground();
+        _planarVelocity = Vector3.ProjectOnPlane(c.Motor.BaseVelocity, c.Motor.CharacterUp);
+        Enter(Phase.Hover, c.HasMoveInput ? LocoState.FlyMove : LocoState.FlyIdle, 0.2f);
     }
 
     // nhân vật bị tắt / đổi nhân vật: về đất ngay, không chạy anim hạ cánh
@@ -91,10 +101,11 @@ internal sealed class CharacterFlight
         }
     }
 
+    // mặt theo hướng bay (lock-on thì nhìn mục tiêu), không xoay theo camera; đứng yên thì giữ hướng cũ
     public void UpdateRotation(ref Quaternion currentRotation, float deltaTime)
     {
         CharController c = _character;
-        Vector3 facing = c.FacingTarget();
+        Vector3 facing = c.IsLockedOn ? c.FacingTarget() : Vector3.ProjectOnPlane(c.MoveInputDirection, c.Motor.CharacterUp);
         if (facing.sqrMagnitude < 0.0001f) return;
         Quaternion target = Quaternion.LookRotation(facing, c.Motor.CharacterUp);
         currentRotation = Quaternion.Slerp(currentRotation, target, 1f - Mathf.Exp(-c.StrafeTurnSharpness * deltaTime));

@@ -17,7 +17,7 @@ public class CharController : MonoBehaviour, ICharacterController
     [Header("Gait theo lực stick")]
     [Range(0f, 1f)] public float WalkInputThreshold = 0.35f;
     [Range(0f, 1f)] public float JogInputThreshold = 0.75f;
-    [Tooltip("Tốc độ tham chiếu (m/s) của clip, PlayerIK / PlayerBodyDynamics dùng để tính độ nghiêng")]
+    [Tooltip("Tốc độ tham chiếu (m/s) của clip, PlayerIK dùng")]
     public float WalkSpeed = 1.86f;
     public float RunSpeed = 5.72f;
     public float SprintSpeed = 7.06f;
@@ -44,6 +44,8 @@ public class CharController : MonoBehaviour, ICharacterController
     public float ReverseAngle = 135f;
     [Tooltip("Đang đi / jog mà lệch hơn góc này thì dùng clip quay 90 độ thay vì bẻ lái")]
     public float SideTurnAngle = 100f;
+    [Tooltip("Tắt khi bộ anim không có clip quay riêng (Vergil mượn clip của Dante: khác dáng, khác tốc độ) -> đang chạy chỉ bẻ lái")]
+    public bool MoveTurnClips = true;
 
     [Header("Bám root motion")]
     public float GroundSharpness = 18f;
@@ -115,6 +117,8 @@ public class CharController : MonoBehaviour, ICharacterController
     [Header("Bay (Q)")]
     [Tooltip("Nhân vật có mode bay (bộ anim phải có state FlyStart/FlyIdle/FlyMove/FlyEnd)")]
     public bool CanFly;
+    [Tooltip("Luôn bay, không có mode đi bộ: vào game là bay ngay, Q không hạ cánh")]
+    public bool AlwaysFly;
     [Tooltip("Nâng capsule thêm so với mặt đất khi bay (m). 0 = capsule ở đất, độ cao bay lấy từ pose clip Inplace")]
     public float FlyHeight = 0f;
     public float FlySpeed = 7f;
@@ -149,10 +153,12 @@ public class CharController : MonoBehaviour, ICharacterController
     public bool IsInCombat => AlwaysDrawWeapon || _combatTimer > 0f;
     public bool IsFlying => _flight.IsFlying;
 
-    internal bool IsStrafing => IsLockedOn || OrientationMethod == OrientationMethod.TowardsCamera;
+    // giữ sprint khi đang chạy thì bỏ strafe theo camera, chạy theo hướng di chuyển: blend strafe không có clip sprint. Lock-on vẫn strafe
+    internal bool IsStrafing => IsLockedOn || (OrientationMethod == OrientationMethod.TowardsCamera && !(_sprintHeld && HasMoveInput));
     internal float DashLastEndTime => _dash.LastEndTime;
     internal float Stick => _stick;
     internal bool SprintHeld => _sprintHeld;
+    internal bool FlyingUpperAttack => _flight.IsFlying && IsAttacking && characterCombo.PlaysUpperBody;
     internal LocoState CurrentClip => _currentClip;
 
     private Vector3 _moveInputVector;
@@ -263,6 +269,7 @@ public class CharController : MonoBehaviour, ICharacterController
         if (characterCombo != null)
         {
             if (inputs.WeaponSwitch != 0) characterCombo.NextWeapon(inputs.WeaponSwitch);
+            characterCombo.UpperBodyOnly = _flight.IsFlying;
             if (inputs.Attack || inputs.Skill)
             {
                 AttackContext context = _combat.ResolveContext(inputs.Skill && !inputs.Attack);
@@ -273,7 +280,11 @@ public class CharController : MonoBehaviour, ICharacterController
 
         if (IsAttacking && characterCombo.IsInRecovery && _stick > AttackMoveCancelThreshold) characterCombo.CancelForMove();
 
-        if (inputs.FlyToggle) _flight.Toggle();
+        if (AlwaysFly && CanFly)
+        {
+            if (!_flight.IsFlying && !IsAttacking) _flight.EnterHover();
+        }
+        else if (inputs.FlyToggle) _flight.Toggle();
         bool flying = _flight.IsFlying;
 
         if (inputs.JumpDown && !flying && (!IsAttacking || CanCancelAttackWithJump))
@@ -302,10 +313,11 @@ public class CharController : MonoBehaviour, ICharacterController
 
         attacking = IsAttacking;
         int attackEdge = _combat.UpdateEdge(attacking);
-        if (attackEdge == 1 && IsGrounded) EnterGroundIdle(0.1f);
+        if (attackEdge == 1 && IsGrounded && !_flight.IsFlying) EnterGroundIdle(0.1f);
         else if (attackEdge == -1) ResumeAfterAttack();
 
-        if (!attacking) TickLocomotion(Time.deltaTime);
+        // đánh thân trên lúc bay: anim bay + di chuyển vẫn chạy
+        if (!attacking || FlyingUpperAttack) TickLocomotion(Time.deltaTime);
     }
 
     private void UpdateLockOn(bool lockOnHeld)
@@ -470,7 +482,7 @@ public class CharController : MonoBehaviour, ICharacterController
 
         if (_flight.IsFlying)
         {
-            bool attacking = IsAttacking;
+            bool attacking = IsAttacking && !FlyingUpperAttack;
             if (attacking) _combat.UpdateVelocity(ref currentVelocity, deltaTime);
             _flight.UpdateVelocity(ref currentVelocity, deltaTime, attacking);
         }

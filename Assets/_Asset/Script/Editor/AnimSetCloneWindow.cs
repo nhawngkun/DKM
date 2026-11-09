@@ -187,7 +187,7 @@ public class AnimSetCloneWindow : EditorWindow
 
         GUILayout.BeginHorizontal();
         AnimatorController controller = (AnimatorController)EditorGUILayout.ObjectField("Controller", _controller, typeof(AnimatorController), false);
-        if (GUILayout.Button("Lấy controller của Dante", GUILayout.Width(190f)))
+        if (GUILayout.Button("Lấy controller bộ đầu", GUILayout.Width(190f)))
         {
             _controller = AnimSetCloneTool.FindController();
             RefreshPrefixes();
@@ -206,7 +206,7 @@ public class AnimSetCloneWindow : EditorWindow
 
         if (_controller == null)
         {
-            EditorGUILayout.HelpBox("Chưa chọn controller. Đường dẫn mặc định: " + LocomotionAnimatorBuilder.ControllerPath, MessageType.Warning);
+            EditorGUILayout.HelpBox("Chưa chọn controller. Gán Controller cho bộ anim trong AnimSetLibrary rồi bấm Lấy controller.", MessageType.Warning);
             return;
         }
 

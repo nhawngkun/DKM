@@ -1992,24 +1992,30 @@ public class CombatTimingWindow : EditorWindow
     {
         _validation.Clear();
 
-        AnimatorController controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(WeaponComboBuilder.ControllerPath);
-        if (controller == null)
+        // state tấn công trong controller riêng của nhân vật sở hữu vũ khí
+        Dictionary<AnimatorController, HashSet<string>> statesByController = new Dictionary<AnimatorController, HashSet<string>>();
+        HashSet<string> AttackStates(WeaponData weapon)
         {
-            _validation.Add("✖ Không thấy Animator Controller: " + WeaponComboBuilder.ControllerPath);
-            return;
+            HashSet<string> result = new HashSet<string>();
+            AnimatorController controller = LocomotionAnimatorBuilder.ControllerOf(weapon.AnimSetId);
+            if (controller == null)
+            {
+                _validation.Add($"✖ {weapon.DisplayName}: bộ anim {weapon.AnimSetId} chưa có Controller -> chạy Build Locomotion Animator");
+                return result;
+            }
+            if (statesByController.TryGetValue(controller, out HashSet<string> cached)) return cached;
+            statesByController[controller] = result;
+
+            AnimatorControllerLayer attackLayer = controller.layers.FirstOrDefault(layer => layer.name == WeaponComboBuilder.LayerName);
+            if (attackLayer == null) _validation.Add($"✖ {controller.name} thiếu layer '{WeaponComboBuilder.LayerName}' -> chạy Build Weapon Combos");
+            else if (attackLayer.stateMachine != null)
+            {
+                foreach (ChildAnimatorState state in attackLayer.stateMachine.states) result.Add(state.state.name);
+            }
+            if (!controller.layers.Any(layer => layer.name == LocomotionAnimatorBuilder.LayerName))
+                _validation.Add($"✖ {controller.name} thiếu layer '{LocomotionAnimatorBuilder.LayerName}' -> chạy Build Locomotion Animator");
+            return result;
         }
-
-        AnimatorControllerLayer attackLayer = controller.layers.FirstOrDefault(layer => layer.name == WeaponComboBuilder.LayerName);
-        if (attackLayer == null) _validation.Add("✖ Controller thiếu layer '" + WeaponComboBuilder.LayerName + "' -> chạy Build Weapon Combos");
-
-        HashSet<string> states = new HashSet<string>();
-        if (attackLayer != null && attackLayer.stateMachine != null)
-        {
-            foreach (ChildAnimatorState state in attackLayer.stateMachine.states) states.Add(state.state.name);
-        }
-
-        if (!controller.layers.Any(layer => layer.name == LocomotionAnimatorBuilder.LayerName))
-            _validation.Add("✖ Controller thiếu layer '" + LocomotionAnimatorBuilder.LayerName + "' -> chạy Build Locomotion Animator");
 
         AnimSetLibrary animLibrary = LocomotionAnimatorBuilder.FindLibrary();
         if (animLibrary != null && animLibrary.Sets.Count != LocoSetPrefixes.Values.Length)
@@ -2020,6 +2026,7 @@ public class CombatTimingWindow : EditorWindow
         float gap = _windowBefore + _windowAfter;
         foreach (WeaponData weapon in _weapons)
         {
+            HashSet<string> states = AttackStates(weapon);
             if (weapon.Chains.Count == 0)
             {
                 _validation.Add($"✖ {weapon.DisplayName}: chưa có chuỗi combo nào");
@@ -2809,13 +2816,7 @@ public class CombatTimingWindow : EditorWindow
 
         if (_previewWeaponSocket == null || weapon == null) return;
 
-        Vector3 position = weapon.IdleGripPosition;
-        Quaternion rotation = weapon.IdleGripRotation;
-        if (step != null && step.GripPositions != null && step.GripPositions.Length > 0 && step.GripRotations != null && step.GripRotations.Length > 0)
-        {
-            position = WeaponData.SampleVector(step.GripPositions, _time);
-            rotation = WeaponData.SampleRotation(step.GripRotations, _time);
-        }
+        weapon.TrySampleAttackGrip(step, _time, out Vector3 position, out Quaternion rotation);
         _previewWeaponSocket.localPosition = position;
         _previewWeaponSocket.localRotation = rotation;
     }

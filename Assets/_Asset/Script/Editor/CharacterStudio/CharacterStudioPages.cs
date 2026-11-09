@@ -281,7 +281,7 @@ public partial class CharacterStudioWindow
                         if (check.Component != null && host.GetComponent(check.Component) == null) host.AddComponent(check.Component);
                         break;
                     case FixKind.AssignController:
-                        animator.runtimeAnimatorController = AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>(LocomotionAnimatorBuilder.ControllerPath);
+                        animator.runtimeAnimatorController = set.Controller;
                         break;
                     case FixKind.AssignWeapons:
                         CharacterCombo combo = host.GetComponent<CharacterCombo>();

@@ -19,7 +19,7 @@ Phạm vi tài liệu: **chỉ 5 tool được viết/viết lại cho dự án 
 - 2 nguồn dữ liệu:
   - `Assets/_Asset/Data/AnimSetLibrary.asset` — bộ anim (prefix + bảng clip theo `LocoState`)
   - `Assets/_Asset/Data/WeaponLibrary.asset` — danh sách vũ khí + chuỗi đòn
-- 2 builder dựng Animator từ 2 asset trên: layer `Locomotion` và `WeaponAttack` trong `Dante 1.controller`.
+- 2 builder dựng Animator từ 2 asset trên: layer `Locomotion` và `WeaponAttack` trong **controller riêng của từng nhân vật** (`AnimSetDefinition.Controller`: Dante = `Dante.controller` cho KT_/GS_, `Vergil.controller`, `Trish.controller`). Mỗi controller chỉ chứa bộ anim + combo của nhân vật đó; vũ khí vào controller của bộ `AnimSetId`. Bộ chưa có Controller thì build tự tạo `Animation/Player/<Tên>.controller`.
 - Cửa sổ làm việc chính: **`Tools/Character Studio`** (gộp Timing Window, Anim Set Clone, Weapon Grip Tool và bảng library vào 1 cửa sổ). Các menu cũ `Tools/Combat/Timing Window`, `Anim Set Clone`, `Weapon Grip Tool` đã bỏ; mục 4.x bên dưới mô tả các panel đó, giờ nằm trong các trang của Studio.
 
 ## 0.1 Character Studio — 1 cửa sổ set up nhân vật
@@ -55,7 +55,7 @@ Nhân vật = 1 bộ anim trong `AnimSetLibrary` (prefix + moveset + **Prefab**)
 | `Assets/_Asset/Data/AnimSetLibrary.asset` | Dữ liệu bộ anim (asset do 2 tool trên đọc/ghi) |
 | `Assets/_Asset/Data/WeaponLibrary.asset` | Dữ liệu vũ khí |
 | `Assets/_Asset/Data/Weapons/WD_*.asset` | `WeaponData` sinh ra từ builder (asset runtime) |
-| `Assets/_Asset/Animation/Player/Dante 1.controller` | Animator Controller chứa 2 layer sinh tự động |
+| `Assets/_Asset/Animation/Player/<Nhân vật>.controller` | Controller riêng mỗi nhân vật, 3 layer sinh tự động (`Locomotion`, `WeaponAttack`, `IK`) |
 | `Assets/_Asset/Script/Contanst/LocoSetPrefixes.Generated.cs` | File **sinh tự động**, đừng sửa tay |
 
 ---
@@ -87,8 +87,8 @@ Nguyên tắc: **state trong Animator không có transition**. Mọi chuyển st
 |---|---|---|---|
 | **CombatTimingWindow** | `Tools/Combat/Timing Window` | Timeline kéo mốc, preview 3D + bù nhìn, SFX, bảng anim/vũ khí, build, validate | Asset `WeaponData` / 2 library, controller, prefab |
 | **CombatLibraries** | Assets ▸ Create ▸ Combat ▸ *Anim Set / Weapon Library* | Định nghĩa kiểu dữ liệu cho 2 library | Asset `.asset` |
-| **LocomotionAnimatorBuilder** | `Tools/Combat/Build Locomotion Animator` · `Tools/Combat/Import Anim Sets From Code` | Dựng layer `Locomotion`, chuẩn hoá import, gắn `AnimatorRootMotion` + `PoseBlend` | `Dante 1.controller`, `Character.prefab` |
-| **WeaponComboBuilder** | `Tools/Combat/Build Weapon Combos` · `Tools/Combat/Bake Slam And Kick Times` · `Tools/Combat/Import Weapon Library From Code` | Phân tích clip (mũi kiếm, chân, root, grip, pose), sinh `WeaponData`, dựng layer `WeaponAttack` | `WD_*.asset`, `Dante 1.controller` |
+| **LocomotionAnimatorBuilder** | `Tools/Combat/Build Locomotion Animator` · `Tools/Combat/Import Anim Sets From Code` | Dựng layer `Locomotion`, chuẩn hoá import, gắn `AnimatorRootMotion` + `PoseBlend` | controller + prefab của từng bộ |
+| **WeaponComboBuilder** | `Tools/Combat/Build Weapon Combos` · `Tools/Combat/Bake Slam And Kick Times` · `Tools/Combat/Import Weapon Library From Code` | Phân tích clip (mũi kiếm, chân, root, grip, pose), sinh `WeaponData`, dựng layer `WeaponAttack` | `WD_*.asset`, controller của từng nhân vật |
 | **LocoSetPrefixesGenerator** | `Tools/Combat/Generate Loco Set Prefixes` | Sinh `LocoSetPrefixes.Values` từ library | `LocoSetPrefixes.Generated.cs` |
 
 ---
@@ -270,7 +270,7 @@ Trên prefab nhân vật (Animator ở root):
 
 | Component | Cấu hình |
 |---|---|
-| `Animator` | Avatar Humanoid, Controller = `Dante 1.controller`, `applyRootMotion = true` |
+| `Animator` | Avatar Humanoid, Controller = `Controller` của bộ anim (Build Locomotion tự gán), `applyRootMotion = true` |
 | `AnimatorRootMotion`, `PoseBlend` | Builder tự gắn; nếu thiếu thì build lại Locomotion |
 | `CharacterAnim` | `animator`, `towardMove`, fade |
 | `CharacterCombo` | `animator`, `Weapons` = các `WD_*`, `AttackLayerName = WeaponAttack` |
@@ -327,7 +327,7 @@ Khi clip thay đổi (retime, thay FBX, sửa pose), mọi mốc đã bake **kh�
 |---|---|---|---|
 | 1 | `Build Weapon Combos` **ghi đè** `HitTimes`, `KickTimes`, `SlamTime` | Cao | Tune mốc **sau** khi build; muốn giữ mốc tay thì đừng build lại |
 | 2 | `Bake Slam And Kick Times` ghi đè `SlamTime` + `KickTimes` (giữ `HitTimes`) | Trung bình | Chỉ chạy khi 2 loại mốc đó chưa chỉnh tay |
-| 3 | Build Locomotion/Weapon **xoá và dựng lại layer** trong `Dante 1.controller` | Cao | Mọi chỉnh tay trong Animator window sẽ mất; commit trước, không sửa tay layer sinh tự động |
+| 3 | Build Locomotion/Weapon **xoá và dựng lại layer** trong controller của từng nhân vật (state không thuộc layer nào cũng bị dọn) | Cao | Mọi chỉnh tay trong Animator window sẽ mất; commit trước, không sửa tay layer sinh tự động |
 | 4 | Builder `SaveAndReimport` FBX → Editor đứng vài phút | Trung bình | Không ngắt giữa chừng, không build khi đang Play mode |
 | 5 | Nhiều người/AI dùng chung một Editor | Cao | Chỉ chạy build khi không ai đang sửa scene/controller; dùng lock của MCP nếu có |
 | 6 | Thêm bộ anim mà quên **Sinh prefix** | Cao | Runtime báo `AnimSetId không hợp lệ`, state không tồn tại. Sinh prefix rồi build lại |

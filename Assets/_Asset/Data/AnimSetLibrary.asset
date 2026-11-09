@@ -16,6 +16,8 @@ MonoBehaviour:
   - Prefix: KT_
     DisplayName: Katana
     Prefab: {fileID: 0}
+    Controller: {fileID: 9100000, guid: 3a7acac32ec527545a36d78381f826bf, type: 2}
+    UpperBodyAttackLayer: 0
     MovementFolder: Assets/_Animation_Dante/Animation/Dante_Katana_Blade/1_Movements
     ExtraFolders: []
     OneShots:
@@ -343,6 +345,8 @@ MonoBehaviour:
   - Prefix: GS_
     DisplayName: Great Sword
     Prefab: {fileID: 0}
+    Controller: {fileID: 9100000, guid: 3a7acac32ec527545a36d78381f826bf, type: 2}
+    UpperBodyAttackLayer: 0
     MovementFolder: Assets/_Animation_Dante/Animation/Dante_Big_Sword/1_Movements
     ExtraFolders: []
     OneShots:
@@ -658,6 +662,8 @@ MonoBehaviour:
   - Prefix: VG_
     DisplayName: Vergil
     Prefab: {fileID: 6890809182061858966, guid: e2d9ca1d4c59d7b43bfb9cc0ad4ef783, type: 3}
+    Controller: {fileID: 9100000, guid: 166f4acdbf0e08c4497ef5210ad7ddce, type: 2}
+    UpperBodyAttackLayer: 0
     MovementFolder: Assets/_Animation_Vergil/Animation/Humanoid
     ExtraFolders:
     - Assets/_Animation_Dante/Animation/Dante_Katana_Blade/1_Movements
@@ -898,7 +904,7 @@ MonoBehaviour:
       FirstFrame: -1
     Gaits:
     - Threshold: 1
-      Clip: move_walk_front
+      Clip: move_walk_front_fixed
     - Threshold: 2
       Clip: move_run_front
     - Threshold: 3
@@ -908,7 +914,7 @@ MonoBehaviour:
     Strafe:
     - X: 0
       Y: 0.5
-      Clip: move_walk_front
+      Clip: move_walk_front_fixed
     - X: -0.3535
       Y: 0.3535
       Clip: move_walk_frontL45
@@ -986,6 +992,8 @@ MonoBehaviour:
   - Prefix: TR_
     DisplayName: Trish
     Prefab: {fileID: 6992361808615888389, guid: c6b67aeb6741fe846a2591c34ec101af, type: 3}
+    Controller: {fileID: 9100000, guid: 32c4fcd48224c954b82c449e149c7949, type: 2}
+    UpperBodyAttackLayer: 1
     MovementFolder: Assets/_Animation_Trish/Animations/Humanoid
     ExtraFolders:
     - Assets/_Animation_Dante/Animation/Dante_Katana_Blade/1_Movements

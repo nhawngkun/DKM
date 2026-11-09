@@ -49,6 +49,11 @@ public class AnimSetDefinition
     public string DisplayName = "Nhân vật mới";
     [Tooltip("Prefab nhân vật dùng bộ anim này (Character Studio dùng để preview + kiểm tra component)")]
     public GameObject Prefab;
+    [Tooltip("Animator Controller riêng của nhân vật: builder chỉ ghi bộ anim + combo của nhân vật này vào đây. " +
+             "Trống = lấy controller trên Animator của Prefab, không có thì tự tạo Animation/Player/<Tên>.controller")]
+    public UnityEditor.Animations.AnimatorController Controller;
+    [Tooltip("Dựng thêm layer WeaponAttackUpper (mask thân trên): lúc bay đòn đánh chỉ phát ở thân trên, chân vẫn anim bay -> vừa bay vừa đánh")]
+    public bool UpperBodyAttackLayer;
     [Tooltip("Thư mục chứa clip movement (FBX)")]
     public string MovementFolder = "";
     [Tooltip("Thư mục clip dự phòng: state không tìm thấy clip trong thư mục chính sẽ lấy ở đây. " +

@@ -173,7 +173,7 @@ internal sealed class CharacterLocomotion
         int gait = DesiredGait();
         _lastGait = gait;
         c.characterAnim.SetGait(gait);
-        if (c.InPlaceLocomotion) return;
+        if (c.InPlaceLocomotion || !c.MoveTurnClips) return;
 
         float angle = SignedAngleToInput();
         float abs = Mathf.Abs(angle);

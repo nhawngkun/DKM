@@ -53,7 +53,7 @@ public static class AnimSetCloneTool
 
     public static AnimatorController FindController()
     {
-        return AssetDatabase.LoadAssetAtPath<AnimatorController>(LocomotionAnimatorBuilder.ControllerPath);
+        return LocomotionAnimatorBuilder.ControllerOf(0);
     }
 
     public static AnimatorStateMachine GetLocomotionStateMachine(AnimatorController controller)

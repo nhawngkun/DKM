@@ -7,7 +7,7 @@ using UnityEngine;
 
 /// <summary>
 /// Tạo dữ liệu combo cho từng vũ khí từ gói anim Grruzam (Katana, Great Sword) và dựng layer
-/// tấn công trong Animator của Dante.
+/// tấn công trong controller riêng của nhân vật sở hữu bộ anim (AnimSetDefinition.Controller).
 ///
 /// Mỗi clip được phân tích bằng cách phát thử trên model gốc của gói (có xương vũ khí):
 ///   - Tốc độ mũi kiếm theo thời gian -> frame chém (đỉnh tốc độ), mốc nối đòn (hết vung),
@@ -26,8 +26,9 @@ public static class WeaponComboBuilder
     private const string GunBone = "ik_hand_gun";
     public const string OutputFolder = "Assets/_Asset/Data/Weapons";
     private const string WeaponModelFolder = "Assets/_Asset/Prefab/Weapons";
-    public const string ControllerPath = "Assets/_Asset/Animation/Player/Dante 1.controller";
     public const string LayerName = "WeaponAttack";
+    public const string UpperLayerName = "WeaponAttackUpper";
+    private const string UpperMaskPath = "Assets/_Asset/Animation/Player/UpperBody.mask";
     public const string LibraryPath = "Assets/_Asset/Data/WeaponLibrary.asset";
     private const string EmptyStateName = "Empty";
     private const float AnalysisRate = 60f;
@@ -491,7 +492,15 @@ public static class WeaponComboBuilder
             if (clips.TryGetValue(def.IdleClip, out AnimationClip idle))
             {
                 rig.Sample(idle, 0f, idle);
-                rig.GetGrip(out data.IdleGripPosition, out data.IdleGripRotation);
+                rig.GetGrip(out data.BakedIdleGripPosition, out data.BakedIdleGripRotation);
+                // Giữ cách cầm đã chỉnh tay ở trang Cầm vũ khí; asset mới thì lấy theo clip
+                bool fresh = data.IdleGripPosition == Vector3.zero && data.IdleGripRotation == Quaternion.identity;
+                if (fresh)
+                {
+                    data.IdleGripPosition = data.BakedIdleGripPosition;
+                    data.IdleGripRotation = data.BakedIdleGripRotation;
+                }
+                data.HasBakedIdleGrip = true;
             }
 
             data.Chains = new List<ComboChain>();
@@ -979,15 +988,22 @@ public static class WeaponComboBuilder
     // Animator: layer WeaponAttack, 1 state cho mỗi đòn (code tự CrossFade, không cần transition)
     // ------------------------------------------------------------------
 
+    // Mỗi vũ khí vào controller riêng của nhân vật sở hữu bộ anim AnimSetId
     private static void SyncAnimator(List<WeaponData> weapons)
     {
-        AnimatorController controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(ControllerPath);
-        if (controller == null)
+        foreach (IGrouping<int, WeaponData> group in weapons.GroupBy(w => w.AnimSetId))
         {
-            Debug.LogError("[WeaponComboBuilder] Không thấy Animator Controller: " + ControllerPath);
-            return;
+            if (LocomotionAnimatorBuilder.ControllerOf(group.Key) != null) continue;
+            Debug.LogError($"[WeaponComboBuilder] Bộ anim {group.Key} chưa có Controller ({string.Join(", ", group.Select(w => w.DisplayName))}) -> chạy Build Locomotion Animator trước");
         }
+        foreach (IGrouping<AnimatorController, WeaponData> group in weapons.GroupBy(w => LocomotionAnimatorBuilder.ControllerOf(w.AnimSetId)))
+        {
+            if (group.Key != null) SyncAnimator(group.Key, group.ToList());
+        }
+    }
 
+    private static void SyncAnimator(AnimatorController controller, List<WeaponData> weapons)
+    {
         // Giữ Write Defaults như layer tấn công đã dựng lần trước để tránh lệch pose khi blend
         bool writeDefaults = true;
         AnimatorControllerLayer legacy = controller.layers.FirstOrDefault(l => l.name == LayerName);
@@ -996,8 +1012,23 @@ public static class WeaponComboBuilder
             writeDefaults = legacy.stateMachine.defaultState.writeDefaultValues;
         }
 
+        BuildAttackLayer(controller, weapons, LayerName, null, writeDefaults);
+
+        // nhân vật bay (Trish): thêm bản chỉ thân trên, CharacterCombo phát đòn ở đây lúc bay
+        AnimSetLibrary sets = LocomotionAnimatorBuilder.FindLibrary();
+        bool upper = sets != null && sets.Sets.Any(s => s.Controller == controller && s.UpperBodyAttackLayer);
+        if (upper) BuildAttackLayer(controller, weapons, UpperLayerName, UpperBodyMask(), writeDefaults);
+        else RemoveLayer(controller, UpperLayerName);
+
+        AnimatorControllerUtil.EnsureIKLayer(controller);
+        AnimatorControllerUtil.RemoveOrphans(controller);
+        EditorUtility.SetDirty(controller);
+    }
+
+    private static void BuildAttackLayer(AnimatorController controller, List<WeaponData> weapons, string layerName, AvatarMask mask, bool writeDefaults)
+    {
         List<AnimatorControllerLayer> layers = controller.layers.ToList();
-        int index = layers.FindIndex(l => l.name == LayerName);
+        int index = layers.FindIndex(l => l.name == layerName);
         if (index >= 0)
         {
             Object.DestroyImmediate(layers[index].stateMachine, true);
@@ -1011,7 +1042,7 @@ public static class WeaponComboBuilder
 
         AnimatorStateMachine sm = new AnimatorStateMachine
         {
-            name = LayerName,
+            name = layerName,
             hideFlags = HideFlags.HideInHierarchy,
         };
         AssetDatabase.AddObjectToAsset(sm, controller);
@@ -1041,16 +1072,43 @@ public static class WeaponComboBuilder
             x += 2200f;
         }
 
-        AnimatorControllerLayer layer = new AnimatorControllerLayer
+        layers.Insert(index, new AnimatorControllerLayer
         {
-            name = LayerName,
+            name = layerName,
             stateMachine = sm,
+            avatarMask = mask,
             defaultWeight = 1f,
             blendingMode = AnimatorLayerBlendingMode.Override,
             iKPass = false,
-        };
-        layers.Insert(index, layer);
+        });
         controller.layers = layers.ToArray();
-        EditorUtility.SetDirty(controller);
+    }
+
+    private static void RemoveLayer(AnimatorController controller, string layerName)
+    {
+        List<AnimatorControllerLayer> layers = controller.layers.ToList();
+        int index = layers.FindIndex(l => l.name == layerName);
+        if (index < 0) return;
+        Object.DestroyImmediate(layers[index].stateMachine, true);
+        layers.RemoveAt(index);
+        controller.layers = layers.ToArray();
+    }
+
+    // mask thân trên: tay, đầu, ngón; không gồm Body (hông + cột sống) để dáng bay của chân / thân không bị anim đánh kéo lệch.
+    // Đã có file thì giữ nguyên, chỉnh tay trong Inspector được
+    private static AvatarMask UpperBodyMask()
+    {
+        AvatarMask mask = AssetDatabase.LoadAssetAtPath<AvatarMask>(UpperMaskPath);
+        if (mask != null) return mask;
+        mask = new AvatarMask();
+        for (AvatarMaskBodyPart part = 0; part < AvatarMaskBodyPart.LastBodyPart; part++)
+        {
+            bool on = part == AvatarMaskBodyPart.Head || part == AvatarMaskBodyPart.LeftArm || part == AvatarMaskBodyPart.RightArm
+                   || part == AvatarMaskBodyPart.LeftFingers || part == AvatarMaskBodyPart.RightFingers
+                   || part == AvatarMaskBodyPart.LeftHandIK || part == AvatarMaskBodyPart.RightHandIK;
+            mask.SetHumanoidBodyPartActive(part, on);
+        }
+        AssetDatabase.CreateAsset(mask, UpperMaskPath);
+        return mask;
     }
 }

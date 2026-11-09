@@ -139,22 +139,6 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: Waist
-      humanName: Spine
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: Stomach
-      humanName: Chest
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
     - boneName: Neck
       humanName: Neck
       limit:
@@ -245,30 +229,6 @@ ModelImporter:
         modified: 0
     - boneName: R_Toe
       humanName: RightToes
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: FACIAL_LOD1_L_EyesackUpper
-      humanName: LeftEye
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: FACIAL_LOD1_R_EyesackUpper
-      humanName: RightEye
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: FACIAL_LOD1_C_Jaw
-      humanName: Jaw
       limit:
         min: {x: 0, y: 0, z: 0}
         max: {x: 0, y: 0, z: 0}
@@ -515,8 +475,16 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
+    - boneName: Stomach
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
     - boneName: Chest
-      humanName: UpperChest
+      humanName: Chest
       limit:
         min: {x: 0, y: 0, z: 0}
         max: {x: 0, y: 0, z: 0}
@@ -647,7 +615,7 @@ ModelImporter:
     - name: L_Thigh
       parentName: Hip
       position: {x: -0.1107, y: -0.09739995, z: 0.0101}
-      rotation: {x: 0.014461045, y: -0.0008452146, z: -0.058341984, w: 0.9981916}
+      rotation: {x: -0.04997832, y: 0.0020769278, z: -0.00010325516, w: 0.9987482}
       scale: {x: 1, y: 1, z: 1}
     - name: L_Thigh_push_ST
       parentName: L_Thigh
@@ -657,12 +625,12 @@ ModelImporter:
     - name: L_Shin
       parentName: L_Thigh
       position: {x: 0.000000002591829, y: -0.4206, z: 9.8823845e-11}
-      rotation: {x: 0.0045378413, y: -3.4924597e-10, z: -0.000000012374585, w: 0.99998975}
+      rotation: {x: 0.09983261, y: -0.000001886161, z: 0.00041513023, w: 0.99500424}
       scale: {x: 1, y: 1, z: 1.0000001}
     - name: L_Foot
       parentName: L_Shin
       position: {x: -0.000000003727771, y: -0.48289996, z: 5.1438825e-10}
-      rotation: {x: -0.017867211, y: 0.025569893, z: 0.040205624, w: 0.99870443}
+      rotation: {x: -0.04734119, y: 0.021703715, z: -0.01897757, w: 0.9984627}
       scale: {x: 1, y: 1, z: 0.99999976}
     - name: L_Foot_twist
       parentName: L_Foot
@@ -672,7 +640,7 @@ ModelImporter:
     - name: L_Toe
       parentName: L_Foot_twist
       position: {x: 0.000000017843032, y: 0.000100000405, z: 0.16790001}
-      rotation: {x: -0, y: -0, z: 3.4694461e-18, w: 1}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1.0000001, z: 1}
     - name: L_Foot_SR
       parentName: L_Foot
@@ -802,7 +770,7 @@ ModelImporter:
     - name: R_Thigh
       parentName: Hip
       position: {x: 0.1107, y: -0.09739995, z: 0.0101}
-      rotation: {x: 0.014461045, y: 0.0008452146, z: 0.058341984, w: 0.9981916}
+      rotation: {x: -0.049978286, y: -0.002076944, z: 0.00010461643, w: 0.9987482}
       scale: {x: 1, y: 1, z: 1}
     - name: R_Thigh_push_ST
       parentName: R_Thigh
@@ -812,12 +780,12 @@ ModelImporter:
     - name: R_Shin
       parentName: R_Thigh
       position: {x: -0.000000002591829, y: -0.4206, z: 9.8823845e-11}
-      rotation: {x: 0.0045378413, y: 3.4924597e-10, z: 0.000000012374585, w: 0.99998975}
+      rotation: {x: 0.099832565, y: 0.0000018847638, z: -0.00041493264, w: 0.9950042}
       scale: {x: 1, y: 1, z: 1.0000001}
     - name: R_Foot
       parentName: R_Shin
       position: {x: 0.000000003727771, y: -0.48289996, z: 5.1438825e-10}
-      rotation: {x: -0.017867211, y: -0.025569893, z: -0.040205624, w: 0.99870443}
+      rotation: {x: -0.047341228, y: -0.021703845, z: 0.018976018, w: 0.9984626}
       scale: {x: 1, y: 1, z: 0.99999976}
     - name: R_Foot_twist
       parentName: R_Foot
@@ -827,7 +795,7 @@ ModelImporter:
     - name: R_Toe
       parentName: R_Foot_twist
       position: {x: -0.000000017843032, y: 0.000100000405, z: 0.16790001}
-      rotation: {x: -0, y: -0, z: -3.4694461e-18, w: 1}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1.0000001, z: 1}
     - name: R_Foot_SR
       parentName: R_Foot
@@ -1167,7 +1135,7 @@ ModelImporter:
     - name: Chest
       parentName: Stomach
       position: {x: -0, y: 0.19980004, z: 0.000000003595829}
-      rotation: {x: 0.026176946, y: -0, z: -0, w: 0.99965733}
+      rotation: {x: -0.103516504, y: -0, z: -0, w: 0.9946278}
       scale: {x: 1, y: 1, z: 1}
     - name: CoatCloth_00_start
       parentName: Chest
@@ -1417,7 +1385,7 @@ ModelImporter:
     - name: L_Shoulder
       parentName: Chest
       position: {x: -0.0009999999, y: 0.053900003, z: 0.0123999985}
-      rotation: {x: -0, y: -0, z: -0, w: 1}
+      rotation: {x: 0.12951735, y: -0, z: -0, w: 0.9915772}
       scale: {x: 1, y: 1, z: 1}
     - name: L_UpperArm
       parentName: L_Shoulder
@@ -1897,7 +1865,7 @@ ModelImporter:
     - name: R_Shoulder
       parentName: Chest
       position: {x: 0.0009999999, y: 0.053900003, z: 0.0123999985}
-      rotation: {x: -0, y: -0, z: -0, w: 1}
+      rotation: {x: 0.12951735, y: -0, z: -0, w: 0.9915772}
       scale: {x: 1, y: 1, z: 1}
     - name: R_UpperArm
       parentName: R_Shoulder
@@ -2377,7 +2345,7 @@ ModelImporter:
     - name: Neck
       parentName: Chest
       position: {x: -0, y: 0.15289998, z: -0.010199999}
-      rotation: {x: 0.04327066, y: -0, z: 0, w: 0.99906343}
+      rotation: {x: 0.17230223, y: -0, z: -0, w: 0.9850441}
       scale: {x: 1, y: 1, z: 1}
     - name: Neck_SR
       parentName: Neck
