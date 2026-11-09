@@ -569,6 +569,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8681819455664508947}
   - component: {fileID: 2207706360899951380}
+  - component: {fileID: 5018284725733036794}
   m_Layer: 0
   m_Name: Player_H 1
   m_TagString: Untagged
@@ -609,3 +610,21 @@ MonoBehaviour:
   MouseSensitivity: 0.12
   GamepadLookSensitivity: 1000
   GamepadStickDeadzone: 0.15
+--- !u!114 &5018284725733036794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5662227447054305807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 289c69ac8df8ebb468be1eeccbb8c4ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterSwitcher
+  Player: {fileID: 2207706360899951380}
+  Characters:
+  - {fileID: 3493578191146466400, guid: 0dc5d052119808641b0f19a3bf7449bc, type: 3}
+  - {fileID: 6890809182061858966, guid: e2d9ca1d4c59d7b43bfb9cc0ad4ef783, type: 3}
+  - {fileID: 6992361808615888389, guid: c6b67aeb6741fe846a2591c34ec101af, type: 3}
+  ShowHint: 1

@@ -176,6 +176,8 @@ MonoBehaviour:
   WalkSpeed: 2
   RunSpeed: 5.5
   SprintSpeed: 8
+  InPlaceLocomotion: 0
+  JogSpeed: 3.8
   OrientationMethod: 1
   MoveTurnRate: 540
   MoveTurnSharpness: 12
@@ -232,6 +234,13 @@ MonoBehaviour:
   DirectionalAttackThreshold: 0.6
   AlwaysDrawWeapon: 1
   CombatHoldTime: 6
+  CanFly: 0
+  FlyHeight: 2.5
+  FlySpeed: 7
+  FlyAcceleration: 5
+  FlyHeightSharpness: 4
+  FlyMaxVerticalSpeed: 8
+  FlyLandSpeed: 5
   LockOnRadius: 15
   LockOnBreakRadius: 22
   AutoAddIK: 1
@@ -7475,6 +7484,8 @@ MonoBehaviour:
   animator: {fileID: 1747506419589535840}
   characterCombo: {fileID: 5500469588033432054}
   Hand: {fileID: 0}
+  OffHand: {fileID: 0}
+  StarterWeapon: {fileID: 0}
   GripBlendTime: 0.12
   BackBone: {fileID: 0}
   BackPosition: {x: 0.18, y: 0.22, z: -0.2}

@@ -14,6 +14,8 @@ public enum LocoState
     JumpStart, JumpLoop, JumpEnd, AirJumpStart, AirJumpLoop, AirJumpEnd,
     DodgeFront, DodgeBack, DodgeLeft, DodgeRight, RunDodgeLeft, RunDodgeRight,
     CrouchEnter, CrouchMove,
+    // mode bay (Trish): thêm ở cuối để giá trị int của các state cũ trong AnimSetLibrary không đổi
+    FlyStart, FlyIdle, FlyMove, FlyEnd,
 }
 
 public static class LocoStates

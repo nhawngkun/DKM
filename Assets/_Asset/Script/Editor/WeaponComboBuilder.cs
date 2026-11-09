@@ -21,10 +21,10 @@ public static class WeaponComboBuilder
 {
     // Pack Grruzam đã được move từ "Assets/Grruzam Powerful Sword Animation(...)/" sang Assets/Dante/.
     // Rig phân tích clip (model T-pose có xương ik_hand_gun) nằm ở đây -> sai path là Build Weapon Combos nổ.
-    private const string PackRoot = "Assets/Dante/";
+    private const string PackRoot = "Assets/_Animation_Dante/";
     private const string GrrrruModel = PackRoot + "Modeling/Modeling_T-Pose_Grrrru_Man(recommend).FBX";
     private const string GunBone = "ik_hand_gun";
-    private const string OutputFolder = "Assets/_Asset/Data/Weapons";
+    public const string OutputFolder = "Assets/_Asset/Data/Weapons";
     private const string WeaponModelFolder = "Assets/_Asset/Prefab/Weapons";
     public const string ControllerPath = "Assets/_Asset/Animation/Player/Dante 1.controller";
     public const string LayerName = "WeaponAttack";
@@ -82,12 +82,23 @@ public static class WeaponComboBuilder
             return;
         }
 
+        BuildWeapons(library, null);
+    }
+
+    /// <summary>
+    /// Chỉ phân tích lại các vũ khí có Key trong <paramref name="keys"/> (null = tất cả). Vũ khí khác giữ nguyên
+    /// WD_*.asset đã có (kể cả mốc chỉnh tay), chỉ được đưa lại vào layer WeaponAttack.
+    /// </summary>
+    public static void BuildWeapons(WeaponLibrary library, ICollection<string> keys)
+    {
         List<WeaponData> built = new List<WeaponData>();
         try
         {
             foreach (WeaponDef def in Definitions(library))
             {
-                built.Add(BuildWeapon(def));
+                WeaponData existing = AssetDatabase.LoadAssetAtPath<WeaponData>($"{OutputFolder}/WD_{def.Key}.asset");
+                bool rebuild = keys == null || existing == null || keys.Contains(def.Key, System.StringComparer.OrdinalIgnoreCase);
+                built.Add(rebuild ? BuildWeapon(def) : existing);
             }
             SyncAnimator(built);
             AssetDatabase.SaveAssets();
@@ -257,7 +268,7 @@ public static class WeaponComboBuilder
             Type = WeaponType.Rebellion,
             Key = "Rebellion",
             DisplayName = "Rebellion",
-            AnimFolder = PackRoot + "Animation/M_Katana_Blade/",
+            AnimFolder = PackRoot + "Animation/Dante_Katana_Blade/",
             Prefab = PackRoot + "Prefebs/Modeling_Weapon_katana_Blade.prefab",
             Model = WeaponModelFolder + "/Rebellion.prefab",
             IdleClip = "Idle_ver_B",
@@ -282,7 +293,7 @@ public static class WeaponComboBuilder
             Type = WeaponType.Sparda,
             Key = "Sparda",
             DisplayName = "Sparda",
-            AnimFolder = PackRoot + "Animation/M_Big_Sword/",
+            AnimFolder = PackRoot + "Animation/Dante_Big_Sword/",
             Prefab = PackRoot + "Prefebs/Modeling_Weapon_Big_Sword.prefab",
             Model = WeaponModelFolder + "/Sparda.prefab",
             IdleClip = "Idle",

@@ -12,7 +12,7 @@ using UnityEngine;
 /// </summary>
 public class WeaponGripTool : EditorWindow
 {
-    private const string DefaultClipFolder = "Assets/Sword_sheath_AnimSet/Animation/Humanoid";
+    private const string DefaultClipFolder = "Assets/_Animation_Vergil/Animation/Humanoid";
     private static readonly Color BackgroundColor = new Color(0.085f, 0.09f, 0.105f, 1f);
 
     // ---- đối tượng đang căn
@@ -53,6 +53,7 @@ public class WeaponGripTool : EditorWindow
     private float _zoom = 1f;
     private Vector3 _pan;
     private string _status = "";
+    private string _shownStatus = "";
     private double _lastTick;
     private double _lastRepaint;
     private Rect _lastViewport;
@@ -99,13 +100,41 @@ public class WeaponGripTool : EditorWindow
     /// <summary>Đặt đường dẫn để lần Repaint kế tiếp lưu đúng khung preview ra PNG (dùng để kiểm tra).</summary>
     public static string CapturePath;
 
-    [MenuItem("Tools/Combat/Weapon Grip Tool", false, 20)]
-    public static void Open()
+    // Cửa sổ này giờ là 1 trang của Character Studio (Tools/Character Studio)
+    public static void Open() => CharacterStudioWindow.Open(CharacterStudioWindow.Page.Grip);
+
+    #region Nhúng vào Character Studio
+
+    internal EditorWindow Host;
+
+    private new void Repaint()
     {
-        WeaponGripTool window = GetWindow<WeaponGripTool>("Weapon Grip");
-        window.minSize = new Vector2(860f, 480f);
-        window.Show();
+        if (Host != null) Host.Repaint();
+        else base.Repaint();
     }
+
+    internal void DrawEmbedded(Rect rect)
+    {
+        GUILayout.BeginArea(rect);
+        OnGUI();
+        GUILayout.EndArea();
+    }
+
+    // Studio đổi nhân vật / vũ khí -> nạp lại preview + danh sách clip theo thư mục anim của vũ khí
+    internal void SetTargets(GameObject character, WeaponData weapon, string clipFolder)
+    {
+        if (!string.IsNullOrEmpty(clipFolder) && clipFolder != _clipFolder)
+        {
+            _clipFolder = clipFolder;
+            RefreshClips();
+        }
+        if (character == _character && weapon == _weapon) return;
+        _character = character;
+        _weapon = weapon;
+        ResetPreviewObjects();
+    }
+
+    #endregion
 
     private void OnEnable()
     {
@@ -157,8 +186,10 @@ public class WeaponGripTool : EditorWindow
         DrawSidebar();
         EditorGUILayout.EndHorizontal();
 
-        if (!string.IsNullOrEmpty(_status))
-            EditorGUILayout.HelpBox(_status, MessageType.Info);
+        // _status có thể đổi trong lúc vẽ viewport (pass Repaint) -> chỉ lấy giá trị mới ở pass Layout, không thì lệch layout
+        if (Event.current.type == EventType.Layout) _shownStatus = _status;
+        if (!string.IsNullOrEmpty(_shownStatus))
+            EditorGUILayout.HelpBox(_shownStatus, MessageType.Info);
 
         if (GUI.changed)
         {

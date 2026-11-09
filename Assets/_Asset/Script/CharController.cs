@@ -21,6 +21,11 @@ public class CharController : MonoBehaviour, ICharacterController
     public float WalkSpeed = 1.86f;
     public float RunSpeed = 5.72f;
     public float SprintSpeed = 7.06f;
+    [Tooltip("Bộ anim dùng clip Inplace (không root motion): vận tốc đi/chạy do code theo Walk/Jog/Run/SprintSpeed, " +
+             "bỏ clip khởi động / quay / dừng")]
+    public bool InPlaceLocomotion;
+    [Tooltip("Tốc độ jog (m/s), chỉ dùng khi InPlaceLocomotion")]
+    public float JogSpeed = 3.8f;
 
     [Header("Xoay")]
     public OrientationMethod OrientationMethod = OrientationMethod.TowardsMovement;
@@ -107,6 +112,19 @@ public class CharController : MonoBehaviour, ICharacterController
     public bool AlwaysDrawWeapon = true;
     public float CombatHoldTime = 6f;
 
+    [Header("Bay (Q)")]
+    [Tooltip("Nhân vật có mode bay (bộ anim phải có state FlyStart/FlyIdle/FlyMove/FlyEnd)")]
+    public bool CanFly;
+    [Tooltip("Nâng capsule thêm so với mặt đất khi bay (m). 0 = capsule ở đất, độ cao bay lấy từ pose clip Inplace")]
+    public float FlyHeight = 0f;
+    public float FlySpeed = 7f;
+    public float FlyAcceleration = 5f;
+    [Tooltip("Bám độ cao nhanh cỡ nào: lớn = bám sát địa hình")]
+    public float FlyHeightSharpness = 4f;
+    public float FlyMaxVerticalSpeed = 8f;
+    [Tooltip("Tốc độ hạ xuống khi tắt bay (m/s)")]
+    public float FlyLandSpeed = 5f;
+
     [Header("Lock On")]
     public float LockOnRadius = 15f;
     public float LockOnBreakRadius = 22f;
@@ -129,6 +147,7 @@ public class CharController : MonoBehaviour, ICharacterController
     public bool HasMoveInput => _moveInputVector.sqrMagnitude > 0.0001f;
     public Vector3 MoveInputDirection => _moveInputVector;
     public bool IsInCombat => AlwaysDrawWeapon || _combatTimer > 0f;
+    public bool IsFlying => _flight.IsFlying;
 
     internal bool IsStrafing => IsLockedOn || OrientationMethod == OrientationMethod.TowardsCamera;
     internal float DashLastEndTime => _dash.LastEndTime;
@@ -148,6 +167,7 @@ public class CharController : MonoBehaviour, ICharacterController
     private CharacterJump _jump;
     private CharacterCombat _combat;
     private CharacterLocomotion _loco;
+    private CharacterFlight _flight;
 
     private LocoState _currentClip = LocoState.Idle;
     private bool _forceInstantClip;
@@ -160,6 +180,7 @@ public class CharController : MonoBehaviour, ICharacterController
         _jump = new CharacterJump(this);
         _combat = new CharacterCombat(this);
         _loco = new CharacterLocomotion(this, _dash, _jump, _crouch, _combat);
+        _flight = new CharacterFlight(this);
 
         if (characterCombo == null) characterCombo = GetComponentInChildren<CharacterCombo>();
         if (characterCombo != null)
@@ -175,6 +196,15 @@ public class CharController : MonoBehaviour, ICharacterController
             if (ik == null) ik = characterAnim.animator.gameObject.AddComponent<PlayerIK>();
             ik.Init(this);
         }
+    }
+
+    // bị tắt giữa lúc bay (đổi nhân vật): bật lại thì đứng trên đất như bình thường
+    private void OnDisable()
+    {
+        if (_flight == null || !_flight.IsFlying) return;
+        _flight.Reset();
+        CurrentCharacterState = MoveState.Idle;
+        _currentClip = LocoState.Idle;
     }
 
     private void OnDestroy()
@@ -243,13 +273,16 @@ public class CharController : MonoBehaviour, ICharacterController
 
         if (IsAttacking && characterCombo.IsInRecovery && _stick > AttackMoveCancelThreshold) characterCombo.CancelForMove();
 
-        if (inputs.JumpDown && (!IsAttacking || CanCancelAttackWithJump))
+        if (inputs.FlyToggle) _flight.Toggle();
+        bool flying = _flight.IsFlying;
+
+        if (inputs.JumpDown && !flying && (!IsAttacking || CanCancelAttackWithJump))
         {
             if (IsAttacking) characterCombo.CancelCombo();
             _jump.Request();
         }
 
-        if (inputs.Dash && _dash.CanBegin())
+        if (inputs.Dash && !flying && _dash.CanBegin())
         {
             if (IsAttacking) characterCombo.CancelCombo();
             _dash.Begin();
@@ -336,13 +369,21 @@ public class CharController : MonoBehaviour, ICharacterController
     internal void RequestInstantClip() => _forceInstantClip = true;
 
     // FSM nằm trong CharacterLocomotion; facade chỉ forward để giữ nguyên thứ tự gọi từ input và KCC
-    internal void TickLocomotion(float deltaTime) => _loco.Tick(deltaTime);
+    internal void TickLocomotion(float deltaTime)
+    {
+        if (_flight.IsFlying) _flight.Tick(deltaTime);
+        else _loco.Tick(deltaTime);
+    }
 
     internal void AbortTurn() => _loco.AbortTurn();
 
     internal void EnterGroundIdle(float fade = -1f) => _loco.EnterGroundIdle(fade);
 
-    internal void ResumeAfterAttack() => _loco.ResumeAfterAttack();
+    // đang bay thì CharacterFlight.Tick tự phát lại anim bay
+    internal void ResumeAfterAttack()
+    {
+        if (!_flight.IsFlying) _loco.ResumeAfterAttack();
+    }
 
     #endregion
 
@@ -419,14 +460,21 @@ public class CharController : MonoBehaviour, ICharacterController
 
     public void UpdateRotation(ref Quaternion currentRotation, float deltaTime)
     {
-        _loco.UpdateRotation(ref currentRotation, deltaTime);
+        if (_flight.IsFlying && !IsAttacking) _flight.UpdateRotation(ref currentRotation, deltaTime);
+        else _loco.UpdateRotation(ref currentRotation, deltaTime);
     }
 
     public void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime)
     {
         Vector3 rootVelocity = characterAnim.RootMotion != null ? characterAnim.RootMotion.ConsumeVelocity() : Vector3.zero;
 
-        if (CurrentCharacterState == MoveState.AirDash)
+        if (_flight.IsFlying)
+        {
+            bool attacking = IsAttacking;
+            if (attacking) _combat.UpdateVelocity(ref currentVelocity, deltaTime);
+            _flight.UpdateVelocity(ref currentVelocity, deltaTime, attacking);
+        }
+        else if (CurrentCharacterState == MoveState.AirDash)
         {
             currentVelocity = _dash.Direction * DashSpeed;
         }
@@ -443,7 +491,7 @@ public class CharController : MonoBehaviour, ICharacterController
             _jump.UpdateAirVelocity(ref currentVelocity, deltaTime);
         }
 
-        HandleJump(ref currentVelocity, deltaTime);
+        if (!_flight.IsFlying) HandleJump(ref currentVelocity, deltaTime);
 
         if (_internalVelocityAdd.sqrMagnitude > 0f)
         {
@@ -521,6 +569,7 @@ public enum MoveState
     Air,
     AirDash,
     Crouch,
+    Fly,
 }
 
 public enum OrientationMethod
@@ -544,6 +593,7 @@ public struct PlayerCharacterInputs
     public int WeaponSwitch; // -1 / +1 = đổi vũ khí trước / sau
     public bool LockOn; // Giữ nút = lock-on
     public bool Sprint; // Giữ nút khi đang chạy = chạy nhanh
+    public bool FlyToggle; // Bấm = bật / tắt bay (nhân vật CanFly)
 }
 
 // ExampleCharacterController của KCC dùng 2 kiểu này ở namespace toàn cục

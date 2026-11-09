@@ -39,7 +39,7 @@ internal sealed class CharacterCombat
     public AttackContext ResolveContext(bool skill)
     {
         CharController c = _character;
-        if (!c.IsGrounded) return AttackContext.Air;
+        if (!c.IsGrounded || c.IsFlying) return AttackContext.Air;
         if (skill) return AttackContext.Skill;
         if (c.characterCombo.IsContinuingGroundChain) return AttackContext.Ground;
 
@@ -63,7 +63,9 @@ internal sealed class CharacterCombat
         Vector3 facing = c.HasMoveInput ? c.MoveInputDirection.normalized : c.Motor.CharacterForward;
         bool animTravels = info.RootTravel >= c.LungeRootTravelThreshold;
         bool groundedContext = info.Context != AttackContext.Air && info.Context != AttackContext.Launcher;
-        _lungeScale = animTravels || !groundedContext ? 0f : 1f;
+        // phép bắn từ xa: chỉ xoay về mục tiêu, không lướt áp sát
+        bool ranged = c.characterCombo.CurrentWeapon != null && c.characterCombo.CurrentWeapon.Type == WeaponType.Magic;
+        _lungeScale = animTravels || !groundedContext || ranged ? 0f : 1f;
 
         _target = FindAttackTarget(facing);
         if (_target != null)

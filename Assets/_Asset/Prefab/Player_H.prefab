@@ -1244,44 +1244,54 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharController
   Motor: {fileID: 3004887295203529761}
   characterAnim: {fileID: 3470604943467378985}
-  MaxStableMoveSpeed: 10
-  baseMoveSpeed: 5
-  RunMoveSpeed: 15
-  StableMovementSharpness: 10
-  OrientationSharpness: 10
-  OrientationMethod: 1
+  WalkInputThreshold: 0.5
+  JogInputThreshold: 0.75
   WalkSpeed: 2
   RunSpeed: 5.5
   SprintSpeed: 8
-  SprintDelay: 0.8
-  LockOnMoveSpeed: 2.5
-  WalkInputThreshold: 0.5
-  WalkClipSpeed: 1.6
-  RunClipSpeed: 4.1
-  RunFastClipSpeed: 5.9
-  StrafeClipSpeed: 1.6
+  OrientationMethod: 1
+  MoveTurnRate: 540
+  MoveTurnSharpness: 12
+  TurnWarpLimit: 75
+  TurnTapCancelTime: 0.35
+  StrafeTurnSharpness: 12
+  StartTurnAngle: 45
+  ReverseAngle: 135
+  SideTurnAngle: 100
+  GroundSharpness: 18
+  StopSharpness: 7
+  LoopSpeedSharpness: 5
+  LoopSpeedCatchUpSharpness: 16
   MaxAirMoveSpeed: 10
   AirAccelerationSpeed: 30
+  AirTurnSharpness: 6
   Drag: 0
-  AllowJumpingWhenSliding: 0
+  Gravity: {x: 0, y: -30, z: 0}
+  MaxFallSpeed: 6.25
+  FallGravityMultiplier: 0.3
+  FallAnimDelay: 0.15
   JumpUpSpeed: 20
-  JumpScalableForwardSpeed: 0
+  AirJumpUpSpeed: 12
+  JumpHeightScale: 1.7
+  AirJumpHeightScale: 1.4
+  AirJumpKeepHorizontal: 0.3
+  MaxAirJumps: 1
   JumpPreGroundingGraceTime: 0.1
   JumpPostGroundingGraceTime: 0.1
-  MaxAirJumps: 1
-  AirJumpUpSpeed: 12
-  AirJumpKeepHorizontal: 0.3
-  FallGravityMultiplier: 0.3
-  MaxFallSpeed: 6.25
-  FallAnimDelay: 0.15
-  DashSpeed: 20
-  DashDuration: 0.25
+  DodgeDistanceScale: 1.3
+  DodgeTurnSharpness: 40
   DashCooldown: 0.2
   CanDashInAir: 1
+  DashSpeed: 20
+  DashDuration: 0.25
+  DodgeCancelTime: 0.65
   characterCombo: {fileID: 0}
   AttackLungeSpeed: 7
   AttackLungeDuration: 0.12
   AttackStopDistance: 1.6
+  KickStopDistance: 1.15
+  AttackAssistRadius: 5
+  AttackAssistAngle: 75
   AttackTurnSharpness: 40
   AttackMoveCancelThreshold: 0.3
   CanCancelAttackWithDash: 1
@@ -1293,13 +1303,12 @@ MonoBehaviour:
   MaxRootVerticalSpeed: 25
   DashAttackWindow: 0.35
   DirectionalAttackThreshold: 0.6
+  AlwaysDrawWeapon: 1
+  CombatHoldTime: 6
   LockOnRadius: 15
   LockOnBreakRadius: 22
   AutoAddIK: 1
   IgnoredColliders: []
-  BonusOrientationMethod: 2
-  BonusOrientationSharpness: 10
-  Gravity: {x: 0, y: -30, z: 0}
   MeshRoot: {fileID: 9004282366100854045}
   CameraFollowPoint: {fileID: 4243544167411519849}
   CrouchedCapsuleHeight: 1
@@ -1358,22 +1367,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterAnim
   animator: {fileID: 4874499751155673434}
-  LocomotionDampTime: 0.1
-  isMove: 0
-  isRun: 0
-  isGrounded: 0
-  _IdleId: 0
-  _MoveId: 0
-  _RunId: 0
-  _moveX: 0
-  _moveY: 0
-  moveSpeed: 0
-  moveAnimSpeed: 1
   towardMove: 1
-  SpeedDampTime: 0.15
-  JumpLayerName: Jump
-  DashLayerName: Dash
-  DashCancelFade: 0.05
+  DefaultFade: 0.18
+  GaitDampTime: 0.2
+  DirectionDampTime: 0.12
 --- !u!54 &7933302132852326527
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1669,6 +1666,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1092556009169857225}
   - component: {fileID: 7511381705270981461}
+  - component: {fileID: 6143654836117514729}
   m_Layer: 0
   m_Name: Player_H
   m_TagString: Untagged
@@ -1710,6 +1708,24 @@ MonoBehaviour:
   MouseSensitivity: 0.12
   GamepadLookSensitivity: 1000
   GamepadStickDeadzone: 0.15
+--- !u!114 &6143654836117514729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8473885949483530973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 289c69ac8df8ebb468be1eeccbb8c4ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterSwitcher
+  Player: {fileID: 7511381705270981461}
+  Characters:
+  - {fileID: 3493578191146466400, guid: 0dc5d052119808641b0f19a3bf7449bc, type: 3}
+  - {fileID: 6890809182061858966, guid: e2d9ca1d4c59d7b43bfb9cc0ad4ef783, type: 3}
+  - {fileID: 6992361808615888389, guid: c6b67aeb6741fe846a2591c34ec101af, type: 3}
+  ShowHint: 1
 --- !u!1001 &1355343912257819851
 PrefabInstance:
   m_ObjectHideFlags: 0

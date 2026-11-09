@@ -132,6 +132,8 @@ namespace KinematicCharacterController.Examples
             int weaponSwitch = 0;
             bool lockOn = false;
             bool sprint = false;
+            bool flyToggle = false;
+            bool canFly = Character.CanFly;
 
             // --- Bàn phím ---
             if (Keyboard.current != null)
@@ -154,7 +156,9 @@ namespace KinematicCharacterController.Examples
                 orientationSwitch |= Keyboard.current.fKey.wasPressedThisFrame;
                 dash |= Keyboard.current.eKey.wasPressedThisFrame;
                 if (Keyboard.current.tabKey.wasPressedThisFrame) weaponSwitch = 1; // Tab = đổi vũ khí
-                lockOn |= Keyboard.current.qKey.isPressed; // giữ Q để lock-on
+                // Q: nhân vật bay được (Trish) = bật/tắt bay, còn lại = giữ để lock-on
+                if (canFly) flyToggle |= Keyboard.current.qKey.wasPressedThisFrame;
+                else lockOn |= Keyboard.current.qKey.isPressed;
                 sprint |= Keyboard.current.shiftKey.isPressed; // giữ Shift để chạy nhanh
             }
 
@@ -172,6 +176,7 @@ namespace KinematicCharacterController.Examples
                     attack |= leftClick;
                 }
                 skill |= Mouse.current.rightButton.wasPressedThisFrame;
+                lockOn |= Mouse.current.middleButton.isPressed; // giữ chuột giữa = lock-on (mọi nhân vật)
             }
 
             // --- Tay cầm ---
@@ -197,6 +202,7 @@ namespace KinematicCharacterController.Examples
                 if (Gamepad.current.dpad.left.wasPressedThisFrame) weaponSwitch = -1;
                 lockOn |= Gamepad.current.rightShoulder.isPressed;                // giữ RB / R1
                 sprint |= Gamepad.current.leftStickButton.isPressed;              // giữ L3
+                if (canFly) flyToggle |= Gamepad.current.leftShoulder.wasPressedThisFrame; // LB / L1 = bật/tắt bay
             }
 
             characterInputs.MoveAxisForward = moveForward;
@@ -213,6 +219,7 @@ namespace KinematicCharacterController.Examples
             characterInputs.WeaponSwitch = weaponSwitch;
             characterInputs.LockOn = lockOn;
             characterInputs.Sprint = sprint;
+            characterInputs.FlyToggle = flyToggle;
 
             Character.SetInputs(ref characterInputs);
         }

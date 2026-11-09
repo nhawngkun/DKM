@@ -9,13 +9,42 @@ using UnityEngine;
 // (layer Locomotion), nhân bản rồi thay clip của nhân vật mới. Logic nằm ở AnimSetCloneTool.
 public class AnimSetCloneWindow : EditorWindow
 {
-    [MenuItem("Tools/Combat/Anim Set Clone")]
-    public static void Open()
+    // Cửa sổ này giờ là 1 trang của Character Studio (Tools/Character Studio)
+    public static void Open() => CharacterStudioWindow.Open(CharacterStudioWindow.Page.Moveset);
+
+    #region Nhúng vào Character Studio
+
+    internal EditorWindow Host;
+
+    private new void Repaint()
     {
-        AnimSetCloneWindow window = GetWindow<AnimSetCloneWindow>(false, "Anim Set Clone", true);
-        window.minSize = new Vector2(940f, 620f);
-        window.Show();
+        if (Host != null) Host.Repaint();
+        else base.Repaint();
     }
+
+    internal void DrawEmbedded(Rect rect)
+    {
+        GUILayout.BeginArea(rect);
+        OnGUI();
+        GUILayout.EndArea();
+    }
+
+    // Studio: mở sẵn chế độ "ghi đè bộ đang có" cho bộ anim của nhân vật đang chọn
+    internal void PresetFor(int setIndex)
+    {
+        _library = LocomotionAnimatorBuilder.FindLibrary();
+        if (_library == null || setIndex < 0 || setIndex >= _library.Sets.Count) return;
+        if (_source == 1 && _mode == 1 && _templateIndex == setIndex && _draft != null) return;
+
+        _source = 1;
+        _mode = 1;
+        _templateIndex = setIndex;
+        SyncTemplateFields();
+        ResetDraft();
+        _status = "Bộ " + _library.Sets[setIndex].Prefix + ": bấm Nạp để quét clip và tự map lại.";
+    }
+
+    #endregion
 
     // 1 dòng trong bảng map: giữ tham chiếu thẳng tới row của bộ nháp nên sửa là sửa luôn bộ nháp
     private sealed class Row
@@ -623,7 +652,7 @@ public class AnimSetCloneWindow : EditorWindow
         }
 
         if (GUILayout.Button("Timing Window", GUILayout.Height(26f), GUILayout.Width(115f)))
-            EditorApplication.ExecuteMenuItem("Tools/Combat/Timing Window");
+            CharacterStudioWindow.Open(CharacterStudioWindow.Page.Timing);
 
         GUILayout.FlexibleSpace();
         if (_writtenIndex >= 0) GUILayout.Label($"AnimSetId = {_writtenIndex}", EditorStyles.boldLabel, GUILayout.Width(140f));

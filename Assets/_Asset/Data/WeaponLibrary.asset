@@ -1,0 +1,610 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e316715e9e8467e8b8232cee48eb85e, type: 3}
+  m_Name: WeaponLibrary
+  m_EditorClassIdentifier: Assembly-CSharp-Editor::WeaponLibrary
+  Weapons:
+  - Type: 0
+    Key: Rebellion
+    DisplayName: Rebellion
+    AnimFolder: Assets/_Animation_Dante/Animation/Dante_Katana_Blade/
+    Prefab: {fileID: 1489832004896410, guid: a20a162ac11a35643bed0f3823718abb, type: 3}
+    Model: {fileID: 2660215891681850141, guid: d01674abba421e64a92b734060a01e50, type: 3}
+    IdleClip: Idle_ver_B
+    ComboResetTime: 0.5
+    AnimSetId: 0
+    Chains:
+    - Name: 3 Combo
+      Context: 0
+      Steps:
+      - Clip: Attack_3Combo_1_Inplace
+        Root: Attack_3Combo_1
+        Vertical: 0
+      - Clip: Attack_3Combo_2_Inplace
+        Root: Attack_3Combo_2
+        Vertical: 0
+      - Clip: Attack_3Combo_3_Inplace
+        Root: Attack_3Combo_3
+        Vertical: 0
+    - Name: 4 Combo
+      Context: 0
+      Steps:
+      - Clip: Attack_4Combo_1_Inplace
+        Root: Attack_4Combo_1
+        Vertical: 0
+      - Clip: Attack_4Combo_2_Inplace
+        Root: Attack_4Combo_2
+        Vertical: 0
+      - Clip: Attack_4Combo_3_Inplace
+        Root: Attack_4Combo_3
+        Vertical: 0
+      - Clip: Attack_4Combo_4_Inplace
+        Root: Attack_4Combo_4
+        Vertical: 0
+    - Name: 5 Combo
+      Context: 0
+      Steps:
+      - Clip: Attack_5Combo_1_Inplace
+        Root: Attack_5Combo_1
+        Vertical: 0
+      - Clip: Attack_5Combo_2_Inplace
+        Root: Attack_5Combo_2
+        Vertical: 0
+      - Clip: Attack_5Combo_3_Inplace
+        Root: Attack_5Combo_3
+        Vertical: 0
+      - Clip: Attack_5Combo_4_Inplace
+        Root: Attack_5Combo_4
+        Vertical: 0
+      - Clip: Attack_5Combo_5_Inplace
+        Root: Attack_5Combo_5
+        Vertical: 0
+    - Name: Dash Attack A
+      Context: 1
+      Steps:
+      - Clip: Dash_Attack_ver_A
+        Root: 
+        Vertical: 0
+    - Name: Dash Attack B
+      Context: 1
+      Steps:
+      - Clip: Dash_Attack_ver_B
+        Root: 
+        Vertical: 0
+    - Name: Air Combo
+      Context: 2
+      Steps:
+      - Clip: Jump_Attack_Combo_1_ZeroHeight
+        Root: Jump_Attack_Combo_1
+        Vertical: 0
+      - Clip: Jump_Attack_Combo_2_ZeroHeight
+        Root: Jump_Attack_Combo_2
+        Vertical: 0
+      - Clip: Jump_Attack_Combo_3_ZeroHeight
+        Root: Jump_Attack_Combo_3
+        Vertical: 0
+      - Clip: Jump_Attack_Combo_4_ZeroHeight
+        Root: Jump_Attack_Combo_4
+        Vertical: 0
+      - Clip: Jump_Attack_Combo_5_ZeroHeight
+        Root: Jump_Attack_Combo_5
+        Vertical: 0
+      - Clip: Jump_Attack_Combo_6_ZeroHeight
+        Root: Jump_Attack_Combo_6
+        Vertical: 0
+    - Name: Launcher
+      Context: 3
+      Steps:
+      - Clip: UpperAttack_ZeroHeight
+        Root: UpperAttack
+        Vertical: 1
+    - Name: Skill A
+      Context: 4
+      Steps:
+      - Clip: Skill_A
+        Root: 
+        Vertical: 0
+    - Name: Skill B
+      Context: 4
+      Steps:
+      - Clip: Skill_B
+        Root: 
+        Vertical: 0
+    - Name: Skill C
+      Context: 4
+      Steps:
+      - Clip: Skill_C
+        Root: 
+        Vertical: 0
+    - Name: Skill D
+      Context: 4
+      Steps:
+      - Clip: Skill_D
+        Root: 
+        Vertical: 0
+    - Name: Skill E
+      Context: 4
+      Steps:
+      - Clip: Skill_E
+        Root: 
+        Vertical: 0
+    - Name: Skill F
+      Context: 4
+      Steps:
+      - Clip: Skill_F
+        Root: 
+        Vertical: 0
+    - Name: Skill G
+      Context: 4
+      Steps:
+      - Clip: Skill_G
+        Root: 
+        Vertical: 0
+    - Name: Skill I
+      Context: 4
+      Steps:
+      - Clip: Skill_I
+        Root: 
+        Vertical: 0
+    - Name: Skill H
+      Context: 4
+      Steps:
+      - Clip: Skill_H
+        Root: 
+        Vertical: 0
+      - Clip: Skill_H_return
+        Root: 
+        Vertical: 0
+  - Type: 1
+    Key: Sparda
+    DisplayName: Sparda
+    AnimFolder: Assets/_Animation_Dante/Animation/Dante_Big_Sword/
+    Prefab: {fileID: 1982315913299486, guid: 958cf4748c84fb948bc3400edc8005e9, type: 3}
+    Model: {fileID: 4959031780173448436, guid: 79a01e320784b9d4f9d84e3951b72e19, type: 3}
+    IdleClip: Idle
+    ComboResetTime: 0.6
+    AnimSetId: 1
+    Chains:
+    - Name: 3 Combo
+      Context: 0
+      Steps:
+      - Clip: Attack_3Combo_1_Inplace
+        Root: Attack_3Combo_1
+        Vertical: 0
+      - Clip: Attack_3Combo_2_Inplace
+        Root: Attack_3Combo_2
+        Vertical: 0
+      - Clip: Attack_3Combo_3_Inplace
+        Root: Attack_3Combo_3
+        Vertical: 0
+    - Name: 4 Combo A
+      Context: 0
+      Steps:
+      - Clip: Attack_4Combo_1A_Inplace
+        Root: Attack_4Combo_1A
+        Vertical: 0
+      - Clip: Attack_4Combo_2_Inplace
+        Root: Attack_4Combo_2
+        Vertical: 0
+      - Clip: Attack_4Combo_3_Inplace
+        Root: Attack_4Combo_3
+        Vertical: 0
+      - Clip: Attack_4Combo_4_Inplace
+        Root: Attack_4Combo_4
+        Vertical: 0
+    - Name: 4 Combo B
+      Context: 0
+      Steps:
+      - Clip: Attack_4Combo_1B_Inplace
+        Root: Attack_4Combo_1B
+        Vertical: 0
+      - Clip: Attack_4Combo_2_Inplace
+        Root: Attack_4Combo_2
+        Vertical: 0
+      - Clip: Attack_4Combo_3_Inplace
+        Root: Attack_4Combo_3
+        Vertical: 0
+      - Clip: Attack_4Combo_4_Inplace
+        Root: Attack_4Combo_4
+        Vertical: 0
+    - Name: 7 Combo
+      Context: 0
+      Steps:
+      - Clip: Attack_7Combo_1_Inplace
+        Root: Attack_7Combo_1
+        Vertical: 0
+      - Clip: Attack_7Combo_2_Inplace
+        Root: Attack_7Combo_2
+        Vertical: 0
+      - Clip: Attack_7Combo_3_Inplace
+        Root: Attack_7Combo_3
+        Vertical: 0
+      - Clip: Attack_7Combo_4_Inplace
+        Root: Attack_7Combo_4
+        Vertical: 0
+      - Clip: Attack_7Combo_5_Inplace
+        Root: Attack_7Combo_5
+        Vertical: 0
+      - Clip: Attack_7Combo_6_Inplace
+        Root: Attack_7Combo_6
+        Vertical: 0
+      - Clip: Attack_7Combo_7_Inplace
+        Root: Attack_7Combo_7
+        Vertical: 0
+    - Name: Dash Attack A
+      Context: 1
+      Steps:
+      - Clip: Dash_Attack_ver_A
+        Root: 
+        Vertical: 0
+    - Name: Dash Attack B
+      Context: 1
+      Steps:
+      - Clip: Dash_Attack_ver_B
+        Root: 
+        Vertical: 0
+    - Name: Air Combo
+      Context: 2
+      Steps:
+      - Clip: Jump_Attack_Combo_1_ZeroHeight
+        Root: Jump_Attack_Combo_1
+        Vertical: 0
+      - Clip: Jump_Attack_Combo_2_ZeroHeight
+        Root: Jump_Attack_Combo_2
+        Vertical: 0
+      - Clip: Jump_Attack_Combo_3_ZeroHeight
+        Root: Jump_Attack_Combo_3
+        Vertical: 0
+    - Name: Launcher
+      Context: 3
+      Steps:
+      - Clip: UpperAttack_ZeroHeight
+        Root: UpperAttack
+        Vertical: 1
+    - Name: Skill A
+      Context: 4
+      Steps:
+      - Clip: Skill_A
+        Root: 
+        Vertical: 0
+    - Name: Skill B
+      Context: 4
+      Steps:
+      - Clip: Skill_B
+        Root: 
+        Vertical: 0
+    - Name: Skill C
+      Context: 4
+      Steps:
+      - Clip: Skill_C
+        Root: 
+        Vertical: 0
+    - Name: Skill D
+      Context: 4
+      Steps:
+      - Clip: Skill_D
+        Root: 
+        Vertical: 0
+    - Name: Skill E
+      Context: 4
+      Steps:
+      - Clip: Skill_E
+        Root: 
+        Vertical: 0
+    - Name: Skill F
+      Context: 4
+      Steps:
+      - Clip: Skill_F
+        Root: 
+        Vertical: 0
+    - Name: Skill H
+      Context: 4
+      Steps:
+      - Clip: Skill_H
+        Root: 
+        Vertical: 0
+    - Name: Skill I
+      Context: 4
+      Steps:
+      - Clip: Skill_I
+        Root: 
+        Vertical: 0
+    - Name: Skill K
+      Context: 4
+      Steps:
+      - Clip: Skill_K
+        Root: 
+        Vertical: 0
+    - Name: Skill L
+      Context: 4
+      Steps:
+      - Clip: Skill_L
+        Root: 
+        Vertical: 0
+    - Name: Skill G
+      Context: 4
+      Steps:
+      - Clip: Skill_G_1
+        Root: 
+        Vertical: 0
+      - Clip: Skill_G_2
+        Root: 
+        Vertical: 0
+    - Name: Skill J
+      Context: 4
+      Steps:
+      - Clip: Skill_J_Inplace
+        Root: Skill_J
+        Vertical: 0
+  - Type: 2
+    Key: Yamato
+    DisplayName: Yamato
+    AnimFolder: Assets/_Animation_Vergil/Animation/Humanoid
+    Prefab: {fileID: 4460237122623325014, guid: 4898a05727b9b45408c349a68897e7fc, type: 3}
+    Model: {fileID: 4460237122623325014, guid: 4898a05727b9b45408c349a68897e7fc, type: 3}
+    IdleClip: idle
+    ComboResetTime: 0.6
+    AnimSetId: 2
+    Chains:
+    - Name: Attack
+      Context: 0
+      Steps:
+      - Clip: attack01_Inplace
+        Root: attack01
+        Vertical: 0
+      - Clip: attack02_Inplace
+        Root: attack02
+        Vertical: 0
+      - Clip: attack03_Inplace
+        Root: attack03
+        Vertical: 0
+    - Name: Combo01
+      Context: 0
+      Steps:
+      - Clip: combo01_1_Inplace
+        Root: combo01_1
+        Vertical: 0
+      - Clip: combo01_2_Inplace
+        Root: combo01_2
+        Vertical: 0
+      - Clip: combo01_3_Inplace
+        Root: combo01_3
+        Vertical: 0
+    - Name: Combo02
+      Context: 0
+      Steps:
+      - Clip: combo02_1_Inplace
+        Root: combo02_1
+        Vertical: 0
+      - Clip: combo02_2_Inplace
+        Root: combo02_2
+        Vertical: 0
+      - Clip: combo02_3_Inplace
+        Root: combo02_3
+        Vertical: 0
+      - Clip: combo02_4_Inplace
+        Root: combo02_4
+        Vertical: 0
+      - Clip: combo02_5_Inplace
+        Root: combo02_5
+        Vertical: 0
+    - Name: Combo03
+      Context: 0
+      Steps:
+      - Clip: combo03_1_Inplace
+        Root: combo03_1
+        Vertical: 0
+      - Clip: combo03_2_Inplace
+        Root: combo03_2
+        Vertical: 0
+      - Clip: combo03_3_Inplace
+        Root: combo03_3
+        Vertical: 0
+      - Clip: combo03_4_Inplace
+        Root: combo03_4
+        Vertical: 0
+    - Name: Combo04
+      Context: 0
+      Steps:
+      - Clip: combo04_1_Inplace
+        Root: combo04_1
+        Vertical: 0
+      - Clip: combo04_2_Inplace
+        Root: combo04_2
+        Vertical: 0
+      - Clip: combo04_3_Inplace
+        Root: combo04_3
+        Vertical: 0
+      - Clip: combo04_4_Inplace
+        Root: combo04_4
+        Vertical: 0
+    - Name: Combo05
+      Context: 0
+      Steps:
+      - Clip: combo05_1_Inplace
+        Root: combo05_1
+        Vertical: 0
+      - Clip: combo05_2_Inplace
+        Root: combo05_2
+        Vertical: 0
+      - Clip: combo05_3_Inplace
+        Root: combo05_3
+        Vertical: 0
+      - Clip: combo05_4_Inplace
+        Root: combo05_4
+        Vertical: 0
+    - Name: Combo06
+      Context: 0
+      Steps:
+      - Clip: combo06_1_Inplace
+        Root: combo06_1
+        Vertical: 0
+      - Clip: combo06_2_Inplace
+        Root: combo06_2
+        Vertical: 0
+      - Clip: combo06_3_Inplace
+        Root: combo06_3
+        Vertical: 0
+      - Clip: combo06_4_Inplace
+        Root: combo06_4
+        Vertical: 0
+    - Name: Combo07
+      Context: 0
+      Steps:
+      - Clip: combo07_1_Inplace
+        Root: combo07_1
+        Vertical: 0
+      - Clip: combo07_2_Inplace
+        Root: combo07_2
+        Vertical: 0
+      - Clip: combo07_3_Inplace
+        Root: combo07_3
+        Vertical: 0
+      - Clip: combo07_4_Inplace
+        Root: combo07_4
+        Vertical: 0
+    - Name: Combo08
+      Context: 0
+      Steps:
+      - Clip: combo08_1_Inplace
+        Root: combo08_1
+        Vertical: 0
+      - Clip: combo08_2_Inplace
+        Root: combo08_2
+        Vertical: 0
+      - Clip: combo08_3_Inplace
+        Root: combo08_3
+        Vertical: 0
+    - Name: Rapid Slash
+      Context: 1
+      Steps:
+      - Clip: combo02_1_Inplace
+        Root: combo02_1
+        Vertical: 0
+    - Name: AirAttack
+      Context: 2
+      Steps:
+      - Clip: attack_jumpATK_Inplace
+        Root: attack_jumpATK
+        Vertical: 0
+    - Name: Judgement Cut
+      Context: 4
+      Steps:
+      - Clip: combo08_3_Inplace
+        Root: combo08_3
+        Vertical: 0
+    - Name: Sheath Flourish
+      Context: 4
+      Steps:
+      - Clip: wp_unequip_Inplace
+        Root: wp_unequip
+        Vertical: 0
+      - Clip: wp_equip_Inplace
+        Root: wp_equip
+        Vertical: 0
+  - Type: 3
+    Key: TrishMagic
+    DisplayName: "Trish (Ph\xE9p)"
+    AnimFolder: Assets/_Animation_Trish/Animations/Humanoid
+    Prefab: {fileID: 0}
+    Model: {fileID: 0}
+    IdleClip: idle_Ground
+    ComboResetTime: 0.7
+    AnimSetId: 3
+    Chains:
+    - Name: Spell A
+      Context: 0
+      Steps:
+      - Clip: attack_GroundAtk01_Inplace
+        Root: attack_GroundAtk01
+        Vertical: 0
+      - Clip: attack_GroundAtk02_Inplace
+        Root: attack_GroundAtk02
+        Vertical: 0
+      - Clip: attack_GroundAtk03_Inplace
+        Root: attack_GroundAtk03
+        Vertical: 0
+    - Name: Spell B
+      Context: 0
+      Steps:
+      - Clip: attack_GroundAtk04_Inplace
+        Root: attack_GroundAtk04
+        Vertical: 0
+      - Clip: attack_GroundAtk05_Inplace
+        Root: attack_GroundAtk05
+        Vertical: 0
+      - Clip: attack_GroundAtk06_Inplace
+        Root: attack_GroundAtk06
+        Vertical: 0
+    - Name: Spell Rush
+      Context: 0
+      Steps:
+      - Clip: attack_GroundAtk01_short_Inplace
+        Root: attack_GroundAtk01_short
+        Vertical: 0
+      - Clip: attack_GroundAtk03_short_Inplace
+        Root: attack_GroundAtk03_short
+        Vertical: 0
+      - Clip: attack_GroundAtk05_Inplace
+        Root: attack_GroundAtk05
+        Vertical: 0
+      - Clip: attack_GroundAtk06_Inplace
+        Root: attack_GroundAtk06
+        Vertical: 0
+    - Name: Dash Spell
+      Context: 1
+      Steps:
+      - Clip: attack_GroundAtk01_short_Inplace
+        Root: attack_GroundAtk01_short
+        Vertical: 0
+    - Name: Air Spell
+      Context: 2
+      Steps:
+      - Clip: attack_FlyingAtk01_Inplace
+        Root: attack_FlyingAtk01
+        Vertical: 0
+      - Clip: attack_FlyingAtk02_Inplace
+        Root: attack_FlyingAtk02
+        Vertical: 0
+      - Clip: attack_FlyingAtk03_Inplace
+        Root: attack_FlyingAtk03
+        Vertical: 0
+      - Clip: attack_FlyingAtk04_Inplace
+        Root: attack_FlyingAtk04
+        Vertical: 0
+      - Clip: attack_FlyingAtk05_Inplace
+        Root: attack_FlyingAtk05
+        Vertical: 0
+      - Clip: attack_FlyingAtk06_Inplace
+        Root: attack_FlyingAtk06
+        Vertical: 0
+    - Name: Air Spell Short
+      Context: 2
+      Steps:
+      - Clip: attack_FlyingAtk01_short_Inplace
+        Root: attack_FlyingAtk01_short
+        Vertical: 0
+      - Clip: attack_FlyingAtk03_short_Inplace
+        Root: attack_FlyingAtk03_short
+        Vertical: 0
+    - Name: Launcher Spell
+      Context: 3
+      Steps:
+      - Clip: attack_GroundAtk03_short_Inplace
+        Root: attack_GroundAtk03_short
+        Vertical: 0
+    - Name: Buff
+      Context: 4
+      Steps:
+      - Clip: buff_Ground_Inplace
+        Root: buff_Ground
+        Vertical: 0

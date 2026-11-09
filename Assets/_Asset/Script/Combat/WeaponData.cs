@@ -7,6 +7,7 @@ public enum WeaponType
     Rebellion,
     Sparda,
     Yamato,
+    Magic,      // tay không, đòn đánh bắn phép (SpellCaster) thay vì quét lưỡi kiếm
 }
 
 /// <summary>

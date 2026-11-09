@@ -47,6 +47,8 @@ public class AnimSetDefinition
     [Tooltip("Tiền tố state trong Animator, vd KT_ -> KT_Idle")]
     public string Prefix = "NV_";
     public string DisplayName = "Nhân vật mới";
+    [Tooltip("Prefab nhân vật dùng bộ anim này (Character Studio dùng để preview + kiểm tra component)")]
+    public GameObject Prefab;
     [Tooltip("Thư mục chứa clip movement (FBX)")]
     public string MovementFolder = "";
     [Tooltip("Thư mục clip dự phòng: state không tìm thấy clip trong thư mục chính sẽ lấy ở đây. " +
@@ -57,6 +59,8 @@ public class AnimSetDefinition
     public List<GaitClipDefinition> Gaits = new List<GaitClipDefinition>();
     public List<DirectionalClipDefinition> Strafe = new List<DirectionalClipDefinition>();
     public List<DirectionalClipDefinition> Crouch = new List<DirectionalClipDefinition>();
+    [Tooltip("Clip bay 8 hướng (state FlyMove). Để trống = nhân vật không bay")]
+    public List<DirectionalClipDefinition> Fly = new List<DirectionalClipDefinition>();
 
     public LocoClipDefinition Idle
     {
@@ -71,11 +75,7 @@ public class AnimSetDefinition
     }
 }
 
-[CreateAssetMenu(menuName = "Combat/Anim Set Library", fileName = "AnimSetLibrary")]
-public class AnimSetLibrary : ScriptableObject
-{
-    public List<AnimSetDefinition> Sets = new List<AnimSetDefinition>();
-}
+// AnimSetLibrary nằm ở AnimSetLibrary.cs: ScriptableObject phải ở file trùng tên class, không thì asset mất script
 
 // ------------------------------------------------------------------
 // Danh sách vũ khí: WeaponComboBuilder đọc asset này thay vì bảng hard-code.
@@ -121,8 +121,4 @@ public class WeaponDefinition
     public List<WeaponChainDefinition> Chains = new List<WeaponChainDefinition>();
 }
 
-[CreateAssetMenu(menuName = "Combat/Weapon Library", fileName = "WeaponLibrary")]
-public class WeaponLibrary : ScriptableObject
-{
-    public List<WeaponDefinition> Weapons = new List<WeaponDefinition>();
-}
+// WeaponLibrary nằm ở WeaponLibrary.cs (cùng lý do)

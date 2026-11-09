@@ -23,7 +23,7 @@ public static class LocomotionAnimatorBuilder
     private static readonly string[] OldLayers = { "Idle", "Move", "Jump", "Dash", LayerName };
     // pack Grruzam đã được move sang Assets/Dante/Animation (thư mục cũ bị xoá) -> sửa path để
     // "Import Anim Sets From Code" tạo lại AnimSetLibrary đúng; bộ mới cho nhân vật khác thì nhân bản qua Tools/Combat/Anim Set Clone
-    private static readonly string[] MovementFolders = { "Assets/Dante/Animation/Dante_Katana_Blade/1_Movements", "Assets/Dante/Animation/Dante_Big_Sword/1_Movements" };
+    private static readonly string[] MovementFolders = { "Assets/_Animation_Dante/Animation/Dante_Katana_Blade/1_Movements", "Assets/_Animation_Dante/Animation/Dante_Big_Sword/1_Movements" };
 
     // ------------------------------------------------------------------
     // Nguồn dữ liệu cũ (chỉ để Import lần đầu)
@@ -308,6 +308,8 @@ public static class LocomotionAnimatorBuilder
         foreach (GaitClipDefinition row in set.Gaits) Add(row.Clip, false, true, true, -1);
         foreach (DirectionalClipDefinition row in set.Strafe) Add(row.Clip, false, true, true, -1);
         foreach (DirectionalClipDefinition row in set.Crouch) Add(row.Clip, false, true, true, -1);
+        // bay: vận tốc do code, clip Inplace giữ độ cao gốc trong pose (người bay lên nằm sẵn trong anim)
+        foreach (DirectionalClipDefinition row in set.Fly) Add(row.Clip, true, true, true, -1);
 
         AssetDatabase.StartAssetEditing();
         try
@@ -450,6 +452,20 @@ public static class LocomotionAnimatorBuilder
             if (clip != null) crouch.AddChild(clip, new Vector2(child.X, child.Y));
         }
         AddState(LocoState.CrouchMove, crouch, 1f);
+
+        if (set.Fly.Count == 0) return;
+        BlendTree fly = NewTree(controller, set.Prefix + "FlyMove", BlendTreeType.FreeformDirectional2D);
+        fly.blendParameter = "Move_X";
+        fly.blendParameterY = "Move_Y";
+        LocoClipDefinition flyIdle = set.OneShots.Find(row => row.State == LocoState.FlyIdle);
+        AnimationClip flyIdleClip = flyIdle != null ? TryFind(clips, flyIdle.Clip) : null;
+        if (flyIdleClip != null) fly.AddChild(flyIdleClip, Vector2.zero);
+        foreach (DirectionalClipDefinition child in set.Fly)
+        {
+            AnimationClip clip = TryFind(clips, child.Clip);
+            if (clip != null) fly.AddChild(clip, new Vector2(child.X, child.Y));
+        }
+        AddState(LocoState.FlyMove, fly, 1f);
     }
 
     private static BlendTree NewTree(AnimatorController controller, string name, BlendTreeType type)

@@ -20,7 +20,26 @@ Phạm vi tài liệu: **chỉ 5 tool được viết/viết lại cho dự án 
   - `Assets/_Asset/Data/AnimSetLibrary.asset` — bộ anim (prefix + bảng clip theo `LocoState`)
   - `Assets/_Asset/Data/WeaponLibrary.asset` — danh sách vũ khí + chuỗi đòn
 - 2 builder dựng Animator từ 2 asset trên: layer `Locomotion` và `WeaponAttack` trong `Dante 1.controller`.
-- Cửa sổ làm việc chính: `Tools/Combat/Timing Window`.
+- Cửa sổ làm việc chính: **`Tools/Character Studio`** (gộp Timing Window, Anim Set Clone, Weapon Grip Tool và bảng library vào 1 cửa sổ). Các menu cũ `Tools/Combat/Timing Window`, `Anim Set Clone`, `Weapon Grip Tool` đã bỏ; mục 4.x bên dưới mô tả các panel đó, giờ nằm trong các trang của Studio.
+
+## 0.1 Character Studio — 1 cửa sổ set up nhân vật
+
+Nhân vật = 1 bộ anim trong `AnimSetLibrary` (prefix + moveset + **Prefab**) + các vũ khí trong `WeaponLibrary` có `AnimSetId` trỏ về bộ đó. Chọn nhân vật ở ô trên cùng, làm lần lượt các bước ở cột trái; chấm xanh = xong, vàng/đỏ = còn thiếu.
+
+| Trang | Làm gì | Nguồn |
+|---|---|---|
+| Tổng quan | Thẻ nhân vật, số liệu, checklist các bước, nhân bản / xoá nhân vật | — |
+| Prefab | Gán prefab, kiểm tra component combat (CharacterCombo, WeaponHolder, AnimatorRootMotion, PoseBlend, CombatEffects, MeleeHitDetector / SpellCaster…), nút Thêm / Gán sửa thẳng vào prefab, gán WD_ vào `CharacterCombo.Weapons` | mới |
+| Moveset | Bảng state theo nhóm (đứng, bắt đầu chạy, dừng, đổi hướng, nhảy, né, ngồi) + gait + strafe/crouch 8 hướng; ô chọn clip có tìm kiếm, chấm đỏ = clip không có trong thư mục. Tab *Tự map clip* = Anim Set Clone (ghi đè bộ đang chọn) | thay tab *Bộ anim* + AnimSetCloneWindow |
+| Vũ khí & Combo | Thông tin vũ khí, chuỗi đòn (ngữ cảnh, thứ tự, các bước), ✨ gợi ý chuỗi từ tên clip (`attack01…`, `combo02_3…`), chọn clip phát có bản `_Inplace` thì tự điền cột root motion | thay tab *Vũ khí* |
+| Mốc đánh | Timeline mốc — chỉ hiện vũ khí của nhân vật, preview bằng prefab của nhân vật | CombatTimingWindow tab 1 |
+| Cầm vũ khí | Căn vũ khí trên tay theo vũ khí chọn ở thanh trên | WeaponGripTool |
+| Âm thanh | Bộ SFX CombatEffects | CombatTimingWindow tab 2 |
+| Build | Tình trạng + nút *Build tất cả cho nhân vật* (Sinh prefix → Build Locomotion → Build vũ khí CỦA NHÂN VẬT NÀY), từng bước riêng, Bake Slam+Kick, kiểm tra dữ liệu đòn, mục Nâng cao (build mọi vũ khí, preset Vergil/Trish, nhập library từ code) | thay tab *Build* |
+
+**Nhân vật mới** (nút ＋ trên header): tên + prefix, khuôn (bộ có sẵn), thư mục anim, có giữ clip khuôn cho state thiếu không, vũ khí (Key, loại, model, thư mục đòn, gợi ý chuỗi). Có dòng *Xem trước* số clip map được trước khi bấm Tạo.
+
+`AnimSetLibrary` / `WeaponLibrary` nằm ở `AnimSetLibrary.cs` / `WeaponLibrary.cs` (ScriptableObject phải ở file trùng tên class, nếu không asset mất script và không load được — lỗi cũ khiến `AnimSetLibrary.asset` có `m_Script: {fileID: 0}`).
 
 ---
 
@@ -186,7 +205,7 @@ Giữ tay: `Speed`, `FadeIn`, `RootMotionScale` được giữ qua `StateName` k
 
 ## 6. Quy trình A — chỉnh mốc cho vũ khí đã có
 
-1. `Tools/Combat/Timing Window` → tab **Mốc đánh**.
+1. `Tools/Character Studio` → chọn nhân vật → trang **Mốc đánh**.
 2. Chọn vũ khí → chuỗi → đòn ở cột trái.
 3. Bật `▶` hoặc `Space` để xem; kéo kim, nghe tiếng, xem bù nhìn sáng đỏ.
 4. Chỉnh bằng:
@@ -229,7 +248,7 @@ Import FBX ở chế độ Humanoid, bật `Loop Time` cho clip loop, `Bake Into
 
 ### Bước 2 — Khai báo bộ anim
 
-1. `Tools/Combat/Timing Window` → tab **Bộ anim & Vũ khí**.
+1. `Tools/Character Studio` → **＋ Nhân vật mới** (hoặc trang **Moveset** của nhân vật đang có).
 2. Mục AnimSetLibrary: nếu chưa có asset → `Tạo / ghi đè từ code` (một lần) rồi sửa tiếp; nếu đã có → chọn asset.
 3. `＋ Thêm bộ anim`, điền:
    - `Prefix`: vd `NV_` (phải **duy nhất**, không trùng `KT_`, `GS_`).
@@ -270,6 +289,21 @@ Trong scene: kẻ địch/bù nhìn cần `HitReaction` để nhận đòn.
 3. Tab **Build** → **Kiểm tra toàn bộ**.
 4. Play test (mục 11), bật `MeleeHitDetector.LogHits`.
 5. Commit: library asset, `WD_*.asset`, controller, prefab, file prefix sinh ra.
+
+### Vergil & Trish — làm sẵn bằng `CharacterSetupTool`
+
+Menu `Tools/Combat/Nhân vật/…` (bảng clip + chuỗi combo nằm trong `Editor/CharacterSetupTool.cs`) chạy trọn Bước 1–3 cho 2 nhân vật:
+
+| | Vergil (`VG_`, `WD_Yamato`) | Trish (`TR_`, `WD_TrishMagic`) |
+|---|---|---|
+| Pack | `_Animation_Vergil/Animation/Humanoid` | `_Animation_Trish/Animations/Humanoid` |
+| Đất | `attack01-03` + 8 chuỗi `combo01..08` | `GroundAtk01-03`, `04-06`, chuỗi rush (bản short) |
+| Dash / Air / Launcher | `combo02_1` (Rapid Slash) / `attack_jumpATK` / — | `GroundAtk01_short` / `FlyingAtk01-06` + bản short / `GroundAtk03_short` |
+| Skill | `combo08_3` (Judgement Cut), cất–rút kiếm | `buff_Ground` (nổ quanh người) |
+| Di chuyển | idle, walk/run 8 hướng, sprint, avoid, roll | idle, walk/run 8 hướng, nhảy = bay lên lơ lửng; dodge/crouch/turn dùng clip Dante |
+
+- Tool sửa luôn đường dẫn pack cũ (`Assets/Dante/`, `Assets/Sword_sheath_AnimSet/`) trong 2 library và chỉ phân tích lại vũ khí của nhân vật đang setup → mốc chỉnh tay của `WD_Rebellion`/`WD_Sparda` được giữ.
+- Trish là `WeaponType.Magic`: không có model vũ khí, `MeleeHitDetector` không quét. Gắn thêm `Combat/SpellCaster` (cùng GameObject với `CharacterCombo`): mỗi mốc `HitTimes` bắn 1 đạn phép từ tay đang vung ra trước, đòn chốt nổ lan, Skill nổ quanh người. `CharacterCombat` không lướt áp sát khi dùng vũ khí `Magic`.
 
 ---
 
@@ -365,7 +399,7 @@ Khi clip thay đổi (retime, thay FBX, sửa pose), mọi mốc đã bake **kh�
 
 | Menu | Việc |
 |---|---|
-| `Tools/Combat/Timing Window` | Cửa sổ chính |
+| `Tools/Character Studio` | Cửa sổ chính (gộp mọi tool) |
 | `Tools/Combat/Build Locomotion Animator` | Dựng layer Locomotion |
 | `Tools/Combat/Build Weapon Combos` | Dựng layer WeaponAttack + `WeaponData` |
 | `Tools/Combat/Bake Slam And Kick Times` | Chỉ bake slam + đá |

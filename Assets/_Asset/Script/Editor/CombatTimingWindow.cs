@@ -122,13 +122,63 @@ public class CombatTimingWindow : EditorWindow
     private float Length => Step != null && Step.Clip != null ? Mathf.Max(Step.Clip.length, 0.001f) : 1f;
     private float Normalized => Mathf.Clamp01(_time / Length);
 
-    [MenuItem("Tools/Combat/Timing Window")]
-    public static void Open()
+    // Cửa sổ này giờ là 1 trang của Character Studio (Tools/Character Studio)
+    public static void Open() => CharacterStudioWindow.Open(CharacterStudioWindow.Page.Timing);
+
+    #region Nhúng vào Character Studio
+
+    internal EditorWindow Host;
+    internal int ForcedTab = -1;
+    private int _animSetFilter = -1;
+    private GameObject _previewPrefab;
+    private Rect _hostRect;
+
+    private Rect View => Host != null ? _hostRect : position;
+
+    private new void Repaint()
     {
-        CombatTimingWindow window = GetWindow<CombatTimingWindow>("Mốc đòn đánh");
-        window.minSize = new Vector2(920f, 600f);
-        window.Show();
+        if (Host != null) Host.Repaint();
+        else base.Repaint();
     }
+
+    private new void Focus()
+    {
+        if (Host != null) Host.Focus();
+        else base.Focus();
+    }
+
+    internal void DrawEmbedded(Rect rect)
+    {
+        _hostRect = new Rect(0f, 0f, rect.width, rect.height);
+        GUILayout.BeginArea(rect);
+        OnGUI();
+        GUILayout.EndArea();
+    }
+
+    // chỉ hiện vũ khí của 1 bộ anim (-1 = tất cả) + preview bằng prefab của nhân vật đó
+    internal void SetCharacter(int animSetId, GameObject prefab)
+    {
+        if (animSetId != _animSetFilter)
+        {
+            _animSetFilter = animSetId;
+            _weaponIndex = 0;
+            _chainIndex = 0;
+            _stepIndex = 0;
+            RefreshWeapons();
+            _autoSample = true;
+        }
+        if (prefab != _previewPrefab)
+        {
+            _previewPrefab = prefab;
+            CleanupRenderer();
+        }
+    }
+
+    internal IReadOnlyList<string> Validation => _validation;
+    internal void Validate() => ValidateAll();
+    internal void ReloadWeapons() => RefreshWeapons();
+
+    #endregion
 
     private void OnEnable()
     {
@@ -203,7 +253,8 @@ public class CombatTimingWindow : EditorWindow
             }
         }
 
-        _tab = GUILayout.Toolbar(_tab, new[] { "Mốc đánh", "Âm thanh", "Bộ anim & Vũ khí", "Build" });
+        if (ForcedTab >= 0) _tab = ForcedTab;
+        else _tab = GUILayout.Toolbar(_tab, new[] { "Mốc đánh", "Âm thanh", "Bộ anim & Vũ khí", "Build" });
         switch (_tab)
         {
             case 0:
@@ -233,9 +284,9 @@ public class CombatTimingWindow : EditorWindow
         {
             GUILayout.Space(20f);
             EditorGUILayout.HelpBox(
-                "Chưa có WeaponData nào nên chưa có đòn để chỉnh.\n" +
-                "1) Tab 'Bộ anim & Vũ khí' > mục WeaponLibrary > 'Tạo / ghi đè từ code'\n" +
-                "2) Bấm 'Build Weapon Combos' (ở tab đó hoặc tab Build)",
+                "Nhân vật này chưa có WeaponData nên chưa có đòn để chỉnh.\n" +
+                "1) Trang 'Vũ khí & Combo': thêm vũ khí + chuỗi đòn\n" +
+                "2) Trang 'Build': bấm 'Build vũ khí của nhân vật'",
                 MessageType.Warning);
             return;
         }
@@ -251,17 +302,17 @@ public class CombatTimingWindow : EditorWindow
         AttackStep step = Step;
 
         // Bố cục: trái = danh sách, giữa = preview, phải = thuộc tính, dưới = timeline
-        const float top = 26f;
+        float top = ForcedTab >= 0 ? 2f : 26f;
         const float gap = 4f;
         const float leftWidth = 208f;
         const float rightWidth = 300f;
         const float bottomHeight = 186f;
         float statusHeight = 0f;
-        float mainHeight = Mathf.Max(position.height - top - bottomHeight - statusHeight - 14f, 220f);
+        float mainHeight = Mathf.Max(View.height - top - bottomHeight - statusHeight - 14f, 220f);
 
         Rect leftRect = new Rect(4f, top, leftWidth, mainHeight);
-        Rect bottomRect = new Rect(4f, top + mainHeight + gap, Mathf.Max(position.width - 8f, 320f), bottomHeight);
-        float centerWidth = Mathf.Max(position.width - leftWidth - rightWidth - gap * 4f - 8f, 220f);
+        Rect bottomRect = new Rect(4f, top + mainHeight + gap, Mathf.Max(View.width - 8f, 320f), bottomHeight);
+        float centerWidth = Mathf.Max(View.width - leftWidth - rightWidth - gap * 4f - 8f, 220f);
         Rect centerRect = new Rect(leftRect.xMax + gap, top, centerWidth, mainHeight);
         Rect rightRect = new Rect(centerRect.xMax + gap, top, rightWidth, mainHeight);
 
@@ -2534,8 +2585,15 @@ public class CombatTimingWindow : EditorWindow
     /// Ưu tiên nhân vật thật trong scene (giữ material override / prefab instance),
     /// không có mới lấy Character.prefab. Đây là lý do chính khiến preview ra trắng bệt.
     /// </summary>
-    private static GameObject CreateCharacterInstance()
+    private GameObject CreateCharacterInstance()
     {
+        if (_previewPrefab != null)
+        {
+            Animator prefabAnimator = _previewPrefab.GetComponentInChildren<Animator>(true);
+            GameObject prefabSource = prefabAnimator != null ? prefabAnimator.gameObject : _previewPrefab;
+            return (GameObject)UnityEngine.Object.Instantiate(prefabSource);
+        }
+
         CharacterCombo combo = UnityEngine.Object.FindAnyObjectByType<CharacterCombo>(FindObjectsInactive.Include);
         Transform root = null;
         if (combo != null) root = combo.animator != null ? combo.animator.transform : combo.transform;
@@ -2923,7 +2981,7 @@ public class CombatTimingWindow : EditorWindow
         foreach (string guid in AssetDatabase.FindAssets("t:WeaponData"))
         {
             WeaponData data = AssetDatabase.LoadAssetAtPath<WeaponData>(AssetDatabase.GUIDToAssetPath(guid));
-            if (data != null) _weapons.Add(data);
+            if (data != null && (_animSetFilter < 0 || data.AnimSetId == _animSetFilter)) _weapons.Add(data);
         }
         _weapons.Sort((a, b) => string.CompareOrdinal(a.DisplayName, b.DisplayName));
         _weaponIndex = Mathf.Clamp(_weaponIndex, 0, Mathf.Max(_weapons.Count - 1, 0));

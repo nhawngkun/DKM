@@ -530,6 +530,8 @@ public static class AnimSetCloneTool
 
         if (index >= 0 && index < library.Sets.Count)
         {
+            // bộ nháp không mang prefab -> giữ prefab nhân vật đã gán cho bộ cũ
+            if (draft.Prefab == null) draft.Prefab = library.Sets[index].Prefab;
             library.Sets[index] = draft;
         }
         else

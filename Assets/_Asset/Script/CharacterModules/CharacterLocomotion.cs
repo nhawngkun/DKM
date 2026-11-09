@@ -95,7 +95,8 @@ internal sealed class CharacterLocomotion
             BeginMove();
             return;
         }
-        if (!c.IsStrafing) return;
+        // Inplace không có clip quay tại chỗ: UpdateRotation tự xoay mượt về hướng nhìn
+        if (!c.IsStrafing || c.InPlaceLocomotion) return;
 
         Vector3 look = c.FacingTarget();
         float angle = Vector3.SignedAngle(c.Motor.CharacterForward, look, c.Motor.CharacterUp);
@@ -117,6 +118,14 @@ internal sealed class CharacterLocomotion
         int gait = DesiredGait();
         _lastGait = gait;
         c.characterAnim.SetGait(gait);
+
+        // Inplace: vào thẳng vòng lặp chạy, xoay do UpdateRotation
+        if (c.InPlaceLocomotion)
+        {
+            c.SetState(MoveState.Move, LocoState.Loop, 0.2f);
+            return;
+        }
+
         float angle = SignedAngleToInput();
         float abs = Mathf.Abs(angle);
 
@@ -164,6 +173,7 @@ internal sealed class CharacterLocomotion
         int gait = DesiredGait();
         _lastGait = gait;
         c.characterAnim.SetGait(gait);
+        if (c.InPlaceLocomotion) return;
 
         float angle = SignedAngleToInput();
         float abs = Mathf.Abs(angle);
@@ -247,7 +257,7 @@ internal sealed class CharacterLocomotion
     private void BeginStop()
     {
         CharController c = _character;
-        if (c.IsStrafing)
+        if (c.IsStrafing || c.InPlaceLocomotion)
         {
             EnterGroundIdle(0.2f);
             return;
@@ -387,7 +397,13 @@ internal sealed class CharacterLocomotion
         if (c.CurrentCharacterState == MoveState.Dodge) planarRoot *= c.DodgeDistanceScale;
         else if (c.CurrentCharacterState == MoveState.Stop) sharpness = c.StopSharpness;
 
-        if (c.CurrentCharacterState == MoveState.Move && !c.IsStrafing)
+        if (c.InPlaceLocomotion && (c.CurrentCharacterState == MoveState.Move || c.CurrentCharacterState == MoveState.Idle))
+        {
+            // clip Inplace không có root motion: tốc độ theo gait, đi theo hướng mặt (strafe thì theo input)
+            planarRoot = c.HasMoveInput && c.CurrentCharacterState == MoveState.Move ? InPlaceVelocity() : Vector3.zero;
+            _smoothedRootSpeed = planarRoot.magnitude;
+        }
+        else if (c.CurrentCharacterState == MoveState.Move && !c.IsStrafing)
         {
             // thấp hơn nhiều so với anim (vừa hết clip quay, chân đã chạy) thì đuổi nhanh để không trượt chân
             float speedSharpness = _smoothedRootSpeed < planarRoot.magnitude * 0.7f ? c.LoopSpeedCatchUpSharpness : c.LoopSpeedSharpness;
@@ -403,6 +419,18 @@ internal sealed class CharacterLocomotion
         Vector3 groundNormal = c.Motor.GroundingStatus.GroundNormal;
         Vector3 target = c.Motor.GetDirectionTangentToSurface(planarRoot, groundNormal) * planarRoot.magnitude;
         currentVelocity = Vector3.Lerp(currentVelocity, target, 1f - Mathf.Exp(-sharpness * deltaTime));
+    }
+
+    private Vector3 InPlaceVelocity()
+    {
+        CharController c = _character;
+        int gait = DesiredGait();
+        float speed = gait == CharController.GaitWalk ? c.WalkSpeed
+            : gait == CharController.GaitJog ? c.JogSpeed
+            : gait == CharController.GaitFast ? c.SprintSpeed
+            : c.RunSpeed;
+        Vector3 direction = c.IsStrafing ? c.MoveInputDirection.normalized : c.Motor.CharacterForward;
+        return direction * speed;
     }
 
     #endregion

@@ -9,13 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 8c60a092cec14ae0a8db872e73a9e058, type: 3}
   m_Name: AnimSetLibrary
   m_EditorClassIdentifier: Assembly-CSharp-Editor::AnimSetLibrary
   Sets:
   - Prefix: KT_
     DisplayName: Katana
-    MovementFolder: Assets/Dante/Animation/Dante_Katana_Blade/1_Movements
+    Prefab: {fileID: 0}
+    MovementFolder: Assets/_Animation_Dante/Animation/Dante_Katana_Blade/1_Movements
     ExtraFolders: []
     OneShots:
     - State: 0
@@ -338,9 +339,11 @@ MonoBehaviour:
     - X: 0.707
       Y: 0.707
       Clip: Crouch_ver_A_FR45_Root
+    Fly: []
   - Prefix: GS_
     DisplayName: Great Sword
-    MovementFolder: Assets/Dante/Animation/Dante_Big_Sword/1_Movements
+    Prefab: {fileID: 0}
+    MovementFolder: Assets/_Animation_Dante/Animation/Dante_Big_Sword/1_Movements
     ExtraFolders: []
     OneShots:
     - State: 0
@@ -651,11 +654,13 @@ MonoBehaviour:
     - X: 0.707
       Y: 0.707
       Clip: Crouch_FR45_Root
+    Fly: []
   - Prefix: VG_
     DisplayName: Vergil
-    MovementFolder: Assets/Sword_sheath_AnimSet/Animation/Humanoid/Inplace
+    Prefab: {fileID: 6890809182061858966, guid: e2d9ca1d4c59d7b43bfb9cc0ad4ef783, type: 3}
+    MovementFolder: Assets/_Animation_Vergil/Animation/Humanoid
     ExtraFolders:
-    - Assets/Dante/Animation/Dante_Katana_Blade/1_Movements
+    - Assets/_Animation_Dante/Animation/Dante_Katana_Blade/1_Movements
     OneShots:
     - State: 0
       Clip: idle
@@ -700,37 +705,37 @@ MonoBehaviour:
       Speed: 1
       FirstFrame: -1
     - State: 9
-      Clip: move_walk_left
+      Clip: Idle_A_To_Walk_A_Turn_L90_Root
       Loop: 0
       Air: 0
       Speed: 1.25
       FirstFrame: -1
     - State: 10
-      Clip: move_walk_right
+      Clip: Idle_A_To_Walk_A_Turn_R90_Root
       Loop: 0
       Air: 0
       Speed: 1.25
       FirstFrame: -1
     - State: 11
-      Clip: move_run_left
+      Clip: Idle_A_To_Jogging_A_Turn_L90_Root
       Loop: 0
       Air: 0
       Speed: 1.25
       FirstFrame: -1
     - State: 12
-      Clip: move_run_right
+      Clip: Idle_A_To_Jogging_A_Turn_R90_Root
       Loop: 0
       Air: 0
       Speed: 1.25
       FirstFrame: -1
     - State: 13
-      Clip: move_run_left
+      Clip: Idle_A_To_Run_A_Turn_L90_Root
       Loop: 0
       Air: 0
       Speed: 1.25
       FirstFrame: -1
     - State: 14
-      Clip: move_run_right
+      Clip: Idle_A_To_Run_A_Turn_R90_Root
       Loop: 0
       Air: 0
       Speed: 1.25
@@ -772,13 +777,13 @@ MonoBehaviour:
       Speed: 1
       FirstFrame: 12
     - State: 21
-      Clip: move_walk_left
+      Clip: Walk_A_To_Walk_A_Turn_L90_Root
       Loop: 0
       Air: 0
       Speed: 1
       FirstFrame: -1
     - State: 22
-      Clip: move_walk_right
+      Clip: Walk_A_To_Walk_A_Turn_R90_Root
       Loop: 0
       Air: 0
       Speed: 1
@@ -814,7 +819,7 @@ MonoBehaviour:
       Speed: 1
       FirstFrame: -1
     - State: 28
-      Clip: Jump_Start
+      Clip: jump_start
       Loop: 0
       Air: 1
       Speed: 1
@@ -832,7 +837,7 @@ MonoBehaviour:
       Speed: 1
       FirstFrame: -1
     - State: 31
-      Clip: Double_Jump_Start
+      Clip: jump_start
       Loop: 0
       Air: 1
       Speed: 1
@@ -874,13 +879,13 @@ MonoBehaviour:
       Speed: 1
       FirstFrame: -1
     - State: 38
-      Clip: Run_Fast_Dodge_Left
+      Clip: roll_left
       Loop: 0
       Air: 0
       Speed: 1
       FirstFrame: -1
     - State: 39
-      Clip: Run_Fast_Dodge_Right
+      Clip: roll_right
       Loop: 0
       Air: 0
       Speed: 1
@@ -895,11 +900,11 @@ MonoBehaviour:
     - Threshold: 1
       Clip: move_walk_front
     - Threshold: 2
-      Clip: move_run02
+      Clip: move_run_front
     - Threshold: 3
-      Clip: Run_Root_ver_A
+      Clip: move_run02
     - Threshold: 4
-      Clip: Run_Fast_Root_ver_A
+      Clip: sprint
     Strafe:
     - X: 0
       Y: 0.5
@@ -927,7 +932,7 @@ MonoBehaviour:
       Clip: move_walk_frontR45
     - X: 0
       Y: 1
-      Clip: move_run02
+      Clip: move_run_front
     - X: -0.707
       Y: 0.707
       Clip: move_run_frontL45
@@ -939,7 +944,7 @@ MonoBehaviour:
       Clip: move_run_backL45
     - X: 0
       Y: -1
-      Clip: move_run02
+      Clip: move_run_back
     - X: 0.707
       Y: -0.707
       Clip: move_run_backR45
@@ -977,3 +982,374 @@ MonoBehaviour:
     - X: 0.707
       Y: 0.707
       Clip: Crouch_ver_A_FR45_Root
+    Fly: []
+  - Prefix: TR_
+    DisplayName: Trish
+    Prefab: {fileID: 6992361808615888389, guid: c6b67aeb6741fe846a2591c34ec101af, type: 3}
+    MovementFolder: Assets/_Animation_Trish/Animations/Humanoid
+    ExtraFolders:
+    - Assets/_Animation_Dante/Animation/Dante_Katana_Blade/1_Movements
+    OneShots:
+    - State: 0
+      Clip: idle_Ground_Inplace
+      Loop: 1
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 1
+      Clip: Idle_A_Turn_L90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 2
+      Clip: Idle_A_Turn_R90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 3
+      Clip: Idle_A_Turn_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 6
+      Clip: Idle_To_Walk_ver_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 7
+      Clip: Idle_A_To_Jogging_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 8
+      Clip: Idle_A_To_Run_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 9
+      Clip: Idle_A_To_Walk_A_Turn_L90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 10
+      Clip: Idle_A_To_Walk_A_Turn_R90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 11
+      Clip: Idle_A_To_Jogging_A_Turn_L90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 12
+      Clip: Idle_A_To_Jogging_A_Turn_R90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 13
+      Clip: Idle_A_To_Run_A_Turn_L90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 14
+      Clip: Idle_A_To_Run_A_Turn_R90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 15
+      Clip: Turn_in_place_Idle_A_to_Walk_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 16
+      Clip: Turn_in_place_Idle_A_to_Jog_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 17
+      Clip: Turn_in_place_Idle_A_to_Run_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1.25
+      FirstFrame: -1
+    - State: 18
+      Clip: Walk_ver_A_To_Idle_ver_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 19
+      Clip: Run_Fast_To_Idle_ver_A
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: 12
+    - State: 20
+      Clip: Run_Fast_To_Idle_ver_B
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: 12
+    - State: 21
+      Clip: Walk_A_To_Walk_A_Turn_L90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 22
+      Clip: Walk_A_To_Walk_A_Turn_R90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 23
+      Clip: Jogging_A_To_Jogging_A_Turn_L90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 24
+      Clip: Jogging_A_To_Jogging_A_Turn_R90_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 25
+      Clip: Turn_in_place_Walk_A_to_Walk_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 26
+      Clip: Turn_in_place_Jog_A_to_Jog_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 27
+      Clip: Turn_in_place_Run_A_to_Run_A_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 28
+      Clip: idle_Ground_to_Flying(Dynamic)_Inplace
+      Loop: 0
+      Air: 1
+      Speed: 1
+      FirstFrame: -1
+    - State: 29
+      Clip: idle_Flying_Inplace
+      Loop: 1
+      Air: 1
+      Speed: 1
+      FirstFrame: -1
+    - State: 30
+      Clip: idle_Flying_to_Ground(Dynamic)_Inplace
+      Loop: 0
+      Air: 1
+      Speed: 1
+      FirstFrame: -1
+    - State: 31
+      Clip: idle_Ground_to_Flying_Inplace
+      Loop: 0
+      Air: 1
+      Speed: 1
+      FirstFrame: -1
+    - State: 32
+      Clip: idle_Flying_Inplace
+      Loop: 1
+      Air: 1
+      Speed: 1
+      FirstFrame: -1
+    - State: 33
+      Clip: idle_Flying_to_Ground(Dynamic)_Inplace
+      Loop: 0
+      Air: 1
+      Speed: 1
+      FirstFrame: -1
+    - State: 34
+      Clip: Dodge_Front
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 35
+      Clip: Dodge_Back
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 36
+      Clip: Dodge_Left
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 37
+      Clip: Dodge_Right
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 38
+      Clip: Run_Fast_Dodge_Left
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 39
+      Clip: Run_Fast_Dodge_Right
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 40
+      Clip: Idle_ver_A_To_Crouch_ver_A_Idle_Root
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 42
+      Clip: idle_Ground_to_Flying_Inplace
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 43
+      Clip: idle_Flying_Inplace
+      Loop: 1
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    - State: 45
+      Clip: idle_Flying_to_Ground_Inplace
+      Loop: 0
+      Air: 0
+      Speed: 1
+      FirstFrame: -1
+    Gaits:
+    - Threshold: 1
+      Clip: move_Ground_walk_front_Inplace
+    - Threshold: 2
+      Clip: move_Ground_run_front_Inplace
+    - Threshold: 3
+      Clip: move_Ground_run_front_Inplace
+    - Threshold: 4
+      Clip: move_Ground_run_front_Inplace
+    Strafe:
+    - X: 0
+      Y: 0.5
+      Clip: move_Ground_walk_front_Inplace
+    - X: -0.3535
+      Y: 0.3535
+      Clip: move_Ground_walk_frontL45_Inplace
+    - X: -0.5
+      Y: 0
+      Clip: move_Ground_walk_left_Inplace
+    - X: -0.3535
+      Y: -0.3535
+      Clip: move_Ground_walk_backL45_Inplace
+    - X: 0
+      Y: -0.5
+      Clip: move_Ground_walk_back_Inplace
+    - X: 0.3535
+      Y: -0.3535
+      Clip: move_Ground_walk_backR45_Inplace
+    - X: 0.5
+      Y: 0
+      Clip: move_Ground_walk_right_Inplace
+    - X: 0.3535
+      Y: 0.3535
+      Clip: move_Ground_walk_frontR45_Inplace
+    - X: 0
+      Y: 1
+      Clip: move_Ground_run_front_Inplace
+    - X: -0.707
+      Y: 0.707
+      Clip: move_Ground_run_frontL45_Inplace
+    - X: -1
+      Y: 0
+      Clip: move_Ground_run_left_Inplace
+    - X: -0.707
+      Y: -0.707
+      Clip: move_Ground_run_backL45_Inplace
+    - X: 0
+      Y: -1
+      Clip: move_Ground_run_back_Inplace
+    - X: 0.707
+      Y: -0.707
+      Clip: move_Ground_run_backR45_Inplace
+    - X: 1
+      Y: 0
+      Clip: move_Ground_run_right_Inplace
+    - X: 0.707
+      Y: 0.707
+      Clip: move_Ground_run_frontR45_Inplace
+    Crouch:
+    - X: 0
+      Y: 0
+      Clip: Crouch_ver_A_Idle_Root
+    - X: 0
+      Y: 1
+      Clip: Crouch_ver_A_Fwd_Root
+    - X: -0.707
+      Y: 0.707
+      Clip: Crouch_ver_A_FL45_Root
+    - X: -1
+      Y: 0
+      Clip: Crouch_ver_A_L90_Root
+    - X: -0.707
+      Y: -0.707
+      Clip: Crouch_ver_A_BL45_Root
+    - X: 0
+      Y: -1
+      Clip: Crouch_ver_A_Bwd_Root
+    - X: 0.707
+      Y: -0.707
+      Clip: Crouch_ver_A_BR45_Root
+    - X: 1
+      Y: 0
+      Clip: Crouch_ver_A_R90_Root
+    - X: 0.707
+      Y: 0.707
+      Clip: Crouch_ver_A_FR45_Root
+    Fly:
+    - X: 0
+      Y: 1
+      Clip: move_Flying_front_Inplace
+    - X: 0.7071
+      Y: 0.7071
+      Clip: move_Flying_frontR45_Inplace
+    - X: 1
+      Y: 0
+      Clip: move_Flying_right_Inplace
+    - X: 0.7071
+      Y: -0.7071
+      Clip: move_Flying_backR45_Inplace
+    - X: 0
+      Y: -1
+      Clip: move_Flying_back_Inplace
+    - X: -0.7071
+      Y: -0.7071
+      Clip: move_Flying_backL45_Inplace
+    - X: -1
+      Y: 0
+      Clip: move_Flying_left_Inplace
+    - X: -0.7071
+      Y: 0.7071
+      Clip: move_Flying_frontL45_Inplace
