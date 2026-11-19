@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L3 Trish v3</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/abcjs@6.6.4/abcjs-audio.css">
+<script src="https://cdn.jsdelivr.net/npm/abcjs@6.6.4/dist/abcjs-basic-min.js"></script>
+<style>
+  :root { --bg: #f7f5f0; --paper: #ffffff; --text: #1d1c1a; --muted: #6b675f; --line: #ddd8cc; --accent: #8a3b2a; --ok: #2f6b3a; --warn: #a3412c; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #1b1a18; --paper: #f7f5f0; --text: #ece8df; --muted: #a29d92; --line: #3a3833; --accent: #e08b6f; --ok: #7fc28a; --warn: #f08a72; }
+  }
+  :root[data-theme="dark"] { --bg: #1b1a18; --paper: #f7f5f0; --text: #ece8df; --muted: #a29d92; --line: #3a3833; --accent: #e08b6f; --ok: #7fc28a; --warn: #f08a72; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.55 Georgia, "Times New Roman", serif; }
+  main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { margin: 0; font-size: 26px; }
+  h2 { font-size: 16px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 28px 0 10px; font-family: system-ui, sans-serif; }
+  .meta { color: var(--muted); font-family: system-ui, sans-serif; font-size: 14px; }
+  .paper { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 12px; color: #000; }
+  #warnings { font-family: ui-monospace, Consolas, monospace; font-size: 13px; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--line); margin-top: 10px; }
+  #warnings.ok { color: var(--ok); } #warnings.bad { color: var(--warn); }
+  #audio { margin-top: 10px; }
+  table { width: 100%; border-collapse: collapse; font-family: system-ui, sans-serif; font-size: 14px; }
+  th, td { text-align: left; border-bottom: 1px solid var(--line); padding: 6px 8px; vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; }
+  .scroll { overflow-x: auto; }
+  details { font-family: ui-monospace, Consolas, monospace; font-size: 13px; }
+  pre { white-space: pre-wrap; }
+  @media print { #audio, #warnings, details { display: none; } body { background: #fff; color: #000; } h2 { break-after: avoid; } }
+</style>
+
+<style>body { font-family: "Times New Roman", "Noto Serif", serif; } .audio { margin: 8px 0 18px; } section + section { margin-top: 18px; }</style>
+</head>
+<body>
+<main>
+  <h1>L3 Trish v3</h1>
+  <div class="meta">Trish: theme + Angel + Devil · Dựa trên: music-direction.md, D-007, D-008, D-009, D-010 · 150 BPM · D thứ · vòng 32 ô = 51.2s · Draft v3</div>
+
+  <h2>Concept</h2>
+  <p>Cả 3 bản đều thành A - B - A' - B'. <b>Theme</b>: B là thánh ca mới, B' là bè cao (descant). <b>Angel</b>: B đi lên sáng, B' kết bằng melisma. <b>Devil</b>: B và B' vẫn chỉ đi xuống, B' kết bằng A3 "rơi". Piano: motif chùm ba ở A/A', hợp âm khối ở B/B'.</p>
+
+  <h2>Score</h2>
+  <p class="meta">Ký âm ở cao độ thực (concert pitch). Khi chép part: guitar và bass viết cao 1 quãng 8. Ký hiệu trống: F kick, c snare, g× hi-hat, a× crash. Nút play phát bằng synth GM, chỉ để nghe nốt và độ khớp, không phải âm sắc thật.</p>
+  <div id="tunes"></div>
+  <div id="warnings"></div>
+
+  <h2>Harmony plan</h2>
+  <div class="scroll"><table>
+<tr><th>Section</th><th>Bars</th><th>Mode / key</th><th>Progression</th><th>Idea</th></tr>
+<tr><td>A</td><td>1-8</td><td>D thứ</td><td>Dm Dm Bb Eb | Dm Gm Bb A</td><td>motif nhân vật</td></tr>
+<tr><td>B</td><td>9-16</td><td>F trưởng tương quan</td><td>F C Dm Bb | Gm C Bb A</td><td>giai điệu mới, sáng hơn: tương phản</td></tr>
+<tr><td>A'</td><td>17-24</td><td>D thứ</td><td>Dm Dm Bb Eb | Gm Bb Eb A</td><td>cao trào của vòng</td></tr>
+<tr><td>B'</td><td>25-32</td><td>F -> D</td><td>F C Dm Bb | Gm C <b>Eb A</b></td><td>bII -> V ở ô 31-32 kéo mạnh về ô 1</td></tr>
+</table></div>
+
+  <h2>Orchestration</h2>
+  <div class="scroll"><table>
+<tr><th>Section</th><th>Bars</th><th>Melody</th><th>Counter / inner</th><th>Harmony / pad</th><th>Bass</th><th>Percussion</th><th>Dynamics</th><th>Colour</th></tr>
+<tr><td>Theme</td><td>1-32</td><td>soprano</td><td>piano</td><td>hợp xướng</td><td>L1</td><td>L0</td><td>p -> mf</td><td></td></tr>
+<tr><td>Angel</td><td>1-32</td><td>soprano cao</td><td>piano 8va + harp</td><td>hợp xướng nữ</td><td>L1</td><td>L0</td><td>mf -> ff</td><td></td></tr>
+<tr><td>Devil</td><td>1-32</td><td>contralto</td><td>piano hợp âm</td><td>dàn dây trầm</td><td>L1</td><td>L0 (half-time đề xuất)</td><td>mp -> mf -> p</td><td></td></tr>
+</table></div>
+
+  <h2>Adaptive use in game</h2>
+  <div class="scroll"><table>
+<tr><th>Layer / section</th><th>Content</th><th>Game state</th><th>Enter / exit rule</th></tr>
+<tr><td>L3 Trish</td><td>giai điệu 32 ô, cùng hòa âm và độ dài với khung v3</td><td>Awake (Angel / Devil); theme: Nộ đầy chờ Awake (đề xuất)</td><td>vào đầu ô kế, fade 1 phách; ra khi dưới ngưỡng 4s</td></tr>
+<tr><td>Pad, Bass trên trang</td><td>tham chiếu L2/L1</td><td>-</td><td>không xuất stem</td></tr>
+</table></div>
+
+  <h2>Production notes</h2>
+  <ul><li>Bản 16 ô: l3-trish-v2.html.</li></ul>
+
+  <details><summary>ABC source</summary><pre id="abc-print"></pre></details>
+</main>
+
+<script type="text/plain" id="abc-source">
+X:1
+T:Theme Trish v3 (32 ô)
+C:music-lead v2
+M:4/4
+L:1/8
+Q:1/4=150
+%%percmap F bass-drum-1
+%%percmap c acoustic-snare
+%%percmap ^g closed-hi-hat x
+%%percmap a crash-cymbal-1 x
+%%percmap C low-floor-tom
+%%percmap e high-tom
+%%score L3 Pn Ch Bs
+V:L3 clef=treble name="Soprano (opera)" snm="S"
+V:Pn clef=treble name="Piano" snm="Pno"
+V:Ch clef=treble name="Hợp xướng (A + T)" snm="Ch."
+V:Bs clef=bass name="L1 Bass (tham chiếu)" snm="Bass"
+K:Dm
+V:L3
+%%MIDI program 53
+|: "^A (điểm lặp)""Dm"!p!"^vocalise ah, trong trẻo"z4 d4 | "Dm"f4 d2 e2 | "Bb"f6 d2 | "Eb"_e4 g4 |
+V:Pn
+%%MIDI program 0
+|: (3!p!d_ed (3AGA d4 | (3fed (3AFD A4 | (3dfb (3fdB d4 | (3_egb (3g_eB G4 |
+V:Ch
+%%MIDI program 52
+|: !pp!"^Ah... kiểu thánh ca"[FA]8 | [FA]8 | [FB]8 | [GB]8 |
+V:Bs
+%%MIDI program 34
+|: !mp!D,,,2 D,,,D,,, D,,,2 A,,,C,, | D,,,2 D,,,D,,, F,,,2 E,,,A,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, |
+[V:L3] "Dm"a4 f2 d2 | "Gm"g4 b4 | "Bb"f4 d4 | "A"e8 |
+[V:Pn] (3d_ed (3AGA d4 | (3gbd' (3bgd B4 | (3fdB (3dfb d'4 | (3^c'ba (3e^cA E4 |
+[V:Ch] [FA]8 | [GB]8 | [FB]8 | [EA]8 |
+[V:Bs] D,,,2 D,,,D,,, D,,,2 A,,,C,, | G,,,2 G,,,G,,, G,,,2 D,,,F,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, |
+[V:L3] "^B""F"!mf!c4 f4 | "C"g4 e4 | "Dm"f4 a4 | "Bb"b6 a2 |
+[V:Pn] [FAc]4 [FAc]4 | [EGc]4 [EGc]4 | [DFA]4 [DFA]4 | [DFB]4 [DFB]4 |
+[V:Ch] [Ac]8 | [Gc]8 | [FA]8 | [FB]8 |
+[V:Bs] F,,2 F,,F,, F,,2 C,F,, | C,,2 C,,C,, C,,2 G,,C,, | D,,2 D,,D,, D,,2 A,,D,, | B,,,2 B,,,B,,, B,,,2 F,,B,,, |
+[V:L3] "Gm"g4 d'4 | "C"c'4 g4 | "Bb"d'4 b4 | "A"a4 e2 ^c2 |
+[V:Pn] [DGB]4 [DGB]4 | [EGc]4 [EGc]4 | [DFB]4 [DFB]4 | [^CEA]4 [^CEA]4 |
+[V:Ch] [GB]8 | [Gc]8 | [FB]8 | [EA]8 |
+[V:Bs] G,,,2 G,,,G,,, G,,,2 D,,G,,, | C,,2 C,,C,, C,,2 G,,C,, | B,,,2 B,,,B,,, B,,,2 F,,B,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, |
+[V:L3] "^A' (cao trào)""Dm"!mf!a6 g f | "Dm"d8 | "Bb"d4 f4 | "Eb"g6 f _e |
+[V:Pn] (3d_ed (3AGA d2 f2 | (3agf (3edA d4 | (3dfb (3fdB F4 | (3GB_e (3g_eB G4 |
+[V:Ch] [FA]8 | [FA]8 | [FB]8 | [GB]8 |
+[V:Bs] D,,,2 D,,,D,,, D,,,2 A,,,C,, | D,,,2 D,,,D,,, F,,,2 E,,,A,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, |
+[V:L3] "Gm"d4 g4 | "Bb"f6 d2 | "Eb"_e4 B4 | "A"^c4 e4 |
+[V:Pn] (3Bdg (3dBG D4 | (3FBd (3fdB F4 | (3_EGB (3_egb g4 | (3^cBA (3E^CE A4 |
+[V:Ch] [GB]8 | [FB]8 | [GB]8 | [EA]8 |
+[V:Bs] G,,,2 G,,,G,,, G,,,2 D,,,F,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, |
+[V:L3] "^B'""F"a4 c'4 | "C"c'4 g4 | "Dm"a4 f4 | "Bb"f6 d2 |
+[V:Pn] [FAc]4 [FAc]4 | [EGc]4 [EGc]4 | [DFA]4 [DFA]4 | [DFB]4 [DFB]4 |
+[V:Ch] [Ac]8 | [Gc]8 | [FA]8 | [FB]8 |
+[V:Bs] F,,2 F,,F,, F,,2 C,F,, | C,,2 C,,C,, C,,2 G,,C,, | D,,2 D,,D,, D,,2 A,,D,, | B,,,2 B,,,B,,, B,,,2 F,,B,,, |
+[V:L3] "Gm"d4 g4 | "C"e4 g4 | "Eb"g4 b4 | "A"a4 ^c4 :|
+[V:Pn] [DGB]4 [DGB]4 | [EGc]4 [EGc]4 | [_EGB]4 [_EGB]4 | [^CEA]4 [^CEA]4 :|
+[V:Ch] [GB]8 | [Gc]8 | [GB]8 | [EA]8 :|
+[V:Bs] G,,,2 G,,,G,,, G,,,2 D,,G,,, | C,,2 C,,C,, C,,2 G,,C,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, :|
+
+X:2
+T:Trish Awake Angel v3 (32 ô)
+C:music-lead v2
+M:4/4
+L:1/8
+Q:1/4=150
+%%percmap F bass-drum-1
+%%percmap c acoustic-snare
+%%percmap ^g closed-hi-hat x
+%%percmap a crash-cymbal-1 x
+%%percmap C low-floor-tom
+%%percmap e high-tom
+%%score L3 Pn Ch Bs
+V:L3 clef=treble name="Soprano (opera)" snm="S"
+V:Pn clef=treble name="Piano" snm="Pno"
+V:Ch clef=treble name="Hợp xướng (A + T)" snm="Ch."
+V:Bs clef=bass name="L1 Bass (tham chiếu)" snm="Bass"
+K:Dm
+V:L3
+%%MIDI program 53
+|: "^A (điểm lặp)""Dm"!mf!"^Angel: opera trong, thánh thiện"d2 f2 a4 | "Dm"a2 g2 f4 | "Bb"d2 f2 b4 | "Eb"_e2 g2 b4 |
+V:Pn
+%%MIDI program 0
+|: (3"^piano 8va + harp"!mp!d_ed (3AGA d4 | (3fed (3AFD A4 | (3dfb (3fdB d4 | (3_egb (3g_eB G4 |
+V:Ch
+%%MIDI program 52
+|: !pp!"^hợp xướng nữ, sáng"[FA]8 | [FA]8 | [FB]8 | [GB]8 |
+V:Bs
+%%MIDI program 34
+|: !mp!D,,,2 D,,,D,,, D,,,2 A,,,C,, | D,,,2 D,,,D,,, F,,,2 E,,,A,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, |
+[V:L3] "Dm"a6 g f | "Gm"g4 b4 | "Bb"a4 f4 | "A""^melisma"(3^cde (3efg a4 |
+[V:Pn] (3d_ed (3AGA d4 | (3gbd' (3bgd B4 | (3fdB (3dfb d'4 | (3^c'ba (3e^cA E4 |
+[V:Ch] [FA]8 | [GB]8 | [FB]8 | [EA]8 |
+[V:Bs] D,,,2 D,,,D,,, D,,,2 A,,,C,, | G,,,2 G,,,G,,, G,,,2 D,,,F,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, |
+[V:L3] "^B""F"f2 a2 c'4 | "C"e2 g2 c'4 | "Dm"d'4 a4 | "Bb"b2 d'2 f4 |
+[V:Pn] [FAc]4 [FAc]4 | [EGc]4 [EGc]4 | [DFA]4 [DFA]4 | [DFB]4 [DFB]4 |
+[V:Ch] [Ac]8 | [Gc]8 | [FA]8 | [FB]8 |
+[V:Bs] F,,2 F,,F,, F,,2 C,F,, | C,,2 C,,C,, C,,2 G,,C,, | D,,2 D,,D,, D,,2 A,,D,, | B,,,2 B,,,B,,, B,,,2 F,,B,,, |
+[V:L3] "Gm"g2 b2 d'4 | "C"c'2 e2 g4 | "Bb"b2 a2 f4 | "A"^c'4 a4 |
+[V:Pn] [DGB]4 [DGB]4 | [EGc]4 [EGc]4 | [DFB]4 [DFB]4 | [^CEA]4 [^CEA]4 |
+[V:Ch] [GB]8 | [Gc]8 | [FB]8 | [EA]8 |
+[V:Bs] G,,,2 G,,,G,,, G,,,2 D,,G,,, | C,,2 C,,C,, C,,2 G,,C,, | B,,,2 B,,,B,,, B,,,2 F,,B,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, |
+[V:L3] "^A' (cao trào)""Dm"!f!a4 d'4 | "Dm"d'2 a2 f2 a2 | "Bb"b6 a2 | "Eb"g4 b4 |
+[V:Pn] (3d_ed (3AGA d2 f2 | (3agf (3edA d4 | (3dfb (3fdB F4 | (3GB_e (3g_eB G4 |
+[V:Ch] [FA]8 | [FA]8 | [FB]8 | [GB]8 |
+[V:Bs] D,,,2 D,,,D,,, D,,,2 A,,,C,, | D,,,2 D,,,D,,, F,,,2 E,,,A,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, |
+[V:L3] "Gm"!ff!"^đỉnh D6"d'8 | "Bb"d'2 c' b f4 | "Eb"_e2 g2 b4 | "A""^dim."a4 ^c4 |
+[V:Pn] (3Bdg (3dBG D4 | (3FBd (3fdB F4 | (3_EGB (3_egb g4 | (3^cBA (3E^CE A4 |
+[V:Ch] [GB]8 | [FB]8 | [GB]8 | [EA]8 |
+[V:Bs] G,,,2 G,,,G,,, G,,,2 D,,,F,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, |
+[V:L3] "^B'""F"a4 c'4 | "C"e2 g2 c'4 | "Dm"d'4 a4 | "Bb"b2 d'2 f4 |
+[V:Pn] [FAc]4 [FAc]4 | [EGc]4 [EGc]4 | [DFA]4 [DFA]4 | [DFB]4 [DFB]4 |
+[V:Ch] [Ac]8 | [Gc]8 | [FA]8 | [FB]8 |
+[V:Bs] F,,2 F,,F,, F,,2 C,F,, | C,,2 C,,C,, C,,2 G,,C,, | D,,2 D,,D,, D,,2 A,,D,, | B,,,2 B,,,B,,, B,,,2 F,,B,,, |
+[V:L3] "Gm"g2 b2 d'4 | "C"c'2 e2 g4 | "Eb"b4 g4 | "A""^melisma"(3efg (3a^c'a e4 :|
+[V:Pn] [DGB]4 [DGB]4 | [EGc]4 [EGc]4 | [_EGB]4 [_EGB]4 | [^CEA]4 [^CEA]4 :|
+[V:Ch] [GB]8 | [Gc]8 | [GB]8 | [EA]8 :|
+[V:Bs] G,,,2 G,,,G,,, G,,,2 D,,G,,, | C,,2 C,,C,, C,,2 G,,C,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, :|
+
+X:3
+T:Trish Awake Devil v3 (32 ô)
+C:music-lead v2
+M:4/4
+L:1/8
+Q:1/4=150
+%%percmap F bass-drum-1
+%%percmap c acoustic-snare
+%%percmap ^g closed-hi-hat x
+%%percmap a crash-cymbal-1 x
+%%percmap C low-floor-tom
+%%percmap e high-tom
+%%score L3 Pn St Bs
+V:L3 clef=treble name="Contralto" snm="A"
+V:Pn clef=treble name="Piano" snm="Pno"
+V:St clef=bass name="Dàn dây trầm" snm="Str"
+V:Bs clef=bass name="L1 Bass (tham chiếu)" snm="Bass"
+K:Dm
+V:L3
+%%MIDI program 53
+|: "^A (điểm lặp)""Dm"!mp!"^Devil: giọng nữ trầm, mơ màng (cảm giác half-time)"A4- A2 G F | "Dm"F2 E2 D4 | "Bb"D6 C2 | "Eb"B,6 G,2 |
+V:Pn
+%%MIDI program 0
+|: !p!"^piano hợp âm, pedal"[DFA]4 [DFA]4 | [DFA]4 [DFA]4 | [DFB]4 [DFB]4 | [_EGB]4 [_EGB]4 |
+V:St
+%%MIDI program 48
+|: z8 | z8 | z8 | z8 |
+V:Bs
+%%MIDI program 34
+|: !mp!D,,,2 D,,,D,,, D,,,2 A,,,C,, | D,,,2 D,,,D,,, F,,,2 E,,,A,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, |
+[V:L3] "Dm"d4- d2 c A | "Gm"B4 G2 D2 | "Bb"F4 D4 | "A"^C4 A,4 |
+[V:Pn] [DFA]4 [DFA]4 | [DGB]4 [DGB]4 | [DFB]4 [DFB]4 | [^CEA]4 [^CEA]4 |
+[V:St] !p!A,8 | B,8 | F,8 | E,8 |
+[V:Bs] D,,,2 D,,,D,,, D,,,2 A,,,C,, | G,,,2 G,,,G,,, G,,,2 D,,,F,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, |
+[V:L3] "^B""F"c4- c2 A F | "C"G4 E4 | "Dm"A4 F2 D2 | "Bb"D4 B,4 |
+[V:Pn] [FAc]4 [FAc]4 | [EGc]4 [EGc]4 | [DFA]4 [DFA]4 | [DFB]4 [DFB]4 |
+[V:St] F,4 A,4 | G,4 E,4 | F,4 D,4 | D,4 F,4 |
+[V:Bs] F,,2 F,,F,, F,,2 C,F,, | C,,2 C,,C,, C,,2 G,,C,, | D,,2 D,,D,, D,,2 A,,D,, | B,,,2 B,,,B,,, B,,,2 F,,B,,, |
+[V:L3] "Gm"d4- d2 B G | "C"c4 G2 E2 | "Bb"F4 D4 | "A"E4 ^C4 |
+[V:Pn] [DGB]4 [DGB]4 | [EGc]4 [EGc]4 | [DFB]4 [DFB]4 | [^CEA]4 [^CEA]4 |
+[V:St] G,4 B,4 | G,4 E,4 | F,4 D,4 | E,4 A,,4 |
+[V:Bs] G,,,2 G,,,G,,, G,,,2 D,,G,,, | C,,2 C,,C,, C,,2 G,,C,, | B,,,2 B,,,B,,, B,,,2 F,,B,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, |
+[V:L3] "^A' (cao trào)""Dm"!mf!"^dây phồng lên"f4- f2 e d | "Dm"d4 A4 | "Bb"d4- d2 c B | "Eb"B4 G4 |
+[V:Pn] [DFA]4 [DFA]4 | [FAd]4 [FAd]4 | [FBd]4 [FBd]4 | [GB_e]4 [GB_e]4 |
+[V:St] !f!A8 | F8 | F4 D4 | _E4 G,4 |
+[V:Bs] D,,,2 D,,,D,,, D,,,2 A,,,C,, | D,,,2 D,,,D,,, F,,,2 E,,,A,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, |
+[V:L3] "Gm"G2 F2 D4 | "Bb"F2 D2 B,4 | "Eb"_E4 B,2 G,2 | "A"!p!"^rơi xuống"A,8 |
+[V:Pn] [GBd]4 [GBd]4 | [FBd]4 [FBd]4 | [GB_e]4 [GB_e]4 | [EA^c]4 [EA^c]4 |
+[V:St] G,4 B,4 | D4 F,4 | G,4 B,4 | A,4 E,4 |
+[V:Bs] G,,,2 G,,,G,,, G,,,2 D,,,F,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, |
+[V:L3] "^B'""F"c4- c2 A F | "C"G4 E4 | "Dm"A4 F2 D2 | "Bb"D4 B,4 |
+[V:Pn] [FAc]4 [FAc]4 | [EGc]4 [EGc]4 | [DFA]4 [DFA]4 | [DFB]4 [DFB]4 |
+[V:St] F,4 A,4 | G,4 E,4 | F,4 D,4 | D,4 F,4 |
+[V:Bs] F,,2 F,,F,, F,,2 C,F,, | C,,2 C,,C,, C,,2 G,,C,, | D,,2 D,,D,, D,,2 A,,D,, | B,,,2 B,,,B,,, B,,,2 F,,B,,, |
+[V:L3] "Gm"d4- d2 B G | "C"c4 G2 E2 | "Eb"G4 _E4 | "A""^rơi"A,8 :|
+[V:Pn] [DGB]4 [DGB]4 | [EGc]4 [EGc]4 | [_EGB]4 [_EGB]4 | [^CEA]4 [^CEA]4 :|
+[V:St] G,4 B,4 | G,4 E,4 | G,4 _E,4 | E,4 ^C,4 :|
+[V:Bs] G,,,2 G,,,G,,, G,,,2 D,,G,,, | C,,2 C,,C,, C,,2 G,,C,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, :|
+</script>
+
+<script>
+  const src = document.getElementById('abc-source').textContent.trim();
+  document.getElementById('abc-print').textContent = src;
+  const warnBox = document.getElementById('warnings');
+  const host = document.getElementById('tunes');
+  if (!window.ABCJS) {
+    warnBox.className = 'bad';
+    warnBox.textContent = 'Không tải được abcjs (cần mạng để hiện khuông nhạc).';
+  } else {
+    const all = [];
+    src.split(/\n(?=X:)/).forEach((abc, i) => {
+      const sec = document.createElement('section');
+      sec.innerHTML = '<div class="paper"><div id="paper' + i + '"></div></div><div class="audio" id="audio' + i + '"></div>';
+      host.appendChild(sec);
+      const tune = ABCJS.renderAbc('paper' + i, abc, { responsive: 'resize', add_classes: true, staffwidth: 900 })[0];
+      (tune.warnings || []).forEach(w => all.push('Tune ' + (i + 1) + ': ' + w));
+      if (ABCJS.synth.supportsAudio()) {
+        const sc = new ABCJS.synth.SynthController();
+        sc.load('#audio' + i, null, { displayLoop: true, displayRestart: true, displayPlay: true, displayProgress: true, displayWarp: true });
+        sc.setTune(tune, false, { chordsOff: true }).catch(e => { warnBox.innerHTML += '<br>Synth: ' + e; });
+      }
+    });
+    warnBox.className = all.length ? 'bad' : 'ok';
+    warnBox.innerHTML = all.length ? '<b>Cảnh báo (' + all.length + '):</b><br>' + all.join('<br>') : 'Không có cảnh báo';
+  }
+</script>
+</body>
+</html>

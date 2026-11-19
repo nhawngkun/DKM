@@ -1,4 +1,5 @@
  using KinematicCharacterController;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -87,6 +88,16 @@ public class CharController : MonoBehaviour, ICharacterController
     public float DashDuration = 0.18f;
     [Range(0f, 1f), Tooltip("Sau mốc này (normalized) đẩy stick là hủy phần hồi của clip né")]
     public float DodgeCancelTime = 0.65f;
+    [Range(0f, 1f), Tooltip("Bấm né trong lúc đang né: tới mốc này (normalized) thì nối sang cú né mới")]
+    public float DodgeChainTime = 0.6f;
+    [Tooltip("Bấm né lúc chưa né được (cooldown, vừa né xong) được giữ lại bấy nhiêu giây")]
+    public float DodgeBufferTime = 0.3f;
+    [Tooltip("I-frames: bất tử từ giây này tới DodgeIFrameEnd kể từ lúc bắt đầu né")]
+    public float DodgeIFrameStart = 0.05f;
+    public float DodgeIFrameEnd = 0.35f;
+    [Tooltip("Né khi đang bay: lướt ngắn bằng code (không có anim né khi bay)")]
+    public float FlyDashSpeed = 14f;
+    public float FlyDashDuration = 0.22f;
 
     [Header("Combat")]
     public CharacterCombo characterCombo;
@@ -110,14 +121,23 @@ public class CharController : MonoBehaviour, ICharacterController
     public float MaxRootVerticalSpeed = 25f;
     public float DashAttackWindow = 0.35f;
     [Range(0f, 1f)] public float DirectionalAttackThreshold = 0.6f;
+    [Range(0f, 1f), Tooltip("Skill theo hướng: stick dưới mức này = đứng yên (chain Skill 0)")]
+    public float SkillNeutralThreshold = 0.3f;
+    [Range(0f, 1f), Tooltip("Skill theo hướng: dot với mục tiêu lock-on (không có thì hướng camera) > mức này = tới (chain 1), < -mức này = lùi (chain 2)")]
+    public float SkillDirectionDot = 0.6f;
+    [Tooltip("Đang lock-on hoặc trong bấy nhiêu giây sau đòn đánh: bỏ clip quay, bẻ hướng nhanh")]
+    public float QuickTurnWindow = 1f;
+    [Tooltip("Độ/giây khi bẻ hướng nhanh (180 độ <= 0.2s)")]
+    public float QuickTurnRate = 1080f;
+    public float QuickTurnSharpness = 30f;
     [Tooltip("Tắt = cất vũ khí sau CombatHoldTime. Bộ anim Grruzam luôn ở tư thế cầm kiếm nên mặc định luôn cầm")]
     public bool AlwaysDrawWeapon = true;
     public float CombatHoldTime = 6f;
 
-    [Header("Bay (Q)")]
+    [Header("Bay (LB)")]
     [Tooltip("Nhân vật có mode bay (bộ anim phải có state FlyStart/FlyIdle/FlyMove/FlyEnd)")]
     public bool CanFly;
-    [Tooltip("Luôn bay, không có mode đi bộ: vào game là bay ngay, Q không hạ cánh")]
+    [Tooltip("Luôn bay, không có mode đi bộ: vào game là bay ngay, LB không hạ cánh")]
     public bool AlwaysFly;
     [Tooltip("Nâng capsule thêm so với mặt đất khi bay (m). 0 = capsule ở đất, độ cao bay lấy từ pose clip Inplace")]
     public float FlyHeight = 0f;
@@ -132,6 +152,8 @@ public class CharController : MonoBehaviour, ICharacterController
     [Header("Lock On")]
     public float LockOnRadius = 15f;
     public float LockOnBreakRadius = 22f;
+    [Tooltip("Rơi trúng đầu mục tiêu thì bị đẩy ra ngoài với tốc độ này (m/s)")]
+    public float TargetSlideSpeed = 5f;
 
     [Header("IK")]
     public bool AutoAddIK = true;
@@ -146,7 +168,12 @@ public class CharController : MonoBehaviour, ICharacterController
     public LockOnTarget CurrentLockTarget { get; private set; }
     public bool IsLockedOn => CurrentLockTarget != null;
     public bool IsGrounded => Motor.GroundingStatus.IsStableOnGround;
-    public bool IsDashing => CurrentCharacterState == MoveState.Dodge || CurrentCharacterState == MoveState.AirDash;
+    public bool IsDashing => CurrentCharacterState == MoveState.Dodge || CurrentCharacterState == MoveState.AirDash || (_dash != null && _dash.IsFlyDashing);
+    /// <summary>Đang trong i-frames của cú né: địch đọc cờ này để bỏ qua đòn trúng.</summary>
+    public bool IsInvulnerable => _dash != null && _dash.IsInvulnerable;
+    /// <summary>Nút cơ chế riêng (B / Q) được bấm ở frame này. Kit nhân vật (Taunt / Deflect / Blink) đọc cờ này hoặc nghe OnSpecial.</summary>
+    public bool SpecialPressed { get; private set; }
+    public event Action OnSpecial;
     public bool IsAttacking => characterCombo != null && characterCombo.IsAttacking;
     public bool HasMoveInput => _moveInputVector.sqrMagnitude > 0.0001f;
     public Vector3 MoveInputDirection => _moveInputVector;
@@ -160,12 +187,16 @@ public class CharController : MonoBehaviour, ICharacterController
     internal bool SprintHeld => _sprintHeld;
     internal bool FlyingUpperAttack => _flight.IsFlying && IsAttacking && characterCombo.PlaysUpperBody;
     internal LocoState CurrentClip => _currentClip;
+    // lock-on hoặc vừa đánh xong: quay bằng code thật nhanh thay vì phát clip quay
+    internal bool QuickTurn => IsLockedOn || Time.time - _lastAttackTime <= QuickTurnWindow;
 
     private Vector3 _moveInputVector;
     private Vector3 _cameraForward = Vector3.forward;
     private float _stick;
     private bool _sprintHeld;
     private float _combatTimer;
+    private float _lastAttackTime = -999f;
+    private readonly Dictionary<Collider, bool> _combatTargetColliders = new Dictionary<Collider, bool>();
     private Vector3 _internalVelocityAdd;
 
     private CharacterCrouch _crouch;
@@ -265,6 +296,11 @@ public class CharController : MonoBehaviour, ICharacterController
 
         bool attacking = IsAttacking;
         _combatTimer = attacking || IsLockedOn || inputs.Attack || inputs.Skill ? CombatHoldTime : _combatTimer - Time.deltaTime;
+        if (attacking) _lastAttackTime = Time.time;
+        _dash.TickCooldown(Time.deltaTime);
+
+        SpecialPressed = inputs.Special;
+        if (inputs.Special) OnSpecial?.Invoke();
 
         if (characterCombo != null)
         {
@@ -274,7 +310,7 @@ public class CharController : MonoBehaviour, ICharacterController
             {
                 AttackContext context = _combat.ResolveContext(inputs.Skill && !inputs.Attack);
                 if (context == AttackContext.Dash && IsDashing) EndDash();
-                characterCombo.OnAttackInput(context);
+                characterCombo.OnAttackInput(context, context == AttackContext.Skill ? SkillSlot() : 0);
             }
         }
 
@@ -293,7 +329,9 @@ public class CharController : MonoBehaviour, ICharacterController
             _jump.Request();
         }
 
-        if (inputs.Dash && !flying && _dash.CanBegin())
+        // né hủy được mọi đòn (kể cả khi bay); bấm lúc chưa né được thì giữ lại tới khi né được
+        if (inputs.Dash) _dash.Buffer();
+        if (_dash.TryConsumeBuffer())
         {
             if (IsAttacking) characterCombo.CancelCombo();
             _dash.Begin();
@@ -312,12 +350,29 @@ public class CharController : MonoBehaviour, ICharacterController
         }
 
         attacking = IsAttacking;
+        if (attacking) _lastAttackTime = Time.time;
         int attackEdge = _combat.UpdateEdge(attacking);
         if (attackEdge == 1 && IsGrounded && !_flight.IsFlying) EnterGroundIdle(0.1f);
         else if (attackEdge == -1) ResumeAfterAttack();
 
         // đánh thân trên lúc bay: anim bay + di chuyển vẫn chạy
         if (!attacking || FlyingUpperAttack) TickLocomotion(Time.deltaTime);
+    }
+
+    // skill theo hướng so với mục tiêu lock-on (không có thì hướng camera): đứng yên = 0, tới = 1, lùi = 2
+    private int SkillSlot()
+    {
+        if (_stick < SkillNeutralThreshold) return 0;
+        Vector3 reference = _cameraForward;
+        if (IsLockedOn)
+        {
+            Vector3 toTarget = PlanarToLockTarget();
+            if (toTarget.sqrMagnitude > 0.01f) reference = toTarget.normalized;
+        }
+        float dot = Vector3.Dot(_moveInputVector.normalized, reference);
+        if (dot > SkillDirectionDot) return 1;
+        if (dot < -SkillDirectionDot) return 2;
+        return 0;
     }
 
     private void UpdateLockOn(bool lockOnHeld)
@@ -391,10 +446,10 @@ public class CharController : MonoBehaviour, ICharacterController
 
     internal void EnterGroundIdle(float fade = -1f) => _loco.EnterGroundIdle(fade);
 
-    // đang bay thì CharacterFlight.Tick tự phát lại anim bay
+    // đang bay thì CharacterFlight.Tick tự phát lại anim bay; né hủy đòn thì đã vào Dodge, không đè về Idle
     internal void ResumeAfterAttack()
     {
-        if (!_flight.IsFlying) _loco.ResumeAfterAttack();
+        if (!_flight.IsFlying && !IsDashing) _loco.ResumeAfterAttack();
     }
 
     #endregion
@@ -472,7 +527,8 @@ public class CharController : MonoBehaviour, ICharacterController
 
     public void UpdateRotation(ref Quaternion currentRotation, float deltaTime)
     {
-        if (_flight.IsFlying && !IsAttacking) _flight.UpdateRotation(ref currentRotation, deltaTime);
+        // bay + lock-on: luôn quay mặt về mục tiêu, kể cả lúc đang đánh (mục tiêu / nhân vật di chuyển giữa đòn)
+        if (_flight.IsFlying && (!IsAttacking || IsLockedOn)) _flight.UpdateRotation(ref currentRotation, deltaTime);
         else _loco.UpdateRotation(ref currentRotation, deltaTime);
     }
 
@@ -480,7 +536,13 @@ public class CharController : MonoBehaviour, ICharacterController
     {
         Vector3 rootVelocity = characterAnim.RootMotion != null ? characterAnim.RootMotion.ConsumeVelocity() : Vector3.zero;
 
-        if (_flight.IsFlying)
+        if (_flight.IsFlying && _dash.IsFlyDashing)
+        {
+            currentVelocity = _dash.Direction * FlyDashSpeed;
+            _dash.TickFly(deltaTime);
+            _flight.UpdateVelocity(ref currentVelocity, deltaTime, true);
+        }
+        else if (_flight.IsFlying)
         {
             bool attacking = IsAttacking && !FlyingUpperAttack;
             if (attacking) _combat.UpdateVelocity(ref currentVelocity, deltaTime);
@@ -503,7 +565,11 @@ public class CharController : MonoBehaviour, ICharacterController
             _jump.UpdateAirVelocity(ref currentVelocity, deltaTime);
         }
 
-        if (!_flight.IsFlying) HandleJump(ref currentVelocity, deltaTime);
+        if (!_flight.IsFlying)
+        {
+            HandleJump(ref currentVelocity, deltaTime);
+            SlideOffCombatTarget(ref currentVelocity);
+        }
 
         if (_internalVelocityAdd.sqrMagnitude > 0f)
         {
@@ -549,8 +615,37 @@ public class CharController : MonoBehaviour, ICharacterController
     {
     }
 
+    // không bao giờ đứng trên đầu mục tiêu: collider của mục tiêu không phải đất đứng được
     public void ProcessHitStabilityReport(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, Vector3 atCharacterPosition, Quaternion atCharacterRotation, ref HitStabilityReport hitStabilityReport)
     {
+        if (IsCombatTarget(hitCollider)) hitStabilityReport.IsStable = false;
+    }
+
+    private bool IsCombatTarget(Collider collider)
+    {
+        if (collider == null) return false;
+        if (!_combatTargetColliders.TryGetValue(collider, out bool isTarget))
+        {
+            isTarget = collider.GetComponentInParent<HitReaction>() != null || collider.GetComponentInParent<LockOnTarget>() != null;
+            _combatTargetColliders[collider] = isTarget;
+        }
+        return isTarget;
+    }
+
+    // đang chạm mặt trên của mục tiêu (đất không đứng được): đẩy ra ngoài theo phương ngang, không cho đứng lại
+    private void SlideOffCombatTarget(ref Vector3 currentVelocity)
+    {
+        CharacterGroundingReport ground = Motor.GroundingStatus;
+        if (!ground.FoundAnyGround || ground.IsStableOnGround || !IsCombatTarget(ground.GroundCollider)) return;
+
+        Vector3 up = Motor.CharacterUp;
+        Vector3 away = Vector3.ProjectOnPlane(Motor.TransientPosition - ground.GroundCollider.bounds.center, up);
+        if (away.sqrMagnitude < 0.0001f) away = -Motor.CharacterForward;
+        away.Normalize();
+        Vector3 planar = Vector3.ProjectOnPlane(currentVelocity, up);
+        if (Vector3.Dot(planar, away) < TargetSlideSpeed) planar = Vector3.ProjectOnPlane(planar, away) + away * TargetSlideSpeed;
+        float vertical = Mathf.Min(Vector3.Dot(currentVelocity, up), 0f);
+        currentVelocity = planar + up * vertical;
     }
 
     public void OnDiscreteCollisionDetected(Collider hitCollider)
@@ -606,6 +701,7 @@ public struct PlayerCharacterInputs
     public bool LockOn; // Giữ nút = lock-on
     public bool Sprint; // Giữ nút khi đang chạy = chạy nhanh
     public bool FlyToggle; // Bấm = bật / tắt bay (nhân vật CanFly)
+    public bool Special; // Bấm = cơ chế riêng của nhân vật (B / Q): Dante Taunt, Vergil Deflect, Trish Blink
 }
 
 // ExampleCharacterController của KCC dùng 2 kiểu này ở namespace toàn cục

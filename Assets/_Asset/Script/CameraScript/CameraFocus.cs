@@ -11,7 +11,7 @@ public class CameraFocus : MonoBehaviour
     [Header("Rotation")]
     public bool InvertX = false;
     public bool InvertY = false;
-    [Range(-90f, 90f)] public float DefaultVerticalAngle = 20f;
+    [Range(-90f, 90f)] public float DefaultVerticalAngle = 15f;
     [Range(-90f, 90f)] public float MinVerticalAngle = -90f;
     [Range(-90f, 90f)] public float MaxVerticalAngle = 90f;
     public float RotationSpeed = 1f;

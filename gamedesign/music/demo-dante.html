@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo Dante</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/abcjs@6.6.4/abcjs-audio.css">
+<script src="https://cdn.jsdelivr.net/npm/abcjs@6.6.4/dist/abcjs-basic-min.js"></script>
+<style>
+  :root { --bg: #f7f5f0; --paper: #ffffff; --text: #1d1c1a; --muted: #6b675f; --line: #ddd8cc; --accent: #8a3b2a; --ok: #2f6b3a; --warn: #a3412c; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #1b1a18; --paper: #f7f5f0; --text: #ece8df; --muted: #a29d92; --line: #3a3833; --accent: #e08b6f; --ok: #7fc28a; --warn: #f08a72; }
+  }
+  :root[data-theme="dark"] { --bg: #1b1a18; --paper: #f7f5f0; --text: #ece8df; --muted: #a29d92; --line: #3a3833; --accent: #e08b6f; --ok: #7fc28a; --warn: #f08a72; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.55 Georgia, "Times New Roman", serif; }
+  main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { margin: 0; font-size: 26px; }
+  h2 { font-size: 16px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 28px 0 10px; font-family: system-ui, sans-serif; }
+  .meta { color: var(--muted); font-family: system-ui, sans-serif; font-size: 14px; }
+  .paper { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 12px; color: #000; }
+  #warnings { font-family: ui-monospace, Consolas, monospace; font-size: 13px; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--line); margin-top: 10px; }
+  #warnings.ok { color: var(--ok); } #warnings.bad { color: var(--warn); }
+  #audio { margin-top: 10px; }
+  table { width: 100%; border-collapse: collapse; font-family: system-ui, sans-serif; font-size: 14px; }
+  th, td { text-align: left; border-bottom: 1px solid var(--line); padding: 6px 8px; vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; }
+  .scroll { overflow-x: auto; }
+  details { font-family: ui-monospace, Consolas, monospace; font-size: 13px; }
+  pre { white-space: pre-wrap; }
+  @media print { #audio, #warnings, details { display: none; } body { background: #fff; color: #000; } h2 { break-after: avoid; } }
+</style>
+
+<style>body { font-family: "Times New Roman", "Noto Serif", serif; } .audio { margin: 8px 0 18px; } section + section { margin-top: 18px; }</style>
+</head>
+<body>
+<main>
+  <h1>Demo Dante</h1>
+  <div class="meta">Bản demo nghe thử của Dante · 30 ô ≈ 48s · Dựa trên: music-direction.md (v2), D-007, D-008 · 150 BPM · D thứ, vòng 16 ô = 25.6s · Draft v2 (bản v1 giữ nguyên ở file không hậu tố)</div>
+
+  <h2>Concept</h2>
+  <p>Intro chỉ trống + riff. <b>A</b>: motif "quãng 5". <b>B</b>: hook guitar <i>mới</i> trên F trưởng (F-C-Dm-Bb), dễ ngân nga, scream ở cuối đoạn. <b>Cao trào</b>: câu A' ff với organ, hợp xướng, timpani, chuông, scream 3 lần. <b>Kết</b> Eb -> D.</p>
+
+  <h2>Score</h2>
+  <p class="meta">Ký âm ở cao độ thực (concert pitch). Khi chép part: guitar và bass viết cao 1 quãng 8. Ký hiệu trống: F kick, c snare, g× hi-hat, a× crash. Nút play phát bằng synth GM, chỉ để nghe nốt và độ khớp, không phải âm sắc thật.</p>
+  <div id="tunes"></div>
+  <div id="warnings"></div>
+
+  <h2>Harmony plan</h2>
+  <div class="scroll"><table>
+<tr><th>Section</th><th>Bars</th><th>Mode / key</th><th>Progression</th><th>Idea</th></tr>
+<tr><td>Intro</td><td>4</td><td>D thứ</td><td>Dm Dm Bb Eb</td><td>chỉ vài tầng</td></tr>
+<tr><td>A</td><td>8</td><td>D thứ</td><td>Dm Dm Bb Eb | Dm Gm Bb A</td><td>motif nhân vật, hòa âm khung</td></tr>
+<tr><td>B</td><td>8</td><td><b>F trưởng</b> (tương quan)</td><td>F C Dm Bb | Gm C Bb A</td><td>giai điệu mới + hòa âm sáng hơn = tương phản; A ở cuối kéo về D</td></tr>
+<tr><td>Cao trào</td><td>8</td><td>D thứ</td><td>Dm Dm Bb Eb | Gm Bb Eb A</td><td>câu A' với mọi tầng, ff</td></tr>
+<tr><td>Kết</td><td>2</td><td>D</td><td>Eb -> Dm</td><td>bII -> i</td></tr>
+</table></div>
+
+  <h2>Orchestration</h2>
+  <div class="scroll"><table>
+<tr><th>Section</th><th>Bars</th><th>Melody</th><th>Counter / inner</th><th>Harmony / pad</th><th>Bass</th><th>Percussion</th><th>Dynamics</th><th>Colour</th></tr>
+<tr><td>Intro</td><td>1-4</td><td>-</td><td>-</td><td>-</td><td>riff + bass</td><td>trống + chuông</td><td>f</td><td></td></tr>
+<tr><td>A</td><td>5-12</td><td>lead guitar</td><td>scream ô 12</td><td>-</td><td>riff + bass</td><td>trống + timpani</td><td>mf/f</td><td></td></tr>
+<tr><td>B</td><td>13-20</td><td>lead guitar (hook mới)</td><td>scream ô 20</td><td>organ + hợp xướng + harpsichord</td><td>gallop power chord</td><td>đủ</td><td>f</td><td></td></tr>
+<tr><td>Cao trào</td><td>21-28</td><td>lead guitar</td><td>scream</td><td>đủ</td><td>đủ</td><td>đủ</td><td>ff</td><td></td></tr>
+</table></div>
+
+  <h2>Adaptive use in game</h2>
+  <div class="scroll"><table>
+<tr><th>Layer / section</th><th>Content</th><th>Game state</th><th>Enter / exit rule</th></tr>
+<tr><td>Intro / A</td><td>tầng thấp</td><td>thanh thấp</td><td>trong game: L0-L1</td></tr>
+<tr><td>B</td><td>đoạn mới</td><td>đề xuất: vòng combat 32 ô = A + B</td><td>người chơi nghe 2 giai điệu xen nhau thay vì 1 câu lặp</td></tr>
+<tr><td>Cao trào</td><td>mọi tầng + L3 câu A'</td><td>thanh đầy (SSS / cấp 3 / Awake)</td><td>đỉnh bài được "kiếm" bằng cách chơi</td></tr>
+</table></div>
+
+  <h2>Production notes</h2>
+  <ul><li>Đây là bản demo nghe cấu trúc (một lần từ đầu đến cuối). Trong game nhạc vẫn lặp và lên tầng theo thanh; xem file l3-*-v2.html cho từng stem.</li>
+<li>Synth trình duyệt dùng soundfont GM: guitar, violin, giọng chỉ là âm sắc gần đúng.</li></ul>
+
+  <details><summary>ABC source</summary><pre id="abc-print"></pre></details>
+</main>
+
+<script type="text/plain" id="abc-source">
+X:1
+T:Demo Dante: rock + scream (Intro - A - B - Cao trào - Kết)
+C:music-lead v2
+M:4/4
+L:1/8
+Q:1/4=150
+%%percmap F bass-drum-1
+%%percmap c acoustic-snare
+%%percmap ^g closed-hi-hat x
+%%percmap a crash-cymbal-1 x
+%%percmap C low-floor-tom
+%%percmap e high-tom
+%%score L3 Vx Hc Pd Gt Bs Bl Tm Dr
+V:L3 clef=treble name="Lead guitar" snm="Lead"
+V:Vx clef=treble name="Scream" snm="Scr."
+V:Hc clef=treble name="L2 Harpsichord ostinato" snm="Hpsd"
+V:Pd clef=treble name="L2 Organ + hợp xướng SATB" snm="Org/Ch"
+V:Gt clef=bass name="L1 Guitar riff drop-D" snm="Gtr"
+V:Bs clef=bass name="L1 Bass (+ organ pedal 16')" snm="Bass"
+V:Bl clef=treble name="L0 Chuông nhà thờ" snm="Bell"
+V:Tm clef=bass name="L0 Timpani (D3, A2)" snm="Timp"
+V:Dr clef=perc name="L0 Trống metal" snm="Dr"
+K:Dm
+V:L3
+%%MIDI program 29
+"^Intro: chỉ trống + riff""Dm"z8 | "Dm"z8 | "Bb"z8 | "Eb"z8 |
+V:Vx
+%%MIDI program 54
+z8 | z8 | z8 | z8 |
+V:Hc
+%%MIDI program 6
+z8 | z8 | z8 | z8 |
+V:Pd
+%%MIDI program 19
+z8 | z8 | z8 | z8 |
+V:Gt
+%%MIDI program 30
+!f!D,,D,,D,,_E,, D,,D,,A,,G,, | D,,D,,D,,_E,, D,,D,,F,,E,, | B,,B,,B,,A,, B,,B,,F,,D,, | _E,,_E,,_E,,D,, _E,,_E,,G,,_E,, |
+V:Bs
+%%MIDI program 34
+!f!D,,,2 D,,,D,,, D,,,2 A,,,C,, | D,,,2 D,,,D,,, F,,,2 E,,,A,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, |
+V:Bl
+%%MIDI program 14
+!f!"^chuông nhà thờ D5"d8 | z8 | z8 | z8 |
+V:Tm
+%%MIDI program 47
+z8 | z8 | z8 | z8 |
+V:Dr
+%%MIDI channel 10
+!f![Fa] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] [F^g] | [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] c |
+[V:L3] "^A""Dm"!mf!D A d3 e f2 | "Dm"e d A2 d4 | "Bb"[Bf]2 [Bf] z [Bf]2 d f | "Eb"[_eb]2 [_eb] z g2 f _e |
+[V:Vx] !f!z8 | z8 | z8 | z8 |
+[V:Hc] z8 | z8 | z8 | z8 |
+[V:Pd] z8 | z8 | z8 | z8 |
+[V:Gt] !f!D,,D,,D,,_E,, D,,D,,A,,G,, | D,,D,,D,,_E,, D,,D,,F,,E,, | B,,B,,B,,A,, B,,B,,F,,D,, | _E,,_E,,_E,,D,, _E,,_E,,G,,_E,, |
+[V:Bs] !f!D,,,2 D,,,D,,, D,,,2 A,,,C,, | D,,,2 D,,,D,,, F,,,2 E,,,A,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, |
+[V:Bl] z8 | z8 | z8 | z8 |
+[V:Tm] !f!D,2 A,, A,, D,2 A,, A,, | D,2 A,, A,, D,2 A,, A,, | D,2 z2 D,2 z2 | "^cuộn, pedal D dưới Eb"D,8 |
+[V:Dr] !f![Fa] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] [F^g] | [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] c |
+[V:L3] "Dm"a2 "^bend ½"g a d'2 a f | "Gm"g2 b d'2 b g d | "Bb"f2 d' c' b2 f d | "A"^c2 e ^c A2 "^pinch harm."a2 |
+[V:Vx] z8 | z8 | z8 | z4 "^SCREAM: Yeah! (ad-lib)"!ff!A4 |
+[V:Hc] z8 | z8 | z8 | z8 |
+[V:Pd] z8 | z8 | z8 | z8 |
+[V:Gt] D,,D,,D,,_E,, D,,D,,A,,G,, | G,,G,,G,,F,, G,,G,,D,,F,, | B,,B,,B,,A,, B,,B,,F,,D,, | A,,A,,A,,B,, A,,A,,^C,E, |
+[V:Bs] D,,,2 D,,,D,,, D,,,2 A,,,C,, | G,,,2 G,,,G,,, G,,,2 D,,,F,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, |
+[V:Bl] z8 | z8 | z8 | z8 |
+[V:Tm] D,2 A,, A,, D,2 A,, A,, | D,2 z2 D,2 z2 | D,2 z2 D,2 z2 | A,,2 A,,2 A,, A,, A,,2 |
+[V:Dr] [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] [F^g] | [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | c c c c c/c/c/c/ c c |
+[V:L3] "^B: hook mới (F trưởng)""F"!f!c2 f2 a3 g | "C"g2 e2 c4 | "Dm"d2 f2 a2 d'2 | "Bb"d'3 c' b2 f2 |
+[V:Vx] !f!z8 | z8 | z8 | z8 |
+[V:Hc] !f!z2 c f z2 a f | z2 c e z2 g e | z2 d f z2 a f | z2 B d z2 f d |
+[V:Pd] !f![FAc]8 | [EGc]8 | [DFA]8 | [DFB]8 |
+[V:Gt] !f![F,,C,]2 [F,,C,][F,,C,] [F,,C,]2 [F,,C,][F,,C,] | [C,G,]2 [C,G,][C,G,] [C,G,]2 [C,G,][C,G,] | [D,,A,,]2 [D,,A,,][D,,A,,] [D,,A,,]2 [D,,A,,][D,,A,,] | [B,,F,]2 [B,,F,][B,,F,] [B,,F,]2 [B,,F,][B,,F,] |
+[V:Bs] !f!F,,2 F,,F,, F,,2 C,F,, | C,,2 C,,C,, C,,2 G,,C,, | D,,2 D,,D,, D,,2 A,,D,, | B,,,2 B,,,B,,, B,,,2 F,,B,,, |
+[V:Bl] !f!"^chuông"c8 | z8 | z8 | z8 |
+[V:Tm] !f!A,,2 z2 A,,2 z2 | z8 | D,2 A,, A,, D,2 A,, A,, | D,2 z2 D,2 z2 |
+[V:Dr] !f![Fa] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] [F^g] | [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] [F^g] |
+[V:L3] "Gm"g2 b2 d'4 | "C"c'2 d' c' g2 e2 | "Bb"d2 f2 b2 d'2 | "A"^c'2 a2 e2 ^c2 |
+[V:Vx] z8 | z8 | z8 | z4 "^SCREAM"A4 |
+[V:Hc] z2 G B z2 d B | z2 c e z2 g e | z2 B d z2 f d | z2 ^c e z2 a e |
+[V:Pd] [DGB]8 | [EGc]8 | [DFB]8 | [^CEA]8 |
+[V:Gt] [G,,D,]2 [G,,D,][G,,D,] [G,,D,]2 [G,,D,][G,,D,] | [C,G,]2 [C,G,][C,G,] [C,G,]2 [C,G,][C,G,] | [B,,F,]2 [B,,F,][B,,F,] [B,,F,]2 [B,,F,][B,,F,] | [A,,E,]2 [A,,E,][A,,E,] [A,,E,]2 [A,,E,][A,,E,] |
+[V:Bs] G,,,2 G,,,G,,, G,,,2 D,,G,,, | C,,2 C,,C,, C,,2 G,,C,, | B,,,2 B,,,B,,, B,,,2 F,,B,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, |
+[V:Bl] z8 | z8 | z8 | z8 |
+[V:Tm] D,2 z2 D,2 z2 | z8 | D,2 z2 D,2 z2 | A,,2 A,,2 A,, A,, A,,2 |
+[V:Dr] [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] [F^g] | [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | c c c c c/c/c/c/ c c |
+[V:L3] "^Cao trào""Dm"!ff![DA]2 [DA] z [DA]2 "^slide"d f | "Dm"a/g/f/e/ d2 a2 d'2 | "Bb"[Bf]2 [Bf] z [Bf] d f b | "Eb"[_eb]2 [_eb] z [_eb]4 |
+[V:Vx] !ff!z8 | z8 | z8 | z4 "^SCREAM gầm (không cao độ)"!ff!_E4 |
+[V:Hc] !ff!z2 d a z2 f a | z2 d _e z2 d A | z2 B f z2 d f | z2 _e g z2 B g |
+[V:Pd] !ff![DFA]8 | [FAd]8 | [FBd]8 | [GB_e]8 |
+[V:Gt] !ff!D,,D,,D,,_E,, D,,D,,A,,G,, | D,,D,,D,,_E,, D,,D,,F,,E,, | B,,B,,B,,A,, B,,B,,F,,D,, | _E,,_E,,_E,,D,, _E,,_E,,G,,_E,, |
+[V:Bs] !ff!D,,,2 D,,,D,,, D,,,2 A,,,C,, | D,,,2 D,,,D,,, F,,,2 E,,,A,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, |
+[V:Bl] !ff!"^chuông nhà thờ D5"d8 | z8 | z8 | z8 |
+[V:Tm] !ff!D,2 A,, A,, D,2 A,, A,, | D,2 A,, A,, D,2 A,, A,, | D,2 z2 D,2 z2 | "^cuộn, pedal D dưới Eb"D,8 |
+[V:Dr] !ff![Fa] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] [F^g] | [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] c |
+[V:L3] "Gm"d'2 b g d'3 b | "Bb"c'2 d' c' b f d2 | "Eb"b2 g _e B _e g b | "A"e2 ^c A E A "^whammy"^c e |
+[V:Vx] z8 | z8 | z8 | z4 "^SCREAM + whammy"!ff!A4 |
+[V:Hc] z2 G d z2 B d | z2 B f z2 d f | z2 _e g z2 B g | z2 ^c e z2 a e |
+[V:Pd] [GBd]8 | [FBd]8 | [GB_e]8 | [EA^c]8 |
+[V:Gt] G,,G,,G,,F,, G,,G,,D,,F,, | B,,B,,B,,A,, B,,B,,F,,D,, | _E,,_E,,_E,,D,, _E,,_E,,G,,_E,, | A,,A,,A,,B,, A,,A,,^C,E, |
+[V:Bs] G,,,2 G,,,G,,, G,,,2 D,,,F,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, |
+[V:Bl] z8 | z8 | z8 | z8 |
+[V:Tm] D,2 z2 D,2 z2 | D,2 z2 D,2 z2 | "^cuộn, pedal D dưới Eb"D,8 | A,,2 A,,2 A,, A,, A,,2 |
+[V:Dr] [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] [F^g] | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] c | c c c c c/c/c/c/ c c |
+[V:L3] "^Kết""Eb"!ff![_eb]8 | "Dm"!fermata![Ad]8 |]
+[V:Vx] z8 | z8 |]
+[V:Hc] !ff!z2 _e g b4 | !fermata!d8 |]
+[V:Pd] !ff![_EGB]8 | !fermata![DFA]8 |]
+[V:Gt] !ff![_E,,B,,_E,]8 | !fermata![D,,A,,D,]8 |]
+[V:Bs] !ff!_E,,,8 | !fermata!D,,,8 |]
+[V:Bl] !ff!z8 | !fermata!d8 |]
+[V:Tm] !ff!D,2 D,2 D, D, D,2 | !fermata!D,8 |]
+[V:Dr] !ff!c c c c c/c/c/c/ c c | !fermata![Fa]8 |]
+</script>
+
+<script>
+  const src = document.getElementById('abc-source').textContent.trim();
+  document.getElementById('abc-print').textContent = src;
+  const warnBox = document.getElementById('warnings');
+  const host = document.getElementById('tunes');
+  if (!window.ABCJS) {
+    warnBox.className = 'bad';
+    warnBox.textContent = 'Không tải được abcjs (cần mạng để hiện khuông nhạc).';
+  } else {
+    const all = [];
+    src.split(/\n(?=X:)/).forEach((abc, i) => {
+      const sec = document.createElement('section');
+      sec.innerHTML = '<div class="paper"><div id="paper' + i + '"></div></div><div class="audio" id="audio' + i + '"></div>';
+      host.appendChild(sec);
+      const tune = ABCJS.renderAbc('paper' + i, abc, { responsive: 'resize', add_classes: true, staffwidth: 900 })[0];
+      (tune.warnings || []).forEach(w => all.push('Tune ' + (i + 1) + ': ' + w));
+      if (ABCJS.synth.supportsAudio()) {
+        const sc = new ABCJS.synth.SynthController();
+        sc.load('#audio' + i, null, { displayLoop: true, displayRestart: true, displayPlay: true, displayProgress: true, displayWarp: true });
+        sc.setTune(tune, false, { chordsOff: true }).catch(e => { warnBox.innerHTML += '<br>Synth: ' + e; });
+      }
+    });
+    warnBox.className = all.length ? 'bad' : 'ok';
+    warnBox.innerHTML = all.length ? '<b>Cảnh báo (' + all.length + '):</b><br>' + all.join('<br>') : 'Không có cảnh báo';
+  }
+</script>
+</body>
+</html>

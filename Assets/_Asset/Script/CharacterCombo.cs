@@ -56,11 +56,11 @@ public class CharacterCombo : MonoBehaviour
     [Range(0f, 1f), Tooltip("Giữ di chuyển chỉ hủy được đòn sau mốc này (normalized), chừa thời gian bấm nối đòn")]
     public float MoveCancelMinTime = 0.75f;
 
-    [Header("Combo")]
-    [Tooltip("Chuỗi đầu tiên được chọn ngẫu nhiên (false = lần lượt)")]
-    public bool RandomGroundChain = true;
-    [Tooltip("Ngừng nhịp rồi mới bấm tiếp (sau khi đòn kết thúc) -> rẽ sang chuỗi khác ở đòn kế (kiểu delayed combo của DMC)")]
+    [Header("Combo (tất định: cùng cách bấm luôn ra cùng chuỗi)")]
+    [Tooltip("Ngừng nhịp rồi mới bấm tiếp (sau khi đòn kết thúc) -> rẽ sang chuỗi Ground kế tiếp trong danh sách ở đòn kế (kiểu delayed combo của DMC)")]
     public bool DelayedComboBranch = true;
+    [Tooltip("Bấm sớm hơn bấy nhiêu giây sau khi đòn kết thúc vẫn tính là nối thẳng; trễ hơn (tới ComboResetTime) mới rẽ nhánh")]
+    public float DelayedBranchMinPause = 0.25f;
 
     [Header("Blend nối đòn")]
     [Tooltip("Nối đòn: vào đòn kế ở frame có tư thế khớp nhất với đòn đang chém (bỏ bớt đoạn thủ thế đầu clip) thay vì luôn từ frame 0")]
@@ -103,9 +103,7 @@ public class CharacterCombo : MonoBehaviour
 
     private bool _hasBuffered;
     private AttackContext _bufferedContext;
-
-    private int _groundCursor;
-    private int _skillCursor;
+    private int _bufferedSkillSlot;
 
     public WeaponData CurrentWeapon => Weapons.Count > 0 ? Weapons[Mathf.Clamp(CurrentWeaponIndex, 0, Weapons.Count - 1)] : null;
     public AttackStep CurrentStep => _attacking ? _step : null;
@@ -113,6 +111,7 @@ public class CharacterCombo : MonoBehaviour
     public float StepTime => _stepTime;
     public float StepNormalizedTime => _step != null ? _stepTime / Mathf.Max(_step.Length, 0.0001f) : 0f;
     public float CurrentFade => _fade;
+    public string CurrentChainName => _chain != null ? _chain.Name : null;
 
     // Crossfade vào đòn hiện tại đã xong: chen crossfade mới giữa chừng thì Animator bỏ pose đang blend -> giật
     private bool FadeInDone => _stepTime - _entryTime >= _fade * _step.Speed;
@@ -157,23 +156,25 @@ public class CharacterCombo : MonoBehaviour
         if (!_attacking && _hasBuffered)
         {
             _hasBuffered = false;
-            Begin(_bufferedContext);
+            Begin(_bufferedContext, _bufferedSkillSlot);
         }
     }
 
     /// <summary>Gọi từ CharController khi người chơi bấm đánh / skill.</summary>
-    public void OnAttackInput(AttackContext context)
+    /// <param name="skillSlot">Skill theo hướng: 0 = đứng yên, 1 = tới, 2 = lùi (thứ tự chain Skill trong WeaponData; thiếu thì lùi về 0).</param>
+    public void OnAttackInput(AttackContext context, int skillSlot = 0)
     {
         if (_layer < 0 || CurrentWeapon == null) return;
 
         _hasBuffered = true;
         _bufferedContext = context;
+        _bufferedSkillSlot = skillSlot;
 
         // Đang hồi chiêu sau mốc nối đòn -> vào đòn kế ngay, không chờ
         if (_attacking && StepNormalizedTime >= LinkPoint(context) && FadeInDone)
         {
             _hasBuffered = false;
-            Begin(context);
+            Begin(context, skillSlot);
         }
     }
 
@@ -191,7 +192,7 @@ public class CharacterCombo : MonoBehaviour
         if (_hasBuffered && normalized >= LinkPoint(_bufferedContext) && FadeInDone)
         {
             _hasBuffered = false;
-            Begin(_bufferedContext);
+            Begin(_bufferedContext, _bufferedSkillSlot);
             return;
         }
 
@@ -211,69 +212,62 @@ public class CharacterCombo : MonoBehaviour
         return Mathf.Max(linkTime, _step.NextSeamTime) / Mathf.Max(_step.Length, 0.0001f);
     }
 
-    // Chọn đòn kế: nối chuỗi hiện tại nếu cùng ngữ cảnh, không thì mở chuỗi mới
-    private void Begin(AttackContext context)
+    // Chọn đòn kế: nối chuỗi hiện tại nếu cùng ngữ cảnh (skill: cùng hướng), không thì mở chuỗi mới
+    private void Begin(AttackContext context, int skillSlot)
     {
         WeaponData weapon = CurrentWeapon;
         if (weapon == null) return;
 
-        bool inChainWindow = _attacking || Time.time - _lastStepEndTime <= weapon.ComboResetTime;
+        float pause = Time.time - _lastStepEndTime;
+        bool inChainWindow = _attacking || pause <= weapon.ComboResetTime;
         ComboChain chain = _attacking ? _chain : _lastChain;
         int stepIndex = _attacking ? _stepIndex : _lastStepIndex;
+        bool sameSkill = context != AttackContext.Skill || chain == PickChain(weapon, context, skillSlot);
 
-        if (inChainWindow && chain != null && chain.Context == context && stepIndex + 1 < chain.Steps.Count)
+        if (inChainWindow && chain != null && chain.Context == context && sameSkill && stepIndex + 1 < chain.Steps.Count)
         {
             ComboChain next = chain;
-            if (!_attacking && DelayedComboBranch && context == AttackContext.Ground)
+            if (!_attacking && DelayedComboBranch && context == AttackContext.Ground && pause >= DelayedBranchMinPause)
             {
-                next = PickBranch(weapon, chain, stepIndex + 1);
+                next = DelayedBranch(weapon, chain, stepIndex + 1);
             }
             PlayStep(weapon, next, stepIndex + 1);
             return;
         }
 
-        ComboChain fresh = PickChain(weapon, context, chain);
+        ComboChain fresh = PickChain(weapon, context, skillSlot);
         if (fresh == null) return;
         PlayStep(weapon, fresh, 0);
     }
 
-    private ComboChain PickChain(WeaponData weapon, AttackContext context, ComboChain previous)
+    // Tất định: chuỗi đầu tiên của ngữ cảnh; skill lấy theo hướng (thiếu chain thì lùi về chain 0)
+    private static ComboChain PickChain(WeaponData weapon, AttackContext context, int skillSlot)
     {
         List<ComboChain> candidates = new List<ComboChain>(weapon.ChainsFor(context));
+        if (context == AttackContext.Skill && candidates.Count > 0)
+        {
+            return candidates[skillSlot >= 0 && skillSlot < candidates.Count ? skillSlot : 0];
+        }
 
         // Vũ khí không có đòn cho ngữ cảnh này -> dùng combo thường (trên không thì bỏ)
         if (candidates.Count == 0 && context != AttackContext.Air && context != AttackContext.Ground)
         {
             candidates.AddRange(weapon.ChainsFor(AttackContext.Ground));
         }
-        if (candidates.Count == 0) return null;
-        if (candidates.Count == 1) return candidates[0];
-
-        if (context == AttackContext.Skill)
-        {
-            _skillCursor = (_skillCursor + 1) % candidates.Count;
-            return candidates[_skillCursor];
-        }
-
-        if (context == AttackContext.Ground && !RandomGroundChain)
-        {
-            _groundCursor = (_groundCursor + 1) % candidates.Count;
-            return candidates[_groundCursor];
-        }
-
-        // Ngẫu nhiên nhưng tránh lặp lại chuỗi vừa đánh
-        candidates.Remove(previous);
-        return candidates[UnityEngine.Random.Range(0, candidates.Count)];
+        return candidates.Count > 0 ? candidates[0] : null;
     }
 
-    private ComboChain PickBranch(WeaponData weapon, ComboChain current, int nextIndex)
+    // Bấm trễ nhịp: rẽ sang chuỗi Ground kế tiếp trong danh sách (vòng lại đầu) đủ dài để có đòn nextIndex
+    private static ComboChain DelayedBranch(WeaponData weapon, ComboChain current, int nextIndex)
     {
-        List<ComboChain> branches = new List<ComboChain>();
-        foreach (ComboChain chain in weapon.ChainsFor(AttackContext.Ground))
+        List<ComboChain> ground = new List<ComboChain>(weapon.ChainsFor(AttackContext.Ground));
+        int start = ground.IndexOf(current);
+        for (int i = 1; i < ground.Count; i++)
         {
-            if (chain != current && chain.Steps.Count > nextIndex) branches.Add(chain);
+            ComboChain chain = ground[(start + i) % ground.Count];
+            if (chain.Steps.Count > nextIndex) return chain;
         }
-        return branches.Count > 0 ? branches[UnityEngine.Random.Range(0, branches.Count)] : current;
+        return current;
     }
 
     private void PlayStep(WeaponData weapon, ComboChain chain, int stepIndex)

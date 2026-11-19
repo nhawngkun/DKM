@@ -23,6 +23,24 @@ MonoBehaviour:
     ComboResetTime: 0.5
     AnimSetId: 0
     Chains:
+    - Name: 5 Combo
+      Context: 0
+      Steps:
+      - Clip: Attack_5Combo_1_Inplace
+        Root: Attack_5Combo_1
+        Vertical: 0
+      - Clip: Attack_5Combo_2_Inplace
+        Root: Attack_5Combo_2
+        Vertical: 0
+      - Clip: Attack_5Combo_3_Inplace
+        Root: Attack_5Combo_3
+        Vertical: 0
+      - Clip: Attack_5Combo_4_Inplace
+        Root: Attack_5Combo_4
+        Vertical: 0
+      - Clip: Attack_5Combo_5_Inplace
+        Root: Attack_5Combo_5
+        Vertical: 0
     - Name: 3 Combo
       Context: 0
       Steps:
@@ -49,24 +67,6 @@ MonoBehaviour:
         Vertical: 0
       - Clip: Attack_4Combo_4_Inplace
         Root: Attack_4Combo_4
-        Vertical: 0
-    - Name: 5 Combo
-      Context: 0
-      Steps:
-      - Clip: Attack_5Combo_1_Inplace
-        Root: Attack_5Combo_1
-        Vertical: 0
-      - Clip: Attack_5Combo_2_Inplace
-        Root: Attack_5Combo_2
-        Vertical: 0
-      - Clip: Attack_5Combo_3_Inplace
-        Root: Attack_5Combo_3
-        Vertical: 0
-      - Clip: Attack_5Combo_4_Inplace
-        Root: Attack_5Combo_4
-        Vertical: 0
-      - Clip: Attack_5Combo_5_Inplace
-        Root: Attack_5Combo_5
         Vertical: 0
     - Name: Dash Attack A
       Context: 1
@@ -107,10 +107,22 @@ MonoBehaviour:
       - Clip: UpperAttack_ZeroHeight
         Root: UpperAttack
         Vertical: 1
+    - Name: Skill E
+      Context: 4
+      Steps:
+      - Clip: Skill_E
+        Root: 
+        Vertical: 0
     - Name: Skill A
       Context: 4
       Steps:
       - Clip: Skill_A
+        Root: 
+        Vertical: 0
+    - Name: Skill I
+      Context: 4
+      Steps:
+      - Clip: Skill_I
         Root: 
         Vertical: 0
     - Name: Skill B
@@ -131,12 +143,6 @@ MonoBehaviour:
       - Clip: Skill_D
         Root: 
         Vertical: 0
-    - Name: Skill E
-      Context: 4
-      Steps:
-      - Clip: Skill_E
-        Root: 
-        Vertical: 0
     - Name: Skill F
       Context: 4
       Steps:
@@ -147,12 +153,6 @@ MonoBehaviour:
       Context: 4
       Steps:
       - Clip: Skill_G
-        Root: 
-        Vertical: 0
-    - Name: Skill I
-      Context: 4
-      Steps:
-      - Clip: Skill_I
         Root: 
         Vertical: 0
     - Name: Skill H
@@ -174,38 +174,11 @@ MonoBehaviour:
     ComboResetTime: 0.6
     AnimSetId: 1
     Chains:
-    - Name: 3 Combo
-      Context: 0
-      Steps:
-      - Clip: Attack_3Combo_1_Inplace
-        Root: Attack_3Combo_1
-        Vertical: 0
-      - Clip: Attack_3Combo_2_Inplace
-        Root: Attack_3Combo_2
-        Vertical: 0
-      - Clip: Attack_3Combo_3_Inplace
-        Root: Attack_3Combo_3
-        Vertical: 0
     - Name: 4 Combo A
       Context: 0
       Steps:
       - Clip: Attack_4Combo_1A_Inplace
         Root: Attack_4Combo_1A
-        Vertical: 0
-      - Clip: Attack_4Combo_2_Inplace
-        Root: Attack_4Combo_2
-        Vertical: 0
-      - Clip: Attack_4Combo_3_Inplace
-        Root: Attack_4Combo_3
-        Vertical: 0
-      - Clip: Attack_4Combo_4_Inplace
-        Root: Attack_4Combo_4
-        Vertical: 0
-    - Name: 4 Combo B
-      Context: 0
-      Steps:
-      - Clip: Attack_4Combo_1B_Inplace
-        Root: Attack_4Combo_1B
         Vertical: 0
       - Clip: Attack_4Combo_2_Inplace
         Root: Attack_4Combo_2
@@ -240,6 +213,33 @@ MonoBehaviour:
       - Clip: Attack_7Combo_7_Inplace
         Root: Attack_7Combo_7
         Vertical: 0
+    - Name: 3 Combo
+      Context: 0
+      Steps:
+      - Clip: Attack_3Combo_1_Inplace
+        Root: Attack_3Combo_1
+        Vertical: 0
+      - Clip: Attack_3Combo_2_Inplace
+        Root: Attack_3Combo_2
+        Vertical: 0
+      - Clip: Attack_3Combo_3_Inplace
+        Root: Attack_3Combo_3
+        Vertical: 0
+    - Name: 4 Combo B
+      Context: 0
+      Steps:
+      - Clip: Attack_4Combo_1B_Inplace
+        Root: Attack_4Combo_1B
+        Vertical: 0
+      - Clip: Attack_4Combo_2_Inplace
+        Root: Attack_4Combo_2
+        Vertical: 0
+      - Clip: Attack_4Combo_3_Inplace
+        Root: Attack_4Combo_3
+        Vertical: 0
+      - Clip: Attack_4Combo_4_Inplace
+        Root: Attack_4Combo_4
+        Vertical: 0
     - Name: Dash Attack A
       Context: 1
       Steps:
@@ -270,6 +270,18 @@ MonoBehaviour:
       - Clip: UpperAttack_ZeroHeight
         Root: UpperAttack
         Vertical: 1
+    - Name: Skill E
+      Context: 4
+      Steps:
+      - Clip: Skill_E
+        Root: 
+        Vertical: 0
+    - Name: Skill D
+      Context: 4
+      Steps:
+      - Clip: Skill_D
+        Root: 
+        Vertical: 0
     - Name: Skill A
       Context: 4
       Steps:
@@ -286,18 +298,6 @@ MonoBehaviour:
       Context: 4
       Steps:
       - Clip: Skill_C
-        Root: 
-        Vertical: 0
-    - Name: Skill D
-      Context: 4
-      Steps:
-      - Clip: Skill_D
-        Root: 
-        Vertical: 0
-    - Name: Skill E
-      Context: 4
-      Steps:
-      - Clip: Skill_E
         Root: 
         Vertical: 0
     - Name: Skill F
@@ -355,18 +355,6 @@ MonoBehaviour:
     ComboResetTime: 0.6
     AnimSetId: 2
     Chains:
-    - Name: Attack
-      Context: 0
-      Steps:
-      - Clip: attack01_Inplace
-        Root: attack01
-        Vertical: 0
-      - Clip: attack02_Inplace
-        Root: attack02
-        Vertical: 0
-      - Clip: attack03_Inplace
-        Root: attack03
-        Vertical: 0
     - Name: Combo01
       Context: 0
       Steps:
@@ -378,6 +366,33 @@ MonoBehaviour:
         Vertical: 0
       - Clip: combo01_3_Inplace
         Root: combo01_3
+        Vertical: 0
+    - Name: Combo04
+      Context: 0
+      Steps:
+      - Clip: combo04_1_Inplace
+        Root: combo04_1
+        Vertical: 0
+      - Clip: combo04_2_Inplace
+        Root: combo04_2
+        Vertical: 0
+      - Clip: combo04_3_Inplace
+        Root: combo04_3
+        Vertical: 0
+      - Clip: combo04_4_Inplace
+        Root: combo04_4
+        Vertical: 0
+    - Name: Attack
+      Context: 0
+      Steps:
+      - Clip: attack01_Inplace
+        Root: attack01
+        Vertical: 0
+      - Clip: attack02_Inplace
+        Root: attack02
+        Vertical: 0
+      - Clip: attack03_Inplace
+        Root: attack03
         Vertical: 0
     - Name: Combo02
       Context: 0
@@ -411,21 +426,6 @@ MonoBehaviour:
         Vertical: 0
       - Clip: combo03_4_Inplace
         Root: combo03_4
-        Vertical: 0
-    - Name: Combo04
-      Context: 0
-      Steps:
-      - Clip: combo04_1_Inplace
-        Root: combo04_1
-        Vertical: 0
-      - Clip: combo04_2_Inplace
-        Root: combo04_2
-        Vertical: 0
-      - Clip: combo04_3_Inplace
-        Root: combo04_3
-        Vertical: 0
-      - Clip: combo04_4_Inplace
-        Root: combo04_4
         Vertical: 0
     - Name: Combo05
       Context: 0
@@ -484,23 +484,44 @@ MonoBehaviour:
       - Clip: combo08_3_Inplace
         Root: combo08_3
         Vertical: 0
-    - Name: Rapid Slash
-      Context: 1
-      Steps:
-      - Clip: combo02_1_Inplace
-        Root: combo02_1
-        Vertical: 0
     - Name: AirAttack
       Context: 2
       Steps:
       - Clip: attack_jumpATK_Inplace
         Root: attack_jumpATK
         Vertical: 0
-    - Name: Judgement Cut
+    - Name: Lunge Slash
+      Context: 1
+      Steps:
+      - Clip: attack01_Inplace
+        Root: attack01
+        Vertical: 0
+    - Name: Back Slash
+      Context: 3
+      Steps:
+      - Clip: attack02_Inplace
+        Root: attack02
+        Vertical: 0
+    - Name: Iai
       Context: 4
       Steps:
       - Clip: combo08_3_Inplace
         Root: combo08_3
+        Vertical: 0
+    - Name: Pierce Dash
+      Context: 4
+      Steps:
+      - Clip: combo02_1_Inplace
+        Root: combo02_1
+        Vertical: 0
+    - Name: Sheath Retreat
+      Context: 4
+      Steps:
+      - Clip: avoid_back_Inplace
+        Root: avoid_back
+        Vertical: 0
+      - Clip: wp_unequip_Inplace
+        Root: wp_unequip
         Vertical: 0
     - Name: Sheath Flourish
       Context: 4
@@ -521,80 +542,32 @@ MonoBehaviour:
     ComboResetTime: 0.7
     AnimSetId: 3
     Chains:
-    - Name: Spell A
+    - Name: Spell
       Context: 0
       Steps:
-      - Clip: attack_GroundAtk01_Inplace
-        Root: attack_GroundAtk01
+      - Clip: attack_FlyingAtk03_short_Inplace
+        Root: attack_FlyingAtk03_short
         Vertical: 0
-      - Clip: attack_GroundAtk02_Inplace
-        Root: attack_GroundAtk02
+      - Clip: attack_FlyingAtk01_cast_Inplace
+        Root: attack_FlyingAtk01_cast
         Vertical: 0
-      - Clip: attack_GroundAtk03_Inplace
-        Root: attack_GroundAtk03
+      - Clip: attack_FlyingAtk03_short_Inplace
+        Root: attack_FlyingAtk03_short
         Vertical: 0
-    - Name: Spell B
-      Context: 0
-      Steps:
-      - Clip: attack_GroundAtk04_Inplace
-        Root: attack_GroundAtk04
-        Vertical: 0
-      - Clip: attack_GroundAtk05_Inplace
-        Root: attack_GroundAtk05
-        Vertical: 0
-      - Clip: attack_GroundAtk06_Inplace
-        Root: attack_GroundAtk06
-        Vertical: 0
-    - Name: Spell Rush
-      Context: 0
-      Steps:
-      - Clip: attack_GroundAtk01_short_Inplace
-        Root: attack_GroundAtk01_short
-        Vertical: 0
-      - Clip: attack_GroundAtk03_short_Inplace
-        Root: attack_GroundAtk03_short
-        Vertical: 0
-      - Clip: attack_GroundAtk05_Inplace
-        Root: attack_GroundAtk05
-        Vertical: 0
-      - Clip: attack_GroundAtk06_Inplace
-        Root: attack_GroundAtk06
-        Vertical: 0
-    - Name: Dash Spell
+    - Name: Pierce Ray
       Context: 1
       Steps:
-      - Clip: attack_GroundAtk01_short_Inplace
-        Root: attack_GroundAtk01_short
+      - Clip: attack_FlyingAtk02_Inplace
+        Root: attack_FlyingAtk02
         Vertical: 0
     - Name: Air Spell
       Context: 2
       Steps:
-      - Clip: attack_FlyingAtk01_Inplace
-        Root: attack_FlyingAtk01
-        Vertical: 0
-      - Clip: attack_FlyingAtk02_Inplace
-        Root: attack_FlyingAtk02
-        Vertical: 0
-      - Clip: attack_FlyingAtk03_Inplace
-        Root: attack_FlyingAtk03
-        Vertical: 0
-      - Clip: attack_FlyingAtk04_Inplace
-        Root: attack_FlyingAtk04
-        Vertical: 0
-      - Clip: attack_FlyingAtk05_Inplace
-        Root: attack_FlyingAtk05
-        Vertical: 0
-      - Clip: attack_FlyingAtk06_Inplace
-        Root: attack_FlyingAtk06
-        Vertical: 0
-    - Name: Air Spell Short
-      Context: 2
-      Steps:
-      - Clip: attack_FlyingAtk01_short_Inplace
-        Root: attack_FlyingAtk01_short
-        Vertical: 0
       - Clip: attack_FlyingAtk03_short_Inplace
         Root: attack_FlyingAtk03_short
+        Vertical: 0
+      - Clip: attack_FlyingAtk01_cast_Inplace
+        Root: attack_FlyingAtk01_cast
         Vertical: 0
     - Name: Launcher Spell
       Context: 3
@@ -602,9 +575,21 @@ MonoBehaviour:
       - Clip: attack_GroundAtk03_short_Inplace
         Root: attack_GroundAtk03_short
         Vertical: 0
-    - Name: Buff
+    - Name: Bind
       Context: 4
       Steps:
-      - Clip: buff_Ground_Inplace
-        Root: buff_Ground
+      - Clip: attack_FlyingAtk04_cast_Inplace
+        Root: attack_FlyingAtk04_cast
+        Vertical: 0
+    - Name: Piercing Lance
+      Context: 4
+      Steps:
+      - Clip: attack_FlyingAtk06_cast_Inplace
+        Root: attack_FlyingAtk06_cast
+        Vertical: 0
+    - Name: Repel
+      Context: 4
+      Steps:
+      - Clip: buff_Flying_cast_Inplace
+        Root: buff_Flying_cast
         Vertical: 0

@@ -1260,6 +1260,7 @@ MonoBehaviour:
   StartTurnAngle: 45
   ReverseAngle: 135
   SideTurnAngle: 100
+  MoveTurnClips: 1
   GroundSharpness: 18
   StopSharpness: 7
   LoopSpeedSharpness: 5
@@ -1287,6 +1288,12 @@ MonoBehaviour:
   DashSpeed: 20
   DashDuration: 0.25
   DodgeCancelTime: 0.65
+  DodgeChainTime: 0.6
+  DodgeBufferTime: 0.3
+  DodgeIFrameStart: 0.05
+  DodgeIFrameEnd: 0.35
+  FlyDashSpeed: 14
+  FlyDashDuration: 0.22
   characterCombo: {fileID: 0}
   AttackLungeSpeed: 7
   AttackLungeDuration: 0.12
@@ -1305,9 +1312,15 @@ MonoBehaviour:
   MaxRootVerticalSpeed: 25
   DashAttackWindow: 0.35
   DirectionalAttackThreshold: 0.6
+  SkillNeutralThreshold: 0.3
+  SkillDirectionDot: 0.6
+  QuickTurnWindow: 1
+  QuickTurnRate: 1080
+  QuickTurnSharpness: 30
   AlwaysDrawWeapon: 1
   CombatHoldTime: 6
   CanFly: 0
+  AlwaysFly: 0
   FlyHeight: 0
   FlySpeed: 7
   FlyAcceleration: 5
@@ -1316,6 +1329,7 @@ MonoBehaviour:
   FlyLandSpeed: 5
   LockOnRadius: 15
   LockOnBreakRadius: 22
+  TargetSlideSpeed: 5
   AutoAddIK: 1
   IgnoredColliders: []
   MeshRoot: {fileID: 9004282366100854045}
@@ -1682,7 +1696,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraFocus
   InvertX: 0
   InvertY: 0
-  DefaultVerticalAngle: 20
+  DefaultVerticalAngle: 15
   MinVerticalAngle: -90
   MaxVerticalAngle: 90
   RotationSpeed: 1
@@ -1737,7 +1751,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
   Camera: {fileID: 1821642229103089384}
-  FollowPointFraming: {x: 0, y: 0}
+  FollowPointFraming: {x: 0, y: 0.5}
   FollowingSharpnessPlanar: 8
   FollowingSharpnessVertical: 15
   AirFollowingSharpnessVertical: 30

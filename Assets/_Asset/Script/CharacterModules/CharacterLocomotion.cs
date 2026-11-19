@@ -60,11 +60,9 @@ internal sealed class CharacterLocomotion
 
     #region FSM
 
-    // gọi mỗi frame khi không attack: cooldown dash, phát hiện rơi, rồi tick state hiện tại
+    // gọi mỗi frame khi không attack: phát hiện rơi, rồi tick state hiện tại (cooldown dash do CharController tick mọi frame)
     public void Tick(float deltaTime)
     {
-        _dash.TickCooldown(deltaTime);
-
         if (!_character.IsGrounded && _character.CurrentCharacterState != MoveState.Air && _character.CurrentCharacterState != MoveState.AirDash)
         {
             _jump.AddAirborneTime(deltaTime);
@@ -95,8 +93,8 @@ internal sealed class CharacterLocomotion
             BeginMove();
             return;
         }
-        // Inplace không có clip quay tại chỗ: UpdateRotation tự xoay mượt về hướng nhìn
-        if (!c.IsStrafing || c.InPlaceLocomotion) return;
+        // Inplace không có clip quay tại chỗ, quay nhanh (lock-on / vừa đánh) bỏ clip: UpdateRotation tự xoay về hướng nhìn
+        if (!c.IsStrafing || c.InPlaceLocomotion || c.QuickTurn) return;
 
         Vector3 look = c.FacingTarget();
         float angle = Vector3.SignedAngle(c.Motor.CharacterForward, look, c.Motor.CharacterUp);
@@ -128,6 +126,13 @@ internal sealed class CharacterLocomotion
 
         float angle = SignedAngleToInput();
         float abs = Mathf.Abs(angle);
+
+        // quay nhanh: vào thẳng vòng lặp chạy, UpdateRotation bẻ hướng
+        if (c.QuickTurn && abs >= c.StartTurnAngle)
+        {
+            c.SetState(MoveState.Move, LocoState.Loop, 0.15f);
+            return;
+        }
 
         if (abs >= c.ReverseAngle)
         {
@@ -173,7 +178,7 @@ internal sealed class CharacterLocomotion
         int gait = DesiredGait();
         _lastGait = gait;
         c.characterAnim.SetGait(gait);
-        if (c.InPlaceLocomotion || !c.MoveTurnClips) return;
+        if (c.InPlaceLocomotion || !c.MoveTurnClips || c.QuickTurn) return;
 
         float angle = SignedAngleToInput();
         float abs = Mathf.Abs(angle);
@@ -340,18 +345,17 @@ internal sealed class CharacterLocomotion
             case MoveState.Crouch:
                 if (c.IsStrafing)
                 {
-                    currentRotation = SmoothLook(forward, c.FacingTarget(), c.StrafeTurnSharpness, deltaTime, up);
+                    currentRotation = StrafeLook(currentRotation, forward, deltaTime, up);
                 }
                 else if (c.HasMoveInput)
                 {
-                    float error = Vector3.SignedAngle(forward, c.MoveInputDirection, up);
-                    float eased = error * (1f - Mathf.Exp(-c.MoveTurnSharpness * deltaTime));
-                    float step = Mathf.Clamp(eased, -c.MoveTurnRate * deltaTime, c.MoveTurnRate * deltaTime);
-                    currentRotation = Quaternion.AngleAxis(step, up) * currentRotation;
+                    bool quick = c.QuickTurn;
+                    currentRotation = TurnToward(currentRotation, forward, c.MoveInputDirection,
+                        quick ? c.QuickTurnRate : c.MoveTurnRate, quick ? c.QuickTurnSharpness : c.MoveTurnSharpness, deltaTime, up);
                 }
                 break;
             case MoveState.Idle:
-                if (c.IsStrafing) currentRotation = SmoothLook(forward, c.FacingTarget(), c.StrafeTurnSharpness, deltaTime, up);
+                if (c.IsStrafing) currentRotation = StrafeLook(currentRotation, forward, deltaTime, up);
                 break;
             case MoveState.Turn:
                 if (!_turnSnapDone)
@@ -376,6 +380,22 @@ internal sealed class CharacterLocomotion
                 if (c.HasMoveInput) currentRotation = SmoothLook(forward, c.MoveInputDirection.normalized, c.AirTurnSharpness, deltaTime, up);
                 break;
         }
+    }
+
+    private Quaternion StrafeLook(Quaternion currentRotation, Vector3 forward, float deltaTime, Vector3 up)
+    {
+        CharController c = _character;
+        if (c.QuickTurn) return TurnToward(currentRotation, forward, c.FacingTarget(), c.QuickTurnRate, c.QuickTurnSharpness, deltaTime, up);
+        return SmoothLook(forward, c.FacingTarget(), c.StrafeTurnSharpness, deltaTime, up);
+    }
+
+    // chậm dần khi gần tới hướng cần nhìn, nhưng không quá rate độ/giây
+    private static Quaternion TurnToward(Quaternion currentRotation, Vector3 forward, Vector3 target, float rate, float sharpness, float deltaTime, Vector3 up)
+    {
+        float error = Vector3.SignedAngle(forward, target, up);
+        float eased = error * (1f - Mathf.Exp(-sharpness * deltaTime));
+        float step = Mathf.Clamp(eased, -rate * deltaTime, rate * deltaTime);
+        return Quaternion.AngleAxis(step, up) * currentRotation;
     }
 
     private static Quaternion SmoothLook(Vector3 from, Vector3 to, float sharpness, float deltaTime, Vector3 up)

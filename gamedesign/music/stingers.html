@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Combat Stingers</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/abcjs@6.6.4/abcjs-audio.css">
+<script src="https://cdn.jsdelivr.net/npm/abcjs@6.6.4/dist/abcjs-basic-min.js"></script>
+<style>
+  :root { --bg: #f7f5f0; --paper: #ffffff; --text: #1d1c1a; --muted: #6b675f; --line: #ddd8cc; --accent: #8a3b2a; --ok: #2f6b3a; --warn: #a3412c; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #1b1a18; --paper: #f7f5f0; --text: #ece8df; --muted: #a29d92; --line: #3a3833; --accent: #e08b6f; --ok: #7fc28a; --warn: #f08a72; }
+  }
+  :root[data-theme="dark"] { --bg: #1b1a18; --paper: #f7f5f0; --text: #ece8df; --muted: #a29d92; --line: #3a3833; --accent: #e08b6f; --ok: #7fc28a; --warn: #f08a72; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.55 Georgia, "Times New Roman", serif; }
+  main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { margin: 0; font-size: 26px; }
+  h2 { font-size: 16px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 28px 0 10px; font-family: system-ui, sans-serif; }
+  .meta { color: var(--muted); font-family: system-ui, sans-serif; font-size: 14px; }
+  .paper { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 12px; color: #000; }
+  #warnings { font-family: ui-monospace, Consolas, monospace; font-size: 13px; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--line); margin-top: 10px; }
+  #warnings.ok { color: var(--ok); } #warnings.bad { color: var(--warn); }
+  #audio { margin-top: 10px; }
+  table { width: 100%; border-collapse: collapse; font-family: system-ui, sans-serif; font-size: 14px; }
+  th, td { text-align: left; border-bottom: 1px solid var(--line); padding: 6px 8px; vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; }
+  .scroll { overflow-x: auto; }
+  details { font-family: ui-monospace, Consolas, monospace; font-size: 13px; }
+  pre { white-space: pre-wrap; }
+  @media print { #audio, #warnings, details { display: none; } body { background: #fff; color: #000; } h2 { break-after: avoid; } }
+</style>
+
+<style>body { font-family: "Times New Roman", "Noto Serif", serif; } .audio { margin: 8px 0 18px; } section + section { margin-top: 18px; }</style>
+</head>
+<body>
+<main>
+  <h1>Combat Stingers</h1>
+  <div class="meta">Stinger theo D-007 · Dựa trên: music-direction.md, D-007 · 150 BPM · D thứ + In · vòng 16 ô = 25.6s · Draft v1</div>
+
+  <h2>Concept</h2>
+  <p>Năm cue ngắn đè lên khung combat. Stinger SSS và Awake rơi vào đầu ô nhịp; deflect phát tức thì; Iai cắt nhạc rồi cho vào lại trên phách mạnh. Tất cả viết trong D để hợp vòng hòa âm.</p>
+
+  <h2>Score</h2>
+  <p class="meta">Ký âm ở cao độ thực (concert pitch). Khi chép part: guitar và bass viết cao 1 quãng 8. Ký hiệu trống: F kick, c snare, g× hi-hat, a× crash; taiko: C ō-daiko, e shime-daiko. Nút play phát bằng synth GM, chỉ để nghe nốt và độ khớp, không phải âm sắc thật.</p>
+  <div id="tunes"></div>
+  <div id="warnings"></div>
+
+  <h2>Harmony plan</h2>
+  <div class="scroll"><table>
+<tr><th>Section</th><th>Bars</th><th>Mode / key</th><th>Progression</th><th>Idea</th></tr>
+<tr><td>SSS</td><td>1 ô</td><td>theo ô</td><td>D-A-d-a-d' (power chord 5-8)</td><td>dịch theo gốc hợp âm: Dm=D, Bb=Bb, Eb=Eb, Gm=G, A=A; cần 5 bản thu</td></tr>
+<tr><td>Deflect</td><td>tức thì</td><td>D</td><td>rin D5</td><td>D là nốt hợp âm của Dm, Bb, Gm; maj7 trên Eb, sus4 trên A: đều nghe được</td></tr>
+<tr><td>Iai</td><td>2 ô</td><td>D</td><td>D5 power chord</td><td>vào lại bằng tonic</td></tr>
+<tr><td>Awake</td><td>1 ô</td><td>D</td><td>D pedal / D-A-d</td><td>trung tính, ô kế là L3 biến thể</td></tr>
+</table></div>
+
+  <h2>Orchestration</h2>
+  <div class="scroll"><table>
+<tr><th>Section</th><th>Bars</th><th>Melody</th><th>Counter / inner</th><th>Harmony / pad</th><th>Bass</th><th>Percussion</th><th>Dynamics</th><th>Colour</th></tr>
+<tr><td>SSS</td><td>1</td><td>lead guitar</td><td>-</td><td>-</td><td>-</td><td>crash + ō-daiko flam</td><td>ff</td><td>tiếng trượt pick trước phách 1</td></tr>
+<tr><td>Deflect</td><td>-</td><td>chuông rin D5</td><td>thép cạo ngắn (sound design)</td><td>-</td><td>-</td><td>-</td><td>sfz</td><td>bus nhạc -12 dB 0.3s: dip 30 ms, giữ, hồi 80 ms</td></tr>
+<tr><td>Iai</td><td>2</td><td>-</td><td>-</td><td>mọi stem câm 0.5s</td><td>D5 power chord vào lại</td><td>crash + ō-daiko</td><td>ff</td><td>stem vẫn chạy ngầm để giữ đồng bộ</td></tr>
+<tr><td>Devil</td><td>1</td><td>guitar 8 dây whammy dive</td><td>-</td><td>-</td><td>-</td><td>reverse cymbal</td><td>ff</td><td>méo nặng</td></tr>
+<tr><td>Angel</td><td>1</td><td>hợp xướng nữ D-A-d</td><td>celesta</td><td>-</td><td>-</td><td>-</td><td>p -> f</td><td>reverb sáng</td></tr>
+</table></div>
+
+  <h2>Adaptive use in game</h2>
+  <div class="scroll"><table>
+<tr><th>Layer / section</th><th>Content</th><th>Game state</th><th>Enter / exit rule</th></tr>
+<tr><td>Dante SSS</td><td>tune 1</td><td>rank đạt SSS</td><td>đầu ô kế, chọn bản theo hợp âm của ô đó</td></tr>
+<tr><td>Vergil deflect</td><td>tune 2</td><td>deflect thành công</td><td>ngay lập tức, không quantize</td></tr>
+<tr><td>Vergil Iai cấp 3</td><td>tune 3</td><td>Iai ở Tĩnh tâm cấp 3</td><td>câm ngay, vào lại ở phách 1 hoặc 3 kế sau 0.5s</td></tr>
+<tr><td>Trish Awake Devil / Angel</td><td>tune 4 / 5</td><td>kích hoạt Awake</td><td>đầu ô kế; ô sau đó L3 biến thể vào</td></tr>
+</table></div>
+
+  <h2>Production notes</h2>
+  <ul><li>Deflect và Iai phụ thuộc hệ phát có duck/mute theo thời gian thực (dev: PlayScheduled + AudioMixer snapshot, hoặc FMOD).</li>
+<li>Deflect nối tiếp nhanh (parry chuỗi): mỗi lần đổi tiếng rin luân phiên D5 / A5 để không lặp nhàm.</li></ul>
+
+  <details><summary>ABC source</summary><pre id="abc-print"></pre></details>
+</main>
+
+<script type="text/plain" id="abc-source">
+X:1
+T:Stinger: Dante lên SSS (1 ô, bản trên ô Dm)
+C:music-lead v1
+M:4/4
+L:1/8
+Q:1/4=150
+%%percmap F bass-drum-1
+%%percmap c acoustic-snare
+%%percmap ^g closed-hi-hat x
+%%percmap a crash-cymbal-1 x
+%%percmap C low-floor-tom
+%%percmap e high-tom
+V:Ld clef=treble name="Lead guitar"
+%%MIDI program 29
+V:Tk clef=perc name="Taiko"
+%%MIDI channel 10
+V:Dr clef=perc name="Trống"
+%%MIDI channel 10
+K:Dm
+[V:Ld] "^SSS: dịch theo gốc hợp âm của ô""Dm"!ff!D A d a "^pinch harm. + whammy"d'4 |]
+[V:Tk] !ff!{C}C2 z2 z4 |]
+[V:Dr] !ff![Fa]2 z2 z4 |]
+
+X:2
+T:Stinger: Vergil deflect (tức thì, không quantize)
+C:music-lead v1
+M:4/4
+L:1/8
+Q:1/4=150
+%%percmap F bass-drum-1
+%%percmap c acoustic-snare
+%%percmap ^g closed-hi-hat x
+%%percmap a crash-cymbal-1 x
+%%percmap C low-floor-tom
+%%percmap e high-tom
+V:Rn clef=treble name="Chuông rin D5 + thép cạo"
+%%MIDI program 14
+K:Dm
+[V:Rn] "^bus nhạc -12dB trong 0.3s"!accent!d8 |]
+
+X:3
+T:Stinger: Vergil Iai cấp 3 (ví dụ vào lại ở phách 3)
+C:music-lead v1
+M:4/4
+L:1/8
+Q:1/4=150
+%%percmap F bass-drum-1
+%%percmap c acoustic-snare
+%%percmap ^g closed-hi-hat x
+%%percmap a crash-cymbal-1 x
+%%percmap C low-floor-tom
+%%percmap e high-tom
+V:Gt clef=bass name="Guitar + bass (mọi stem)"
+%%MIDI program 30
+V:Dr clef=perc name="Trống + ō-daiko"
+%%MIDI channel 10
+K:Dm
+[V:Gt] "^mọi stem câm 0.5s ≈ 1.25 phách"z4 "^chém (SFX)"z4 | z4 "^vào lại: phách mạnh kế"!ff![D,,A,,D,]4 |]
+[V:Dr] z8 | z4 !ff![Fa]4 |]
+
+X:4
+T:Stinger: Trish Awake Devil (ô trước khi L3 Devil vào)
+C:music-lead v1
+M:4/4
+L:1/8
+Q:1/4=150
+%%percmap F bass-drum-1
+%%percmap c acoustic-snare
+%%percmap ^g closed-hi-hat x
+%%percmap a crash-cymbal-1 x
+%%percmap C low-floor-tom
+%%percmap e high-tom
+V:Gt clef=bass name="Guitar 8 dây"
+%%MIDI program 30
+K:Dm
+[V:Gt] "^whammy dive từ D xuống + reverse cymbal"!ff!D,,8 |]
+
+X:5
+T:Stinger: Trish Awake Angel (ô trước khi L3 Angel vào)
+C:music-lead v1
+M:4/4
+L:1/8
+Q:1/4=150
+%%percmap F bass-drum-1
+%%percmap c acoustic-snare
+%%percmap ^g closed-hi-hat x
+%%percmap a crash-cymbal-1 x
+%%percmap C low-floor-tom
+%%percmap e high-tom
+V:Ch clef=treble name="Hợp xướng nữ"
+%%MIDI program 52
+V:Ce clef=treble name="Celesta"
+%%MIDI program 8
+K:Dm
+[V:Ch] !p!"^cresc. tới f"[DAd]8 |]
+[V:Ce] d a d' a d'4 |]
+</script>
+
+<script>
+  const src = document.getElementById('abc-source').textContent.trim();
+  document.getElementById('abc-print').textContent = src;
+  const warnBox = document.getElementById('warnings');
+  const host = document.getElementById('tunes');
+  if (!window.ABCJS) {
+    warnBox.className = 'bad';
+    warnBox.textContent = 'Không tải được abcjs (cần mạng để hiện khuông nhạc).';
+  } else {
+    const all = [];
+    src.split(/\n(?=X:)/).forEach((abc, i) => {
+      const sec = document.createElement('section');
+      sec.innerHTML = '<div class="paper"><div id="paper' + i + '"></div></div><div class="audio" id="audio' + i + '"></div>';
+      host.appendChild(sec);
+      const tune = ABCJS.renderAbc('paper' + i, abc, { responsive: 'resize', add_classes: true, staffwidth: 900 })[0];
+      (tune.warnings || []).forEach(w => all.push('Tune ' + (i + 1) + ': ' + w));
+      if (ABCJS.synth.supportsAudio()) {
+        const sc = new ABCJS.synth.SynthController();
+        sc.load('#audio' + i, null, { displayLoop: true, displayRestart: true, displayPlay: true, displayProgress: true, displayWarp: true });
+        sc.setTune(tune, false, { chordsOff: true }).catch(e => { warnBox.innerHTML += '<br>Synth: ' + e; });
+      }
+    });
+    warnBox.className = all.length ? 'bad' : 'ok';
+    warnBox.innerHTML = all.length ? '<b>Cảnh báo (' + all.length + '):</b><br>' + all.join('<br>') : 'Không có cảnh báo';
+  }
+</script>
+</body>
+</html>

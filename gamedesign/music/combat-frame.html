@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Combat Frame L0-L2</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/abcjs@6.6.4/abcjs-audio.css">
+<script src="https://cdn.jsdelivr.net/npm/abcjs@6.6.4/dist/abcjs-basic-min.js"></script>
+<style>
+  :root { --bg: #f7f5f0; --paper: #ffffff; --text: #1d1c1a; --muted: #6b675f; --line: #ddd8cc; --accent: #8a3b2a; --ok: #2f6b3a; --warn: #a3412c; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #1b1a18; --paper: #f7f5f0; --text: #ece8df; --muted: #a29d92; --line: #3a3833; --accent: #e08b6f; --ok: #7fc28a; --warn: #f08a72; }
+  }
+  :root[data-theme="dark"] { --bg: #1b1a18; --paper: #f7f5f0; --text: #ece8df; --muted: #a29d92; --line: #3a3833; --accent: #e08b6f; --ok: #7fc28a; --warn: #f08a72; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.55 Georgia, "Times New Roman", serif; }
+  main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { margin: 0; font-size: 26px; }
+  h2 { font-size: 16px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 28px 0 10px; font-family: system-ui, sans-serif; }
+  .meta { color: var(--muted); font-family: system-ui, sans-serif; font-size: 14px; }
+  .paper { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 12px; color: #000; }
+  #warnings { font-family: ui-monospace, Consolas, monospace; font-size: 13px; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--line); margin-top: 10px; }
+  #warnings.ok { color: var(--ok); } #warnings.bad { color: var(--warn); }
+  #audio { margin-top: 10px; }
+  table { width: 100%; border-collapse: collapse; font-family: system-ui, sans-serif; font-size: 14px; }
+  th, td { text-align: left; border-bottom: 1px solid var(--line); padding: 6px 8px; vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; }
+  .scroll { overflow-x: auto; }
+  details { font-family: ui-monospace, Consolas, monospace; font-size: 13px; }
+  pre { white-space: pre-wrap; }
+  @media print { #audio, #warnings, details { display: none; } body { background: #fff; color: #000; } h2 { break-after: avoid; } }
+</style>
+
+<style>body { font-family: "Times New Roman", "Noto Serif", serif; } .audio { margin: 8px 0 18px; } section + section { margin-top: 18px; }</style>
+</head>
+<body>
+<main>
+  <h1>Combat Frame L0-L2</h1>
+  <div class="meta">Khung combat chung cho Dante, Vergil, Trish · Dựa trên: music-direction.md, D-007 · 150 BPM · D thứ + In · vòng 16 ô = 25.6s · Draft v1</div>
+
+  <h2>Concept</h2>
+  <p>Bài combat chung, chia 3 stem chạy đồng bộ. <b>L0</b> chỉ có trống metal và taiko: đủ nghe là đang đánh nhau nhưng còn trống chỗ. <b>L1</b> thêm riff drop-D chug trên thang In (nốt Eb nghiến ở phách 4 mỗi ô Dm) với bass khóa vào kick. <b>L2</b> thêm pad dây + hợp xướng giữ hòa âm, và koto gảy ở phách lệch (phách 2 và 4 nửa sau) để không đè guitar.</p>
+  <p>Vòng 16 ô có 2 câu A / A'. Câu A' đổi 4 ô cuối thành iv - bVI - bII - V để cú bII -> V ở ô 15-16 kéo về ô 1 rất mạnh. Ô 8 và 16 có fill snare báo hiệu vòng lặp. Ô 1 và 9 có crash. Outro (tune 2) là bII -> i ngân dài.</p>
+
+  <h2>Score</h2>
+  <p class="meta">Ký âm ở cao độ thực (concert pitch). Khi chép part: guitar và bass viết cao 1 quãng 8. Ký hiệu trống: F kick, c snare, g× hi-hat, a× crash; taiko: C ō-daiko, e shime-daiko. Nút play phát bằng synth GM, chỉ để nghe nốt và độ khớp, không phải âm sắc thật.</p>
+  <div id="tunes"></div>
+  <div id="warnings"></div>
+
+  <h2>Harmony plan</h2>
+  <div class="scroll"><table>
+<tr><th>Section</th><th>Bars</th><th>Mode / key</th><th>Progression</th><th>Idea</th></tr>
+<tr><td>A</td><td>1-8</td><td>D thứ + In (Eb)</td><td>Dm Dm Bb Eb | Dm Gm Bb A (i i bVI bII | i iv bVI V)</td><td>bII Eb là màu Phrygian/In; A trưởng (C#) kéo về D</td></tr>
+<tr><td>A'</td><td>9-16</td><td>D thứ + In</td><td>Dm Dm Bb Eb | Gm Bb Eb A (i i bVI bII | iv bVI bII V)</td><td>bII -> V ở ô 15-16 (Neapolitan Phrygian), lặp về ô 1 rất chắc</td></tr>
+<tr><td>Outro</td><td>2 ô</td><td>D</td><td>Eb -> Dm (bII -> i)</td><td>kết Phrygian, ngân dài</td></tr>
+</table></div>
+
+  <h2>Orchestration</h2>
+  <div class="scroll"><table>
+<tr><th>Section</th><th>Bars</th><th>Melody</th><th>Counter / inner</th><th>Harmony / pad</th><th>Bass</th><th>Percussion</th><th>Dynamics</th><th>Colour</th></tr>
+<tr><td>A</td><td>1-8</td><td>- (L3 nếu bật)</td><td>koto ostinato (L2)</td><td>dây cello+viola + hợp xướng nam "oh" + synth pad tối (L2)</td><td>bass pick + riff guitar drop-D double-track; shamisen gảy bachi nhân đôi riff 2 quãng 8 trên ở phách 1 và nốt Eb (L1)</td><td>trống metal + ō-daiko phách 1, 3; shime nói chuyện ở phách 2, 4 (L0)</td><td>f (L0-L1), mp (L2)</td><td>palm mute ở chug, mở tiếng ở nốt cuối ô</td></tr>
+<tr><td>A'</td><td>9-16</td><td>- (L3 nếu bật)</td><td>koto</td><td>pad lên quãng cao hơn (F-A-d ...), thêm hợp xướng nữ "ah"</td><td>như A</td><td>ô 12, 15 (Eb): taiko dồn; ô 16 fill snare 16th</td><td>f</td><td>ô 15-16 có thể mở tiếng hoàn toàn</td></tr>
+<tr><td>Outro</td><td>2 ô</td><td>-</td><td>koto Eb-G-Bb -> D</td><td>pad Eb -> Dm, fermata</td><td>power chord Eb5 -> D5 ngân</td><td>taiko dồn rồi 1 nhát + crash</td><td>ff -> ngân</td><td>đuôi reverb đền</td></tr>
+</table></div>
+
+  <h2>Adaptive use in game</h2>
+  <div class="scroll"><table>
+<tr><th>Layer / section</th><th>Content</th><th>Game state</th><th>Enter / exit rule</th></tr>
+<tr><td>L0 trống + taiko</td><td>Dr, Tk</td><td>vào trận (mọi nhân vật)</td><td>đầu ô nhịp kế, không fade, vào bằng crash</td></tr>
+<tr><td>L1 riff + bass + shamisen</td><td>Gt, Bs</td><td>Dante rank B · Vergil cấp 1 · Trish Nộ >= 33%</td><td>vào đầu ô kế, fade 1 phách; ra khi dưới ngưỡng 4s, ở đầu ô kế</td></tr>
+<tr><td>L2 pad + koto</td><td>Pd, Ko</td><td>Dante A-S · Vergil cấp 2 · Trish >= 66%</td><td>như L1</td></tr>
+<tr><td>L3</td><td>xem trang l3-*.html</td><td>Dante SS-SSS · Vergil cấp 3 · Trish Awake</td><td>như L1; đổi nhân vật = crossfade ở đầu ô kế</td></tr>
+<tr><td>Outro</td><td>tune 2</td><td>hết địch</td><td>chờ đầu ô kế, phát outro, mọi stem fade 1 phách</td></tr>
+</table></div>
+
+  <h2>Production notes</h2>
+  <ul><li>Stem: L0, L1, L2 mỗi stem đúng 16 ô = 25.6s, 48 kHz. Render 2 vòng, lấy vòng 2 để đuôi reverb nối liền.</li>
+<li>L0 phải nghe tự đủ khi đứng một mình (vài nhịp trống như DMC5 ở rank thấp).</li>
+<li>Mix: chừa 2-5 kHz cho tiếng kiếm; snare không nhọn; sidechain -3 dB từ đòn nặng.</li>
+<li>Shamisen: gõ bachi vào da (sawari, tiếng rè) ở nốt Eb; ABC không ghi được, phối khí làm theo ghi chú.</li>
+<li>Tùy chọn biến tấu khi thu: ô 12 cho bass giữ pedal D dưới hợp âm Eb (Eb/D) để căng hơn; hợp âm L3 không đổi.</li></ul>
+
+  <details><summary>ABC source</summary><pre id="abc-print"></pre></details>
+</main>
+
+<script type="text/plain" id="abc-source">
+X:1
+T:Combat: khung L0-L2 (vòng 16 ô = 25.6s)
+C:music-lead v1
+M:4/4
+L:1/8
+Q:1/4=150
+%%percmap F bass-drum-1
+%%percmap c acoustic-snare
+%%percmap ^g closed-hi-hat x
+%%percmap a crash-cymbal-1 x
+%%percmap C low-floor-tom
+%%percmap e high-tom
+%%score Ko Pd Gt Bs Tk Dr
+V:Ko clef=treble name="L2 Koto" snm="Koto"
+%%MIDI program 107
+V:Pd clef=treble name="L2 Pad: dây + hợp xướng" snm="Pad"
+%%MIDI program 52
+V:Gt clef=bass name="L1 Guitar riff drop-D (+ shamisen)" snm="Gtr"
+%%MIDI program 30
+V:Bs clef=bass name="L1 Bass" snm="Bass"
+%%MIDI program 34
+V:Tk clef=perc name="L0 Taiko" snm="Taiko"
+%%MIDI channel 10
+V:Dr clef=perc name="L0 Trống metal" snm="Dr"
+%%MIDI channel 10
+K:Dm
+[V:Ko] |: "^A (điểm lặp)""Dm"!mp!z2 d a z2 f a | "Dm"z2 d _e z2 d A | "Bb"z2 B f z2 d f | "Eb"z2 _e g z2 B g |
+[V:Pd] |: !mp![DFA]8 | [DFA]8 | [DFB]8 | [_EGB]8 |
+[V:Gt] |: !f!D,,D,,D,,_E,, D,,D,,A,,G,, | D,,D,,D,,_E,, D,,D,,F,,E,, | B,,B,,B,,A,, B,,B,,F,,D,, | _E,,_E,,_E,,D,, _E,,_E,,G,,_E,, |
+[V:Bs] |: !f!D,,,2 D,,,D,,, D,,,2 A,,,C,, | D,,,2 D,,,D,,, F,,,2 E,,,A,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, |
+[V:Tk] |: !f!C2 e e C2 e e | C2 e e C2 e e | C2 e e C2 e e | C C z C C2 C2 |
+[V:Dr] |: !f![Fa] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] [F^g] | [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] c |
+[V:Ko] "Dm"z2 d a z2 f a | "Gm"z2 G d z2 B d | "Bb"z2 B f z2 d f | "A"z2 ^c e z2 a e |
+[V:Pd] [DFA]8 | [DGB]8 | [DFB]8 | [^CEA]8 |
+[V:Gt] D,,D,,D,,_E,, D,,D,,A,,G,, | G,,G,,G,,F,, G,,G,,D,,F,, | B,,B,,B,,A,, B,,B,,F,,D,, | A,,A,,A,,B,, A,,A,,^C,E, |
+[V:Bs] D,,,2 D,,,D,,, D,,,2 A,,,C,, | G,,,2 G,,,G,,, G,,,2 D,,,F,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, |
+[V:Tk] C2 e e C2 e e | C2 e e C2 e e | C2 e e C2 e e | C2 C2 C C C2 |
+[V:Dr] [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] [F^g] | [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | c c c c c/c/c/c/ c c |
+[V:Ko] "^A'""Dm"z2 d a z2 f a | "Dm"z2 d _e z2 d A | "Bb"z2 B f z2 d f | "Eb"z2 _e g z2 B g |
+[V:Pd] [DFA]8 | [FAd]8 | [FBd]8 | [GB_e]8 |
+[V:Gt] D,,D,,D,,_E,, D,,D,,A,,G,, | D,,D,,D,,_E,, D,,D,,F,,E,, | B,,B,,B,,A,, B,,B,,F,,D,, | _E,,_E,,_E,,D,, _E,,_E,,G,,_E,, |
+[V:Bs] D,,,2 D,,,D,,, D,,,2 A,,,C,, | D,,,2 D,,,D,,, F,,,2 E,,,A,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, |
+[V:Tk] C2 e e C2 e e | C2 e e C2 e e | C2 e e C2 e e | C C z C C2 C2 |
+[V:Dr] [Fa] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] [F^g] | [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] c |
+[V:Ko] "Gm"z2 G d z2 B d | "Bb"z2 B f z2 d f | "Eb"z2 _e g z2 B g | "A"z2 ^c e z2 a e :|
+[V:Pd] [GBd]8 | [FBd]8 | [GB_e]8 | [EA^c]8 :|
+[V:Gt] G,,G,,G,,F,, G,,G,,D,,F,, | B,,B,,B,,A,, B,,B,,F,,D,, | _E,,_E,,_E,,D,, _E,,_E,,G,,_E,, | A,,A,,A,,B,, A,,A,,^C,E, :|
+[V:Bs] G,,,2 G,,,G,,, G,,,2 D,,,F,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, :|
+[V:Tk] C2 e e C2 e e | C2 e e C2 e e | C C z C C2 C2 | C2 C2 C C C2 :|
+[V:Dr] [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] [F^g] | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] c | c c c c c/c/c/c/ c c :|
+
+X:2
+T:Combat: outro (2 ô, sau ô cuối đang chạy)
+C:music-lead v1
+M:4/4
+L:1/8
+Q:1/4=150
+%%percmap F bass-drum-1
+%%percmap c acoustic-snare
+%%percmap ^g closed-hi-hat x
+%%percmap a crash-cymbal-1 x
+%%percmap C low-floor-tom
+%%percmap e high-tom
+%%score Ko Pd Gt Bs Tk Dr
+V:Ko clef=treble name="L2 Koto" snm="Koto"
+%%MIDI program 107
+V:Pd clef=treble name="L2 Pad: dây + hợp xướng" snm="Pad"
+%%MIDI program 52
+V:Gt clef=bass name="L1 Guitar riff drop-D (+ shamisen)" snm="Gtr"
+%%MIDI program 30
+V:Bs clef=bass name="L1 Bass" snm="Bass"
+%%MIDI program 34
+V:Tk clef=perc name="L0 Taiko" snm="Taiko"
+%%MIDI channel 10
+V:Dr clef=perc name="L0 Trống metal" snm="Dr"
+%%MIDI channel 10
+K:Dm
+[V:Ko] "^Outro""Eb"z2 _e g b4 | "Dm"!fermata!d8 |]
+[V:Pd] !f![_EGB]8 | !fermata![DFA]8 |]
+[V:Gt] !ff![_E,,B,,_E,]8 | !fermata![D,,A,,D,]8 |]
+[V:Bs] !ff!_E,,,8 | !fermata!D,,,8 |]
+[V:Tk] !ff!C C C C C2 C2 | !fermata!C8 |]
+[V:Dr] !ff!c c c c c/c/c/c/ c c | !fermata![Fa]8 |]
+</script>
+
+<script>
+  const src = document.getElementById('abc-source').textContent.trim();
+  document.getElementById('abc-print').textContent = src;
+  const warnBox = document.getElementById('warnings');
+  const host = document.getElementById('tunes');
+  if (!window.ABCJS) {
+    warnBox.className = 'bad';
+    warnBox.textContent = 'Không tải được abcjs (cần mạng để hiện khuông nhạc).';
+  } else {
+    const all = [];
+    src.split(/\n(?=X:)/).forEach((abc, i) => {
+      const sec = document.createElement('section');
+      sec.innerHTML = '<div class="paper"><div id="paper' + i + '"></div></div><div class="audio" id="audio' + i + '"></div>';
+      host.appendChild(sec);
+      const tune = ABCJS.renderAbc('paper' + i, abc, { responsive: 'resize', add_classes: true, staffwidth: 900 })[0];
+      (tune.warnings || []).forEach(w => all.push('Tune ' + (i + 1) + ': ' + w));
+      if (ABCJS.synth.supportsAudio()) {
+        const sc = new ABCJS.synth.SynthController();
+        sc.load('#audio' + i, null, { displayLoop: true, displayRestart: true, displayPlay: true, displayProgress: true, displayWarp: true });
+        sc.setTune(tune, false, { chordsOff: true }).catch(e => { warnBox.innerHTML += '<br>Synth: ' + e; });
+      }
+    });
+    warnBox.className = all.length ? 'bad' : 'ok';
+    warnBox.innerHTML = all.length ? '<b>Cảnh báo (' + all.length + '):</b><br>' + all.join('<br>') : 'Không có cảnh báo';
+  }
+</script>
+</body>
+</html>

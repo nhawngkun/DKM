@@ -46,6 +46,8 @@ public class ComboCameraFeedback : MonoBehaviour
     [Range(0.05f, 1f)] public float CinematicTimeScale = 0.3f;
     [Tooltip("Thời lượng slow motion đi kèm (giây thực)")]
     public float CinematicSlowDuration = 0.4f;
+    [Tooltip("Người đánh cách điểm trúng xa hơn bấy nhiêu (m, mặt phẳng) thì bỏ cinematic: góc máy cận không khung được cả hai (đòn phép tầm xa)")]
+    public float CinematicMaxReach = 4f;
 
     [Header("Combo Chain Escalation (Bayonetta / DMC style)")]
     [Tooltip("Khoảng thời gian tối đa giữa 2 lần trúng để vẫn tính là 'liên tục' (giây)")]
@@ -102,7 +104,7 @@ public class ComboCameraFeedback : MonoBehaviour
         TriggerRumble(strength, hit.IsFinalHit ? FinisherRumbleDuration : RumbleDuration);
         OnImpactFeedback?.Invoke(strength);
 
-        if (ShouldPlayCinematic(hit))
+        if (ShouldPlayCinematic(hit, focus))
         {
             _lastCinematicRealtime = Time.unscaledTime;
             cameraController.TriggerSlowMotion(CinematicTimeScale, CinematicSlowDuration);
@@ -128,9 +130,11 @@ public class ComboCameraFeedback : MonoBehaviour
         return hit.IsFinalHit ? 1f : Mathf.Clamp01(Mathf.Max(hit.Weight * 0.6f, hit.Progress01 * 0.8f));
     }
 
-    private bool ShouldPlayCinematic(ComboHitInfo hit)
+    // focus là điểm giữa người đánh và điểm trúng -> tầm đánh = 2 lần khoảng cách tới focus
+    private bool ShouldPlayCinematic(ComboHitInfo hit, Vector3 focus)
     {
         if (!EnableCinematic || !hit.IsFinalHit) return false;
+        if (Vector3.ProjectOnPlane(focus - transform.position, Vector3.up).magnitude * 2f > CinematicMaxReach) return false;
         if (hit.MaxCombo < CinematicMinCombo && hit.Context != AttackContext.Skill) return false;
         return Time.unscaledTime - _lastCinematicRealtime >= CinematicCooldown;
     }

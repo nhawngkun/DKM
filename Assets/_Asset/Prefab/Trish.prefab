@@ -153,6 +153,7 @@ MonoBehaviour:
   StartTurnAngle: 45
   ReverseAngle: 135
   SideTurnAngle: 75
+  MoveTurnClips: 1
   GroundSharpness: 18
   StopSharpness: 7
   LoopSpeedSharpness: 5
@@ -180,6 +181,12 @@ MonoBehaviour:
   DashSpeed: 20
   DashDuration: 0.25
   DodgeCancelTime: 0.65
+  DodgeChainTime: 0.6
+  DodgeBufferTime: 0.3
+  DodgeIFrameStart: 0.05
+  DodgeIFrameEnd: 0.35
+  FlyDashSpeed: 14
+  FlyDashDuration: 0.22
   characterCombo: {fileID: 9024233116418512257}
   AttackLungeSpeed: 7
   AttackLungeDuration: 0.12
@@ -198,6 +205,11 @@ MonoBehaviour:
   MaxRootVerticalSpeed: 25
   DashAttackWindow: 0.35
   DirectionalAttackThreshold: 0.6
+  SkillNeutralThreshold: 0.3
+  SkillDirectionDot: 0.6
+  QuickTurnWindow: 1
+  QuickTurnRate: 1080
+  QuickTurnSharpness: 30
   AlwaysDrawWeapon: 1
   CombatHoldTime: 6
   CanFly: 1
@@ -210,6 +222,7 @@ MonoBehaviour:
   FlyLandSpeed: 5
   LockOnRadius: 15
   LockOnBreakRadius: 22
+  TargetSlideSpeed: 5
   AutoAddIK: 1
   IgnoredColliders: []
   MeshRoot: {fileID: 6551312489623088762}
@@ -595,8 +608,8 @@ MonoBehaviour:
   FadeOut: 0.25
   CancelFade: 0.1
   MoveCancelMinTime: 0.75
-  RandomGroundChain: 1
   DelayedComboBranch: 1
+  DelayedBranchMinPause: 0.25
   PoseMatchLink: 1
   MaxSeamWait: 0.35
   MaxEntrySkip: 0.3
@@ -630,6 +643,7 @@ MonoBehaviour:
   CinematicCooldown: 2.5
   CinematicTimeScale: 0.3
   CinematicSlowDuration: 0.4
+  CinematicMaxReach: 4
   ChainWindowSeconds: 1
   HitsForMaxChainBonus: 8
   MaxChainBonus: 0.35
@@ -1095,7 +1109,7 @@ MonoBehaviour:
   Radius: 0.3
   Lifetime: 1.2
   ProjectileVisual: {fileID: 0}
-  TrailMaterial: {fileID: 0}
+  TrailMaterial: {fileID: 2100000, guid: 8adc5eb00b605b44596d9e3120938902, type: 2}
   TrailColor: {r: 0.6, g: 0.7, b: 4, a: 1}
   TrailWidth: 0.25
   TrailTime: 0.18

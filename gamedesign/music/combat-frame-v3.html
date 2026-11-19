@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Combat Frame v3</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/abcjs@6.6.4/abcjs-audio.css">
+<script src="https://cdn.jsdelivr.net/npm/abcjs@6.6.4/dist/abcjs-basic-min.js"></script>
+<style>
+  :root { --bg: #f7f5f0; --paper: #ffffff; --text: #1d1c1a; --muted: #6b675f; --line: #ddd8cc; --accent: #8a3b2a; --ok: #2f6b3a; --warn: #a3412c; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #1b1a18; --paper: #f7f5f0; --text: #ece8df; --muted: #a29d92; --line: #3a3833; --accent: #e08b6f; --ok: #7fc28a; --warn: #f08a72; }
+  }
+  :root[data-theme="dark"] { --bg: #1b1a18; --paper: #f7f5f0; --text: #ece8df; --muted: #a29d92; --line: #3a3833; --accent: #e08b6f; --ok: #7fc28a; --warn: #f08a72; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.55 Georgia, "Times New Roman", serif; }
+  main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { margin: 0; font-size: 26px; }
+  h2 { font-size: 16px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 28px 0 10px; font-family: system-ui, sans-serif; }
+  .meta { color: var(--muted); font-family: system-ui, sans-serif; font-size: 14px; }
+  .paper { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 12px; color: #000; }
+  #warnings { font-family: ui-monospace, Consolas, monospace; font-size: 13px; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--line); margin-top: 10px; }
+  #warnings.ok { color: var(--ok); } #warnings.bad { color: var(--warn); }
+  #audio { margin-top: 10px; }
+  table { width: 100%; border-collapse: collapse; font-family: system-ui, sans-serif; font-size: 14px; }
+  th, td { text-align: left; border-bottom: 1px solid var(--line); padding: 6px 8px; vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; }
+  .scroll { overflow-x: auto; }
+  details { font-family: ui-monospace, Consolas, monospace; font-size: 13px; }
+  pre { white-space: pre-wrap; }
+  @media print { #audio, #warnings, details { display: none; } body { background: #fff; color: #000; } h2 { break-after: avoid; } }
+</style>
+
+<style>body { font-family: "Times New Roman", "Noto Serif", serif; } .audio { margin: 8px 0 18px; } section + section { margin-top: 18px; }</style>
+</head>
+<body>
+<main>
+  <h1>Combat Frame v3</h1>
+  <div class="meta">Khung combat chung gothic, vòng 32 ô · Dựa trên: music-direction.md, D-007, D-008, D-009, D-010 · 150 BPM · D thứ · vòng 32 ô = 51.2s · Draft v3</div>
+
+  <h2>Concept</h2>
+  <p>Vòng combat dài gấp đôi: <b>A - B - A' - B'</b>. A và A' là khung gothic v2; B và B' là đoạn mới trên F trưởng, riff đổi sang gallop power chord, organ và harpsichord đổi hợp âm. B' thay 2 ô cuối bằng Eb -> A để cú bII -> V kéo về ô 1. Chuông ở ô 1, 9, 17. Outro giữ như v2 (tune 2).</p>
+
+  <h2>Score</h2>
+  <p class="meta">Ký âm ở cao độ thực (concert pitch). Khi chép part: guitar và bass viết cao 1 quãng 8. Ký hiệu trống: F kick, c snare, g× hi-hat, a× crash. Nút play phát bằng synth GM, chỉ để nghe nốt và độ khớp, không phải âm sắc thật.</p>
+  <div id="tunes"></div>
+  <div id="warnings"></div>
+
+  <h2>Harmony plan</h2>
+  <div class="scroll"><table>
+<tr><th>Section</th><th>Bars</th><th>Mode / key</th><th>Progression</th><th>Idea</th></tr>
+<tr><td>A</td><td>1-8</td><td>D thứ</td><td>Dm Dm Bb Eb | Dm Gm Bb A</td><td>motif nhân vật</td></tr>
+<tr><td>B</td><td>9-16</td><td>F trưởng tương quan</td><td>F C Dm Bb | Gm C Bb A</td><td>giai điệu mới, sáng hơn: tương phản</td></tr>
+<tr><td>A'</td><td>17-24</td><td>D thứ</td><td>Dm Dm Bb Eb | Gm Bb Eb A</td><td>cao trào của vòng</td></tr>
+<tr><td>B'</td><td>25-32</td><td>F -> D</td><td>F C Dm Bb | Gm C <b>Eb A</b></td><td>bII -> V ở ô 31-32 kéo mạnh về ô 1</td></tr>
+<tr><td>Outro</td><td>2 ô</td><td>D</td><td>Eb -> Dm</td><td>như v2</td></tr>
+</table></div>
+
+  <h2>Orchestration</h2>
+  <div class="scroll"><table>
+<tr><th>Section</th><th>Bars</th><th>Melody</th><th>Counter / inner</th><th>Harmony / pad</th><th>Bass</th><th>Percussion</th><th>Dynamics</th><th>Colour</th></tr>
+<tr><td>A / A'</td><td>1-8, 17-24</td><td>- (L3)</td><td>harpsichord</td><td>organ + hợp xướng</td><td>riff chug drop-D + bass</td><td>trống + timpani + chuông</td><td>f</td><td>như v2</td></tr>
+<tr><td>B / B'</td><td>9-16, 25-32</td><td>- (L3)</td><td>harpsichord (hợp âm F trưởng)</td><td>organ + hợp xướng</td><td>gallop power chord + bass gốc-quãng 5</td><td>trống + timpani (A2/D3)</td><td>f</td><td>B' ô 31 Eb: timpani cuộn</td></tr>
+</table></div>
+
+  <h2>Adaptive use in game</h2>
+  <div class="scroll"><table>
+<tr><th>Layer / section</th><th>Content</th><th>Game state</th><th>Enter / exit rule</th></tr>
+<tr><td>L0</td><td>Dr, Tm, Bl</td><td>vào trận</td><td>đầu ô kế</td></tr>
+<tr><td>L1</td><td>Gt, Bs</td><td>Dante B · Vergil 1 · Trish 33%</td><td>đầu ô kế, fade 1 phách; bỏ sau 4s dưới ngưỡng</td></tr>
+<tr><td>L2</td><td>Pd, Hc</td><td>Dante A-S · Vergil 2 · Trish 66%</td><td>như L1</td></tr>
+<tr><td>L3</td><td>l3-*-v3.html</td><td>Dante SS-SSS · Vergil 3 · Trish Awake</td><td>như L1</td></tr>
+<tr><td>Outro</td><td>combat-frame-v2.html tune 2</td><td>hết địch</td><td>đầu ô kế</td></tr>
+</table></div>
+
+  <h2>Production notes</h2>
+  <ul><li>Mỗi stem đúng 32 ô = 51.2s ở 150 BPM, 48 kHz; render 2 vòng, lấy vòng 2.</li>
+<li>Bộ nhớ: stem dài gấp đôi v2; nén Vorbis streaming trong Unity.</li>
+<li>Bản 16 ô vẫn ở combat-frame-v2.html.</li></ul>
+
+  <details><summary>ABC source</summary><pre id="abc-print"></pre></details>
+</main>
+
+<script type="text/plain" id="abc-source">
+X:1
+T:Combat v3 gothic: khung L0-L2 (vòng 32 ô = 51.2s)
+C:music-lead v2
+M:4/4
+L:1/8
+Q:1/4=150
+%%percmap F bass-drum-1
+%%percmap c acoustic-snare
+%%percmap ^g closed-hi-hat x
+%%percmap a crash-cymbal-1 x
+%%percmap C low-floor-tom
+%%percmap e high-tom
+%%score Hc Pd Gt Bs Bl Tm Dr
+V:Hc clef=treble name="L2 Harpsichord ostinato" snm="Hpsd"
+V:Pd clef=treble name="L2 Organ + hợp xướng SATB" snm="Org/Ch"
+V:Gt clef=bass name="L1 Guitar riff drop-D" snm="Gtr"
+V:Bs clef=bass name="L1 Bass (+ organ pedal 16')" snm="Bass"
+V:Bl clef=treble name="L0 Chuông nhà thờ" snm="Bell"
+V:Tm clef=bass name="L0 Timpani (D3, A2)" snm="Timp"
+V:Dr clef=perc name="L0 Trống metal" snm="Dr"
+K:Dm
+V:Hc
+%%MIDI program 6
+|: "^A (điểm lặp)""Dm"!mp!z2 d a z2 f a | "Dm"z2 d _e z2 d A | "Bb"z2 B f z2 d f | "Eb"z2 _e g z2 B g |
+V:Pd
+%%MIDI program 19
+|: !mp![DFA]8 | [DFA]8 | [DFB]8 | [_EGB]8 |
+V:Gt
+%%MIDI program 30
+|: !f!D,,D,,D,,_E,, D,,D,,A,,G,, | D,,D,,D,,_E,, D,,D,,F,,E,, | B,,B,,B,,A,, B,,B,,F,,D,, | _E,,_E,,_E,,D,, _E,,_E,,G,,_E,, |
+V:Bs
+%%MIDI program 34
+|: !f!D,,,2 D,,,D,,, D,,,2 A,,,C,, | D,,,2 D,,,D,,, F,,,2 E,,,A,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, |
+V:Bl
+%%MIDI program 14
+|: !f!"^chuông nhà thờ D5"d8 | z8 | z8 | z8 |
+V:Tm
+%%MIDI program 47
+|: !f!D,2 A,, A,, D,2 A,, A,, | D,2 A,, A,, D,2 A,, A,, | D,2 z2 D,2 z2 | "^cuộn, pedal D dưới Eb"D,8 |
+V:Dr
+%%MIDI channel 10
+|: !f![Fa] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] [F^g] | [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] c |
+[V:Hc] "Dm"z2 d a z2 f a | "Gm"z2 G d z2 B d | "Bb"z2 B f z2 d f | "A"z2 ^c e z2 a e |
+[V:Pd] [DFA]8 | [DGB]8 | [DFB]8 | [^CEA]8 |
+[V:Gt] D,,D,,D,,_E,, D,,D,,A,,G,, | G,,G,,G,,F,, G,,G,,D,,F,, | B,,B,,B,,A,, B,,B,,F,,D,, | A,,A,,A,,B,, A,,A,,^C,E, |
+[V:Bs] D,,,2 D,,,D,,, D,,,2 A,,,C,, | G,,,2 G,,,G,,, G,,,2 D,,,F,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, |
+[V:Bl] z8 | z8 | z8 | z8 |
+[V:Tm] D,2 A,, A,, D,2 A,, A,, | D,2 z2 D,2 z2 | D,2 z2 D,2 z2 | A,,2 A,,2 A,, A,, A,,2 |
+[V:Dr] [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] [F^g] | [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | c c c c c/c/c/c/ c c |
+[V:Hc] "^B""F"z2 c f z2 a f | "C"z2 c e z2 g e | "Dm"z2 d f z2 a f | "Bb"z2 B d z2 f d |
+[V:Pd] [FAc]8 | [EGc]8 | [DFA]8 | [DFB]8 |
+[V:Gt] [F,,C,]2 [F,,C,][F,,C,] [F,,C,]2 [F,,C,][F,,C,] | [C,G,]2 [C,G,][C,G,] [C,G,]2 [C,G,][C,G,] | [D,,A,,]2 [D,,A,,][D,,A,,] [D,,A,,]2 [D,,A,,][D,,A,,] | [B,,F,]2 [B,,F,][B,,F,] [B,,F,]2 [B,,F,][B,,F,] |
+[V:Bs] F,,2 F,,F,, F,,2 C,F,, | C,,2 C,,C,, C,,2 G,,C,, | D,,2 D,,D,, D,,2 A,,D,, | B,,,2 B,,,B,,, B,,,2 F,,B,,, |
+[V:Bl] "^chuông"c8 | z8 | z8 | z8 |
+[V:Tm] A,,2 z2 A,,2 z2 | z8 | D,2 A,, A,, D,2 A,, A,, | D,2 z2 D,2 z2 |
+[V:Dr] [Fa] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] [F^g] | [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] [F^g] |
+[V:Hc] "Gm"z2 G B z2 d B | "C"z2 c e z2 g e | "Bb"z2 B d z2 f d | "A"z2 ^c e z2 a e |
+[V:Pd] [DGB]8 | [EGc]8 | [DFB]8 | [^CEA]8 |
+[V:Gt] [G,,D,]2 [G,,D,][G,,D,] [G,,D,]2 [G,,D,][G,,D,] | [C,G,]2 [C,G,][C,G,] [C,G,]2 [C,G,][C,G,] | [B,,F,]2 [B,,F,][B,,F,] [B,,F,]2 [B,,F,][B,,F,] | [A,,E,]2 [A,,E,][A,,E,] [A,,E,]2 [A,,E,][A,,E,] |
+[V:Bs] G,,,2 G,,,G,,, G,,,2 D,,G,,, | C,,2 C,,C,, C,,2 G,,C,, | B,,,2 B,,,B,,, B,,,2 F,,B,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, |
+[V:Bl] z8 | z8 | z8 | z8 |
+[V:Tm] D,2 z2 D,2 z2 | z8 | D,2 z2 D,2 z2 | A,,2 A,,2 A,, A,, A,,2 |
+[V:Dr] [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] [F^g] | [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | c c c c c/c/c/c/ c c |
+[V:Hc] "^A' (cao trào)""Dm"z2 d a z2 f a | "Dm"z2 d _e z2 d A | "Bb"z2 B f z2 d f | "Eb"z2 _e g z2 B g |
+[V:Pd] [DFA]8 | [FAd]8 | [FBd]8 | [GB_e]8 |
+[V:Gt] D,,D,,D,,_E,, D,,D,,A,,G,, | D,,D,,D,,_E,, D,,D,,F,,E,, | B,,B,,B,,A,, B,,B,,F,,D,, | _E,,_E,,_E,,D,, _E,,_E,,G,,_E,, |
+[V:Bs] D,,,2 D,,,D,,, D,,,2 A,,,C,, | D,,,2 D,,,D,,, F,,,2 E,,,A,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, |
+[V:Bl] "^chuông nhà thờ D5"d8 | z8 | z8 | z8 |
+[V:Tm] D,2 A,, A,, D,2 A,, A,, | D,2 A,, A,, D,2 A,, A,, | D,2 z2 D,2 z2 | "^cuộn, pedal D dưới Eb"D,8 |
+[V:Dr] [Fa] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] [F^g] | [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] c |
+[V:Hc] "Gm"z2 G d z2 B d | "Bb"z2 B f z2 d f | "Eb"z2 _e g z2 B g | "A"z2 ^c e z2 a e |
+[V:Pd] [GBd]8 | [FBd]8 | [GB_e]8 | [EA^c]8 |
+[V:Gt] G,,G,,G,,F,, G,,G,,D,,F,, | B,,B,,B,,A,, B,,B,,F,,D,, | _E,,_E,,_E,,D,, _E,,_E,,G,,_E,, | A,,A,,A,,B,, A,,A,,^C,E, |
+[V:Bs] G,,,2 G,,,G,,, G,,,2 D,,,F,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, |
+[V:Bl] z8 | z8 | z8 | z8 |
+[V:Tm] D,2 z2 D,2 z2 | D,2 z2 D,2 z2 | "^cuộn, pedal D dưới Eb"D,8 | A,,2 A,,2 A,, A,, A,,2 |
+[V:Dr] [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] [F^g] | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] c | c c c c c/c/c/c/ c c |
+[V:Hc] "^B'""F"z2 c f z2 a f | "C"z2 c e z2 g e | "Dm"z2 d f z2 a f | "Bb"z2 B d z2 f d |
+[V:Pd] [FAc]8 | [EGc]8 | [DFA]8 | [DFB]8 |
+[V:Gt] [F,,C,]2 [F,,C,][F,,C,] [F,,C,]2 [F,,C,][F,,C,] | [C,G,]2 [C,G,][C,G,] [C,G,]2 [C,G,][C,G,] | [D,,A,,]2 [D,,A,,][D,,A,,] [D,,A,,]2 [D,,A,,][D,,A,,] | [B,,F,]2 [B,,F,][B,,F,] [B,,F,]2 [B,,F,][B,,F,] |
+[V:Bs] F,,2 F,,F,, F,,2 C,F,, | C,,2 C,,C,, C,,2 G,,C,, | D,,2 D,,D,, D,,2 A,,D,, | B,,,2 B,,,B,,, B,,,2 F,,B,,, |
+[V:Bl] z8 | z8 | z8 | z8 |
+[V:Tm] A,,2 z2 A,,2 z2 | z8 | D,2 A,, A,, D,2 A,, A,, | D,2 z2 D,2 z2 |
+[V:Dr] [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] [F^g] | [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] [F^g] |
+[V:Hc] "Gm"z2 G B z2 d B | "C"z2 c e z2 g e | "Eb"z2 _e g z2 B g | "A"z2 ^c e z2 a e :|
+[V:Pd] [DGB]8 | [EGc]8 | [_EGB]8 | [^CEA]8 :|
+[V:Gt] [G,,D,]2 [G,,D,][G,,D,] [G,,D,]2 [G,,D,][G,,D,] | [C,G,]2 [C,G,][C,G,] [C,G,]2 [C,G,][C,G,] | [_E,,B,,]2 [_E,,B,,][_E,,B,,] [_E,,B,,]2 [_E,,B,,][_E,,B,,] | [A,,E,]2 [A,,E,][A,,E,] [A,,E,]2 [A,,E,][A,,E,] :|
+[V:Bs] G,,,2 G,,,G,,, G,,,2 D,,G,,, | C,,2 C,,C,, C,,2 G,,C,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, :|
+[V:Bl] z8 | z8 | z8 | z8 :|
+[V:Tm] D,2 z2 D,2 z2 | z8 | "^cuộn, pedal D dưới Eb"D,8 | A,,2 A,,2 A,, A,, A,,2 :|
+[V:Dr] [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | [F^g] ^g [c^g] ^g [F^g] ^g [c^g] [F^g] | [F^g] ^g [c^g] ^g [F^g] [F^g] [c^g] ^g | c c c c c/c/c/c/ c c :|
+
+X:2
+T:Combat v2 gothic: outro (2 ô)
+C:music-lead v2
+M:4/4
+L:1/8
+Q:1/4=150
+%%percmap F bass-drum-1
+%%percmap c acoustic-snare
+%%percmap ^g closed-hi-hat x
+%%percmap a crash-cymbal-1 x
+%%percmap C low-floor-tom
+%%percmap e high-tom
+%%score Hc Pd Gt Bs Bl Tm Dr
+V:Hc clef=treble name="L2 Harpsichord ostinato" snm="Hpsd"
+V:Pd clef=treble name="L2 Organ + hợp xướng SATB" snm="Org/Ch"
+V:Gt clef=bass name="L1 Guitar riff drop-D" snm="Gtr"
+V:Bs clef=bass name="L1 Bass (+ organ pedal 16')" snm="Bass"
+V:Bl clef=treble name="L0 Chuông nhà thờ" snm="Bell"
+V:Tm clef=bass name="L0 Timpani (D3, A2)" snm="Timp"
+V:Dr clef=perc name="L0 Trống metal" snm="Dr"
+K:Dm
+V:Hc
+%%MIDI program 6
+"^Outro""Eb"z2 _e g b4 | "Dm"!fermata!d8 |]
+V:Pd
+%%MIDI program 19
+!f![_EGB]8 | !fermata![DFA]8 |]
+V:Gt
+%%MIDI program 30
+!ff![_E,,B,,_E,]8 | !fermata![D,,A,,D,]8 |]
+V:Bs
+%%MIDI program 34
+!ff!_E,,,8 | !fermata!D,,,8 |]
+V:Bl
+%%MIDI program 14
+z8 | !ff!!fermata!d8 |]
+V:Tm
+%%MIDI program 47
+!ff!D,2 D,2 D, D, D,2 | !fermata!D,8 |]
+V:Dr
+%%MIDI channel 10
+!ff!c c c c c/c/c/c/ c c | !fermata![Fa]8 |]
+</script>
+
+<script>
+  const src = document.getElementById('abc-source').textContent.trim();
+  document.getElementById('abc-print').textContent = src;
+  const warnBox = document.getElementById('warnings');
+  const host = document.getElementById('tunes');
+  if (!window.ABCJS) {
+    warnBox.className = 'bad';
+    warnBox.textContent = 'Không tải được abcjs (cần mạng để hiện khuông nhạc).';
+  } else {
+    const all = [];
+    src.split(/\n(?=X:)/).forEach((abc, i) => {
+      const sec = document.createElement('section');
+      sec.innerHTML = '<div class="paper"><div id="paper' + i + '"></div></div><div class="audio" id="audio' + i + '"></div>';
+      host.appendChild(sec);
+      const tune = ABCJS.renderAbc('paper' + i, abc, { responsive: 'resize', add_classes: true, staffwidth: 900 })[0];
+      (tune.warnings || []).forEach(w => all.push('Tune ' + (i + 1) + ': ' + w));
+      if (ABCJS.synth.supportsAudio()) {
+        const sc = new ABCJS.synth.SynthController();
+        sc.load('#audio' + i, null, { displayLoop: true, displayRestart: true, displayPlay: true, displayProgress: true, displayWarp: true });
+        sc.setTune(tune, false, { chordsOff: true }).catch(e => { warnBox.innerHTML += '<br>Synth: ' + e; });
+      }
+    });
+    warnBox.className = all.length ? 'bad' : 'ok';
+    warnBox.innerHTML = all.length ? '<b>Cảnh báo (' + all.length + '):</b><br>' + all.join('<br>') : 'Không có cảnh báo';
+  }
+</script>
+</body>
+</html>

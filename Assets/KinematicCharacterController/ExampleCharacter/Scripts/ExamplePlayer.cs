@@ -133,6 +133,7 @@ namespace KinematicCharacterController.Examples
             bool lockOn = false;
             bool sprint = false;
             bool flyToggle = false;
+            bool special = false;
             bool canFly = Character.CanFly;
 
             // --- Bàn phím ---
@@ -156,9 +157,7 @@ namespace KinematicCharacterController.Examples
                 orientationSwitch |= Keyboard.current.fKey.wasPressedThisFrame;
                 dash |= Keyboard.current.eKey.wasPressedThisFrame;
                 if (Keyboard.current.tabKey.wasPressedThisFrame) weaponSwitch = 1; // Tab = đổi vũ khí
-                // Q: nhân vật bay được (Trish) = bật/tắt bay, còn lại = giữ để lock-on
-                if (canFly) flyToggle |= Keyboard.current.qKey.wasPressedThisFrame;
-                else lockOn |= Keyboard.current.qKey.isPressed;
+                special |= Keyboard.current.qKey.wasPressedThisFrame; // Q = cơ chế riêng (Taunt / Deflect / Blink)
                 sprint |= Keyboard.current.shiftKey.isPressed; // giữ Shift để chạy nhanh
             }
 
@@ -192,8 +191,7 @@ namespace KinematicCharacterController.Examples
                 }
 
                 jumpDown |= Gamepad.current.buttonSouth.wasPressedThisFrame;      // A / Cross
-                //crouchDown |= Gamepad.current.buttonEast.wasPressedThisFrame;     // B / Circle
-                //crouchUp |= Gamepad.current.buttonEast.wasReleasedThisFrame;
+                special |= Gamepad.current.buttonEast.wasPressedThisFrame;        // B / Circle = cơ chế riêng
                 //orientationSwitch |= Gamepad.current.buttonNorth.wasPressedThisFrame; // Y / Triangle
                 dash |= Gamepad.current.rightTrigger.wasPressedThisFrame;         // RT / R2
                 attack |= Gamepad.current.buttonWest.wasPressedThisFrame;         // X / Square
@@ -220,8 +218,9 @@ namespace KinematicCharacterController.Examples
             characterInputs.LockOn = lockOn;
             characterInputs.Sprint = sprint;
             characterInputs.FlyToggle = flyToggle;
+            characterInputs.Special = special;
 
             Character.SetInputs(ref characterInputs);
         }
     }
-}
+}

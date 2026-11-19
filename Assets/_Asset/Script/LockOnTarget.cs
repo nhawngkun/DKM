@@ -13,7 +13,24 @@ public class LockOnTarget : MonoBehaviour
     public Transform LockPoint;
     public float LockOnHeight = 1.2f;
 
+    private Collider[] _colliders;
+
     public Vector3 LockPosition => LockPoint != null ? LockPoint.position : transform.position + Vector3.up * LockOnHeight;
+
+    /// <summary>Độ cao đỉnh đầu (y thế giới) theo collider, để đòn trên không không bay cao quá mục tiêu.</summary>
+    public float Top
+    {
+        get
+        {
+            if (_colliders == null) _colliders = GetComponentsInChildren<Collider>();
+            float top = float.MinValue;
+            foreach (Collider collider in _colliders)
+            {
+                if (collider != null && collider.enabled && !collider.isTrigger) top = Mathf.Max(top, collider.bounds.max.y);
+            }
+            return top > float.MinValue ? top : LockPosition.y;
+        }
+    }
 
     private void OnEnable()
     {

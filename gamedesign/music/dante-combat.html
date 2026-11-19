@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dante Combat</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/abcjs@6.6.4/abcjs-audio.css">
+<script src="https://cdn.jsdelivr.net/npm/abcjs@6.6.4/dist/abcjs-basic-min.js"></script>
+<style>
+  :root { --bg: #f7f5f0; --paper: #ffffff; --text: #1d1c1a; --muted: #6b675f; --line: #ddd8cc; --accent: #8a3b2a; --ok: #2f6b3a; --warn: #a3412c; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #1b1a18; --paper: #f7f5f0; --text: #ece8df; --muted: #a29d92; --line: #3a3833; --accent: #e08b6f; --ok: #7fc28a; --warn: #f08a72; }
+  }
+  :root[data-theme="dark"] { --bg: #1b1a18; --paper: #f7f5f0; --text: #ece8df; --muted: #a29d92; --line: #3a3833; --accent: #e08b6f; --ok: #7fc28a; --warn: #f08a72; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.55 Georgia, "Times New Roman", serif; }
+  main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { margin: 0; font-size: 26px; }
+  h2 { font-size: 16px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 28px 0 10px; font-family: system-ui, sans-serif; }
+  .meta { color: var(--muted); font-family: system-ui, sans-serif; font-size: 14px; }
+  .paper { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 12px; color: #000; }
+  #warnings { font-family: ui-monospace, Consolas, monospace; font-size: 13px; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--line); margin-top: 10px; }
+  #warnings.ok { color: var(--ok); } #warnings.bad { color: var(--warn); }
+  #audio { margin-top: 10px; }
+  table { width: 100%; border-collapse: collapse; font-family: system-ui, sans-serif; font-size: 14px; }
+  th, td { text-align: left; border-bottom: 1px solid var(--line); padding: 6px 8px; vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; }
+  .scroll { overflow-x: auto; }
+  details { font-family: ui-monospace, Consolas, monospace; font-size: 13px; }
+  pre { white-space: pre-wrap; }
+  @media print { #audio, #warnings, details { display: none; } body { background: #fff; color: #000; } h2 { break-after: avoid; } }
+</style>
+
+<style>body { font-family: "Times New Roman", "Noto Serif", serif; } .audio { margin: 8px 0 18px; } section + section { margin-top: 18px; }</style>
+</head>
+<body>
+<main>
+  <h1>Dante Combat</h1>
+  <div class="meta">Bài combat riêng của Dante (D-011) · hard rock / metal · 172 BPM · E thứ + Dorian · 4/4 · Draft v1</div>
+
+  <h2>Concept</h2>
+  <p><b>Không còn khung chung.</b> Đây là bài riêng của Dante: nhanh hơn (172), giọng khác (E thứ, dây E buông của guitar), groove khác (riff chug lệch phách), form khác (verse / pre / chorus / breakdown).</p>
+  <p><b>Động cơ nhịp</b> là riff hook trên Em: <i>chug-chug-STAB-chug-nghỉ-chug-trượt lên G5</i>. Cú STAB rơi vào phách 2 nửa sau và chỗ nghỉ ở phách 3: đây là chỗ "nhếch mép". Kick trống khóa vào riff. <b>Motif lead</b> (verse ô 1-2): vào lệch phách, nốt A bend đè lên phách 3 rồi trượt xuống. Ô 8 dùng A trưởng (C#, Dorian) cho màu rock tự tin, không u ám.</p>
+  <p><b>Chorus là phần thưởng</b> (như DMC5 chỉ mở chorus ở rank S): đổi sang G-D-Em-C, sáng và cao hơn verse (lead lên E6), double kick, power chord đầy, dây + synth phồng lên, "HEY!" kiểu gang shout ở SS, scream ở SSS. <b>Breakdown</b> half-time trên Em với F (b2, Phrygian): nặng, khi rank tụt khỏi S hoặc làm biến tấu sau 2 vòng chorus.</p>
+
+  <h2>Score</h2>
+  <p class="meta">Ký âm ở cao độ thực (concert pitch). Khi chép part: guitar và bass viết cao 1 quãng 8. Ký hiệu trống: F kick, c snare, g× hi-hat, a× crash. Nút play phát bằng synth GM, chỉ để nghe nốt và độ khớp, không phải âm sắc thật.</p>
+  <div id="tunes"></div>
+  <div id="warnings"></div>
+
+  <h2>Harmony plan</h2>
+  <div class="scroll"><table>
+<tr><th>Section</th><th>Bars</th><th>Mode / key</th><th>Progression</th><th>Idea</th></tr>
+<tr><td>Verse</td><td>16</td><td>E thứ + Dorian</td><td>Em Em C D | Em Em G A | Em Em C D | C D B B (i i bVI bVII | i i bIII IV | ... | bVI bVII V V)</td><td>pedal E; A trưởng = Dorian; B trưởng (D#) kéo về Em</td></tr>
+<tr><td>Pre</td><td>4</td><td>E thứ</td><td>C D Em B</td><td>tremolo đi lên, dừng 2 phách trước chorus</td></tr>
+<tr><td>Chorus</td><td>16</td><td>G trưởng / E thứ</td><td>G D Em C | G D A A | G D Em C | Am C B B</td><td>bIII-bVII-i-bVI: rock anthem sáng; A trưởng ở ô 7-8 nâng lên</td></tr>
+<tr><td>Breakdown</td><td>8</td><td>E Phrygian</td><td>Em Em F Em | Em Em F B</td><td>b2 (F) nghiến, half-time</td></tr>
+<tr><td>Outro</td><td>2</td><td>E</td><td>C -> Em</td><td>bVI -> i</td></tr>
+</table></div>
+
+  <h2>Orchestration</h2>
+  <div class="scroll"><table>
+<tr><th>Section</th><th>Bars</th><th>Melody</th><th>Counter / inner</th><th>Harmony / pad</th><th>Bass</th><th>Percussion</th><th>Dynamics</th><th>Colour</th></tr>
+<tr><td>Verse</td><td>16</td><td>lead guitar (motif, gọi-đáp với riff)</td><td>-</td><td>-</td><td>bass khóa riff</td><td>rock beat, kick theo riff</td><td>f</td><td>nghỉ trong lead là cố ý: chừa chỗ cho riff và tiếng chém</td></tr>
+<tr><td>Pre</td><td>4</td><td>lead rải hợp âm đi lên</td><td>-</td><td>-</td><td>bass 8th</td><td>snare dồn 4 -> 8 -> 16, dừng 2 phách</td><td>f -> ff</td><td>tremolo guitar</td></tr>
+<tr><td>Chorus</td><td>16</td><td>lead (giai điệu anthem); SS: lead 2 nhân đôi 8vb</td><td>HEY! (SS), scream (SSS)</td><td>dây + synth sawtooth</td><td>bass 8th đều</td><td>double kick 8th + ride, crash ô 1, 9</td><td>ff</td><td>power chord đầy (gốc + 5 + 8)</td></tr>
+<tr><td>Breakdown</td><td>8</td><td>pinch harmonic, whammy dive</td><td>gầm (SSS)</td><td>-</td><td>bass theo chug</td><td>half-time: kick 1, snare 3</td><td>ff</td><td>drop thật nặng, palm mute</td></tr>
+</table></div>
+
+  <h2>Adaptive use in game</h2>
+  <div class="scroll"><table>
+<tr><th>Layer / section</th><th>Content</th><th>Game state</th><th>Enter / exit rule</th></tr>
+<tr><td>L0 trống</td><td>Dr</td><td>vào trận (rank D-C)</td><td>đầu ô kế; verse chạy ngầm từ ô 1</td></tr>
+<tr><td>L1 riff + bass</td><td>Gt, Bs</td><td>rank B</td><td>vào đầu ô kế, fade 1 phách</td></tr>
+<tr><td>L2 lead (+ pad ở chorus)</td><td>Ld, Pd</td><td>rank A</td><td>như L1</td></tr>
+<tr><td>Section: verse -> pre -> chorus</td><td>tune 3 rồi 4</td><td>chạm rank S</td><td>chờ hết câu 4 ô của verse, chơi pre 4 ô, vào chorus ô 1. Chorus lặp khi còn >= S</td></tr>
+<tr><td>L3 shout</td><td>Vx (HEY!)</td><td>rank SS</td><td>đầu ô kế</td></tr>
+<tr><td>L3 scream + lead 2</td><td>Vx (scream), lead 8vb</td><td>rank SSS</td><td>đầu ô kế; stinger SSS</td></tr>
+<tr><td>Section: chorus -> breakdown -> verse</td><td>tune 5 rồi 2</td><td>tụt dưới S liên tục 4s; hoặc sau 2 vòng chorus (biến tấu)</td><td>vào breakdown ở đầu câu 4 ô kế; xong 8 ô về verse (hoặc chorus nếu vẫn >= S)</td></tr>
+<tr><td>Outro</td><td>tune 6</td><td>hết địch</td><td>đầu ô kế</td></tr>
+</table></div>
+
+  <h2>Production notes</h2>
+  <ul><li>Độ dài: verse 16 ô = 22.3s, chorus 16 ô = 22.3s, pre 4 ô = 5.6s, breakdown 8 ô = 11.2s ở 172 BPM.</li>
+<li>Stem: mỗi section xuất riêng 5 stem (Dr, Gt+Bs, Ld, Pd, Vx). Section đổi ở ranh 4 ô (FMOD transition marker hoặc PlayScheduled).</li>
+<li>Tầm: lead A3-E6; rhythm guitar E2 trở lên (chuẩn E, không drop); bass E1.</li>
+<li>Không trích riff hay giai điệu DMC; chỉ lấy cấu trúc (chorus mở ở rank S) và màu (rock swagger + vocal gầm).</li>
+<li>Synth trình duyệt chỉ để nghe nốt và nhịp; guitar méo GM nghe khác xa bản thu thật.</li></ul>
+
+  <details><summary>ABC source</summary><pre id="abc-print"></pre></details>
+</main>
+
+<script type="text/plain" id="abc-source">
+X:1
+T:Dante combat: DEMO nghe thử (verse -> pre -> chorus -> breakdown -> outro, ≈ 64s)
+C:music-lead (Dante combat v1)
+M:4/4
+L:1/8
+Q:1/4=172
+%%percmap F bass-drum-1
+%%percmap c acoustic-snare
+%%percmap ^g closed-hi-hat x
+%%percmap a crash-cymbal-1 x
+%%percmap b ride-cymbal-1 x
+%%score Ld Vx Pd Gt Bs Dr
+V:Ld clef=treble name="L2 Lead guitar" snm="Lead"
+V:Vx clef=treble name="L3 Shout / scream" snm="Vox"
+V:Pd clef=treble name="L2 Dây + synth (chỉ chorus)" snm="Pad"
+V:Gt clef=bass name="L1 Rhythm guitar (E chuẩn)" snm="Gtr"
+V:Bs clef=bass name="L1 Bass" snm="Bass"
+V:Dr clef=perc name="L0 Trống" snm="Dr"
+K:Em
+V:Ld
+%%MIDI program 29
+"^VERSE: ô 1-4 chỉ trống (D-C), ô 5-8 + riff (B), ô 9 + lead (A)""Em"z8 | "Em"z8 | "C"z8 | "D"z8 |
+V:Vx
+%%MIDI program 54
+z8 | z8 | z8 | z8 |
+V:Pd
+%%MIDI program 48
+z8 | z8 | z8 | z8 |
+V:Gt
+%%MIDI program 30
+z8 | z8 | z8 | z8 |
+V:Bs
+%%MIDI program 34
+z8 | z8 | z8 | z8 |
+V:Dr
+%%MIDI channel 10
+!f![Fa] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g | [F^g] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g | [F^g] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g | [F^g] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g |
+[V:Ld] "Em"z8 | "Em"z8 | "G"z8 | "A"z8 |
+[V:Vx] z8 | z8 | z8 | z8 |
+[V:Pd] z8 | z8 | z8 | z8 |
+[V:Gt] !f!E,,E,, !accent![E,,B,,]E,, z E,, !accent![G,,D,]2 | E,,E,, !accent![E,,B,,]E,, z E,, [A,,E,][B,,F,] | !accent![G,,D,]2 [G,,D,]G,, z G,, [G,,D,]G,, | !accent![A,,E,]2 [A,,E,]A,, z A,, [A,,E,]A,, |
+[V:Bs] !f!E,,,2 E,,,E,,, z E,,, G,,,2 | E,,,2 E,,,E,,, z E,,, G,,,2 | G,,,2 G,,,G,,, z G,,, G,,,G,,, | A,,,2 A,,,A,,, z A,,, A,,,A,,, |
+[V:Dr] [F^g] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g | [F^g] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g | [F^g] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g | c c c c c/c/c/c/ c/c/c/c/ |
+[V:Ld] "Em"!mf!z e g "^bend"a- a2 g e | "Em"b2 a g e2 d e | "C"z2 G E c2 B G | "D"a2 f d A2 d f |
+[V:Vx] z8 | z8 | z8 | z8 |
+[V:Pd] z8 | z8 | z8 | z8 |
+[V:Gt] E,,E,, !accent![E,,B,,]E,, z E,, !accent![G,,D,]2 | E,,E,, !accent![E,,B,,]E,, z E,, [A,,E,][B,,F,] | !accent![C,G,]2 [C,G,]C, z C, [C,G,]C, | !accent![D,A,]2 [D,A,]D, z D, [D,A,]D, |
+[V:Bs] E,,,2 E,,,E,,, z E,,, G,,,2 | E,,,2 E,,,E,,, z E,,, G,,,2 | C,,2 C,,C,, z C,, C,,C,, | D,,2 D,,D,, z D,, D,,D,, |
+[V:Dr] [Fa] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g | [F^g] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g | [F^g] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g | [F^g] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g |
+[V:Ld] "C"g2 e c G2 c e | "D"f2 d A F2 A d | "B""^pinch harm."B4- B2 ^d f | "B"b2 a g f2 ^d B |
+[V:Vx] z8 | z8 | z8 | z8 |
+[V:Pd] z8 | z8 | z8 | z8 |
+[V:Gt] !accent![C,G,]2 [C,G,]C, z C, [C,G,]C, | !accent![D,A,]2 [D,A,]D, z D, [D,A,]D, | !accent![B,,F,]2 [B,,F,]B,, z B,, [B,,F,]B,, | !accent![B,,F,]2 [B,,F,]B,, z B,, [B,,F,]B,, |
+[V:Bs] C,,2 C,,C,, z C,, C,,C,, | D,,2 D,,D,, z D,, D,,D,, | B,,,2 B,,,B,,, z B,,, B,,,B,,, | B,,,2 B,,,B,,, z B,,, B,,,B,,, |
+[V:Dr] [F^g] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g | [F^g] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g | [F^g] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g | c c c c c/c/c/c/ c/c/c/c/ |
+[V:Ld] "^PRE-CHORUS (chạm S, 1 lần)""C"!f!C E G c e c G E | "D"D F A d f d A F | "Em"E G B e g e B G | "B"!crescendo(!B,2 ^D2 F2 B2!crescendo)! |
+[V:Vx] z8 | z8 | z8 | z8 |
+[V:Pd] z8 | z8 | z8 | z8 |
+[V:Gt] !f!"^tremolo"[C,G,C]8 | "^tremolo"[D,A,D]8 | "^tremolo"[E,,B,,E,]8 | [B,,F,B,]4 z4 |
+[V:Bs] !f!C,,C,,C,,C,,C,,C,,C,,C,, | D,,D,,D,,D,,D,,D,,D,,D,, | E,,,E,,,E,,,E,,,E,,,E,,,E,,,E,,, | B,,,4 z4 |
+[V:Dr] !f!c2 c2 c2 c2 | c c c c c c c c | c/c/c/c/ c/c/c/c/ c/c/c/c/ c/c/c/c/ | "^dừng 2 phách"c/c/c/c/ c/c/c/c/ [Fa]2 z2 |
+[V:Ld] "^CHORUS (rank S-SSS)""G"!ff!d2 g2 b3 a | "D"a2 f2 d4 | "Em"e2 g2 b2 g2 | "C"c'4 g2 e2 |
+[V:Vx] !ff!z8 | z6 "^HEY!"A2 | z8 | z6 "^HEY!"G2 |
+[V:Pd] !ff![GBd]8 | [DFA]8 | [EGB]8 | [CEG]8 |
+[V:Gt] !ff!!accent![G,,D,G,]2 [G,,D,G,][G,,D,G,] !accent![G,,D,G,]2 [G,,D,G,][G,,D,G,] | !accent![D,A,D]2 [D,A,D][D,A,D] !accent![D,A,D]2 [D,A,D][D,A,D] | !accent![E,,B,,E,]2 [E,,B,,E,][E,,B,,E,] !accent![E,,B,,E,]2 [E,,B,,E,][E,,B,,E,] | !accent![C,G,C]2 [C,G,C][C,G,C] !accent![C,G,C]2 [C,G,C][C,G,C] |
+[V:Bs] !ff!G,,,G,,,G,,,G,,,G,,,G,,,G,,,G,,, | D,,D,,D,,D,,D,,D,,D,,D,, | E,,,E,,,E,,,E,,,E,,,E,,,E,,,E,,, | C,,C,,C,,C,,C,,C,,C,,C,, |
+[V:Dr] !ff![Fa] F [cF] F [Fb] F [cFb] F | [Fb] F [cFb] F [Fb] F [cFb] F | [Fb] F [cFb] F [Fb] F [cFb] F | [Fb] F [cFb] F [Fb] F [cFb] F |
+[V:Ld] "G"d2 g2 b3 d' | "D"d'4 a2 f2 | "A"^c'2 e'2 a4 | "A""^bend"a4- a2 e ^c |
+[V:Vx] z8 | z6 "^HEY!"A2 | z8 | z4 "^SCREAM (SSS)"A4 |
+[V:Pd] [GBd]8 | [DFA]8 | [^CEA]8 | [^CEA]8 |
+[V:Gt] !accent![G,,D,G,]2 [G,,D,G,][G,,D,G,] !accent![G,,D,G,]2 [G,,D,G,][G,,D,G,] | !accent![D,A,D]2 [D,A,D][D,A,D] !accent![D,A,D]2 [D,A,D][D,A,D] | !accent![A,,E,A,]2 [A,,E,A,][A,,E,A,] !accent![A,,E,A,]2 [A,,E,A,][A,,E,A,] | !accent![A,,E,A,]2 [A,,E,A,][A,,E,A,] !accent![A,,E,A,]2 [A,,E,A,][A,,E,A,] |
+[V:Bs] G,,,G,,,G,,,G,,,G,,,G,,,G,,,G,,, | D,,D,,D,,D,,D,,D,,D,,D,, | A,,,A,,,A,,,A,,,A,,,A,,,A,,,A,,, | A,,,A,,,A,,,A,,,A,,,A,,,A,,,A,,, |
+[V:Dr] [Fb] F [cFb] F [Fb] F [cFb] F | [Fb] F [cFb] F [Fb] F [cFb] F | [Fb] F [cFb] F [Fb] F [cFb] F | [Fb] F [cFb] F [Fb] F [cFb] F |
+[V:Ld] "G"d2 g2 b3 a | "D"a2 f2 d4 | "Em"e2 g2 b2 g2 | "C"e'4 c'2 g2 |
+[V:Vx] z8 | z6 "^HEY!"A2 | z8 | z6 "^HEY!"G2 |
+[V:Pd] [GBd]8 | [DFA]8 | [EGB]8 | [CEG]8 |
+[V:Gt] !accent![G,,D,G,]2 [G,,D,G,][G,,D,G,] !accent![G,,D,G,]2 [G,,D,G,][G,,D,G,] | !accent![D,A,D]2 [D,A,D][D,A,D] !accent![D,A,D]2 [D,A,D][D,A,D] | !accent![E,,B,,E,]2 [E,,B,,E,][E,,B,,E,] !accent![E,,B,,E,]2 [E,,B,,E,][E,,B,,E,] | !accent![C,G,C]2 [C,G,C][C,G,C] !accent![C,G,C]2 [C,G,C][C,G,C] |
+[V:Bs] G,,,G,,,G,,,G,,,G,,,G,,,G,,,G,,, | D,,D,,D,,D,,D,,D,,D,,D,, | E,,,E,,,E,,,E,,,E,,,E,,,E,,,E,,, | C,,C,,C,,C,,C,,C,,C,,C,, |
+[V:Dr] [Fa] F [cF] F [Fb] F [cFb] F | [Fb] F [cFb] F [Fb] F [cFb] F | [Fb] F [cFb] F [Fb] F [cFb] F | [Fb] F [cFb] F [Fb] F [cFb] F |
+[V:Ld] "Am"c'2 a2 e2 a2 | "C"g2 c'2 e'4 | "B"^d'4 b2 f2 | "B"b2 a g f2 ^d2 |
+[V:Vx] z8 | z6 "^HEY!"G2 | z8 | z4 "^SCREAM: Yeah! (SSS)"B4 |
+[V:Pd] [CEA]8 | [CEG]8 | [B,^DF]8 | [B,^DF]8 |
+[V:Gt] !accent![A,,E,A,]2 [A,,E,A,][A,,E,A,] !accent![A,,E,A,]2 [A,,E,A,][A,,E,A,] | !accent![C,G,C]2 [C,G,C][C,G,C] !accent![C,G,C]2 [C,G,C][C,G,C] | !accent![B,,F,B,]2 [B,,F,B,][B,,F,B,] !accent![B,,F,B,]2 [B,,F,B,][B,,F,B,] | !accent![B,,F,B,]2 [B,,F,B,][B,,F,B,] !accent![B,,F,B,]2 [B,,F,B,][B,,F,B,] |
+[V:Bs] A,,,A,,,A,,,A,,,A,,,A,,,A,,,A,,, | C,,C,,C,,C,,C,,C,,C,,C,, | B,,,B,,,B,,,B,,,B,,,B,,,B,,,B,,, | B,,,B,,,B,,,B,,,B,,,B,,,B,,,B,,, |
+[V:Dr] [Fb] F [cFb] F [Fb] F [cFb] F | [Fb] F [cFb] F [Fb] F [cFb] F | [Fb] F [cFb] F [Fb] F [cFb] F | c c c c c/c/c/c/ c/c/c/c/ |
+[V:Ld] "^BREAKDOWN (half-time)""Em"!f!z8 | "Em"z8 | "F""^pinch harm."=f4 z4 | "Em"z8 |
+[V:Vx] !ff!z4 "^gầm (SSS)"E4 | z8 | z8 | z8 |
+[V:Pd] z8 | z8 | z8 | z8 |
+[V:Gt] !ff!E,,2 E,,E,, z2 [E,,B,,]2 | E,,2 E,,E,, z2 [E,,B,,]2 | =F,,2 =F,,=F,, z2 [=F,,C,]2 | E,,2 E,,E,, z2 [E,,B,,]2 |
+[V:Bs] !ff!E,,,2 E,,,E,,, z2 E,,,2 | E,,,2 E,,,E,,, z2 E,,,2 | =F,,,2 =F,,,=F,,, z2 =F,,,2 | E,,,2 E,,,E,,, z2 E,,,2 |
+[V:Dr] !ff![Fa]2 [F^g] ^g [c^g]2 ^g [F^g] | [F^g]2 [F^g] ^g [c^g]2 ^g [F^g] | [F^g]2 [F^g] ^g [c^g]2 ^g [F^g] | [F^g]2 [F^g] ^g [c^g]2 ^g [F^g] |
+[V:Ld] "Em"z8 | "Em"z8 | "F"=f2 e2 =f4 | "B""^whammy dive"b8 |
+[V:Vx] z8 | z8 | z8 | z8 |
+[V:Pd] z8 | z8 | z8 | z8 |
+[V:Gt] E,,2 E,,E,, z2 [E,,B,,]2 | E,,2 E,,E,, z2 [E,,B,,]2 | =F,,2 =F,,=F,, z2 [=F,,C,]2 | B,,2 B,,B,, z2 [B,,F,]2 |
+[V:Bs] E,,,2 E,,,E,,, z2 E,,,2 | E,,,2 E,,,E,,, z2 E,,,2 | =F,,,2 =F,,,=F,,, z2 =F,,,2 | B,,,2 B,,,B,,, z2 B,,,2 |
+[V:Dr] [F^g]2 [F^g] ^g [c^g]2 ^g [F^g] | [F^g]2 [F^g] ^g [c^g]2 ^g [F^g] | [F^g]2 [F^g] ^g [c^g]2 ^g [F^g] | c c c c c/c/c/c/ c/c/c/c/ |
+[V:Ld] "^OUTRO""C"!ff!c'2 g2 e2 c2 | "Em"!fermata!"^pinch harm."e8 |]
+[V:Vx] z8 | z8 |]
+[V:Pd] !ff![CEG]8 | !fermata![EGB]8 |]
+[V:Gt] !ff![C,G,C]8 | !fermata![E,,B,,E,]8 |]
+[V:Bs] !ff!C,,8 | !fermata!E,,,8 |]
+[V:Dr] !ff!c c c c c/c/c/c/ c c | !fermata![Fa]8 |]
+
+X:2
+T:Stem: VERSE 16 ô (lặp)
+C:music-lead (Dante combat v1)
+M:4/4
+L:1/8
+Q:1/4=172
+%%percmap F bass-drum-1
+%%percmap c acoustic-snare
+%%percmap ^g closed-hi-hat x
+%%percmap a crash-cymbal-1 x
+%%percmap b ride-cymbal-1 x
+%%score Ld Vx Pd Gt Bs Dr
+V:Ld clef=treble name="L2 Lead guitar" snm="Lead"
+V:Vx clef=treble name="L3 Shout / scream" snm="Vox"
+V:Pd clef=treble name="L2 Dây + synth (chỉ chorus)" snm="Pad"
+V:Gt clef=bass name="L1 Rhythm guitar (E chuẩn)" snm="Gtr"
+V:Bs clef=bass name="L1 Bass" snm="Bass"
+V:Dr clef=perc name="L0 Trống" snm="Dr"
+K:Em
+V:Ld
+%%MIDI program 29
+|: "^VERSE (rank D-A)""Em"!mf!z e g "^bend"a- a2 g e | "Em"b2 a g e2 d e | "C"z2 G E c2 B G | "D"A2 d f a2 f d |
+V:Vx
+%%MIDI program 54
+|: z8 | z8 | z8 | z8 |
+V:Pd
+%%MIDI program 48
+|: z8 | z8 | z8 | z8 |
+V:Gt
+%%MIDI program 30
+|: !f!E,,E,, !accent![E,,B,,]E,, z E,, !accent![G,,D,]2 | E,,E,, !accent![E,,B,,]E,, z E,, [A,,E,][B,,F,] | !accent![C,G,]2 [C,G,]C, z C, [C,G,]C, | !accent![D,A,]2 [D,A,]D, z D, [D,A,]D, |
+V:Bs
+%%MIDI program 34
+|: !f!E,,,2 E,,,E,,, z E,,, G,,,2 | E,,,2 E,,,E,,, z E,,, G,,,2 | C,,2 C,,C,, z C,, C,,C,, | D,,2 D,,D,, z D,, D,,D,, |
+V:Dr
+%%MIDI channel 10
+|: !f![Fa] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g | [F^g] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g | [F^g] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g | [F^g] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g |
+[V:Ld] "Em"z e g "^bend"a- a2 g e | "Em"b2 a g e4 | "G"z d g b d'2 b g | "A""^Dorian C#"^c2 A E A2 ^c e |
+[V:Vx] z8 | z8 | z8 | z8 |
+[V:Pd] z8 | z8 | z8 | z8 |
+[V:Gt] E,,E,, !accent![E,,B,,]E,, z E,, !accent![G,,D,]2 | E,,E,, !accent![E,,B,,]E,, z E,, [A,,E,][B,,F,] | !accent![G,,D,]2 [G,,D,]G,, z G,, [G,,D,]G,, | !accent![A,,E,]2 [A,,E,]A,, z A,, [A,,E,]A,, |
+[V:Bs] E,,,2 E,,,E,,, z E,,, G,,,2 | E,,,2 E,,,E,,, z E,,, G,,,2 | G,,,2 G,,,G,,, z G,,, G,,,G,,, | A,,,2 A,,,A,,, z A,,, A,,,A,,, |
+[V:Dr] [F^g] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g | [F^g] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g | [F^g] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g | c c c c c/c/c/c/ c/c/c/c/ |
+[V:Ld] "Em"z e g "^bend"a- a2 g e | "Em"b2 a g e2 d e | "C"z2 G E c2 B G | "D"a2 f d A2 d f |
+[V:Vx] z8 | z8 | z8 | z8 |
+[V:Pd] z8 | z8 | z8 | z8 |
+[V:Gt] E,,E,, !accent![E,,B,,]E,, z E,, !accent![G,,D,]2 | E,,E,, !accent![E,,B,,]E,, z E,, [A,,E,][B,,F,] | !accent![C,G,]2 [C,G,]C, z C, [C,G,]C, | !accent![D,A,]2 [D,A,]D, z D, [D,A,]D, |
+[V:Bs] E,,,2 E,,,E,,, z E,,, G,,,2 | E,,,2 E,,,E,,, z E,,, G,,,2 | C,,2 C,,C,, z C,, C,,C,, | D,,2 D,,D,, z D,, D,,D,, |
+[V:Dr] [Fa] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g | [F^g] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g | [F^g] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g | [F^g] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g |
+[V:Ld] "C"g2 e c G2 c e | "D"f2 d A F2 A d | "B""^pinch harm."B4- B2 ^d f | "B"b2 a g f2 ^d B :|
+[V:Vx] z8 | z8 | z8 | z8 :|
+[V:Pd] z8 | z8 | z8 | z8 :|
+[V:Gt] !accent![C,G,]2 [C,G,]C, z C, [C,G,]C, | !accent![D,A,]2 [D,A,]D, z D, [D,A,]D, | !accent![B,,F,]2 [B,,F,]B,, z B,, [B,,F,]B,, | !accent![B,,F,]2 [B,,F,]B,, z B,, [B,,F,]B,, :|
+[V:Bs] C,,2 C,,C,, z C,, C,,C,, | D,,2 D,,D,, z D,, D,,D,, | B,,,2 B,,,B,,, z B,,, B,,,B,,, | B,,,2 B,,,B,,, z B,,, B,,,B,,, :|
+[V:Dr] [F^g] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g | [F^g] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g | [F^g] ^g [c^g] [F^g] ^g [F^g] [c^g] ^g | c c c c c/c/c/c/ c/c/c/c/ :|
+
+X:3
+T:Stem: PRE-CHORUS 4 ô
+C:music-lead (Dante combat v1)
+M:4/4
+L:1/8
+Q:1/4=172
+%%percmap F bass-drum-1
+%%percmap c acoustic-snare
+%%percmap ^g closed-hi-hat x
+%%percmap a crash-cymbal-1 x
+%%percmap b ride-cymbal-1 x
+%%score Ld Vx Pd Gt Bs Dr
+V:Ld clef=treble name="L2 Lead guitar" snm="Lead"
+V:Vx clef=treble name="L3 Shout / scream" snm="Vox"
+V:Pd clef=treble name="L2 Dây + synth (chỉ chorus)" snm="Pad"
+V:Gt clef=bass name="L1 Rhythm guitar (E chuẩn)" snm="Gtr"
+V:Bs clef=bass name="L1 Bass" snm="Bass"
+V:Dr clef=perc name="L0 Trống" snm="Dr"
+K:Em
+V:Ld
+%%MIDI program 29
+"^PRE-CHORUS (chạm S, 1 lần)""C"!f!C E G c e c G E | "D"D F A d f d A F | "Em"E G B e g e B G | "B"!crescendo(!B,2 ^D2 F2 B2!crescendo)! |]
+V:Vx
+%%MIDI program 54
+z8 | z8 | z8 | z8 |]
+V:Pd
+%%MIDI program 48
+z8 | z8 | z8 | z8 |]
+V:Gt
+%%MIDI program 30
+!f!"^tremolo"[C,G,C]8 | "^tremolo"[D,A,D]8 | "^tremolo"[E,,B,,E,]8 | [B,,F,B,]4 z4 |]
+V:Bs
+%%MIDI program 34
+!f!C,,C,,C,,C,,C,,C,,C,,C,, | D,,D,,D,,D,,D,,D,,D,,D,, | E,,,E,,,E,,,E,,,E,,,E,,,E,,,E,,, | B,,,4 z4 |]
+V:Dr
+%%MIDI channel 10
+!f!c2 c2 c2 c2 | c c c c c c c c | c/c/c/c/ c/c/c/c/ c/c/c/c/ c/c/c/c/ | "^dừng 2 phách"c/c/c/c/ c/c/c/c/ [Fa]2 z2 |]
+
+X:4
+T:Stem: CHORUS 16 ô (lặp)
+C:music-lead (Dante combat v1)
+M:4/4
+L:1/8
+Q:1/4=172
+%%percmap F bass-drum-1
+%%percmap c acoustic-snare
+%%percmap ^g closed-hi-hat x
+%%percmap a crash-cymbal-1 x
+%%percmap b ride-cymbal-1 x
+%%score Ld Vx Pd Gt Bs Dr
+V:Ld clef=treble name="L2 Lead guitar" snm="Lead"
+V:Vx clef=treble name="L3 Shout / scream" snm="Vox"
+V:Pd clef=treble name="L2 Dây + synth (chỉ chorus)" snm="Pad"
+V:Gt clef=bass name="L1 Rhythm guitar (E chuẩn)" snm="Gtr"
+V:Bs clef=bass name="L1 Bass" snm="Bass"
+V:Dr clef=perc name="L0 Trống" snm="Dr"
+K:Em
+V:Ld
+%%MIDI program 29
+|: "^CHORUS (rank S-SSS)""G"!ff!d2 g2 b3 a | "D"a2 f2 d4 | "Em"e2 g2 b2 g2 | "C"c'4 g2 e2 |
+V:Vx
+%%MIDI program 54
+|: !ff!z8 | z6 "^HEY!"A2 | z8 | z6 "^HEY!"G2 |
+V:Pd
+%%MIDI program 48
+|: !ff![GBd]8 | [DFA]8 | [EGB]8 | [CEG]8 |
+V:Gt
+%%MIDI program 30
+|: !ff!!accent![G,,D,G,]2 [G,,D,G,][G,,D,G,] !accent![G,,D,G,]2 [G,,D,G,][G,,D,G,] | !accent![D,A,D]2 [D,A,D][D,A,D] !accent![D,A,D]2 [D,A,D][D,A,D] | !accent![E,,B,,E,]2 [E,,B,,E,][E,,B,,E,] !accent![E,,B,,E,]2 [E,,B,,E,][E,,B,,E,] | !accent![C,G,C]2 [C,G,C][C,G,C] !accent![C,G,C]2 [C,G,C][C,G,C] |
+V:Bs
+%%MIDI program 34
+|: !ff!G,,,G,,,G,,,G,,,G,,,G,,,G,,,G,,, | D,,D,,D,,D,,D,,D,,D,,D,, | E,,,E,,,E,,,E,,,E,,,E,,,E,,,E,,, | C,,C,,C,,C,,C,,C,,C,,C,, |
+V:Dr
+%%MIDI channel 10
+|: !ff![Fa] F [cF] F [Fb] F [cFb] F | [Fb] F [cFb] F [Fb] F [cFb] F | [Fb] F [cFb] F [Fb] F [cFb] F | [Fb] F [cFb] F [Fb] F [cFb] F |
+[V:Ld] "G"d2 g2 b3 d' | "D"d'4 a2 f2 | "A"^c'2 e'2 a4 | "A""^bend"a4- a2 e ^c |
+[V:Vx] z8 | z6 "^HEY!"A2 | z8 | z4 "^SCREAM (SSS)"A4 |
+[V:Pd] [GBd]8 | [DFA]8 | [^CEA]8 | [^CEA]8 |
+[V:Gt] !accent![G,,D,G,]2 [G,,D,G,][G,,D,G,] !accent![G,,D,G,]2 [G,,D,G,][G,,D,G,] | !accent![D,A,D]2 [D,A,D][D,A,D] !accent![D,A,D]2 [D,A,D][D,A,D] | !accent![A,,E,A,]2 [A,,E,A,][A,,E,A,] !accent![A,,E,A,]2 [A,,E,A,][A,,E,A,] | !accent![A,,E,A,]2 [A,,E,A,][A,,E,A,] !accent![A,,E,A,]2 [A,,E,A,][A,,E,A,] |
+[V:Bs] G,,,G,,,G,,,G,,,G,,,G,,,G,,,G,,, | D,,D,,D,,D,,D,,D,,D,,D,, | A,,,A,,,A,,,A,,,A,,,A,,,A,,,A,,, | A,,,A,,,A,,,A,,,A,,,A,,,A,,,A,,, |
+[V:Dr] [Fb] F [cFb] F [Fb] F [cFb] F | [Fb] F [cFb] F [Fb] F [cFb] F | [Fb] F [cFb] F [Fb] F [cFb] F | [Fb] F [cFb] F [Fb] F [cFb] F |
+[V:Ld] "G"d2 g2 b3 a | "D"a2 f2 d4 | "Em"e2 g2 b2 g2 | "C"e'4 c'2 g2 |
+[V:Vx] z8 | z6 "^HEY!"A2 | z8 | z6 "^HEY!"G2 |
+[V:Pd] [GBd]8 | [DFA]8 | [EGB]8 | [CEG]8 |
+[V:Gt] !accent![G,,D,G,]2 [G,,D,G,][G,,D,G,] !accent![G,,D,G,]2 [G,,D,G,][G,,D,G,] | !accent![D,A,D]2 [D,A,D][D,A,D] !accent![D,A,D]2 [D,A,D][D,A,D] | !accent![E,,B,,E,]2 [E,,B,,E,][E,,B,,E,] !accent![E,,B,,E,]2 [E,,B,,E,][E,,B,,E,] | !accent![C,G,C]2 [C,G,C][C,G,C] !accent![C,G,C]2 [C,G,C][C,G,C] |
+[V:Bs] G,,,G,,,G,,,G,,,G,,,G,,,G,,,G,,, | D,,D,,D,,D,,D,,D,,D,,D,, | E,,,E,,,E,,,E,,,E,,,E,,,E,,,E,,, | C,,C,,C,,C,,C,,C,,C,,C,, |
+[V:Dr] [Fa] F [cF] F [Fb] F [cFb] F | [Fb] F [cFb] F [Fb] F [cFb] F | [Fb] F [cFb] F [Fb] F [cFb] F | [Fb] F [cFb] F [Fb] F [cFb] F |
+[V:Ld] "Am"c'2 a2 e2 a2 | "C"g2 c'2 e'4 | "B"^d'4 b2 f2 | "B"b2 a g f2 ^d2 :|
+[V:Vx] z8 | z6 "^HEY!"G2 | z8 | z4 "^SCREAM: Yeah! (SSS)"B4 :|
+[V:Pd] [CEA]8 | [CEG]8 | [B,^DF]8 | [B,^DF]8 :|
+[V:Gt] !accent![A,,E,A,]2 [A,,E,A,][A,,E,A,] !accent![A,,E,A,]2 [A,,E,A,][A,,E,A,] | !accent![C,G,C]2 [C,G,C][C,G,C] !accent![C,G,C]2 [C,G,C][C,G,C] | !accent![B,,F,B,]2 [B,,F,B,][B,,F,B,] !accent![B,,F,B,]2 [B,,F,B,][B,,F,B,] | !accent![B,,F,B,]2 [B,,F,B,][B,,F,B,] !accent![B,,F,B,]2 [B,,F,B,][B,,F,B,] :|
+[V:Bs] A,,,A,,,A,,,A,,,A,,,A,,,A,,,A,,, | C,,C,,C,,C,,C,,C,,C,,C,, | B,,,B,,,B,,,B,,,B,,,B,,,B,,,B,,, | B,,,B,,,B,,,B,,,B,,,B,,,B,,,B,,, :|
+[V:Dr] [Fb] F [cFb] F [Fb] F [cFb] F | [Fb] F [cFb] F [Fb] F [cFb] F | [Fb] F [cFb] F [Fb] F [cFb] F | c c c c c/c/c/c/ c/c/c/c/ :|
+
+X:5
+T:Stem: BREAKDOWN 8 ô
+C:music-lead (Dante combat v1)
+M:4/4
+L:1/8
+Q:1/4=172
+%%percmap F bass-drum-1
+%%percmap c acoustic-snare
+%%percmap ^g closed-hi-hat x
+%%percmap a crash-cymbal-1 x
+%%percmap b ride-cymbal-1 x
+%%score Ld Vx Pd Gt Bs Dr
+V:Ld clef=treble name="L2 Lead guitar" snm="Lead"
+V:Vx clef=treble name="L3 Shout / scream" snm="Vox"
+V:Pd clef=treble name="L2 Dây + synth (chỉ chorus)" snm="Pad"
+V:Gt clef=bass name="L1 Rhythm guitar (E chuẩn)" snm="Gtr"
+V:Bs clef=bass name="L1 Bass" snm="Bass"
+V:Dr clef=perc name="L0 Trống" snm="Dr"
+K:Em
+V:Ld
+%%MIDI program 29
+"^BREAKDOWN (half-time)""Em"!f!z8 | "Em"z8 | "F""^pinch harm."=f4 z4 | "Em"z8 |
+V:Vx
+%%MIDI program 54
+!ff!z4 "^gầm (SSS)"E4 | z8 | z8 | z8 |
+V:Pd
+%%MIDI program 48
+z8 | z8 | z8 | z8 |
+V:Gt
+%%MIDI program 30
+!ff!E,,2 E,,E,, z2 [E,,B,,]2 | E,,2 E,,E,, z2 [E,,B,,]2 | =F,,2 =F,,=F,, z2 [=F,,C,]2 | E,,2 E,,E,, z2 [E,,B,,]2 |
+V:Bs
+%%MIDI program 34
+!ff!E,,,2 E,,,E,,, z2 E,,,2 | E,,,2 E,,,E,,, z2 E,,,2 | =F,,,2 =F,,,=F,,, z2 =F,,,2 | E,,,2 E,,,E,,, z2 E,,,2 |
+V:Dr
+%%MIDI channel 10
+!ff![Fa]2 [F^g] ^g [c^g]2 ^g [F^g] | [F^g]2 [F^g] ^g [c^g]2 ^g [F^g] | [F^g]2 [F^g] ^g [c^g]2 ^g [F^g] | [F^g]2 [F^g] ^g [c^g]2 ^g [F^g] |
+[V:Ld] "Em"z8 | "Em"z8 | "F"=f2 e2 =f4 | "B""^whammy dive"b8 |]
+[V:Vx] z8 | z8 | z8 | z8 |]
+[V:Pd] z8 | z8 | z8 | z8 |]
+[V:Gt] E,,2 E,,E,, z2 [E,,B,,]2 | E,,2 E,,E,, z2 [E,,B,,]2 | =F,,2 =F,,=F,, z2 [=F,,C,]2 | B,,2 B,,B,, z2 [B,,F,]2 |]
+[V:Bs] E,,,2 E,,,E,,, z2 E,,,2 | E,,,2 E,,,E,,, z2 E,,,2 | =F,,,2 =F,,,=F,,, z2 =F,,,2 | B,,,2 B,,,B,,, z2 B,,,2 |]
+[V:Dr] [F^g]2 [F^g] ^g [c^g]2 ^g [F^g] | [F^g]2 [F^g] ^g [c^g]2 ^g [F^g] | [F^g]2 [F^g] ^g [c^g]2 ^g [F^g] | c c c c c/c/c/c/ c/c/c/c/ |]
+
+X:6
+T:Stem: OUTRO 2 ô
+C:music-lead (Dante combat v1)
+M:4/4
+L:1/8
+Q:1/4=172
+%%percmap F bass-drum-1
+%%percmap c acoustic-snare
+%%percmap ^g closed-hi-hat x
+%%percmap a crash-cymbal-1 x
+%%percmap b ride-cymbal-1 x
+%%score Ld Vx Pd Gt Bs Dr
+V:Ld clef=treble name="L2 Lead guitar" snm="Lead"
+V:Vx clef=treble name="L3 Shout / scream" snm="Vox"
+V:Pd clef=treble name="L2 Dây + synth (chỉ chorus)" snm="Pad"
+V:Gt clef=bass name="L1 Rhythm guitar (E chuẩn)" snm="Gtr"
+V:Bs clef=bass name="L1 Bass" snm="Bass"
+V:Dr clef=perc name="L0 Trống" snm="Dr"
+K:Em
+V:Ld
+%%MIDI program 29
+"^OUTRO""C"!ff!c'2 g2 e2 c2 | "Em"!fermata!"^pinch harm."e8 |]
+V:Vx
+%%MIDI program 54
+z8 | z8 |]
+V:Pd
+%%MIDI program 48
+!ff![CEG]8 | !fermata![EGB]8 |]
+V:Gt
+%%MIDI program 30
+!ff![C,G,C]8 | !fermata![E,,B,,E,]8 |]
+V:Bs
+%%MIDI program 34
+!ff!C,,8 | !fermata!E,,,8 |]
+V:Dr
+%%MIDI channel 10
+!ff!c c c c c/c/c/c/ c c | !fermata![Fa]8 |]
+</script>
+
+<script>
+  const src = document.getElementById('abc-source').textContent.trim();
+  document.getElementById('abc-print').textContent = src;
+  const warnBox = document.getElementById('warnings');
+  const host = document.getElementById('tunes');
+  if (!window.ABCJS) {
+    warnBox.className = 'bad';
+    warnBox.textContent = 'Không tải được abcjs (cần mạng để hiện khuông nhạc).';
+  } else {
+    const all = [];
+    src.split(/\n(?=X:)/).forEach((abc, i) => {
+      const sec = document.createElement('section');
+      sec.innerHTML = '<div class="paper"><div id="paper' + i + '"></div></div><div class="audio" id="audio' + i + '"></div>';
+      host.appendChild(sec);
+      const tune = ABCJS.renderAbc('paper' + i, abc, { responsive: 'resize', add_classes: true, staffwidth: 900 })[0];
+      (tune.warnings || []).forEach(w => all.push('Tune ' + (i + 1) + ': ' + w));
+      if (ABCJS.synth.supportsAudio()) {
+        const sc = new ABCJS.synth.SynthController();
+        sc.load('#audio' + i, null, { displayLoop: true, displayRestart: true, displayPlay: true, displayProgress: true, displayWarp: true });
+        sc.setTune(tune, false, { chordsOff: true }).catch(e => { warnBox.innerHTML += '<br>Synth: ' + e; });
+      }
+    });
+    warnBox.className = all.length ? 'bad' : 'ok';
+    warnBox.innerHTML = all.length ? '<b>Cảnh báo (' + all.length + '):</b><br>' + all.join('<br>') : 'Không có cảnh báo';
+  }
+</script>
+</body>
+</html>

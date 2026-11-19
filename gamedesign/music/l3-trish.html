@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L3 Trish</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/abcjs@6.6.4/abcjs-audio.css">
+<script src="https://cdn.jsdelivr.net/npm/abcjs@6.6.4/dist/abcjs-basic-min.js"></script>
+<style>
+  :root { --bg: #f7f5f0; --paper: #ffffff; --text: #1d1c1a; --muted: #6b675f; --line: #ddd8cc; --accent: #8a3b2a; --ok: #2f6b3a; --warn: #a3412c; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #1b1a18; --paper: #f7f5f0; --text: #ece8df; --muted: #a29d92; --line: #3a3833; --accent: #e08b6f; --ok: #7fc28a; --warn: #f08a72; }
+  }
+  :root[data-theme="dark"] { --bg: #1b1a18; --paper: #f7f5f0; --text: #ece8df; --muted: #a29d92; --line: #3a3833; --accent: #e08b6f; --ok: #7fc28a; --warn: #f08a72; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.55 Georgia, "Times New Roman", serif; }
+  main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { margin: 0; font-size: 26px; }
+  h2 { font-size: 16px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 28px 0 10px; font-family: system-ui, sans-serif; }
+  .meta { color: var(--muted); font-family: system-ui, sans-serif; font-size: 14px; }
+  .paper { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 12px; color: #000; }
+  #warnings { font-family: ui-monospace, Consolas, monospace; font-size: 13px; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--line); margin-top: 10px; }
+  #warnings.ok { color: var(--ok); } #warnings.bad { color: var(--warn); }
+  #audio { margin-top: 10px; }
+  table { width: 100%; border-collapse: collapse; font-family: system-ui, sans-serif; font-size: 14px; }
+  th, td { text-align: left; border-bottom: 1px solid var(--line); padding: 6px 8px; vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; }
+  .scroll { overflow-x: auto; }
+  details { font-family: ui-monospace, Consolas, monospace; font-size: 13px; }
+  pre { white-space: pre-wrap; }
+  @media print { #audio, #warnings, details { display: none; } body { background: #fff; color: #000; } h2 { break-after: avoid; } }
+</style>
+
+<style>body { font-family: "Times New Roman", "Noto Serif", serif; } .audio { margin: 8px 0 18px; } section + section { margin-top: 18px; }</style>
+</head>
+<body>
+<main>
+  <h1>L3 Trish</h1>
+  <div class="meta">Leitmotif Trish + 2 biến thể Awake · Dựa trên: music-direction.md, D-007 · 150 BPM · D thứ + In · vòng 16 ô = 25.6s · Draft v1</div>
+
+  <h2>Concept</h2>
+  <p>Motif <b>"Vòng xoáy"</b> (ô 1-2): chùm ba (triplet) quấn quanh D với Eb của thang In, trên nền 4/4 thẳng: như phép đang cuộn lại. Áp đảo, bí ẩn (D-004). Tune 1 là nguyên mẫu (koto), dùng cho chọn nhân vật và làm nguồn cho 2 biến thể.</p>
+  <p><b>Devil</b> (tune 2): motif hạ 1 quãng 8, bỏ chùm ba thành móc đơn thẳng, chug guitar 8 dây, Eb nhấn ở phách 4 (nghiến b2 có chủ ý); câu A' thành chug pedal D. Nặng, méo, hủy diệt.<br>
+  <b>Angel</b> (tune 3): motif giãn trường độ (augmentation), hát bởi hợp xướng nữ SSA "ah" ở quãng cao, có maj7 trên Bb ở ô 11 và đỉnh Bb5 ở ô 13. Sáng, treo lơ lửng, khống chế.</p>
+
+  <h2>Score</h2>
+  <p class="meta">Ký âm ở cao độ thực (concert pitch). Khi chép part: guitar và bass viết cao 1 quãng 8. Ký hiệu trống: F kick, c snare, g× hi-hat, a× crash; taiko: C ō-daiko, e shime-daiko. Nút play phát bằng synth GM, chỉ để nghe nốt và độ khớp, không phải âm sắc thật.</p>
+  <div id="tunes"></div>
+  <div id="warnings"></div>
+
+  <h2>Harmony plan</h2>
+  <div class="scroll"><table>
+<tr><th>Section</th><th>Bars</th><th>Mode / key</th><th>Progression</th><th>Idea</th></tr>
+<tr><td>A</td><td>1-8</td><td>D thứ + In (Eb)</td><td>Dm Dm Bb Eb | Dm Gm Bb A (i i bVI bII | i iv bVI V)</td><td>bII Eb là màu Phrygian/In; A trưởng (C#) kéo về D</td></tr>
+<tr><td>A'</td><td>9-16</td><td>D thứ + In</td><td>Dm Dm Bb Eb | Gm Bb Eb A (i i bVI bII | iv bVI bII V)</td><td>bII -> V ở ô 15-16 (Neapolitan Phrygian), lặp về ô 1 rất chắc</td></tr>
+<tr><td>Devil</td><td>1, 5</td><td></td><td>Eb trên Dm phách 4</td><td>b2 nghiến có chủ ý (màu quỷ)</td></tr>
+<tr><td>Angel</td><td>11, 14</td><td></td><td>a trên Bb (maj7), a đầu ô 14 giải xuống f</td><td>màu sáng; appoggiatura</td></tr>
+<tr><td>Cả 3</td><td>8, 16</td><td></td><td>Bb trên A</td><td>b9, màu Phrygian dominant</td></tr>
+</table></div>
+
+  <h2>Orchestration</h2>
+  <div class="scroll"><table>
+<tr><th>Section</th><th>Bars</th><th>Melody</th><th>Counter / inner</th><th>Harmony / pad</th><th>Bass</th><th>Percussion</th><th>Dynamics</th><th>Colour</th></tr>
+<tr><td>Nguyên mẫu</td><td>1-16</td><td>koto (gảy, có oshide bend ở Eb)</td><td>giọng nữ thì thầm (âm tiết, không lời)</td><td>L2</td><td>L1</td><td>L0</td><td>mp -> mf</td><td>chỉ dùng ngoài combat (chọn nhân vật), xem câu hỏi mở</td></tr>
+<tr><td>Devil</td><td>1-16</td><td>guitar 8 dây méo, power chord</td><td>synth bass gầm nhân đôi 2 quãng 8 dưới</td><td>L2</td><td>L1</td><td>L0</td><td>f -> ff</td><td>distortion nặng, sub; ô 9-16 chug pedal D</td></tr>
+<tr><td>Angel</td><td>1-16</td><td>hợp xướng nữ: soprano</td><td>alto giữ nốt hợp âm; celesta + harp rải nốt giai điệu</td><td>L2</td><td>L1</td><td>L0</td><td>p -> f</td><td>reverb sáng, dài</td></tr>
+</table></div>
+
+  <h2>Adaptive use in game</h2>
+  <div class="scroll"><table>
+<tr><th>Layer / section</th><th>Content</th><th>Game state</th><th>Enter / exit rule</th></tr>
+<tr><td>L3 Devil</td><td>tune 2</td><td>Trish Awake, chọn Devil</td><td>đầu ô kế sau khi kích hoạt (stinger Devil ở ô trước); tắt Awake: bỏ ở đầu ô kế</td></tr>
+<tr><td>L3 Angel</td><td>tune 3</td><td>Trish Awake, chọn Angel</td><td>như Devil</td></tr>
+<tr><td>Theme nguyên mẫu</td><td>tune 1</td><td>chọn nhân vật (đề xuất thêm: Nộ đầy chờ Awake, chưa chốt)</td><td>-</td></tr>
+</table></div>
+
+  <h2>Production notes</h2>
+  <ul><li>Tầm: nguyên mẫu D4-D6 (koto). Devil A3-G5 (guitar). Angel soprano G4-Bb5, alto D4-D5.</li>
+<li>Devil và Angel dùng cùng vòng hòa âm và độ dài với L2 nên đổi qua lại được ở đầu ô.</li>
+<li>Câu hỏi mở cho design lead: theme nguyên mẫu có phát trong combat khi Nộ đầy 100% (chờ kích hoạt) không? D-007 hiện chỉ có L3 khi Awake.</li></ul>
+
+  <details><summary>ABC source</summary><pre id="abc-print"></pre></details>
+</main>
+
+<script type="text/plain" id="abc-source">
+X:1
+T:Theme Trish: "Vòng xoáy" (nguyên mẫu)
+C:music-lead v1
+M:4/4
+L:1/8
+Q:1/4=150
+%%percmap F bass-drum-1
+%%percmap c acoustic-snare
+%%percmap ^g closed-hi-hat x
+%%percmap a crash-cymbal-1 x
+%%percmap C low-floor-tom
+%%percmap e high-tom
+%%score L3 Pd Bs
+V:L3 clef=treble name="Koto" snm="Koto"
+%%MIDI program 107
+V:Pd clef=treble name="L2 Pad (tham chiếu)" snm="Pad"
+%%MIDI program 52
+V:Bs clef=bass name="L1 Bass (tham chiếu)" snm="Bass"
+%%MIDI program 34
+K:Dm
+[V:L3] |: (3"^A (điểm lặp)""Dm"!mp!d_ed (3AGA d4 | (3"Dm"fed (3AFD A4 | (3"Bb"dfb (3fdB d4 | (3"Eb"_egb (3g_eB G4 |
+[V:Pd] |: !p![DFA]8 | [DFA]8 | [DFB]8 | [_EGB]8 |
+[V:Bs] |: !mp!D,,,2 D,,,D,,, D,,,2 A,,,C,, | D,,,2 D,,,D,,, F,,,2 E,,,A,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, |
+[V:L3] (3"Dm"d_ed (3AGA d4 | (3"Gm"gbd' (3bgd B4 | (3"Bb"fdB (3dfb d'4 | (3"A"^c'ba (3e^cA E4 |
+[V:Pd] [DFA]8 | [DGB]8 | [DFB]8 | [^CEA]8 |
+[V:Bs] D,,,2 D,,,D,,, D,,,2 A,,,C,, | G,,,2 G,,,G,,, G,,,2 D,,,F,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, |
+[V:L3] (3"^A'""Dm"!mf!d_ed (3AGA d2 f2 | (3"Dm"agf (3edA d4 | (3"Bb"dfb (3fdB F4 | (3"Eb"GB_e (3g_eB G4 |
+[V:Pd] [DFA]8 | [FAd]8 | [FBd]8 | [GB_e]8 |
+[V:Bs] D,,,2 D,,,D,,, D,,,2 A,,,C,, | D,,,2 D,,,D,,, F,,,2 E,,,A,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, |
+[V:L3] (3"Gm"Bdg (3dBG D4 | (3"Bb"FBd (3fdB F4 | (3"Eb"_EGB (3_egb g4 | (3"A"^cBA (3E^CE A4 :|
+[V:Pd] [GBd]8 | [FBd]8 | [GB_e]8 | [EA^c]8 :|
+[V:Bs] G,,,2 G,,,G,,, G,,,2 D,,,F,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, :|
+
+X:2
+T:L3 Trish Awake Devil
+C:music-lead v1
+M:4/4
+L:1/8
+Q:1/4=150
+%%percmap F bass-drum-1
+%%percmap c acoustic-snare
+%%percmap ^g closed-hi-hat x
+%%percmap a crash-cymbal-1 x
+%%percmap C low-floor-tom
+%%percmap e high-tom
+%%score L3 Pd Bs
+V:L3 clef=treble name="L3 Guitar 8 dây + synth bass" snm="Devil"
+%%MIDI program 30
+V:Pd clef=treble name="L2 Pad (tham chiếu)" snm="Pad"
+%%MIDI program 52
+V:Bs clef=bass name="L1 Bass (tham chiếu)" snm="Bass"
+%%MIDI program 34
+K:Dm
+[V:L3] |: "^A (điểm lặp)""Dm"!f!!accent!D _E D A, D2 !accent!_E2 | "Dm"F E D A, D,4 | "Bb"B, D F D B,2 F2 | "Eb"_E G B G _E4 |
+[V:Pd] |: !p![DFA]8 | [DFA]8 | [DFB]8 | [_EGB]8 |
+[V:Bs] |: !mp!D,,,2 D,,,D,,, D,,,2 A,,,C,, | D,,,2 D,,,D,,, F,,,2 E,,,A,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, |
+[V:L3] "Dm"!accent!D _E D A, D2 !accent!_E2 | "Gm"G B d B G2 D2 | "Bb"F D B, D F2 B2 | "A"A ^G A B ^c2 A,2 |
+[V:Pd] [DFA]8 | [DGB]8 | [DFB]8 | [^CEA]8 |
+[V:Bs] D,,,2 D,,,D,,, D,,,2 A,,,C,, | G,,,2 G,,,G,,, G,,,2 D,,,F,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, |
+[V:L3] "^A'""Dm"!ff!D,D, D _E D,D, A, D | "Dm"D,D, F E D,D, A,2 | "Bb"B,B, D F B,B, d2 | "Eb"_E_E G B _E_E g2 |
+[V:Pd] [DFA]8 | [FAd]8 | [FBd]8 | [GB_e]8 |
+[V:Bs] D,,,2 D,,,D,,, D,,,2 A,,,C,, | D,,,2 D,,,D,,, F,,,2 E,,,A,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, |
+[V:L3] "Gm"G,G, B, D G,G, d2 | "Bb"B,B, D F B,B, f2 | "Eb"_E_E G B _e2 d2 | "A"A,A, ^C E A,A, ^C2 :|
+[V:Pd] [GBd]8 | [FBd]8 | [GB_e]8 | [EA^c]8 :|
+[V:Bs] G,,,2 G,,,G,,, G,,,2 D,,,F,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, :|
+
+X:3
+T:L3 Trish Awake Angel
+C:music-lead v1
+M:4/4
+L:1/8
+Q:1/4=150
+%%percmap F bass-drum-1
+%%percmap c acoustic-snare
+%%percmap ^g closed-hi-hat x
+%%percmap a crash-cymbal-1 x
+%%percmap C low-floor-tom
+%%percmap e high-tom
+%%score L3 Al Pd Bs
+V:L3 clef=treble name="L3 Hợp xướng nữ: Soprano" snm="S"
+%%MIDI program 52
+V:Al clef=treble name="L3 Hợp xướng nữ: Alto" snm="A"
+%%MIDI program 52
+V:Pd clef=treble name="L2 Pad (tham chiếu)" snm="Pad"
+%%MIDI program 52
+V:Bs clef=bass name="L1 Bass (tham chiếu)" snm="Bass"
+%%MIDI program 34
+K:Dm
+[V:L3] |: "^A (điểm lặp)""Dm"!p!d2 _e2 d4 | "Dm"A2 G2 A4 | "Bb"B2 d2 f4 | "Eb"G2 B2 _e4 |
+[V:Al] |: !p!A8 | F8 | F8 | _E8 |
+[V:Pd] |: !p![DFA]8 | [DFA]8 | [DFB]8 | [_EGB]8 |
+[V:Bs] |: !mp!D,,,2 D,,,D,,, D,,,2 A,,,C,, | D,,,2 D,,,D,,, F,,,2 E,,,A,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, |
+[V:L3] "Dm"d2 _e2 d4 | "Gm"B2 d2 g4 | "Bb"f2 d2 B4 | "A"A4 ^c4 |
+[V:Al] A8 | G8 | D8 | E8 |
+[V:Pd] [DFA]8 | [DGB]8 | [DFB]8 | [^CEA]8 |
+[V:Bs] D,,,2 D,,,D,,, D,,,2 A,,,C,, | G,,,2 G,,,G,,, G,,,2 D,,,F,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, |
+[V:L3] "^A'""Dm"!mf!f2 g2 a4 | "Dm"f2 e2 d4 | "Bb"d2 f2 a4 | "Eb"g4 _e4 |
+[V:Al] d8 | A8 | F8 | B8 |
+[V:Pd] [DFA]8 | [FAd]8 | [FBd]8 | [GB_e]8 |
+[V:Bs] D,,,2 D,,,D,,, D,,,2 A,,,C,, | D,,,2 D,,,D,,, F,,,2 E,,,A,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, |
+[V:L3] "Gm"!f!g2 a2 b4 | "Bb"a2 f2 d4 | "Eb"_e2 f2 g4 | "A"^c4 e4 :|
+[V:Al] d8 | F8 | B8 | A8 :|
+[V:Pd] [GBd]8 | [FBd]8 | [GB_e]8 | [EA^c]8 :|
+[V:Bs] G,,,2 G,,,G,,, G,,,2 D,,,F,,, | B,,,2 B,,,B,,, B,,,2 F,,,A,,, | _E,,,2 _E,,,_E,,, _E,,,2 B,,,G,,, | A,,,2 A,,,A,,, ^C,,2 E,,^C,, :|
+</script>
+
+<script>
+  const src = document.getElementById('abc-source').textContent.trim();
+  document.getElementById('abc-print').textContent = src;
+  const warnBox = document.getElementById('warnings');
+  const host = document.getElementById('tunes');
+  if (!window.ABCJS) {
+    warnBox.className = 'bad';
+    warnBox.textContent = 'Không tải được abcjs (cần mạng để hiện khuông nhạc).';
+  } else {
+    const all = [];
+    src.split(/\n(?=X:)/).forEach((abc, i) => {
+      const sec = document.createElement('section');
+      sec.innerHTML = '<div class="paper"><div id="paper' + i + '"></div></div><div class="audio" id="audio' + i + '"></div>';
+      host.appendChild(sec);
+      const tune = ABCJS.renderAbc('paper' + i, abc, { responsive: 'resize', add_classes: true, staffwidth: 900 })[0];
+      (tune.warnings || []).forEach(w => all.push('Tune ' + (i + 1) + ': ' + w));
+      if (ABCJS.synth.supportsAudio()) {
+        const sc = new ABCJS.synth.SynthController();
+        sc.load('#audio' + i, null, { displayLoop: true, displayRestart: true, displayPlay: true, displayProgress: true, displayWarp: true });
+        sc.setTune(tune, false, { chordsOff: true }).catch(e => { warnBox.innerHTML += '<br>Synth: ' + e; });
+      }
+    });
+    warnBox.className = all.length ? 'bad' : 'ok';
+    warnBox.innerHTML = all.length ? '<b>Cảnh báo (' + all.length + '):</b><br>' + all.join('<br>') : 'Không có cảnh báo';
+  }
+</script>
+</body>
+</html>

@@ -46,7 +46,15 @@ public class MeleeHitDetector : MonoBehaviour
     [Tooltip("Đá đẩy mục tiêu lùi xa gấp bấy nhiêu lần chém")]
     public float KickKnockbackScale = 1.5f;
 
+    [Header("Tầm lưỡi kiếm (để CharacterCombat chọn khoảng dừng)")]
+    [Tooltip("Lưỡi kiếm lệch sang ngang quá bấy nhiêu m so với hướng nhìn thì không tính vào tầm")]
+    public float ReachHalfWidth = 0.5f;
+    [Tooltip("Lưỡi kiếm cao hơn chân bấy nhiêu m thì không tính vào tầm (quá đầu mục tiêu)")]
+    public float ReachMaxHeight = 2.2f;
+
     public bool LogHits;
+
+    private readonly Dictionary<AttackStep, float> _reach = new Dictionary<AttackStep, float>();
 
     private readonly Collider[] _overlaps = new Collider[16];
     private readonly HashSet<HitReaction> _hitThisWindow = new HashSet<HitReaction>();
@@ -215,7 +223,7 @@ public class MeleeHitDetector : MonoBehaviour
         Vector3 point = collider.ClosestPoint(ClosestOnSegment(a, b, collider.bounds.center));
         Vector3 attackDirection = Vector3.ProjectOnPlane(point - transform.position, Vector3.up).normalized;
 
-        target.TakeHit(attackDirection, strength, kick ? KickKnockbackScale : 1f);
+        target.TakeHit(attackDirection, strength, kick ? KickKnockbackScale : 1f, info.Context == AttackContext.Launcher);
         if (effects != null)
         {
             if (kick) effects.PlayKickHit(point, -attackDirection, strength);
@@ -253,6 +261,65 @@ public class MeleeHitDetector : MonoBehaviour
         if (effects != null) effects.PlaySlam(new Vector3(bladeTip.x, feet, bladeTip.z));
         if (cameraFeedback != null) cameraFeedback.PlaySlam();
         if (LogHits) Debug.Log($"[MeleeHitDetector] đập đất step={step.Name}", this);
+    }
+
+    /// <summary>
+    /// Điểm xa nhất phía trước (m, tính từ gốc nhân vật) mà lưỡi kiếm quét qua trong các cửa sổ chém của đòn,
+    /// lấy mẫu từ chính anim của đòn nên đúng với từng skill. Trả về -1 nếu không đo được.
+    /// </summary>
+    public float BladeReach(AttackStep step)
+    {
+        if (step == null || step.Clip == null || step.HitTimes.Count == 0) return -1f;
+        if (_reach.TryGetValue(step, out float reach)) return reach;
+        reach = MeasureReach(step);
+        _reach[step] = reach;
+        return reach;
+    }
+
+    // lấy mẫu anim lên chính bộ xương rồi trả lại: Animator ghi đè tư thế ở lần evaluate kế tiếp trước khi vẽ
+    private float MeasureReach(AttackStep step)
+    {
+        WeaponData weapon = characterCombo.CurrentWeapon;
+        if (weapon == null || !TryGetBlade(out _, out _)) return -1f;
+
+        Transform model = characterCombo.animator.transform;
+        Transform hand = weaponHolder.Socket.parent;
+        Transform root = _character != null ? _character.transform : transform;
+        if (hand == null) return -1f;
+
+        Vector3 restPosition = model.localPosition;
+        Quaternion restRotation = model.localRotation;
+        Matrix4x4 restModel = model.localToWorldMatrix;
+        float length = Mathf.Max(step.Length, 0.0001f);
+        float best = -1f;
+
+        foreach (float hitTime in step.HitTimes)
+        {
+            for (int i = 0; i <= 4; i++)
+            {
+                float normalized = Mathf.Clamp01(hitTime - WindowBefore + (WindowBefore + WindowAfter) * i / 4f);
+                float time = Mathf.Min(normalized * length, step.Clip.length);
+                step.Clip.SampleAnimation(model.gameObject, time);
+                if (!weapon.TrySampleAttackGrip(step, time, out Vector3 gripPosition, out Quaternion gripRotation))
+                {
+                    gripPosition = weaponHolder.Socket.localPosition;
+                    gripRotation = weaponHolder.Socket.localRotation;
+                }
+
+                // anim humanoid có thể dời cả model: đổi về khung model lúc chưa lấy mẫu
+                Vector3 bladeBase = root.InverseTransformPoint(restModel.MultiplyPoint3x4(model.InverseTransformPoint(hand.TransformPoint(gripPosition))));
+                Vector3 bladeTip = root.InverseTransformPoint(restModel.MultiplyPoint3x4(model.InverseTransformPoint(hand.TransformPoint(gripPosition + gripRotation * _localTip))));
+                for (int s = 0; s <= 10; s++)
+                {
+                    Vector3 point = Vector3.Lerp(bladeBase, bladeTip, s / 10f);
+                    if (Mathf.Abs(point.x) <= ReachHalfWidth && point.y >= -0.1f && point.y <= ReachMaxHeight) best = Mathf.Max(best, point.z);
+                }
+            }
+        }
+
+        model.localPosition = restPosition;
+        model.localRotation = restRotation;
+        return best;
     }
 
     // mũi kiếm = đầu xa tay cầm theo trục dài nhất của mesh, không cần đặt tay cho từng vũ khí

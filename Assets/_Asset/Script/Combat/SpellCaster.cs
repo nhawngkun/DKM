@@ -217,6 +217,8 @@ public class SpellCaster : MonoBehaviour
 
         TrailRenderer trail = go.AddComponent<TrailRenderer>();
         trail.sharedMaterial = TrailMaterial;
+        // không có material thì tắt hẳn vệt, tránh vệt hồng tím báo lỗi
+        trail.enabled = TrailMaterial != null;
         trail.time = TrailTime;
         trail.minVertexDistance = 0.05f;
         trail.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
@@ -308,13 +310,23 @@ public class SpellCaster : MonoBehaviour
             if (target != null) _blastHits.Add(target);
         }
 
+        Vector3 farthest = center;
+        float farthestDistance = -1f;
         foreach (HitReaction target in _blastHits)
         {
             Vector3 away = Vector3.ProjectOnPlane(target.transform.position - center, Vector3.up);
             Vector3 direction = away.sqrMagnitude > 0.0001f ? away.normalized : transform.forward;
-            ApplyHit(target, target.transform.position + Vector3.up * AimHeight, direction, info);
+            Vector3 point = target.transform.position + Vector3.up * AimHeight;
+            ApplyHit(target, point, direction, info);
+            float distance = Vector3.ProjectOnPlane(point - transform.position, Vector3.up).sqrMagnitude;
+            if (distance > farthestDistance)
+            {
+                farthestDistance = distance;
+                farthest = point;
+            }
         }
-        if (_blastHits.Count > 0) PlayFeedback(info, center, transform.forward);
+        // camera lấy mục tiêu xa nhất làm điểm trúng: nova quanh người trúng địch ở xa thì cinematic biết là đòn tầm xa
+        if (_blastHits.Count > 0) PlayFeedback(info, farthest, transform.forward);
     }
 
     private void ApplyHit(HitReaction target, Vector3 point, Vector3 direction, ComboHitInfo info)

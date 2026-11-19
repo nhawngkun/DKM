@@ -13,7 +13,7 @@ public class CameraFollow : MonoBehaviour
     public Camera Camera;
 
     [Header("Framing")]
-    public Vector2 FollowPointFraming = new Vector2(0f, 0f);
+    public Vector2 FollowPointFraming = new Vector2(0f, 0.5f);
     public float FollowingSharpnessPlanar = 8f;
     public float FollowingSharpnessVertical = 15f;
     public float AirFollowingSharpnessVertical = 30f;
