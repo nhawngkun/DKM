@@ -416,9 +416,12 @@ public class CharacterCombo : MonoBehaviour
         return BuildInfo(_step.IsFinisher && hitIndex == _step.HitTimes.Count - 1);
     }
 
-    public ComboHitInfo BuildKickInfo()
+    // đòn chốt kết bằng cú đá (đá xoáy, phản đòn): cú đá cuối là đòn chốt nếu không còn mốc đấm nào sau nó
+    public ComboHitInfo BuildKickInfo(int kickIndex)
     {
-        return BuildInfo(false);
+        bool lastKick = kickIndex >= 0 && kickIndex == _step.KickTimes.Count - 1;
+        bool afterHits = _step.HitTimes.Count == 0 || _step.KickTimes[kickIndex] >= _step.HitTimes[_step.HitTimes.Count - 1];
+        return BuildInfo(_step.IsFinisher && lastKick && afterHits);
     }
 
     private ComboHitInfo BuildInfo(bool isFinal)

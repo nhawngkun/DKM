@@ -111,18 +111,7 @@ public class HeroGrapple : MonoBehaviour
         return best;
     }
 
-    private int SkillSlotOf(WeaponData weapon)
-    {
-        if (weapon == null) return -1;
-        int slot = 0;
-        foreach (ComboChain chain in weapon.Chains)
-        {
-            if (chain.Context != AttackContext.Skill) continue;
-            if (chain.Name == ChainName) return slot;
-            slot++;
-        }
-        return -1;
-    }
+    private int SkillSlotOf(WeaponData weapon) => weapon != null ? weapon.SkillSlotOf(ChainName) : -1;
 
     private int StepIndex(CharacterCombo combo)
     {

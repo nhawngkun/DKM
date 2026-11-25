@@ -188,7 +188,8 @@ public static class CharacterSetupTool
         GaitClips = new[] { null, HeroClip + "run_01", HeroClip + "run_01", "male_unarmed_sprint_01" },
         BuildAnimInplace = true,
         PrefabPath = "Assets/_Asset/Prefab/Hero.prefab",
-        PrefabTemplate = "Assets/_Asset/Prefab/Trish.prefab",
+        // chỉ dùng khi Hero.prefab chưa có; Trish đã cất vào _Archive (D-019)
+        PrefabTemplate = "Assets/_Archive/OldCharacters/_Asset/Prefab/Trish.prefab",
         ModelPath = "Assets/_Asset/3D/AvatarV10/AvatarV10.fbx",
         // người dùng: "lướt xa quá, cho nhích lên 1 chút thôi" (clip Naraka lướt 2-9 m)
         MaxRootTravel = 1f,
@@ -210,6 +211,8 @@ public static class CharacterSetupTool
             HeroChain("Hoi Ma Phan Kich", AttackContext.Skill, "perfect_dodge_back_01", "perfect_dodge_attack_light_01"),
             // không theo hướng: HeroGrapple gọi khi bấm B / Q sát địch (skill slot thứ 4). Clip SF3 chép sang Naraka/Grab_Throw
             Chain("Tum Nem", AttackContext.Skill, "Hulk_ThrowOne_Take", "Hulk_ThrowOne_Throw"),
+            // không theo hướng: HeroParry tự gọi sau khi đỡ trúng (D-020). Đòn "shock" của Naraka = gạt rồi đánh trả
+            HeroChain("Phan Don", AttackContext.Skill, "attack_shock_light_01"),
         },
     };
 
@@ -435,6 +438,14 @@ public static class CharacterSetupTool
     {
         index = -1;
         AnimatorController controller = LocomotionAnimatorBuilder.ControllerOf(TemplatePrefix);
+        int existing = AnimSetCloneTool.IndexOfPrefix(LocomotionAnimatorBuilder.FindLibrary(), profile.Prefix);
+        if (controller == null && existing >= 0)
+        {
+            // khuôn Dante đã cất vào _Archive (D-019): giữ nguyên bộ đã dựng, chỉ build lại vũ khí
+            index = existing;
+            Debug.Log($"[CharacterSetup] Không còn khuôn {TemplatePrefix}: giữ nguyên bộ {profile.Prefix} (index {index}).");
+            return true;
+        }
         if (controller == null)
         {
             Debug.LogError("[CharacterSetup] Bộ " + TemplatePrefix + " chưa có Controller trong AnimSetLibrary");

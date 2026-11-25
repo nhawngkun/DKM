@@ -177,3 +177,80 @@ Nearest reference: DMC5 - ours differs in: tầng mở theo 3 loại thanh khác
 Numbers: Dante 172 BPM.
 Affects: music-lead (3 bài mới), dev (3 bộ stem, section ngang + tầng dọc, stinger đổi nhân vật)
 Open: thứ tự soạn Vergil / Trish sau khi người dùng duyệt Dante.
+
+---
+
+## D-013 - Reboot: action RPG siêu nhiên kinh dị, Hà Nội năm 2126, một nhân vật chính quyền cước
+Date: 2026-11-24 | Status: Agreed | Area: Product / Character
+Supersedes: định hướng sản phẩm 3 nhân vật kiểu DMC. D-002, D-003, D-004, D-005, D-008, D-010 (đội hình địch), D-011 (nhạc riêng 3 nhân vật), D-012 chuyển sang **Đóng băng**: không xoá, chỉ dùng lại khi pillars mới cần. D-001 (combo tất định, input cố định, một thanh tài nguyên mỗi nhân vật) giữ làm khung tạm cho tới khi chốt pillars.
+Decision: Dự án reboot thành game nhập vai hành động. Bối cảnh: Hà Nội 100 năm sau (khoảng 2126), tận thế công nghệ trộn văn hoá tâm linh và ma quỷ Việt. Cảm hứng tông giọng: Jujutsu Kaisen, Dandadan. Một nhân vật chính mới, đánh quyền cước tay không (phương án 2 của bản nháp martial-arts-combo-draft), cơ chế xây quanh một thanh kiểu "Khí" (tham khảo Sha-Chi của Phantom Blade Zero). Người chơi đánh cả thế lực tâm linh lẫn con người để giữ trật tự thế giới. Triết lý cốt lõi do người dùng đặt: "đánh đấm đã mắt" và "tuyệt đối điện ảnh".
+Why: Người dùng chọn. Một nhân vật thay cho ba giúp team nhỏ dồn sức làm sâu một kit; bối cảnh Hà Nội tương lai và tâm linh Việt là điểm khác biệt mà các game tham chiếu không có.
+Evidence: gamedesign/research/phantom-blade-zero.md (Sha-Chi, defense-cancel, không có moveset tay không riêng); gamedesign/research/martial-arts-anim-inventory.md (89 clip Humanoid Naraka sẵn dùng).
+Options rejected: Phương án 1 - Quyền là vũ khí thứ 3 của Dante (không còn hợp khi reboot); Phương án 3 - chỉ dùng clip cho địch.
+Nearest reference: Phantom Blade Zero (một thanh gộp posture + tài nguyên, combat võ thuật điện ảnh) - ours differs in: tay không thay vì kiếm, bối cảnh tâm linh Việt tương lai, kẻ địch gồm cả người và ma.
+Numbers: none yet
+Affects: art-lead (nhân vật chính mới, bỏ model Dante/Vergil/Trish khỏi hướng phát hành, art direction Hà Nội 2126), music-lead (nhạc 3 nhân vật D-011 đóng băng; cần music direction mới), environment-lead (asset Naraka/FeudalMap kiểu Trung-Nhật không hợp Hà Nội; open world cần xem lại), dev (CharacterController/Combo giữ; WeaponData cho bộ quyền; enemy AI người + ma)
+Spec: chưa có - topic kế tiếp là gamedesign/pillars.md
+Open: Pillars, loại "nhập vai" (tuyến tính hay thế giới mở), cấu trúc phe phái, cơ chế chính của nhân vật chính.
+
+## D-014 - Pillars của bản reboot + cấu trúc tuyến tính theo khu
+Date: 2026-11-24 | Status: Agreed | Area: Pillars / Product
+Decision: Chốt 4 pillars trong gamedesign/pillars.md: (1) Điện ảnh liền mạch - điện ảnh từ hệ thống (camera counter/né hoàn hảo, hitstop, finisher) như PBZ, cutscene chỉ cho một số quái/boss và luôn seamless (không cắt, không màn đen, camera đi tiếp từ camera gameplay và trả về); (2) Chuyển động không gãy - mọi trạng thái vào được đòn kế, ưu tiên cancel hơn anim khoá input, mạnh từ phút đầu; (3) Tâm linh Việt là luật chơi; (4) Hai mặt trận ma và người. Game là action RPG tuyến tính theo khu, không thế giới mở.
+Why: Người dùng: "đánh đấm đã mắt", "tuyệt đối điện ảnh", nhưng không thể mỗi cú đấm một cutscene - phải dựa vào di chuyển, moveset, anim mượt. Tuyến tính theo khu cho phép dàn dựng cutscene seamless và góc máy có kiểm soát, vừa sức team nhỏ.
+Evidence: research/phantom-blade-zero.md (PBZ tự nhận "DMC-lite combat + Souls-lite level design"; Ghoststep đổi góc máy ngắn; "hy sinh độ chính xác input để đổi lấy tốc độ" - GamingBolt 09/2025). God of War 2018 một cảnh máy liên tục [Quan sát].
+Options rejected: Thế giới mở (cutscene seamless khó dàn dựng, quá rộng cho team nhỏ); điện ảnh bằng QTE/cutscene dày (người chơi thành người xem).
+Nearest reference: Phantom Blade Zero + God of War 2018 - ours differs in: tay không cận thân, cutscene chỉ ở quái có tên, bối cảnh tâm linh Việt 2126.
+Numbers: motion warping vào cutscene 0.2-0.4s (giá trị khởi điểm để tune).
+Affects: art-lead (art direction theo pillar 3), music-lead (music direction mới, nhạc cutscene nối liền gameplay), environment-lead (khu tuyến tính thay open world; OpenWorld.unity không còn là hướng chính), dev (chế độ cinematic trong CameraController, motion warping vào/ra cutscene, cancel mọi trạng thái)
+Spec: gamedesign/pillars.md
+Open: Gốc năng lực tâm linh của nhân vật chính (topic kế tiếp). Danh sách khu của Hà Nội 2126.
+
+## D-015 - Kit quyền cước v1 của nhân vật chính (prototype)
+Date: 2026-11-24 | Status: Prototype (chờ playtest) | Area: Character / Mechanic
+Decision: Nhân vật chính (Hero, model AvatarV10, bộ anim HR_, vũ khí WD_Fist kiểu WeaponType.Fist) đánh quyền cước tay không bằng clip Naraka. 8 chuỗi theo D-001: Liên Hoàn Quyền (X X X), Trọng Cước (X, dừng nhịp, X X X), Thiểm Bộ (dash), Thăng Long (launcher), Không Trung (air), 3 skill theo hướng (Bạo Phá Quyền / Phi Long Cước / Hồi Mã Phản Kích). Cơ chế lên đồng / Tứ Phủ / phong ấn quỷ để sau.
+Why: Người dùng yêu cầu tập trung combat võ thuật trước. Clip Naraka lướt xa phục vụ Pillar 2 (Chuyển động không gãy).
+Evidence: research/martial-arts-anim-inventory.md, research/martial-arts-combo-draft.md, research/phantom-blade-zero.md.
+Options rejected: Quyền là vũ khí thứ 3 của Dante (bỏ khi reboot, D-013).
+Nearest reference: Phantom Blade Zero (combo cancel sang phòng thủ, võ thuật điện ảnh) - ours differs in: tay không, đòn lướt xa nối liền, rẽ nhánh bằng dừng nhịp thay vì nút heavy.
+Numbers: xem spec (giá trị khởi điểm để tune).
+Affects: dev (WeaponType.Fist, quét nắm tay trong MeleeHitDetector, builder đọc .anim), art-lead (VFX đấm/đá, vệt tay), music-lead (SFX đấm/đá thay tiếng chém)
+Spec: gamedesign/spec/character-hero.md
+Open: Playtest cảm giác; đòn gồng + parry tay không (hệ combo chưa có); KickTimes không bắt được cú đá nào trong clip Naraka; Hồi Mã Phản Kích bước 1 là cú lùi nhưng có mốc trúng giả.
+
+## D-016 - Kit Hero chuyển sang Street Brawl (đấm đá + vật), bỏ clip Naraka
+Date: 2026-11-24 | Status: Agreed (prototype) | Area: Character / Mechanic
+Supersedes: D-015 (kit quyền cước Naraka)
+Decision: Phong cách đánh của nhân vật chính là đánh nhau đường phố bạo lực: đấm thẳng, móc, tạt, đá, túm/vật/ném. Bỏ toàn bộ clip Naraka khỏi kit (đấm nhẹ/nặng, hất tung, trên không, né flashstep) - để riêng, có thể dùng cho trạng thái lên đồng sau này. Anim đòn lấy từ Spider Fighter 3 (`Assets/_Other anim`, Humanoid, mỗi đòn lướt 0-2 m), bỏ mọi đòn có dấu ấn siêu anh hùng (khiên, tơ, vuốt, xúc tu, bay). Di chuyển + né dùng clip Dante (clip chạy/né SF3 đứng tại chỗ, không có root motion). Làm 2 bước: (A) kit đấm đá, (B) hệ túm-ném + đòn kết liễu có anim nạn nhân.
+Why: Người dùng playtest: "lướt đi loạn xạ", "ít đòn đá", "vibe kung fu quá", muốn "đánh nhau đường phố... móc, tạt, vật và đá... bạo lực hơn". Clip Naraka lướt 2-9 m/đòn và là quyền Trung Hoa - chỉnh code không đổi được phong cách.
+Evidence: research/street-brawl-anim-candidates.md (số đo từng clip trên AvatarV10) [Quan sát].
+Options rejected: A thuần đấm đá không vật (thiếu cảm giác bạo lực); C mua/mocap pack mới (để giai đoạn chuẩn bị phát hành).
+Nearest reference: Sleeping Dogs / Yakuza (brawler đường phố có túm ném, môi trường) [Suy luận] - ours differs in: địch gồm cả ma, lên đồng mượn sức Tứ Phủ, cutscene kết liễu seamless (Pillar 1).
+Numbers: lướt tối đa ~2 m/đòn thường (đòn lao/skill được xa hơn).
+Affects: dev (hồ sơ Hero trong CharacterSetupTool, hệ grapple mới), art-lead (VFX va chạm thô, không vệt quyền), music-lead (SFX đấm thịt, xương, ngã đất)
+Spec: gamedesign/spec/character-hero.md
+Open: Bản quyền - clip SF3 cũng là asset rip, phải thay trước phát hành. Địch có Animator để test anim nạn nhân.
+
+## D-017 - Quay lại kit Naraka, bỏ 3 đòn đấm nhẹ (giữ túm-ném)
+Date: 2026-11-24 | Status: Agreed (prototype) | Area: Character
+Supersedes: D-016 (bản brawler SF3 - đã build, người dùng xem rồi bỏ)
+Decision: Hero dùng lại kit Naraka (D-015) nhưng bỏ `male_punch_attack_light_01/02/03` (quá kung fu) -> mất chuỗi Liên Hoàn Quyền; chuỗi X dưới đất chỉ còn Trọng Cước (heavy_01 -> 02 -> 03). Giữ Túm Ném (nút B / Q, HeroGrapple, clip Hulk_ThrowOne_Take/Throw của SF3 chép vào Naraka/Grab_Throw). Người dùng sẽ xem tiếp anim nào cần bỏ.
+Why: Người dùng: "back lại bộ combo trc đi nhưng bỏ ... 3 cái light đi, rồi t sẽ xem bỏ anim nào tiếp"; chuỗi X giữ phần Naraka còn lại.
+Open: Danh sách anim Naraka bỏ tiếp; có đòn đấm thường (X nhanh) thay chỗ chuỗi nhẹ không. Clip SF3 vẫn ở Assets/_Asset/Animation/StreetBrawl để thay khi cần.
+
+## D-018 - Thêm song phi, đá xoáy và 2 combo người dùng chọn; giới hạn lướt 1 m
+Date: 2026-11-24 | Status: Agreed (prototype) | Area: Character
+Decision: Bỏ thêm attack_heavy_03. Người dùng chọn clip: song phi = flashstep_attack_light_01 (mở Thiểm Bộ), đá xoáy = attack_hold_heavy_01 (kết Trọng Cước X X X) và sprint_attack_light_01 (Xoáy Cước, nhánh dừng nhịp), combo đẹp = attack_hold_light_02 (kết Xoáy Cước) và perfect_dodge_attack_light_01 (Hồi Mã #2). Mọi đòn dưới đất / lao / skill lướt tối đa 1 m (CharacterSetupTool Profile.MaxRootTravel -> RootMotionScale).
+Why: Người dùng: "các đòn combo đang bị lướt xa quá cho nhích lên 1 chút thôi"; chỉ rõ từng clip muốn dùng.
+Spec: gamedesign/spec/hero-combo-test.md
+
+## D-019 - Chỉ còn Hero: nhân vật cũ (Dante, Vergil, Trish, Leon) cất vào _Archive
+Date: 2026-11-25 | Status: Agreed | Area: Character
+Decision: Bỏ mọi nhân vật cũ, dồn sức hoàn thiện combat Hero. AnimSetLibrary chỉ còn HR_ (AnimSetId 0), WeaponLibrary chỉ còn Fist. Prefab, controller, WD_ và thư mục model/anim riêng của Dante/Vergil/Trish chuyển vào Assets/_Archive/OldCharacters (giữ GUID). Scene SetUp: Player_H điều khiển Hero, bỏ CharacterSwitcher, có sẵn 1 TrainingDummy; giữ Boss_1, Dragon, Cerberus. Code chung (bay, phép, áo khoác, Taunt/Deflect) giữ nguyên nhưng không dùng.
+Why: Người dùng: "bỏ hết các nhân vật cũ đi ... tập trung phát triển hoàn thiện combat cho nhân vật Hero".
+Open: _Animation_Dante vẫn ở chỗ cũ vì Hero mượn clip đi bộ / strafe / crouch / turn; scene FeudalMap và OpenWorld vẫn dùng Character.prefab (đã vào _Archive, vẫn chạy).
+
+## D-020 - Đỡ đòn: "đỡ xanh, né đỏ", đỡ trúng tự phản kích
+Date: 2026-11-25 | Status: Agreed (prototype) | Area: Mechanic / Input
+Decision: Nút đỡ = LB / L1, phím R (bấm, không giữ). Cửa sổ đỡ 0.2 s từ lúc bấm, bấm đỡ huỷ được đòn đang đánh; bấm trượt khoá 0.35 s. Đòn địch báo màu: chớp xanh = đỡ được, chớp đỏ = chỉ né được (tỉ lệ đỏ của bù nhìn 30%); bị phá thăng bằng đổi sang phát sáng vàng. Đỡ trúng: địch mất 45 thăng bằng (trên 100) và lỡ nhịp 1.2 s, khựng 0.12 s + zoom + tia lửa, Hero quay mặt về địch và tự ra đòn "Phan Don" (male_punch_attack_shock_light_01, chuỗi Skill slot 4) - đòn chốt nên có cinematic sẵn. Code: Combat/HeroParry.cs, EnemyAttack (ParryableColor / UnparryableColor / UnparryableChance), HitReaction.DrainBalance, ComboCameraFeedback.PlayParry.
+Why: Người dùng chọn "Đỡ đòn / phản đòn" làm phần combat tiếp theo. Mượn nguyên lý Phantom Blade Zero (parry blue / dodge red, phản ứng đúng -> game tự dàn cảnh) [research/phantom-blade-zero.md mục 3.3, khuyến nghị 3-4], giữ Pillar 2 (phòng thủ cancel được tấn công).
+Open: Chưa có tư thế đỡ riêng (bấm đỡ chỉ dừng đòn, chưa có anim) - ứng viên UF_baiya_resist; chưa có tiếng "keng"; đòn Phan Don dài 1.53 s, nhát trúng ở ~0.53 s, có thể cần cắt ngắn; chưa có máu người chơi nên đòn đỏ trúng chỉ ghi log.

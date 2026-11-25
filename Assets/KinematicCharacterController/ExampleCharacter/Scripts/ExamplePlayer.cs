@@ -134,6 +134,7 @@ namespace KinematicCharacterController.Examples
             bool sprint = false;
             bool flyToggle = false;
             bool special = false;
+            bool parry = false;
             bool canFly = Character.CanFly;
 
             // --- Bàn phím ---
@@ -158,6 +159,7 @@ namespace KinematicCharacterController.Examples
                 dash |= Keyboard.current.eKey.wasPressedThisFrame;
                 if (Keyboard.current.tabKey.wasPressedThisFrame) weaponSwitch = 1; // Tab = đổi vũ khí
                 special |= Keyboard.current.qKey.wasPressedThisFrame; // Q = cơ chế riêng (Taunt / Deflect / Blink)
+                parry |= Keyboard.current.rKey.wasPressedThisFrame; // R = đỡ đòn
                 sprint |= Keyboard.current.shiftKey.isPressed; // giữ Shift để chạy nhanh
             }
 
@@ -201,6 +203,7 @@ namespace KinematicCharacterController.Examples
                 lockOn |= Gamepad.current.rightShoulder.isPressed;                // giữ RB / R1
                 sprint |= Gamepad.current.leftStickButton.isPressed;              // giữ L3
                 if (canFly) flyToggle |= Gamepad.current.leftShoulder.wasPressedThisFrame; // LB / L1 = bật/tắt bay
+                else parry |= Gamepad.current.leftShoulder.wasPressedThisFrame;          // LB / L1 = đỡ đòn (nhân vật không bay)
             }
 
             characterInputs.MoveAxisForward = moveForward;
@@ -219,6 +222,7 @@ namespace KinematicCharacterController.Examples
             characterInputs.Sprint = sprint;
             characterInputs.FlyToggle = flyToggle;
             characterInputs.Special = special;
+            characterInputs.Parry = parry;
 
             Character.SetInputs(ref characterInputs);
         }

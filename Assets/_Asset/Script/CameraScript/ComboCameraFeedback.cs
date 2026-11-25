@@ -32,6 +32,31 @@ public class ComboCameraFeedback : MonoBehaviour
     [Tooltip("Time.timeScale trong lúc khựng hình. 0 = đứng hình hẳn, 0.05-0.1 = vẫn có 1 chút chuyển động chậm")]
     public float HitStopTimeScale = 0.02f;
 
+    [Header("Zoom punch + xung hậu kỳ ở đòn nặng")]
+    [Range(0f, 1f), Tooltip("Đòn từ độ mạnh này trở lên thì camera thu vào và nháy hậu kỳ")]
+    public float ZoomPunchThreshold = 0.6f;
+    [Range(0f, 1f)] public float HeavyHitPulse = 0.45f;
+
+    [Header("Né chuẩn (perfect dodge)")]
+    [Range(0.05f, 1f)] public float PerfectDodgeTimeScale = 0.25f;
+    [Tooltip("Thời lượng slow motion (giây thực)")]
+    public float PerfectDodgeSlowDuration = 0.7f;
+
+    [Header("Đỡ đòn (parry)")]
+    [Tooltip("Khựng lúc đỡ trúng (giây thực)")]
+    public float ParryHitStopDuration = 0.12f;
+    public float ParryShakeMagnitude = 0.15f;
+    [Range(0f, 1f)] public float ParryZoomPunch = 0.7f;
+    [Range(0f, 1f)] public float ParryPulse = 0.4f;
+
+    [Header("Kết liễu (execution)")]
+    [Range(0.05f, 1f)] public float ExecutionTimeScale = 0.4f;
+    [Tooltip("Khựng ở nhát trúng trong lúc kết liễu (giây thực)")]
+    public float ExecutionHitStopDuration = 0.22f;
+    public float ExecutionShakeMagnitude = 0.35f;
+    [Tooltip("Sau chuỗi shot vẫn coi nhát trúng là nhát kết liễu thêm bấy nhiêu giây thực")]
+    public float ExecutionHitGrace = 1.5f;
+
     [Header("Đập xuống đất")]
     public float SlamShakeMagnitude = 0.3f;
     public float SlamHitStopDuration = 0.07f;
@@ -77,6 +102,7 @@ public class ComboCameraFeedback : MonoBehaviour
     private float _lastHitRealtime = -999f;
     private float _lastCinematicRealtime = -999f;
     private int _chainCount;
+    private float _executionUntilRealtime = -1f;
 
     private void OnDisable()
     {
@@ -93,6 +119,18 @@ public class ComboCameraFeedback : MonoBehaviour
     {
         if (cameraController == null) return;
 
+        if (Time.unscaledTime < _executionUntilRealtime)
+        {
+            _executionUntilRealtime = -1f;
+            cameraController.TriggerShake(ExecutionShakeMagnitude);
+            cameraController.TriggerHitStop(ExecutionHitStopDuration, HitStopTimeScale);
+            cameraController.TriggerZoomPunch(1f);
+            cameraController.TriggerImpactPulse(1f);
+            TriggerRumble(1f, FinisherRumbleDuration);
+            OnImpactFeedback?.Invoke(1f);
+            return;
+        }
+
         float strength = HitStrength(hit);
         float dt = Time.unscaledTime - _lastHitRealtime;
         _chainCount = dt <= ChainWindowSeconds ? _chainCount + 1 : 1;
@@ -103,6 +141,11 @@ public class ComboCameraFeedback : MonoBehaviour
         cameraController.TriggerHitStop(Mathf.Lerp(MinHitStopDuration, HitStopDuration, strength), HitStopTimeScale);
         TriggerRumble(strength, hit.IsFinalHit ? FinisherRumbleDuration : RumbleDuration);
         OnImpactFeedback?.Invoke(strength);
+        if (strength >= ZoomPunchThreshold)
+        {
+            cameraController.TriggerZoomPunch(strength);
+            cameraController.TriggerImpactPulse(HeavyHitPulse * strength);
+        }
 
         if (ShouldPlayCinematic(hit, focus))
         {
@@ -110,6 +153,39 @@ public class ComboCameraFeedback : MonoBehaviour
             cameraController.TriggerSlowMotion(CinematicTimeScale, CinematicSlowDuration);
             cameraController.TriggerCinematic(focus, attackDirection);
         }
+    }
+
+    /// <summary>Né trúng lúc đòn địch chạm: slow motion để phản đòn.</summary>
+    public void PlayPerfectDodge()
+    {
+        if (cameraController == null) return;
+        cameraController.TriggerSlowMotion(PerfectDodgeTimeScale, PerfectDodgeSlowDuration);
+        cameraController.TriggerZoomPunch(0.5f);
+        cameraController.TriggerImpactPulse(0.5f);
+        TriggerRumble(0.4f, RumbleDuration);
+    }
+
+    /// <summary>Đỡ trúng đòn địch: khựng ngắn + zoom, đòn phản kích sau đó tự có cinematic của đòn chốt.</summary>
+    public void PlayParry()
+    {
+        if (cameraController == null) return;
+        cameraController.TriggerShake(ParryShakeMagnitude);
+        cameraController.TriggerHitStop(ParryHitStopDuration, HitStopTimeScale);
+        cameraController.TriggerZoomPunch(ParryZoomPunch);
+        cameraController.TriggerImpactPulse(ParryPulse);
+        TriggerRumble(0.7f, RumbleDuration);
+        OnImpactFeedback?.Invoke(0.7f);
+    }
+
+    /// <summary>Bắt đầu kết liễu: cắt cảnh qua chuỗi shot + slow motion, nhát trúng kế tiếp thành nhát kết liễu.</summary>
+    public void PlayExecution(Transform actor, Transform target)
+    {
+        if (cameraController == null) return;
+        float length = cameraController.ShotSequenceLength;
+        cameraController.TriggerShotSequence(actor, target);
+        cameraController.TriggerSlowMotion(ExecutionTimeScale, length);
+        _executionUntilRealtime = Time.unscaledTime + length + ExecutionHitGrace;
+        _lastCinematicRealtime = Time.unscaledTime;
     }
 
     /// <summary>Kiếm vừa đập xuống đất.</summary>

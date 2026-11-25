@@ -174,6 +174,8 @@ public class CharController : MonoBehaviour, ICharacterController
     /// <summary>Nút cơ chế riêng (B / Q) được bấm ở frame này. Kit nhân vật (Taunt / Deflect / Blink) đọc cờ này hoặc nghe OnSpecial.</summary>
     public bool SpecialPressed { get; private set; }
     public event Action OnSpecial;
+    /// <summary>Nút đỡ đòn (LB / R) được bấm ở frame này. HeroParry nghe.</summary>
+    public event Action OnParry;
     public bool IsAttacking => characterCombo != null && characterCombo.IsAttacking;
     public bool HasMoveInput => _moveInputVector.sqrMagnitude > 0.0001f;
     public Vector3 MoveInputDirection => _moveInputVector;
@@ -205,6 +207,7 @@ public class CharController : MonoBehaviour, ICharacterController
     private CharacterCombat _combat;
     private CharacterLocomotion _loco;
     private CharacterFlight _flight;
+    private ExecutionFinisher _execution;
 
     private LocoState _currentClip = LocoState.Idle;
     private bool _forceInstantClip;
@@ -218,6 +221,7 @@ public class CharController : MonoBehaviour, ICharacterController
         _combat = new CharacterCombat(this);
         _loco = new CharacterLocomotion(this, _dash, _jump, _crouch, _combat);
         _flight = new CharacterFlight(this);
+        _execution = GetComponent<ExecutionFinisher>();
 
         if (characterCombo == null) characterCombo = GetComponentInChildren<CharacterCombo>();
         if (characterCombo != null)
@@ -301,12 +305,14 @@ public class CharController : MonoBehaviour, ICharacterController
 
         SpecialPressed = inputs.Special;
         if (inputs.Special) OnSpecial?.Invoke();
+        if (inputs.Parry) OnParry?.Invoke();
 
         if (characterCombo != null)
         {
             if (inputs.WeaponSwitch != 0) characterCombo.NextWeapon(inputs.WeaponSwitch);
             characterCombo.UpperBodyOnly = _flight.IsFlying;
-            if (inputs.Attack || inputs.Skill)
+            bool executed = inputs.Attack && !inputs.Skill && _execution != null && _execution.TryExecute();
+            if (!executed && (inputs.Attack || inputs.Skill))
             {
                 AttackContext context = _combat.ResolveContext(inputs.Skill && !inputs.Attack);
                 if (context == AttackContext.Dash && IsDashing) EndDash();
@@ -702,6 +708,7 @@ public struct PlayerCharacterInputs
     public bool Sprint; // Giữ nút khi đang chạy = chạy nhanh
     public bool FlyToggle; // Bấm = bật / tắt bay (nhân vật CanFly)
     public bool Special; // Bấm = cơ chế riêng của nhân vật (B / Q): Dante Taunt, Vergil Deflect, Trish Blink
+    public bool Parry; // Bấm = đỡ đòn (LB / R)
 }
 
 // ExampleCharacterController của KCC dùng 2 kiểu này ở namespace toàn cục

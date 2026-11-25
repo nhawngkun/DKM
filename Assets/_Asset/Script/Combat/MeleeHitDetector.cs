@@ -76,6 +76,8 @@ public class MeleeHitDetector : MonoBehaviour
     private readonly Vector3[] _fists = new Vector3[2];
     private bool _hasPreviousFists;
     private int _kickIndex = -1;
+    // mốc (đấm hoặc đá) đã nhận đòn chốt trong bước này: mốc chạm sau không thành đòn chốt lần 2
+    private int _finalSource = -1;
     private bool _kickFeedbackPlayed;
     private CharController _character;
     private AttackStep _step;
@@ -131,6 +133,7 @@ public class MeleeHitDetector : MonoBehaviour
             _slamPlayed = false;
             _swingEffectIndex = -1;
             _kickIndex = -1;
+            _finalSource = -1;
         }
 
         int window = characterCombo.ActiveHitIndex(WindowBefore, WindowAfter);
@@ -209,6 +212,7 @@ public class MeleeHitDetector : MonoBehaviour
             _windowIndex = -1;
             _slamPlayed = false;
             _kickIndex = -1;
+            _finalSource = -1;
         }
 
         Vector3[] elbows = _elbows;
@@ -295,7 +299,13 @@ public class MeleeHitDetector : MonoBehaviour
 
     private void ApplyHit(HitReaction target, Collider collider, int hitIndex, Vector3 a, Vector3 b, bool kick)
     {
-        ComboHitInfo info = kick ? characterCombo.BuildKickInfo() : characterCombo.BuildHitInfo(hitIndex);
+        ComboHitInfo info = kick ? characterCombo.BuildKickInfo(hitIndex) : characterCombo.BuildHitInfo(hitIndex);
+        if (info.IsFinalHit)
+        {
+            int source = kick ? 1000 + hitIndex : hitIndex;
+            if (_finalSource < 0) _finalSource = source;
+            else if (_finalSource != source) info.IsFinalHit = false;
+        }
         float strength = ComboCameraFeedback.HitStrength(info);
         Vector3 point = collider.ClosestPoint(ClosestOnSegment(a, b, collider.bounds.center));
         Vector3 attackDirection = Vector3.ProjectOnPlane(point - transform.position, Vector3.up).normalized;

@@ -54,6 +54,8 @@ public class CombatEffects : MonoBehaviour
     [Header("VFX va chạm")]
     public ParticleSystem HitSparkPrefab;
     public ParticleSystem SlamPrefab;
+    [Tooltip("Bùng nổ thêm ở đòn nặng (tia điện / chớp sáng), phát cùng tia lửa")]
+    public ParticleSystem HeavyImpactPrefab;
     public int HitPoolSize = 6;
     public int SlamPoolSize = 2;
     [Tooltip("Scale tia lửa ở đòn yếu nhất")]
@@ -83,6 +85,7 @@ public class CombatEffects : MonoBehaviour
     private readonly Pool _thrust = new Pool();
     private readonly Pool _hit = new Pool();
     private readonly Pool _slam = new Pool();
+    private readonly Pool _heavyImpact = new Pool();
 
     private void Start()
     {
@@ -91,6 +94,7 @@ public class CombatEffects : MonoBehaviour
         _thrust.Prewarm(ThrustPrefab, SlashPoolSize);
         _hit.Prewarm(HitSparkPrefab, HitPoolSize);
         _slam.Prewarm(SlamPrefab, SlamPoolSize);
+        _heavyImpact.Prewarm(HeavyImpactPrefab, SlamPoolSize);
     }
 
     public SwingKind KindFor(float strength, bool thrust)
@@ -142,6 +146,7 @@ public class CombatEffects : MonoBehaviour
     {
         Quaternion rotation = Quaternion.LookRotation(normal.sqrMagnitude > 0.0001f ? normal : Vector3.up);
         _hit.Play(point, rotation, Mathf.Lerp(MinHitScale, MaxHitScale, strength));
+        if (strength >= HeavyThreshold) _heavyImpact.Play(point, rotation, Mathf.Lerp(MinHitScale, MaxHitScale, strength));
     }
 
     public void PlaySlam(Vector3 groundPoint)

@@ -38,6 +38,24 @@ public class CameraEffects: MonoBehaviour
     public float CinematicCollisionRadius = 0.2f;
     public LayerMask CinematicObstacles = ~0;
 
+    [Header("Zoom punch (đòn nặng)")]
+    [Tooltip("Hệ số FOV theo giây thực: 1 = thu vào hết ZoomPunchFov")]
+    public AnimationCurve ZoomPunchCurve = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(0.03f, 1f), new Keyframe(0.22f, 0f));
+    [Tooltip("FOV thu vào ở đòn mạnh nhất (độ)")]
+    public float ZoomPunchFov = 9f;
+
+    [Header("Chuỗi shot kết liễu (execution)")]
+    public CinematicShot[] ExecutionShots =
+    {
+        new CinematicShot { Duration = 0.35f, Side = 1.6f, Height = -0.4f, Behind = 0.6f, LookAtTarget = 0.5f, Fov = -15f },
+        new CinematicShot { Duration = 0.35f, Side = 0.7f, Height = 0.3f, Behind = 1.4f, LookAtTarget = 1f, Fov = -20f },
+        new CinematicShot { Duration = 0.5f, Side = -1f, Height = 0.1f, Behind = -2.6f, LookAtTarget = 0f, Fov = -10f },
+    };
+    [Tooltip("Độ cao điểm nhìn trên chân người đánh / mục tiêu (m)")]
+    public float ShotPivotHeight = 1.2f;
+    [Tooltip("Hoà về camera thường sau shot cuối (giây thực)")]
+    public float ShotBlendOut = 0.2f;
+
     [Header("Xung hậu kỳ khi va chạm")]
     [Tooltip("Volume global chứa chromatic aberration / lens distortion; weight do script điều khiển")]
     public Volume ImpactVolume;
@@ -93,6 +111,12 @@ public class CameraEffects: MonoBehaviour
     private Quaternion _cinematicRotation;
     private bool _cinematicMoves;
     private float _impactPulse;
+    private float _zoomPunchTime = -1f;
+    private float _zoomPunchStrength;
+    private float _zoomPunchLength;
+    private Transform _shotActor;
+    private Transform _shotTarget;
+    private float _shotTime;
 
     void Awake()
     {
@@ -100,6 +124,7 @@ public class CameraEffects: MonoBehaviour
         if (Camera != null) BaseFov = Camera.fieldOfView;
         _shakeSeed = new Vector3(Random.value, Random.value, Random.value) * 100f;
         _cinematicLength = CinematicBlend.length > 0 ? CinematicBlend.keys[CinematicBlend.length - 1].time : 0f;
+        _zoomPunchLength = ZoomPunchCurve.length > 0 ? ZoomPunchCurve.keys[ZoomPunchCurve.length - 1].time : 0f;
     }
 
     // đang hitstop mà tắt camera thì không được kẹt game ở timeScale thấp
@@ -136,9 +161,85 @@ public class CameraEffects: MonoBehaviour
 
     public void TriggerImpactPulse(float strength) => _impactPulse = Mathf.Max(_impactPulse, strength);
 
+    public void TriggerZoomPunch(float strength)
+    {
+        if (_zoomPunchTime >= 0f && _zoomPunchStrength * ZoomPunchCurve.Evaluate(_zoomPunchTime) > strength) return;
+        _zoomPunchTime = 0f;
+        _zoomPunchStrength = strength;
+    }
+
+    public bool IsPlayingShots => _shotActor != null;
+
+    public float ShotSequenceLength
+    {
+        get
+        {
+            float total = 0f;
+            if (ExecutionShots != null) foreach (CinematicShot shot in ExecutionShots) total += shot.Duration;
+            return total;
+        }
+    }
+
+    /// <summary>Cắt cứng qua từng góc trong ExecutionShots, bám theo 2 nhân vật đang di chuyển.</summary>
+    public void TriggerShotSequence(Transform actor, Transform target)
+    {
+        if (ExecutionShots == null || ExecutionShots.Length == 0 || actor == null || target == null) return;
+        _shotActor = actor;
+        _shotTarget = target;
+        _shotTime = 0f;
+        _cinematicTime = -1f;
+    }
+
+    // trả về độ hoà 0..1 và góc máy của shot đang chạy
+    private float EvaluateShot(out Vector3 position, out Quaternion rotation, out float fov)
+    {
+        position = transform.position;
+        rotation = transform.rotation;
+        fov = 0f;
+        if (_shotActor == null || _shotTarget == null)
+        {
+            _shotActor = null;
+            return 0f;
+        }
+
+        float t = _shotTime;
+        int index = 0;
+        while (index < ExecutionShots.Length - 1 && t >= ExecutionShots[index].Duration)
+        {
+            t -= ExecutionShots[index].Duration;
+            index++;
+        }
+        CinematicShot shot = ExecutionShots[index];
+        float weight = 1f;
+        if (index == ExecutionShots.Length - 1 && t > shot.Duration)
+        {
+            weight = 1f - (t - shot.Duration) / Mathf.Max(ShotBlendOut, 0.01f);
+            if (weight <= 0f)
+            {
+                _shotActor = null;
+                return 0f;
+            }
+        }
+
+        Vector3 actorPoint = _shotActor.position + Vector3.up * ShotPivotHeight;
+        Vector3 targetPoint = _shotTarget.position + Vector3.up * ShotPivotHeight;
+        Vector3 forward = Vector3.ProjectOnPlane(targetPoint - actorPoint, Vector3.up);
+        forward = forward.sqrMagnitude > 0.0001f ? forward.normalized : Vector3.ProjectOnPlane(_shotActor.forward, Vector3.up).normalized;
+        Vector3 side = Vector3.Cross(Vector3.up, forward);
+
+        Vector3 look = Vector3.Lerp(actorPoint, targetPoint, shot.LookAtTarget);
+        Vector3 offset = actorPoint + side * shot.Side + Vector3.up * shot.Height - forward * shot.Behind - look;
+        if (offset.sqrMagnitude < 0.01f) offset = -forward;
+        position = look + offset.normalized * FreeDistance(look, offset);
+        rotation = Quaternion.LookRotation(look - position, Vector3.up);
+        fov = shot.Fov;
+        return Mathf.Clamp01(weight);
+    }
+
     /// <summary>Chốt 1 góc máy bên hông pha chém, cách vật cản, rồi hoà qua lại theo CinematicBlend.</summary>
     public void TriggerCinematic(Vector3 focus, Vector3 attackDirection)
     {
+        if (IsPlayingShots) return;
         Vector3 forward = Vector3.ProjectOnPlane(attackDirection, Vector3.up).normalized;
         Vector3 side = Vector3.Cross(Vector3.up, forward);
         // ưu tiên bên đang đứng để camera không quay ngược 180 độ
@@ -235,6 +336,20 @@ public class CameraEffects: MonoBehaviour
             if (_cinematicTime > _cinematicLength) _cinematicTime = -1f;
         }
 
+        float shotWeight = 0f;
+        float shotFov = 0f;
+        if (_shotActor != null)
+        {
+            shotWeight = EvaluateShot(out Vector3 shotPosition, out Quaternion shotRotation, out shotFov);
+            if (shotWeight > 0f)
+            {
+                transform.SetPositionAndRotation(
+                    Vector3.Lerp(transform.position, shotPosition, shotWeight),
+                    Quaternion.Slerp(transform.rotation, shotRotation, shotWeight));
+            }
+            _shotTime += Time.unscaledDeltaTime;
+        }
+
         float swayTime = Time.time * SpeedSwayFrequency;
         float swayX = (Mathf.PerlinNoise(_shakeSeed.x, swayTime) - 0.5f) * 2f;
         float swayY = (Mathf.PerlinNoise(_shakeSeed.y, swayTime) - 0.5f) * 2f;
@@ -281,13 +396,19 @@ public class CameraEffects: MonoBehaviour
             {
                 Camera.fieldOfView = speedFov;
             }
-            Camera.fieldOfView += CinematicFov * cinematic;
+            Camera.fieldOfView += CinematicFov * cinematic + shotFov * shotWeight;
+            if (_zoomPunchTime >= 0f)
+            {
+                Camera.fieldOfView -= ZoomPunchFov * _zoomPunchStrength * ZoomPunchCurve.Evaluate(_zoomPunchTime);
+                _zoomPunchTime += Time.unscaledDeltaTime;
+                if (_zoomPunchTime > _zoomPunchLength) _zoomPunchTime = -1f;
+            }
         }
 
         if (ImpactVolume != null)
         {
             _impactPulse = Mathf.MoveTowards(_impactPulse, 0f, Time.unscaledDeltaTime / Mathf.Max(ImpactPulseDuration, 0.01f));
-            float weight = Mathf.Max(cinematic, _impactPulse);
+            float weight = Mathf.Max(Mathf.Max(cinematic, shotWeight), _impactPulse);
             ImpactVolume.weight = weight;
             ImpactVolume.enabled = weight > 0.001f;
         }
@@ -312,4 +433,22 @@ public class CameraEffects: MonoBehaviour
         Time.timeScale = Mathf.Lerp(Time.timeScale, _targetTimeScale, 1f - Mathf.Exp(-SlowMotionTransitionSharpness * Time.unscaledDeltaTime));
         if (Mathf.Abs(Time.timeScale - _targetTimeScale) < 0.001f) Time.timeScale = _targetTimeScale;
     }
+}
+
+// để sau class: file không trùng tên class nên Unity gắn script vào type đầu tiên trong file
+[System.Serializable]
+public struct CinematicShot
+{
+    [Tooltip("Giây thực")]
+    public float Duration;
+    [Tooltip("Lệch ngang so với trục người đánh -> mục tiêu (m), âm = bên kia")]
+    public float Side;
+    [Tooltip("Cao hơn điểm nhìn (m), âm = góc thấp")]
+    public float Height;
+    [Tooltip("Lùi sau người đánh (m), âm = vượt lên phía trước (qua sau lưng mục tiêu)")]
+    public float Behind;
+    [Range(0f, 1f), Tooltip("0 = nhìn người đánh, 1 = nhìn mục tiêu")]
+    public float LookAtTarget;
+    [Tooltip("FOV cộng thêm, âm = zoom vào")]
+    public float Fov;
 }

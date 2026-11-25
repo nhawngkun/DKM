@@ -78,6 +78,9 @@ GameObject:
   - component: {fileID: 7543881450859132286}
   - component: {fileID: 7382255802923581717}
   - component: {fileID: 7366031793391668227}
+  - component: {fileID: 7191561266921633144}
+  - component: {fileID: 9016699630265509895}
+  - component: {fileID: 1436572814641436382}
   m_Layer: 7
   m_Name: Hero
   m_TagString: Untagged
@@ -333,8 +336,65 @@ MonoBehaviour:
   HoldOffset: {x: 0, y: 0.25, z: 0.75}
   HoldSharpness: 18
   ThrowStrength: 1
-  ThrowKnockbackScale: 4
+  ThrowDistance: 3.5
   ThrowLaunch: 1
+--- !u!114 &7191561266921633144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6992361808615888389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c218101d436914daf78e6db73b75a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PerfectDodge
+  cameraFeedback: {fileID: 8223691180222634892}
+  Cooldown: 0.5
+  LogTriggers: 1
+  GhostMaterial: {fileID: 2100000, guid: 111b74f9c2634e74a86ce0316f3bbb63, type: 2}
+  GhostColorProperty: _UnlitColor
+  GhostColor: {r: 0.3, g: 0.8, b: 2.5, a: 0.6}
+  EmitDuration: 0.45
+  EmitInterval: 0.06
+  GhostLifetime: 0.4
+  MaxGhosts: 8
+--- !u!114 &9016699630265509895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6992361808615888389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eaa9da715677f943892d219ad44f0da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ExecutionFinisher
+  cameraFeedback: {fileID: 8223691180222634892}
+  Range: 3
+  Context: 4
+  LogExecutions: 1
+--- !u!114 &1436572814641436382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6992361808615888389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72a227ec2d74bf74b8ae0b077c6691e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HeroParry
+  cameraFeedback: {fileID: 0}
+  ParryWindow: 0.2
+  WhiffLockout: 0.35
+  BalanceDamage: 45
+  AttackerStagger: 1.2
+  CounterChain: Phan Don
+  LogParries: 1
 --- !u!1 &8037173497653280896
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,6 +592,18 @@ MonoBehaviour:
   MinHitStopDuration: 0.035
   HitStopDuration: 0.09
   HitStopTimeScale: 0.02
+  ZoomPunchThreshold: 0.6
+  HeavyHitPulse: 0.45
+  PerfectDodgeTimeScale: 0.25
+  PerfectDodgeSlowDuration: 0.7
+  ParryHitStopDuration: 0.12
+  ParryShakeMagnitude: 0.15
+  ParryZoomPunch: 0.7
+  ParryPulse: 0.4
+  ExecutionTimeScale: 0.4
+  ExecutionHitStopDuration: 0.22
+  ExecutionShakeMagnitude: 0.35
+  ExecutionHitGrace: 1.5
   SlamShakeMagnitude: 0.3
   SlamHitStopDuration: 0.07
   SlamPulse: 0.6
@@ -658,7 +730,7 @@ MonoBehaviour:
   characterCombo: {fileID: 3619223485122108492}
   Hand: {fileID: 0}
   OffHand: {fileID: 0}
-  StarterWeapon: {fileID: 11400000, guid: 5ff58a3f235f4b143836edcdfe40d2bd, type: 2}
+  StarterWeapon: {fileID: 11400000, guid: 11961e95ea2f1614e9d510adecea9b07, type: 2}
   GripBlendTime: 0.12
   BackBone: {fileID: 0}
   BackPosition: {x: 0.18, y: 0.22, z: -0.2}
@@ -804,6 +876,7 @@ MonoBehaviour:
   SlashPoolSize: 4
   HitSparkPrefab: {fileID: 2074473516470124293, guid: 13be4cf86ea534b4aad1ad5c94ee0caf, type: 3}
   SlamPrefab: {fileID: 626467445820484607, guid: ed2496ee88ab3064388407046021d3f0, type: 3}
+  HeavyImpactPrefab: {fileID: 2074473516470124293, guid: 2412a215b77f6e242a034e6f66a3b183, type: 3}
   HitPoolSize: 6
   SlamPoolSize: 2
   MinHitScale: 0.75

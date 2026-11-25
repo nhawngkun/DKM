@@ -3,5 +3,5 @@
 // Sinh lại: Tools/Combat/Timing Window > tab 'Bộ anim & Vũ khí' > Sinh prefix.
 public static class LocoSetPrefixes
 {
-    public static readonly string[] Values = { "KT_", "GS_", "VG_", "TR_", "HR_", "LN_" };
+    public static readonly string[] Values = { "HR_" };
 }

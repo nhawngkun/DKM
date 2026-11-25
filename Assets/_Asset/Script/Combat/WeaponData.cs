@@ -190,6 +190,19 @@ public class WeaponData : ScriptableObject
         return true;
     }
 
+    /// <summary>Thứ tự của chuỗi Skill tên chainName trong các chuỗi Skill (= skillSlot của CharacterCombo.OnAttackInput), không có thì -1.</summary>
+    public int SkillSlotOf(string chainName)
+    {
+        int slot = 0;
+        foreach (ComboChain chain in Chains)
+        {
+            if (chain.Context != AttackContext.Skill) continue;
+            if (chain.Name == chainName) return slot;
+            slot++;
+        }
+        return -1;
+    }
+
     // Nội suy 1 mảng mẫu đều theo thời gian (giây trong clip)
     public static Vector3 SampleVector(Vector3[] samples, float time)
     {

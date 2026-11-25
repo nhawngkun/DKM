@@ -40,6 +40,9 @@ public class CameraController : MonoBehaviour
     public void TriggerHitStop(float duration, float scale) => Effects.TriggerHitStop(duration, scale);
     public void TriggerImpactPulse(float strength) => Effects.TriggerImpactPulse(strength);
     public void TriggerCinematic(Vector3 focus, Vector3 attackDirection) => Effects.TriggerCinematic(focus, attackDirection);
+    public void TriggerZoomPunch(float strength) => Effects.TriggerZoomPunch(strength);
+    public void TriggerShotSequence(Transform actor, Transform target) => Effects.TriggerShotSequence(actor, target);
+    public float ShotSequenceLength => Effects.ShotSequenceLength;
 
     /// <param name="rotationInput">x = ngang, y = dọc</param>
     /// <param name="characterPlanarVelocity">Vận tốc mặt phẳng của nhân vật</param>

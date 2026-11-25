@@ -58,6 +58,21 @@ public class HitReaction : MonoBehaviour
     [Tooltip("Trên không bị đẩy lùi ít hơn để air combo còn với tới")]
     public float AirKnockbackScale = 0.35f;
 
+    [Header("Thăng bằng (bị phá thì kết liễu được)")]
+    [Tooltip("0 = không bao giờ bị phá thăng bằng")]
+    public float MaxBalance = 100f;
+    [Tooltip("Thăng bằng mất mỗi đòn ở độ mạnh 1")]
+    public float BalanceDamage = 22f;
+    [Tooltip("Không bị đánh bấy nhiêu giây thì hồi thăng bằng")]
+    public float BalanceRegenDelay = 2f;
+    public float BalanceRegenRate = 25f;
+    [Tooltip("Bị phá thăng bằng trong bấy nhiêu giây, hết thì hồi đầy")]
+    public float BrokenDuration = 4f;
+    // vàng: xanh / đỏ dành cho báo đòn đỡ được / không đỡ được (EnemyAttack)
+    [ColorUsage(false, true)] public Color BrokenColor = new Color(6f, 3.6f, 0.4f);
+    [Tooltip("Nhát kết liễu đẩy văng xa gấp bấy nhiêu lần")]
+    public float ExecutionKnockbackScale = 3f;
+
     [Header("Về chỗ cũ (bù nhìn tập luyện)")]
     public bool ReturnHome;
     [Tooltip("Không bị đánh bấy nhiêu giây thì quay về vị trí ban đầu")]
@@ -68,6 +83,8 @@ public class HitReaction : MonoBehaviour
 
     public int HitCount { get; private set; }
     public bool IsAirborne => _airborne;
+    public bool IsBroken => Time.time < _brokenUntil;
+    public float Balance01 => MaxBalance > 0f ? _balance / MaxBalance : 1f;
 
     private Vector3 _home;
     private Vector3 _knockVelocity;
@@ -77,6 +94,11 @@ public class HitReaction : MonoBehaviour
     private Vector3 _tilt;
     private Vector3 _tiltVelocity;
     private float _flash;
+    private Color _flashColor;
+    private float _balance;
+    private float _brokenUntil = -1f;
+    private bool _wasBroken;
+    private bool _executionPending;
 
     private bool _airborne;
     private bool _airRising;
@@ -90,12 +112,46 @@ public class HitReaction : MonoBehaviour
         _block = new MaterialPropertyBlock();
         if (Pivot != null) _restRotation = Pivot.rotation;
         _home = transform.position;
+        _balance = MaxBalance;
+        _flashColor = FlashColor;
+    }
+
+    /// <summary>Nháy 1 màu riêng (báo trước đòn đánh...).</summary>
+    public void Flash(Color color)
+    {
+        _flashColor = color;
+        _flash = 1f;
+        ApplyFlash();
+    }
+
+    /// <summary>Nhát trúng kế tiếp là nhát kết liễu: hết bị phá thăng bằng, văng xa.</summary>
+    public void BeginExecution() => _executionPending = true;
+
+    /// <summary>Mất thăng bằng không qua đòn trúng (bị đỡ đòn...). Về 0 thì bị phá thăng bằng.</summary>
+    public void DrainBalance(float amount)
+    {
+        if (MaxBalance <= 0f || IsBroken) return;
+        _balance -= amount;
+        _lastHitTime = Time.time;
+        if (_balance > 0f) return;
+        _balance = 0f;
+        _brokenUntil = Time.time + BrokenDuration;
     }
 
     public void TakeHit(Vector3 attackDirection, float strength, float knockbackScale = 1f, bool launch = false)
     {
         HitCount++;
         _flash = 1f;
+        _flashColor = FlashColor;
+        if (_executionPending)
+        {
+            _executionPending = false;
+            _brokenUntil = -1f;
+            _balance = MaxBalance;
+            strength = 1f;
+            knockbackScale *= ExecutionKnockbackScale;
+        }
+        else DrainBalance(BalanceDamage * Mathf.Lerp(0.4f, 1f, strength));
         // trục nằm ngang vuông góc hướng chém: đổ theo đúng chiều lưỡi kiếm đẩy
         _tiltVelocity += Vector3.Cross(Vector3.up, attackDirection) * Mathf.Lerp(MinImpulse, MaxImpulse, strength);
         ApplyFlash();
@@ -139,7 +195,8 @@ public class HitReaction : MonoBehaviour
         if (_airborne) UpdateAirborne(dt);
         else UpdateKnockback(dt);
 
-        if (_flash > 0f)
+        UpdateBalance();
+        if (_flash > 0f || IsBroken)
         {
             // thời gian thực để vẫn thấy nháy trong lúc hitstop
             _flash = Mathf.Max(0f, _flash - Time.unscaledDeltaTime / Mathf.Max(FlashDuration, 0.01f));
@@ -152,6 +209,19 @@ public class HitReaction : MonoBehaviour
         _tilt = Vector3.ClampMagnitude(_tilt + _tiltVelocity * dt, MaxTilt);
         float angle = _tilt.magnitude;
         Pivot.rotation = angle > 0.001f ? Quaternion.AngleAxis(angle, _tilt / angle) * _restRotation : _restRotation;
+    }
+
+    private void UpdateBalance()
+    {
+        bool broken = IsBroken;
+        if (_wasBroken && !broken)
+        {
+            _balance = MaxBalance;
+            _executionPending = false;
+            ApplyFlash();
+        }
+        _wasBroken = broken;
+        if (!broken && Time.time - _lastHitTime >= BalanceRegenDelay) _balance = Mathf.Min(MaxBalance, _balance + BalanceRegenRate * Time.deltaTime);
     }
 
     private void UpdateKnockback(float deltaTime)
@@ -254,7 +324,10 @@ public class HitReaction : MonoBehaviour
     private void ApplyFlash()
     {
         if (FlashRenderers == null) return;
-        _block.SetColor(EmissiveColor, FlashColor * (_flash * _flash));
+        Color color = _flashColor * (_flash * _flash);
+        // bị phá thăng bằng: phát sáng nhấp nháy chậm để người chơi biết kết liễu được
+        if (IsBroken) color += BrokenColor * (0.5f + 0.5f * Mathf.Sin(Time.unscaledTime * 8f));
+        _block.SetColor(EmissiveColor, color);
         foreach (Renderer renderer in FlashRenderers)
         {
             if (renderer != null) renderer.SetPropertyBlock(_block);
