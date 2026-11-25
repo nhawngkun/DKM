@@ -1,0 +1,1641 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &71030028768698585
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7918426671224690533}
+  m_Layer: 0
+  m_Name: scene_hangwall_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7918426671224690533
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 71030028768698585}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.028835766, y: -0.59790653, z: 0.021530978, w: 0.8007576}
+  m_LocalPosition: {x: -0.2775879, y: 2.6142578, z: 6.0527344}
+  m_LocalScale: {x: 1, y: 1, z: 0.8960791}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: 4.124729, y: 73.495636, z: -0.00000060387373}
+--- !u!1 &301258348234781350
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6762296025803514228}
+  m_Layer: 0
+  m_Name: scene_climbwall_jump_up_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6762296025803514228
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 301258348234781350}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.009061242, y: 0.9859071, z: -0.056877054, w: -0.15706761}
+  m_LocalPosition: {x: -2.2936094, y: -3.4191327, z: 4.717234}
+  m_LocalScale: {x: 1, y: 1, z: 0.64539486}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: -173.39653, y: 18.103764, z: -180}
+--- !u!1 &794938860958118797
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2569399634764359296}
+  m_Layer: 0
+  m_Name: scene_hangwall_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2569399634764359296
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 794938860958118797}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.018296685, y: -0.26479575, z: 0.005025195, w: 0.9641179}
+  m_LocalPosition: {x: 3.916, y: 1.258, z: 5.079}
+  m_LocalScale: {x: 1, y: 1, z: 0.4732088}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: 2.1744168, y: 30.715298, z: 0.00000054913727}
+--- !u!1 &902949841583088225
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4156764116149519652}
+  - component: {fileID: 2124040778607734577}
+  m_Layer: 9
+  m_Name: wall_physics_01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4156764116149519652
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 902949841583088225}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6334201330283358780}
+  m_LocalEulerAnglesHint: {x: 0, y: -0, z: 0}
+--- !u!64 &2124040778607734577
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 902949841583088225}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: fc93bae59431a5d4a890cb277cc57028, type: 2}
+--- !u!1 &1036447947998870064
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4130985005791757493}
+  m_Layer: 0
+  m_Name: scene_hangwall_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4130985005791757493
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036447947998870064}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.05633485, y: -0.370248, z: -0.022501603, w: 0.9269501}
+  m_LocalPosition: {x: 4.203125, y: 1.2851562, z: 4.7128906}
+  m_LocalScale: {x: 1, y: 1, z: 0.5483518}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: -6.95568, y: 43.54611, z: -0.0000002999885}
+--- !u!1 &1121185666480670248
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6901130284416464774}
+  m_Layer: 0
+  m_Name: scene_hangwall_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6901130284416464774
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1121185666480670248}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.03007642, y: -0.7508311, z: 0.034271784, w: 0.65891844}
+  m_LocalPosition: {x: 0.47460938, y: 1.9985352, z: 6.4433594}
+  m_LocalScale: {x: 1, y: 1, z: 0.3323083}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: -174.77309, y: 82.53944, z: 180}
+--- !u!1 &1981561481674212253
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7427310978736330759}
+  m_Layer: 0
+  m_Name: scene_climbwall_jump_up_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7427310978736330759
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1981561481674212253}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.04339367, y: 0.8857337, z: 0.08459332, w: -0.4543531}
+  m_LocalPosition: {x: 0.042236328, y: -3.8017578, z: 5.4121094}
+  m_LocalScale: {x: 1, y: 1, z: 1.9708064}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: 169.08885, y: 54.312748, z: -180}
+--- !u!1 &3112930029037160779
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3873427600956844785}
+  m_Layer: 0
+  m_Name: scene_hangwall_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3873427600956844785
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3112930029037160779}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.04163212, y: -0.5846335, z: -0.030061018, w: 0.8096708}
+  m_LocalPosition: {x: 2.908, y: 1.269, z: 5.107}
+  m_LocalScale: {x: 1, y: 1, z: 0.5408059}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: -5.8869505, y: 71.66333, z: -0.000001654948}
+--- !u!1 &3327694942818938242
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 22211812170775289}
+  m_Layer: 0
+  m_Name: trigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &22211812170775289
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3327694942818938242}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8620246473960631809}
+  - {fileID: 6762296025803514228}
+  - {fileID: 3962632912650848329}
+  - {fileID: 4602233348256492650}
+  - {fileID: 6375634630215618867}
+  - {fileID: 2302913801957636834}
+  - {fileID: 3525206677593632862}
+  - {fileID: 7427310978736330759}
+  - {fileID: 3002052513006513096}
+  - {fileID: 2199739542003167046}
+  - {fileID: 9011041164319991370}
+  - {fileID: 3651828653036540838}
+  - {fileID: 4868389624151051877}
+  - {fileID: 7918426671224690533}
+  - {fileID: 8105208257227334178}
+  - {fileID: 555952007321262465}
+  - {fileID: 6901130284416464774}
+  - {fileID: 5859045448437868066}
+  - {fileID: 8940918314822246208}
+  - {fileID: 7267276359438116636}
+  - {fileID: 3991432877343663418}
+  - {fileID: 5316878232950095651}
+  - {fileID: 1402031711750858499}
+  - {fileID: 397552921781063114}
+  - {fileID: 2673559459839459037}
+  - {fileID: 8062206642693183054}
+  - {fileID: 3873427600956844785}
+  - {fileID: 8668950423053619168}
+  - {fileID: 2569399634764359296}
+  - {fileID: 4130985005791757493}
+  - {fileID: 3509465005367750171}
+  - {fileID: 8899236119323910724}
+  - {fileID: 1278889075641201703}
+  - {fileID: 6659936185392322186}
+  - {fileID: 4603726018641664284}
+  - {fileID: 8678863660332217967}
+  m_Father: {fileID: 6334201330283358780}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3402065316264176433
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3002052513006513096}
+  m_Layer: 0
+  m_Name: scene_hangwall_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3002052513006513096
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3402065316264176433}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.012598396, y: 0.91322863, z: -0.028319355, w: -0.40626693}
+  m_LocalPosition: {x: -3.778, y: 2.555, z: 4.597}
+  m_LocalScale: {x: 1, y: 1, z: 1.2560506}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: -176.44763, y: 47.965576, z: -180}
+--- !u!1 &3608282264749475836
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3962632912650848329}
+  m_Layer: 0
+  m_Name: scene_climbwall_jump_up_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3962632912650848329
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3608282264749475836}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.0015592165, y: 0.9171707, z: -0.0035888476, w: -0.39847547}
+  m_LocalPosition: {x: -4.067383, y: -3.5107422, z: 2.6308594}
+  m_LocalScale: {x: 1, y: 1, z: 1.2478771}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: -179.5516, y: 46.966194, z: -180}
+--- !u!1 &3684379105585391625
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4868389624151051877}
+  m_Layer: 0
+  m_Name: scene_hangwall_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4868389624151051877
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3684379105585391625}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.01876683, y: -0.8416182, z: -0.029306028, w: 0.5389507}
+  m_LocalPosition: {x: -1.6948242, y: 2.5634766, z: 6.501953}
+  m_LocalScale: {x: 1, y: 1, z: 0.5335044}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: 176.01141, y: 65.26891, z: -180}
+--- !u!1 &3956172067902801743
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4602233348256492650}
+  m_Layer: 0
+  m_Name: scene_climbwall_jump_up_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4602233348256492650
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3956172067902801743}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.11119033, y: -0.7154578, z: -0.117031194, w: 0.6797503}
+  m_LocalPosition: {x: -3.4153125, y: -3.5723045, z: 3.1006405}
+  m_LocalScale: {x: 1, y: 1, z: 0.8459196}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: 161.42017, y: 87.06791, z: 179.99998}
+--- !u!1 &4002668237547302159
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6375634630215618867}
+  m_Layer: 0
+  m_Name: scene_climbwall_jump_up_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6375634630215618867
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4002668237547302159}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.00981118, y: 0.9900431, z: 0.09039059, w: -0.10746131}
+  m_LocalPosition: {x: -2.694, y: -3.883, z: 3.727}
+  m_LocalScale: {x: 1, y: 1, z: 1.2403204}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: 169.56676, y: 12.3895, z: 180}
+--- !u!1 &4233435376917172676
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 555952007321262465}
+  m_Layer: 0
+  m_Name: scene_hangwall_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &555952007321262465
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4233435376917172676}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.060536537, y: -0.3890331, z: -0.025629941, w: 0.9188753}
+  m_LocalPosition: {x: -0.8491211, y: 2.6083984, z: 6.3183594}
+  m_LocalScale: {x: 1, y: 1, z: 0.40196073}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: -7.5385265, y: 45.893623, z: 0.00000035600326}
+--- !u!1 &4286208489398372361
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8899236119323910724}
+  m_Layer: 0
+  m_Name: scene_climbwall_jump_up_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8899236119323910724
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4286208489398372361}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.10836591, y: 0.8504714, z: -0.19316347, w: -0.47711968}
+  m_LocalPosition: {x: -3.0908203, y: 0.3286438, z: 5.4375}
+  m_LocalScale: {x: 1, y: 1, z: 1.1799619}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: -154.40755, y: 58.585392, z: 180}
+--- !u!1 &5092769795925601043
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1402031711750858499}
+  m_Layer: 0
+  m_Name: scene_climbwall_jump_up_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1402031711750858499
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5092769795925601043}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.04807945, y: -0.6132241, z: 0.037436716, w: 0.7875551}
+  m_LocalPosition: {x: 2.614746, y: -2.5898438, z: 5.765625}
+  m_LocalScale: {x: 1, y: 1, z: 1.3487035}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: 6.987027, y: 75.8117, z: -0.000000010759438}
+--- !u!1 &5154108036641585291
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3651828653036540838}
+  m_Layer: 0
+  m_Name: scene_hangwall_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3651828653036540838
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5154108036641585291}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.0057509267, y: 0.93132937, z: -0.014720984, w: -0.36383492}
+  m_LocalPosition: {x: -2.2041016, y: 3.0234375, z: 5.6796875}
+  m_LocalScale: {x: 1, y: 1, z: 0.9887694}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: -178.18887, y: 42.67739, z: -180}
+--- !u!1 &5324324756835847478
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5479232774614138800}
+  - component: {fileID: 8309330999682245285}
+  - component: {fileID: 6957449424351301885}
+  m_Layer: 0
+  m_Name: cliff_com_slope_10_1_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5479232774614138800
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5324324756835847478}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8345987167176944752}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &8309330999682245285
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5324324756835847478}
+  m_Mesh: {fileID: 4300000, guid: 1a5b89f90391519418406840acfb4b0f, type: 2}
+--- !u!23 &6957449424351301885
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5324324756835847478}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: bb71b1a675a78654ebddb00799795fd5, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &5436325519284821813
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8668950423053619168}
+  m_Layer: 0
+  m_Name: scene_hangwall_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8668950423053619168
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5436325519284821813}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.08016638, y: -0.7974904, z: -0.10872505, w: 0.5880147}
+  m_LocalPosition: {x: 3.477539, y: 1.144043, z: 5.1367188}
+  m_LocalScale: {x: 1, y: 1, z: 0.7405597}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: 164.473, y: 72.80503, z: 180}
+--- !u!1 &5569897659551913418
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3509465005367750171}
+  m_Layer: 0
+  m_Name: scene_climbwall_jump_up_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3509465005367750171
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5569897659551913418}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.027144026, y: -0.7534757, z: -0.031169051, w: 0.6561753}
+  m_LocalPosition: {x: -2.03125, y: 0.5328369, z: 5.798828}
+  m_LocalScale: {x: 1, y: 1, z: 1.2267227}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: 175.26239, y: 82.102905, z: -180}
+--- !u!1 &5643227817776751129
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8062206642693183054}
+  m_Layer: 0
+  m_Name: scene_hangwall_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8062206642693183054
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5643227817776751129}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.06848408, y: -0.37075862, z: -0.027426237, w: 0.92579466}
+  m_LocalPosition: {x: 2.342, y: 1.923, z: 5.609}
+  m_LocalScale: {x: 1, y: 1, z: 0.82961214}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: -8.461304, y: 43.64984, z: -0.00000003569476}
+--- !u!1 &5767130326436892539
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3215387092922921184}
+  m_Layer: 0
+  m_Name: LOD2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3215387092922921184
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5767130326436892539}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8805684918254723217}
+  m_Father: {fileID: 6334201330283358780}
+  m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
+--- !u!1 &5935945626494424924
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1937181738599139162}
+  - component: {fileID: 5016141817149277375}
+  - component: {fileID: 8846411095744046480}
+  m_Layer: 0
+  m_Name: cliff_com_slope_10_1_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1937181738599139162
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5935945626494424924}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3542151873972051452}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &5016141817149277375
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5935945626494424924}
+  m_Mesh: {fileID: 0}
+--- !u!23 &8846411095744046480
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5935945626494424924}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: bb71b1a675a78654ebddb00799795fd5, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &6260693264157324111
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1278889075641201703}
+  m_Layer: 0
+  m_Name: scene_climbwall_jump_up_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1278889075641201703
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6260693264157324111}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.08385721, y: -0.73044467, z: 0.091199115, w: 0.67164075}
+  m_LocalPosition: {x: -0.60046387, y: -0.32910156, z: 6.3027344}
+  m_LocalScale: {x: 1, y: 1, z: 0.81818545}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: -165.76643, y: 85.19681, z: 179.99998}
+--- !u!1 &6507080756541745022
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8678863660332217967}
+  m_Layer: 0
+  m_Name: scene_climbwall_jump_up_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8678863660332217967
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6507080756541745022}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.018112352, y: 0.9800611, z: 0.106408216, w: -0.16682181}
+  m_LocalPosition: {x: -1.1989746, y: -0.2946167, z: 5.689453}
+  m_LocalScale: {x: 1, y: 1, z: 1.2587194}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: 167.607, y: 19.320116, z: -180}
+--- !u!1 &6517909166446907179
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8620246473960631809}
+  m_Layer: 0
+  m_Name: scene_climbwall_jump_up_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8620246473960631809
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6517909166446907179}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.058115117, y: -0.669696, z: -0.052702125, w: 0.73847985}
+  m_LocalPosition: {x: -1.4616699, y: -3.5009766, z: 4.9179688}
+  m_LocalScale: {x: 1, y: 1, z: 1.4608874}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: -8.999303, y: 84.4071, z: -0.0000028121824}
+--- !u!1 &6878753460510034450
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3542151873972051452}
+  m_Layer: 0
+  m_Name: LOD1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3542151873972051452
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6878753460510034450}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1937181738599139162}
+  m_Father: {fileID: 6334201330283358780}
+  m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
+--- !u!1 &6991129550848024941
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6659936185392322186}
+  m_Layer: 0
+  m_Name: scene_climbwall_jump_up_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6659936185392322186
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6991129550848024941}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.10021601, y: -0.57157123, z: -0.07059965, w: 0.8113438}
+  m_LocalPosition: {x: 0.14978027, y: -0.32312012, z: 6.2089844}
+  m_LocalScale: {x: 1, y: 1, z: 0.77759874}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: -14.08285, y: 70.32746, z: 0.0000008078482}
+--- !u!1 &7048583448907257265
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6334201330283358780}
+  m_Layer: 0
+  m_Name: birthplace_cliff_01a
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6334201330283358780
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7048583448907257265}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 22211812170775289}
+  - {fileID: 4156764116149519652}
+  - {fileID: 8345987167176944752}
+  - {fileID: 3542151873972051452}
+  - {fileID: 3215387092922921184}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
+--- !u!1 &7131190420022096360
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3525206677593632862}
+  m_Layer: 0
+  m_Name: scene_climbwall_jump_up_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3525206677593632862
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7131190420022096360}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.011330003, y: 0.98643434, z: 0.077457994, w: -0.14428857}
+  m_LocalPosition: {x: -4.286, y: 0.18, z: 3.958}
+  m_LocalScale: {x: 1, y: 1, z: 0.7801256}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: 171.02032, y: 16.643604, z: -180}
+--- !u!1 &7378032675539117997
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8345987167176944752}
+  m_Layer: 0
+  m_Name: LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8345987167176944752
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7378032675539117997}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5479232774614138800}
+  m_Father: {fileID: 6334201330283358780}
+  m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
+--- !u!1 &7397016731332459710
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8805684918254723217}
+  - component: {fileID: 698157783803085706}
+  - component: {fileID: 8552696323898614609}
+  m_Layer: 0
+  m_Name: cliff_com_slope_10_1_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8805684918254723217
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7397016731332459710}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3215387092922921184}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &698157783803085706
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7397016731332459710}
+  m_Mesh: {fileID: 0}
+--- !u!23 &8552696323898614609
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7397016731332459710}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: bb71b1a675a78654ebddb00799795fd5, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &7594088737934415074
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8940918314822246208}
+  m_Layer: 0
+  m_Name: scene_hangwall_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8940918314822246208
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7594088737934415074}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.012367089, y: -0.5486778, z: -0.008117625, w: 0.835903}
+  m_LocalPosition: {x: 1.3955078, y: 1.9892578, z: 6.1367188}
+  m_LocalScale: {x: 1, y: 1, z: 1.6505306}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: -1.6952454, y: 66.560936, z: -0.00000021101674}
+--- !u!1 &7903354998119499052
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7267276359438116636}
+  m_Layer: 0
+  m_Name: scene_hangwall_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7267276359438116636
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7903354998119499052}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.047703397, y: -0.7915899, z: -0.062313534, w: 0.60599244}
+  m_LocalPosition: {x: -4.5166016, y: 3.2666016, z: 3.2548828}
+  m_LocalScale: {x: 1, y: 1, z: 1.7350645}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: 170.99797, y: 74.87088, z: 180}
+--- !u!1 &8180129008599005614
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 397552921781063114}
+  m_Layer: 0
+  m_Name: scene_climbwall_jump_up_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &397552921781063114
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8180129008599005614}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.056079358, y: -0.14119425, z: -0.008011336, w: 0.9883598}
+  m_LocalPosition: {x: 3.352539, y: -2.5439453, z: 5.296875}
+  m_LocalScale: {x: 1, y: 1, z: 0.63886595}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: -6.4949403, y: 16.260204, z: -0.000000018589587}
+--- !u!1 &8240250782539976124
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2302913801957636834}
+  m_Layer: 0
+  m_Name: scene_climbwall_jump_up_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2302913801957636834
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8240250782539976124}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.0044681854, y: 0.97815746, z: 0.021140574, w: -0.20673938}
+  m_LocalPosition: {x: -3.876, y: 0.09466553, z: 4.779}
+  m_LocalScale: {x: 1, y: 1, z: 0.96627575}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: 177.52376, y: 23.868332, z: 180}
+--- !u!1 &8360532355023275920
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8105208257227334178}
+  m_Layer: 0
+  m_Name: scene_hangwall_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8105208257227334178
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8360532355023275920}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.07407541, y: -0.5802243, z: 0.05310538, w: 0.8093408}
+  m_LocalPosition: {x: -1.2226562, y: 2.5898438, z: 6.5351562}
+  m_LocalScale: {x: 1, y: 1, z: 0.49492353}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: 10.4589205, y: 71.27421, z: 0.00000013888686}
+--- !u!1 &8416822812088976026
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9011041164319991370}
+  m_Layer: 0
+  m_Name: scene_hangwall_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9011041164319991370
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8416822812088976026}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.03423692, y: -0.7062775, z: 0.03423692, w: 0.70627743}
+  m_LocalPosition: {x: -3.065, y: 2.813, z: 5.028}
+  m_LocalScale: {x: 1, y: 1, z: 0.62598187}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: 5.5505004, y: 89.99999, z: 0}
+--- !u!1 &8559993956272342616
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2673559459839459037}
+  m_Layer: 0
+  m_Name: scene_climbwall_jump_up_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2673559459839459037
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8559993956272342616}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.08588289, y: -0.34431586, z: -0.031647496, w: 0.9343817}
+  m_LocalPosition: {x: 3.9335938, y: -2.7207031, z: 4.415039}
+  m_LocalScale: {x: 1, y: 1, z: 1.542886}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: -10.503072, y: 40.45727, z: 0.00000028422636}
+--- !u!1 &8611354532455168454
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4603726018641664284}
+  m_Layer: 0
+  m_Name: scene_climbwall_jump_up_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4603726018641664284
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8611354532455168454}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.066724576, y: 0.86594653, z: -0.12015405, w: -0.48088202}
+  m_LocalPosition: {x: 0.7714844, y: -0.32885742, z: 6.248047}
+  m_LocalScale: {x: 1, y: 1, z: 0.65279394}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: -164.20078, y: 58.089046, z: -180}
+--- !u!1 &8789999992568444294
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2199739542003167046}
+  m_Layer: 0
+  m_Name: scene_hangwall_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2199739542003167046
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8789999992568444294}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.00009174859, y: 0.99986696, z: 0.0060567968, w: 0.015146022}
+  m_LocalPosition: {x: -4.111, y: 2.599, z: 3.959}
+  m_LocalScale: {x: 1, y: 1, z: 0.6448745}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: 179.30586, y: -1.7357043, z: 180}
+--- !u!1 &8839680002339599643
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5859045448437868066}
+  m_Layer: 0
+  m_Name: scene_hangwall_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5859045448437868066
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8839680002339599643}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.020274201, y: 0.9608597, z: -0.0731138, w: -0.26644307}
+  m_LocalPosition: {x: 0.20376587, y: 1.9516602, z: 6.2441406}
+  m_LocalScale: {x: 1, y: 1, z: 0.4195188}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: -171.29726, y: 30.99702, z: -180}
+--- !u!1 &9120218224030477367
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5316878232950095651}
+  m_Layer: 0
+  m_Name: scene_climbwall_jump_up_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5316878232950095651
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9120218224030477367}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.42521018, y: -0.3104078, z: 0.15799586, w: 0.8353925}
+  m_LocalPosition: {x: 1.8344727, y: -2.9482422, z: 6.0820312}
+  m_LocalScale: {x: 1, y: 1, z: 0.68363625}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: 53.951687, y: 40.76723, z: -0.0000008991293}
+--- !u!1 &9155252738972751604
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3991432877343663418}
+  m_Layer: 0
+  m_Name: scene_climbwall_jump_up_physics_checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3991432877343663418
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9155252738972751604}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.20452033, y: -0.75268, z: 0.27347374, w: 0.56290007}
+  m_LocalPosition: {x: 1.265625, y: -3.6064453, z: 6.1054688}
+  m_LocalScale: {x: 1, y: 1, z: 1.1896584}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22211812170775289}
+  m_LocalEulerAnglesHint: {x: -140.06445, y: 73.58276, z: -179.99998}

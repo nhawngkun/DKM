@@ -8,6 +8,13 @@ public enum WeaponType
     Sparda,
     Yamato,
     Magic,      // tay không, đòn đánh bắn phép (SpellCaster) thay vì quét lưỡi kiếm
+    Fist,       // quyền cước tay không: quét cẳng tay + nắm tay thay vì lưỡi kiếm
+}
+
+public static class WeaponTypeExtensions
+{
+    // vũ khí có model cầm tay (để đo mũi kiếm, gắn vào socket)
+    public static bool HasBlade(this WeaponType type) => type != WeaponType.Magic && type != WeaponType.Fist;
 }
 
 /// <summary>

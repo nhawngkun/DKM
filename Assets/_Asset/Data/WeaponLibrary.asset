@@ -593,3 +593,97 @@ MonoBehaviour:
       - Clip: buff_Flying_cast_Inplace
         Root: buff_Flying_cast
         Vertical: 0
+  - Type: 4
+    Key: Fist
+    DisplayName: "Quy\u1EC1n"
+    AnimFolder: Assets/_Asset/Animation/MartialArts/Naraka
+    Prefab: {fileID: 0}
+    Model: {fileID: 0}
+    IdleClip: male_punch_idle_01
+    ComboResetTime: 0.6
+    AnimSetId: 4
+    Chains:
+    - Name: Trong Cuoc
+      Context: 0
+      Steps:
+      - Clip: male_punch_attack_heavy_01_Inplace
+        Root: male_punch_attack_heavy_01
+        Vertical: 0
+      - Clip: male_punch_attack_heavy_02_Inplace
+        Root: male_punch_attack_heavy_02
+        Vertical: 0
+      - Clip: male_punch_attack_hold_heavy_01_Inplace
+        Root: male_punch_attack_hold_heavy_01
+        Vertical: 0
+    - Name: Xoay Cuoc
+      Context: 0
+      Steps:
+      - Clip: male_punch_attack_heavy_01_Inplace
+        Root: male_punch_attack_heavy_01
+        Vertical: 0
+      - Clip: male_punch_sprint_attack_light_01_Inplace
+        Root: male_punch_sprint_attack_light_01
+        Vertical: 0
+      - Clip: male_punch_attack_hold_light_02_Inplace
+        Root: male_punch_attack_hold_light_02
+        Vertical: 0
+    - Name: Thiem Bo
+      Context: 1
+      Steps:
+      - Clip: male_punch_flashstep_attack_light_01_Inplace
+        Root: male_punch_flashstep_attack_light_01
+        Vertical: 0
+      - Clip: male_punch_dodge_attack_light_02_Inplace
+        Root: male_punch_dodge_attack_light_02
+        Vertical: 0
+      - Clip: male_punch_dodge_attack_light_03_Inplace
+        Root: male_punch_dodge_attack_light_03
+        Vertical: 0
+    - Name: Thang Long
+      Context: 3
+      Steps:
+      - Clip: male_punch_crouch_attack_heavy_02_Inplace
+        Root: male_punch_crouch_attack_heavy_02
+        Vertical: 1
+    - Name: Khong Trung
+      Context: 2
+      Steps:
+      - Clip: male_punch_jump_attack_light_01_Inplace
+        Root: male_punch_jump_attack_light_01
+        Vertical: 0
+      - Clip: male_punch_jump_attack_light_01_Inplace
+        Root: male_punch_jump_attack_light_01
+        Vertical: 0
+      - Clip: male_punch_jump_attack_heavy_01_Inplace
+        Root: male_punch_jump_attack_heavy_01
+        Vertical: 0
+    - Name: Bao Pha Quyen
+      Context: 4
+      Steps:
+      - Clip: male_punch_attack_heavy_soul_03_Inplace
+        Root: male_punch_attack_heavy_soul_03
+        Vertical: 0
+    - Name: Phi Long Cuoc
+      Context: 4
+      Steps:
+      - Clip: male_punch_sprint_attack_heavy_01_Inplace
+        Root: male_punch_sprint_attack_heavy_01
+        Vertical: 0
+    - Name: Hoi Ma Phan Kich
+      Context: 4
+      Steps:
+      - Clip: male_punch_perfect_dodge_back_01_Inplace
+        Root: male_punch_perfect_dodge_back_01
+        Vertical: 0
+      - Clip: male_punch_perfect_dodge_attack_light_01_Inplace
+        Root: male_punch_perfect_dodge_attack_light_01
+        Vertical: 0
+    - Name: Tum Nem
+      Context: 4
+      Steps:
+      - Clip: Hulk_ThrowOne_Take_Inplace
+        Root: Hulk_ThrowOne_Take
+        Vertical: 0
+      - Clip: Hulk_ThrowOne_Throw_Inplace
+        Root: Hulk_ThrowOne_Throw
+        Vertical: 0

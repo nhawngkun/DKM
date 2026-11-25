@@ -1826,7 +1826,7 @@ public class CombatTimingWindow : EditorWindow
             foreach (string guid in AssetDatabase.FindAssets("t:AnimationClip", new[] { clean }))
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
-                if (!path.EndsWith(".FBX", System.StringComparison.OrdinalIgnoreCase)) continue;
+                if (!path.EndsWith(".FBX", System.StringComparison.OrdinalIgnoreCase) && !path.EndsWith(".anim", System.StringComparison.OrdinalIgnoreCase)) continue;
                 foreach (UnityEngine.Object asset in AssetDatabase.LoadAllAssetsAtPath(path))
                 {
                     if (asset is AnimationClip animation && !animation.name.StartsWith("__preview__") && !names.Contains(animation.name))

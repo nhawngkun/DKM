@@ -47,6 +47,14 @@ public static class CharacterSetupTool
         public string FlyPrefix;
         // gắn vào mọi tên clip locomotion khi map (vd "_Inplace" -> dùng bản Inplace, nhân vật bật CharController.InPlaceLocomotion)
         public string ClipSuffix = "";
+        // clip đòn là .anim rời có root motion: tự sinh bản Inplace (san phẳng RootT) vào InplaceFolder
+        public bool BuildAnimInplace;
+        // dựng prefab nhân vật: nhân bản PrefabTemplate, thay model bằng ModelPath
+        public string PrefabPath;
+        public string PrefabTemplate;
+        public string ModelPath;
+        // > 0: mỗi đòn (trừ hất tung / trên không) lướt tối đa bấy nhiêu m, hạ RootMotionScale cho vừa
+        public float MaxRootTravel;
 
         public string InplaceFolder => Folder + "/Inplace";
     }
@@ -152,6 +160,70 @@ public static class CharacterSetupTool
         },
     };
 
+    // Nhân vật chính bản reboot: quyền cước tay không, anim Naraka (.anim Humanoid có root motion).
+    // Người dùng bỏ 3 đòn đấm nhẹ attack_light_01/02/03 (quá kung fu) -> mất chuỗi Liên Hoàn Quyền, Trọng Cước còn 3 đòn nặng.
+    // Bản brawler SF3 (D-016) đã thử rồi quay lại; clip SF3 vẫn ở Assets/_Asset/Animation/StreetBrawl.
+    private const string HeroClip = "male_punch_";
+
+    private static Profile Hero => new Profile
+    {
+        Name = "Hero",
+        Prefix = "HR_",
+        Folder = "Assets/_Asset/Animation/MartialArts/Naraka",
+        WeaponKey = "Fist",
+        WeaponName = "Quyền",
+        WeaponType = WeaponType.Fist,
+        WeaponPrefab = null,
+        IdleClip = HeroClip + "idle_01",
+        ComboResetTime = 0.6f,
+        StateClips = new Dictionary<LocoState, string>
+        {
+            { LocoState.Idle, HeroClip + "idle_01" },
+            { LocoState.DodgeFront, HeroClip + "flashstep_front_01" },
+            { LocoState.DodgeBack, HeroClip + "flashstep_back_01" },
+            { LocoState.DodgeLeft, HeroClip + "flashstep_left_01" },
+            { LocoState.DodgeRight, HeroClip + "flashstep_right_01" },
+        },
+        // Naraka không có clip đi bộ / strafe 8 hướng -> giữ clip Dante
+        GaitClips = new[] { null, HeroClip + "run_01", HeroClip + "run_01", "male_unarmed_sprint_01" },
+        BuildAnimInplace = true,
+        PrefabPath = "Assets/_Asset/Prefab/Hero.prefab",
+        PrefabTemplate = "Assets/_Asset/Prefab/Trish.prefab",
+        ModelPath = "Assets/_Asset/3D/AvatarV10/AvatarV10.fbx",
+        // người dùng: "lướt xa quá, cho nhích lên 1 chút thôi" (clip Naraka lướt 2-9 m)
+        MaxRootTravel = 1f,
+        Chains = new List<WeaponChainDefinition>
+        {
+            // X X X: chuỗi nặng, kết bằng đá xoáy (đã bỏ attack_heavy_03 theo người dùng)
+            HeroChain("Trong Cuoc", AttackContext.Ground, "attack_heavy_01", "attack_heavy_02", "attack_hold_heavy_01"),
+            // X, dừng nhịp, X X: rẽ sang đá xoáy rồi combo lao (người dùng chọn)
+            HeroChain("Xoay Cuoc", AttackContext.Ground, "attack_heavy_01", "sprint_attack_light_01", "attack_hold_light_02"),
+            // vừa né / lock + tới: song phi rồi nối 2 đòn sau né
+            HeroChain("Thiem Bo", AttackContext.Dash, "flashstep_attack_light_01", "dodge_attack_light_02", "dodge_attack_light_03"),
+            // lock + lùi + X: hất tung
+            Vertical(HeroChain("Thang Long", AttackContext.Launcher, "crouch_attack_heavy_02")),
+            HeroChain("Khong Trung", AttackContext.Air, "jump_attack_light_01", "jump_attack_light_01", "jump_attack_heavy_01"),
+            // Y + đứng yên / tới / lùi
+            HeroChain("Bao Pha Quyen", AttackContext.Skill, "attack_heavy_soul_03"),
+            HeroChain("Phi Long Cuoc", AttackContext.Skill, "sprint_attack_heavy_01"),
+            // lùi né rồi bổ nhào từ trên xuống (người dùng chọn lại perfect_dodge_attack_light_01)
+            HeroChain("Hoi Ma Phan Kich", AttackContext.Skill, "perfect_dodge_back_01", "perfect_dodge_attack_light_01"),
+            // không theo hướng: HeroGrapple gọi khi bấm B / Q sát địch (skill slot thứ 4). Clip SF3 chép sang Naraka/Grab_Throw
+            Chain("Tum Nem", AttackContext.Skill, "Hulk_ThrowOne_Take", "Hulk_ThrowOne_Throw"),
+        },
+    };
+
+    private static WeaponChainDefinition HeroChain(string name, AttackContext context, params string[] clips)
+    {
+        return Chain(name, context, clips.Select(c => HeroClip + c).ToArray());
+    }
+
+    private static WeaponChainDefinition Vertical(WeaponChainDefinition chain)
+    {
+        foreach (WeaponStepDefinition step in chain.Steps) step.Vertical = true;
+        return chain;
+    }
+
     private static WeaponChainDefinition Chain(string name, AttackContext context, params string[] clips)
     {
         var chain = new WeaponChainDefinition { Name = name, Context = context };
@@ -175,11 +247,18 @@ public static class CharacterSetupTool
     [MenuItem(MenuRoot + "Vergil + Trish - Setup + Build")]
     private static void BothMenu() => Run(Vergil, Trish);
 
+    [MenuItem(MenuRoot + "Hero (Quyền) - Setup + Build")]
+    private static void HeroMenu() => Run(Hero);
+
+    // gọi từ script / MCP: không hiện hộp thoại xác nhận
+    public static void SetupHero() => Execute(Hero);
+
     [MenuItem(MenuRoot + "Kiểm tra kết quả")]
     private static void VerifyMenu()
     {
         Verify(Vergil);
         Verify(Trish);
+        Verify(Hero);
     }
 
     #endregion
@@ -200,10 +279,21 @@ public static class CharacterSetupTool
             EditorUtility.DisplayDialog("Đang Play mode", "Thoát Play mode rồi chạy lại.", "OK");
             return;
         }
-        if (UnityEngine.Object.FindFirstObjectByType<CharacterCombo>() == null)
+        Execute(profiles);
+    }
+
+    private static void Execute(params Profile[] profiles)
+    {
+        string names = string.Join(" + ", profiles.Select(p => p.Name));
+        if (Application.isPlaying)
         {
-            EditorUtility.DisplayDialog("Thiếu nhân vật trong scene",
-                "WeaponComboBuilder cần 1 nhân vật có CharacterCombo trong scene đang mở (lấy avatar + scale). Mở scene có Player rồi chạy lại.", "OK");
+            Debug.LogError("[CharacterSetup] Đang Play mode, thoát rồi chạy lại.");
+            return;
+        }
+        // chỉ vũ khí có lưỡi mới cần nhân vật trong scene (đo cách cầm theo bàn tay của nó)
+        if (profiles.Any(p => p.WeaponType.HasBlade()) && UnityEngine.Object.FindFirstObjectByType<CharacterCombo>() == null)
+        {
+            Debug.LogError("[CharacterSetup] WeaponComboBuilder cần 1 nhân vật có CharacterCombo trong scene đang mở (lấy avatar + scale). Mở scene có Player rồi chạy lại.");
             return;
         }
 
@@ -220,7 +310,12 @@ public static class CharacterSetupTool
         LocomotionAnimatorBuilder.BuildFrom(sets);
         WeaponComboBuilder.BuildWeapons(WeaponComboBuilder.FindLibrary(), profiles.Select(p => p.WeaponKey).ToList());
 
-        foreach (Profile profile in profiles) Verify(profile);
+        foreach (Profile profile in profiles)
+        {
+            LimitRootTravel(profile);
+            AssignWeaponToPrefab(profile);
+            Verify(profile);
+        }
         Debug.Log($"[CharacterSetup] Xong {names}. Gán WD_ tương ứng vào CharacterCombo.Weapons của prefab nhân vật" +
                   (profiles.Any(p => p.WeaponType == WeaponType.Magic) ? ", Trish cần thêm component SpellCaster." : "."));
     }
@@ -287,6 +382,12 @@ public static class CharacterSetupTool
 
         int renamed = PrepareInplaceClips(profile);
         if (renamed > 0) Debug.Log($"[CharacterSetup] {profile.Name}: chuẩn hoá {renamed} FBX Inplace.");
+        if (profile.BuildAnimInplace)
+        {
+            int built = BuildAnimInplace(profile);
+            Debug.Log($"[CharacterSetup] {profile.Name}: sinh {built} clip .anim Inplace trong {profile.InplaceFolder}.");
+        }
+        if (profile.PrefabPath != null && !CharacterPrefabCloner.Ensure(profile.PrefabTemplate, profile.ModelPath, profile.PrefabPath, profile.Name)) return false;
         AnimSetCloneTool.ClearCache();
 
         if (!EnsureAnimSet(profile, out int animSetIndex)) return false;
@@ -357,6 +458,7 @@ public static class CharacterSetupTool
         }
 
         int mapped = Remap(profile, set);
+        if (profile.PrefabPath != null) set.Prefab = AssetDatabase.LoadAssetAtPath<GameObject>(profile.PrefabPath);
         index = AnimSetCloneTool.Write(library, set, AnimSetCloneTool.IndexOfPrefix(library, profile.Prefix));
         Debug.Log($"[CharacterSetup] Bộ {profile.Prefix} (index {index}): map {mapped} clip của {profile.Name}, còn lại dùng clip Dante.");
         return index >= 0;
@@ -390,7 +492,9 @@ public static class CharacterSetupTool
         foreach (DirectionalClipDefinition row in set.Strafe)
         {
             bool walk = Mathf.Sqrt(row.X * row.X + row.Y * row.Y) < 0.75f;
-            Use(DirectionClip(walk ? profile.WalkPrefix : profile.RunPrefix, row.X, row.Y), clip => row.Clip = clip);
+            string prefix = walk ? profile.WalkPrefix : profile.RunPrefix;
+            if (prefix == null) continue;
+            Use(DirectionClip(prefix, row.X, row.Y), clip => row.Clip = clip);
         }
 
         set.OneShots.RemoveAll(row => row.State >= LocoState.FlyStart);
@@ -471,6 +575,127 @@ public static class CharacterSetupTool
         EditorUtility.SetDirty(library);
         Debug.Log($"[CharacterSetup] {profile.WeaponKey}: AnimSetId {animSetIndex}, {weapon.Chains.Count} chuỗi, {weapon.Chains.Sum(c => c.Steps.Count)} đòn.");
         return true;
+    }
+
+    // .anim có root motion -> bản "_Inplace": clip mới, RootT.xz về 0 (và RootT.y với đòn trên không / hất tung để KCC lo độ cao).
+    // Bản gốc giữ nguyên làm Root: builder lấy hông bản gốc trừ bản Inplace ra RootSamples, như với FBX.
+    private static int BuildAnimInplace(Profile profile)
+    {
+        if (!AssetDatabase.IsValidFolder(profile.InplaceFolder))
+            AssetDatabase.CreateFolder(profile.Folder, "Inplace");
+
+        var sources = new Dictionary<string, AnimationClip>(StringComparer.Ordinal);
+        foreach (string guid in AssetDatabase.FindAssets("t:AnimationClip", new[] { profile.Folder }))
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            if (!path.EndsWith(".anim", StringComparison.OrdinalIgnoreCase) || path.StartsWith(profile.InplaceFolder + "/", StringComparison.Ordinal)) continue;
+            var clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(path);
+            if (clip != null) sources[clip.name] = clip;
+        }
+
+        int built = 0;
+        var done = new HashSet<string>(StringComparer.Ordinal);
+        foreach (WeaponChainDefinition chain in profile.Chains)
+        {
+            bool flattenY = chain.Context == AttackContext.Air || chain.Context == AttackContext.Launcher;
+            foreach (WeaponStepDefinition step in chain.Steps)
+            {
+                if (!done.Add(step.Clip)) continue;
+                if (!sources.TryGetValue(step.Root, out AnimationClip source))
+                {
+                    Debug.LogWarning($"[CharacterSetup] {profile.Name}: không thấy clip gốc {step.Root}");
+                    continue;
+                }
+                SetRootSettings(source, false, false);
+
+                string target = $"{profile.InplaceFolder}/{step.Clip}.anim";
+                // clip mới tinh chứ không Instantiate: bản sao giữ motion đã tính từ RootT cũ, san RootT xong thân bị kéo lùi cả quãng lướt.
+                // Bỏ MotionT/MotionQ để Unity tính lại; RootT.xz về 0 (clip Naraka bắt đầu lệch ~3 m so với gốc)
+                var copy = new AnimationClip { name = step.Clip, frameRate = source.frameRate };
+                float length = Mathf.Max(source.length, 0.0001f);
+                foreach (EditorCurveBinding binding in AnimationUtility.GetCurveBindings(source))
+                {
+                    string p = binding.path.Length == 0 ? binding.propertyName : null;
+                    if (p != null && (p.StartsWith("MotionT", StringComparison.Ordinal) || p.StartsWith("MotionQ", StringComparison.Ordinal))) continue;
+                    AnimationCurve curve = AnimationUtility.GetEditorCurve(source, binding);
+                    if (p == "RootT.x" || p == "RootT.z") curve = AnimationCurve.Constant(0f, length, 0f);
+                    else if (flattenY && p == "RootT.y") curve = AnimationCurve.Constant(0f, length, curve.length > 0 ? curve.keys[0].value : 0f);
+                    AnimationUtility.SetEditorCurve(copy, binding, curve);
+                }
+                // không chép Animation Event: event của game gốc (SF3: AnimatorEvent, PlaySkinnedEffect...) không có receiver -> lỗi console
+                SetRootSettings(copy, true, false);
+
+                AssetDatabase.DeleteAsset(target);
+                AssetDatabase.CreateAsset(copy, target);
+                built++;
+            }
+        }
+        AssetDatabase.SaveAssets();
+        return built;
+    }
+
+    // xoay gốc bake vào pose; độ cao trong pose; XZ chỉ bake ở bản Inplace (bản gốc giữ để đo quãng lướt)
+    private static void SetRootSettings(AnimationClip clip, bool bakeXZ, bool loop)
+    {
+        AnimationClipSettings s = AnimationUtility.GetAnimationClipSettings(clip);
+        s.loopTime = loop;
+        s.loopBlendOrientation = true;
+        s.keepOriginalOrientation = true;
+        s.loopBlendPositionY = true;
+        s.keepOriginalPositionY = true;
+        s.loopBlendPositionXZ = bakeXZ;
+        s.keepOriginalPositionXZ = true;
+        AnimationUtility.SetAnimationClipSettings(clip, s);
+        EditorUtility.SetDirty(clip);
+    }
+
+    // đòn lướt quá MaxRootTravel (m, theo tỉ lệ model của prefab) thì hạ RootMotionScale cho vừa; hất tung / trên không giữ nguyên.
+    // Thiếu tầm tới mục tiêu thì lunge của CharacterCombat bù.
+    private static void LimitRootTravel(Profile profile)
+    {
+        if (profile.MaxRootTravel <= 0f) return;
+        var weapon = AssetDatabase.LoadAssetAtPath<WeaponData>($"{WeaponComboBuilder.OutputFolder}/WD_{profile.WeaponKey}.asset");
+        if (weapon == null) return;
+
+        var prefab = profile.PrefabPath != null ? AssetDatabase.LoadAssetAtPath<GameObject>(profile.PrefabPath) : null;
+        Animator animator = prefab != null ? prefab.GetComponentInChildren<Animator>(true) : null;
+        float scale = animator != null && animator.isHuman ? animator.humanScale : 1f;
+
+        var limited = new List<string>();
+        foreach (ComboChain chain in weapon.Chains)
+        {
+            if (chain.Context == AttackContext.Air || chain.Context == AttackContext.Launcher) continue;
+            foreach (AttackStep step in chain.Steps)
+            {
+                float travel = step.RootTravel * scale;
+                step.RootMotionScale = travel > profile.MaxRootTravel ? profile.MaxRootTravel / travel : 1f;
+                if (step.RootMotionScale < 1f) limited.Add($"{step.Name} {travel:F1}->{profile.MaxRootTravel:F1}m");
+            }
+        }
+        EditorUtility.SetDirty(weapon);
+        AssetDatabase.SaveAssets();
+        Debug.Log($"[CharacterSetup] {profile.Name}: giới hạn lướt {profile.MaxRootTravel} m - {string.Join(", ", limited)}");
+    }
+
+    private static void AssignWeaponToPrefab(Profile profile)
+    {
+        if (profile.PrefabPath == null) return;
+        var weapon = AssetDatabase.LoadAssetAtPath<WeaponData>($"{WeaponComboBuilder.OutputFolder}/WD_{profile.WeaponKey}.asset");
+        if (weapon == null) return;
+
+        GameObject root = PrefabUtility.LoadPrefabContents(profile.PrefabPath);
+        try
+        {
+            CharacterCombo combo = root.GetComponentInChildren<CharacterCombo>(true);
+            if (combo == null) return;
+            combo.Weapons = new List<WeaponData> { weapon };
+            combo.CurrentWeaponIndex = 0;
+            PrefabUtility.SaveAsPrefabAsset(root, profile.PrefabPath);
+        }
+        finally
+        {
+            PrefabUtility.UnloadPrefabContents(root);
+        }
     }
 
     #endregion

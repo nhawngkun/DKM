@@ -1,0 +1,604 @@
+{
+ "items": [
+  {
+   "color": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "metallic": 0,
+   "smoothness": 0.2,
+   "alphaClip": false,
+   "doubleSided": false,
+   "name": "AvatarEyelashes"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/AvatarHead_Sculpt_BaseColor.png",
+   "maskMap": "Textures/AvatarHead_Sculpt_MaskMap.png",
+   "normalMap": "Textures/AvatarHead_Sculpt_Normal.png",
+   "normalScale": 1.0,
+   "name": "AvatarHead_Sculpt"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 0,
+   "smoothness": 0.85,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/AvatarLeftEyeball_BaseColor.png",
+   "normalMap": "Textures/AvatarLeftEyeball_Normal.png",
+   "normalScale": 1.0,
+   "name": "AvatarLeftEyeball"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 0,
+   "smoothness": 0.85,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/AvatarRightEyeball_BaseColor.png",
+   "normalMap": "Textures/AvatarRightEyeball_Normal.png",
+   "normalScale": 1.0,
+   "name": "AvatarRightEyeball"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 0,
+   "smoothness": 0.5,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/AvatarTeethLower_BaseColor.png",
+   "normalMap": "Textures/AvatarTeethLower_Normal.png",
+   "normalScale": 1.0,
+   "name": "AvatarTeethLower"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 0,
+   "smoothness": 0.5,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/AvatarTeethUpper_BaseColor.png",
+   "normalMap": "Textures/AvatarTeethUpper_Normal.png",
+   "normalScale": 1.0,
+   "name": "AvatarTeethUpper"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_Badge_BaseColor.png",
+   "maskMap": "Textures/M_Badge_MaskMap.png",
+   "normalMap": "Textures/M_Badge_Normal.png",
+   "normalScale": 1.0,
+   "emissionMap": "Textures/M_Badge_Emission.png",
+   "emissionIntensity": 2.0,
+   "name": "M_Badge"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_Boot_Original_BaseColor.png",
+   "maskMap": "Textures/M_Boot_Original_MaskMap.png",
+   "normalMap": "Textures/M_Boot_Original_Normal.png",
+   "normalScale": 1.0,
+   "name": "M_Boot_Original"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 0.0,
+   "smoothness": 0.550000011920929,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_DanteGlove_BaseColor.png",
+   "name": "M_DanteGlove"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 0.0,
+   "smoothness": 0.550000011920929,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_DanteHandSkin_BaseColor.png",
+   "name": "M_DanteHandSkin"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 0.0,
+   "smoothness": 0.44999998807907104,
+   "alphaClip": true,
+   "doubleSided": true,
+   "baseMap": "Textures/M_HairCap_BaseColor.png",
+   "normalMap": "Textures/M_HairCap_Normal.jpeg",
+   "normalScale": 0.6000000238418579,
+   "name": "M_HairCap"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 0.0,
+   "smoothness": 0.44999998807907104,
+   "alphaClip": true,
+   "doubleSided": true,
+   "baseMap": "Textures/M_HairCards_BaseColor.png",
+   "normalMap": "Textures/M_HairCards_Normal.jpeg",
+   "normalScale": 0.6000000238418579,
+   "name": "M_HairCards"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_Jacket_Original_BaseColor.png",
+   "maskMap": "Textures/M_Jacket_Original_MaskMap.png",
+   "normalMap": "Textures/M_Jacket_Original_Normal.png",
+   "normalScale": 1.0,
+   "emissionMap": "Textures/M_Jacket_Original_Emission.png",
+   "emissionIntensity": 2.0,
+   "name": "M_Jacket_Original"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_JacketAddons_BaseColor.png",
+   "maskMap": "Textures/M_JacketAddons_MaskMap.png",
+   "normalMap": "Textures/M_JacketAddons_Normal.png",
+   "normalScale": 1.0,
+   "emissionMap": "Textures/M_JacketAddons_Emission.png",
+   "emissionIntensity": 2.0,
+   "name": "M_JacketAddons"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_JacketAddons_001_BaseColor.png",
+   "maskMap": "Textures/M_JacketAddons_001_MaskMap.png",
+   "normalMap": "Textures/M_JacketAddons_001_Normal.png",
+   "normalScale": 1.0,
+   "emissionMap": "Textures/M_JacketAddons_001_Emission.png",
+   "emissionIntensity": 2.0,
+   "name": "M_JacketAddons.001"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_Pants_BaseColor.png",
+   "maskMap": "Textures/M_Pants_MaskMap.png",
+   "normalMap": "Textures/M_Pants_Normal.png",
+   "normalScale": 1.0,
+   "name": "M_Pants"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_Shirt_BaseColor.png",
+   "maskMap": "Textures/M_Shirt_MaskMap.png",
+   "normalMap": "Textures/M_Shirt_Normal.png",
+   "normalScale": 1.0,
+   "name": "M_Shirt"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_Torax_BaseColor.png",
+   "maskMap": "Textures/M_Torax_MaskMap.png",
+   "normalMap": "Textures/M_Torax_Normal.png",
+   "normalScale": 1.0,
+   "name": "M_Torax"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 0.0,
+   "smoothness": 0.550000011920929,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_Torax_Skin_BaseColor.png",
+   "normalMap": "Textures/M_Torax_Skin_Normal.png",
+   "normalScale": 1.0,
+   "name": "M_Torax_Skin"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_Boot_Black_BaseColor.png",
+   "maskMap": "Textures/M_Boot_Original_MaskMap.png",
+   "normalMap": "Textures/M_Boot_Original_Normal.png",
+   "normalScale": 1.0,
+   "name": "M_Boot_Black",
+   "variantOf": "M_Boot_Original"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_Boot_Brown_BaseColor.png",
+   "maskMap": "Textures/M_Boot_Original_MaskMap.png",
+   "normalMap": "Textures/M_Boot_Original_Normal.png",
+   "normalScale": 1.0,
+   "name": "M_Boot_Brown",
+   "variantOf": "M_Boot_Original"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_Boot_Burgundy_BaseColor.png",
+   "maskMap": "Textures/M_Boot_Original_MaskMap.png",
+   "normalMap": "Textures/M_Boot_Original_Normal.png",
+   "normalScale": 1.0,
+   "name": "M_Boot_Burgundy",
+   "variantOf": "M_Boot_Original"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_Boot_Grey_BaseColor.png",
+   "maskMap": "Textures/M_Boot_Original_MaskMap.png",
+   "normalMap": "Textures/M_Boot_Original_Normal.png",
+   "normalScale": 1.0,
+   "name": "M_Boot_Grey",
+   "variantOf": "M_Boot_Original"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_Boot_Olive_BaseColor.png",
+   "maskMap": "Textures/M_Boot_Original_MaskMap.png",
+   "normalMap": "Textures/M_Boot_Original_Normal.png",
+   "normalScale": 1.0,
+   "name": "M_Boot_Olive",
+   "variantOf": "M_Boot_Original"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_Boot_Tan_BaseColor.png",
+   "maskMap": "Textures/M_Boot_Original_MaskMap.png",
+   "normalMap": "Textures/M_Boot_Original_Normal.png",
+   "normalScale": 1.0,
+   "name": "M_Boot_Tan",
+   "variantOf": "M_Boot_Original"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_Boot_White_BaseColor.png",
+   "maskMap": "Textures/M_Boot_Original_MaskMap.png",
+   "normalMap": "Textures/M_Boot_Original_Normal.png",
+   "normalScale": 1.0,
+   "name": "M_Boot_White",
+   "variantOf": "M_Boot_Original"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_Jacket_Black_BaseColor.png",
+   "maskMap": "Textures/M_Jacket_Original_MaskMap.png",
+   "normalMap": "Textures/M_Jacket_Original_Normal.png",
+   "normalScale": 1.0,
+   "emissionMap": "Textures/M_Jacket_Original_Emission.png",
+   "emissionIntensity": 2.0,
+   "name": "M_Jacket_Black",
+   "variantOf": "M_Jacket_Original"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_Jacket_Brown_BaseColor.png",
+   "maskMap": "Textures/M_Jacket_Original_MaskMap.png",
+   "normalMap": "Textures/M_Jacket_Original_Normal.png",
+   "normalScale": 1.0,
+   "emissionMap": "Textures/M_Jacket_Original_Emission.png",
+   "emissionIntensity": 2.0,
+   "name": "M_Jacket_Brown",
+   "variantOf": "M_Jacket_Original"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_Jacket_Burgundy_BaseColor.png",
+   "maskMap": "Textures/M_Jacket_Original_MaskMap.png",
+   "normalMap": "Textures/M_Jacket_Original_Normal.png",
+   "normalScale": 1.0,
+   "emissionMap": "Textures/M_Jacket_Original_Emission.png",
+   "emissionIntensity": 2.0,
+   "name": "M_Jacket_Burgundy",
+   "variantOf": "M_Jacket_Original"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_Jacket_Cream_BaseColor.png",
+   "maskMap": "Textures/M_Jacket_Original_MaskMap.png",
+   "normalMap": "Textures/M_Jacket_Original_Normal.png",
+   "normalScale": 1.0,
+   "emissionMap": "Textures/M_Jacket_Original_Emission.png",
+   "emissionIntensity": 2.0,
+   "name": "M_Jacket_Cream",
+   "variantOf": "M_Jacket_Original"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_Jacket_Navy_BaseColor.png",
+   "maskMap": "Textures/M_Jacket_Original_MaskMap.png",
+   "normalMap": "Textures/M_Jacket_Original_Normal.png",
+   "normalScale": 1.0,
+   "emissionMap": "Textures/M_Jacket_Original_Emission.png",
+   "emissionIntensity": 2.0,
+   "name": "M_Jacket_Navy",
+   "variantOf": "M_Jacket_Original"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_Jacket_Olive_BaseColor.png",
+   "maskMap": "Textures/M_Jacket_Original_MaskMap.png",
+   "normalMap": "Textures/M_Jacket_Original_Normal.png",
+   "normalScale": 1.0,
+   "emissionMap": "Textures/M_Jacket_Original_Emission.png",
+   "emissionIntensity": 2.0,
+   "name": "M_Jacket_Olive",
+   "variantOf": "M_Jacket_Original"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_Jacket_Tan_BaseColor.png",
+   "maskMap": "Textures/M_Jacket_Original_MaskMap.png",
+   "normalMap": "Textures/M_Jacket_Original_Normal.png",
+   "normalScale": 1.0,
+   "emissionMap": "Textures/M_Jacket_Original_Emission.png",
+   "emissionIntensity": 2.0,
+   "name": "M_Jacket_Tan",
+   "variantOf": "M_Jacket_Original"
+  },
+  {
+   "color": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "alphaClip": false,
+   "doubleSided": false,
+   "baseMap": "Textures/M_Jacket_White_BaseColor.png",
+   "maskMap": "Textures/M_Jacket_Original_MaskMap.png",
+   "normalMap": "Textures/M_Jacket_Original_Normal.png",
+   "normalScale": 1.0,
+   "emissionMap": "Textures/M_Jacket_Original_Emission.png",
+   "emissionIntensity": 2.0,
+   "name": "M_Jacket_White",
+   "variantOf": "M_Jacket_Original"
+  }
+ ]
+}

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -495,7 +495,7 @@ public partial class CharacterStudioWindow
             if (_weaponLibrary != null && _weaponLibrary.Weapons.Any(w => string.Equals(w.Key, _newWeaponKey, StringComparison.OrdinalIgnoreCase)))
                 StudioGUI.Note("Key này đã có vũ khí khác dùng.", State.Error);
             _newWeaponType = (WeaponType)EditorGUILayout.EnumPopup("Loại", _newWeaponType);
-            if (_newWeaponType != WeaponType.Magic)
+            if (_newWeaponType.HasBlade())
                 _newWeaponModel = (GameObject)EditorGUILayout.ObjectField("Model vũ khí", _newWeaponModel, typeof(GameObject), false);
             _newWeaponFolder = AnimSetCloneTool.NormalizeFolder(StudioGUI.FolderField(new GUIContent("Thư mục anim đòn").text, string.IsNullOrEmpty(_newWeaponFolder) ? _newFolder : _newWeaponFolder));
             _newSuggestChains = EditorGUILayout.Toggle("Gợi ý chuỗi từ tên clip", _newSuggestChains);
@@ -606,8 +606,8 @@ public partial class CharacterStudioWindow
                 Key = _newWeaponKey,
                 DisplayName = _newName,
                 AnimFolder = weaponFolder,
-                Prefab = _newWeaponType == WeaponType.Magic ? null : _newWeaponModel,
-                Model = _newWeaponType == WeaponType.Magic ? null : _newWeaponModel,
+                Prefab = _newWeaponType.HasBlade() ? _newWeaponModel : null,
+                Model = _newWeaponType.HasBlade() ? _newWeaponModel : null,
                 IdleClip = set.Idle != null && !string.IsNullOrEmpty(set.Idle.Clip) ? set.Idle.Clip : "Idle",
                 AnimSetId = index,
             };

@@ -333,6 +333,12 @@ MonoBehaviour:
   DashSpeed: 20
   DashDuration: 0.25
   DodgeCancelTime: 0.65
+  DodgeChainTime: 0.6
+  DodgeBufferTime: 0.3
+  DodgeIFrameStart: 0.05
+  DodgeIFrameEnd: 0.35
+  FlyDashSpeed: 14
+  FlyDashDuration: 0.22
   characterCombo: {fileID: 6304085424673248685}
   AttackLungeSpeed: 7
   AttackLungeDuration: 0.12
@@ -351,6 +357,11 @@ MonoBehaviour:
   MaxRootVerticalSpeed: 25
   DashAttackWindow: 0.35
   DirectionalAttackThreshold: 0.6
+  SkillNeutralThreshold: 0.3
+  SkillDirectionDot: 0.6
+  QuickTurnWindow: 1
+  QuickTurnRate: 1080
+  QuickTurnSharpness: 30
   AlwaysDrawWeapon: 1
   CombatHoldTime: 6
   CanFly: 0
@@ -363,6 +374,7 @@ MonoBehaviour:
   FlyLandSpeed: 5
   LockOnRadius: 15
   LockOnBreakRadius: 22
+  TargetSlideSpeed: 5
   AutoAddIK: 1
   IgnoredColliders: []
   MeshRoot: {fileID: 617254472832550222}
@@ -845,8 +857,8 @@ MonoBehaviour:
   FadeOut: 0.25
   CancelFade: 0.1
   MoveCancelMinTime: 0.75
-  RandomGroundChain: 1
   DelayedComboBranch: 1
+  DelayedBranchMinPause: 0.25
   PoseMatchLink: 1
   MaxSeamWait: 0.35
   MaxEntrySkip: 0.3
@@ -880,6 +892,7 @@ MonoBehaviour:
   CinematicCooldown: 2.5
   CinematicTimeScale: 0.3
   CinematicSlowDuration: 0.4
+  CinematicMaxReach: 4
   ChainWindowSeconds: 1
   HitsForMaxChainBonus: 8
   MaxChainBonus: 0.35
@@ -1314,6 +1327,10 @@ MonoBehaviour:
   KickWindowBefore: 0.1
   KickWindowAfter: 0.1
   KickKnockbackScale: 1.5
+  FistRadius: 0.15
+  FistLength: 0.1
+  ReachHalfWidth: 0.5
+  ReachMaxHeight: 2.2
   LogHits: 0
 --- !u!4 &6358404076041860910 stripped
 Transform:

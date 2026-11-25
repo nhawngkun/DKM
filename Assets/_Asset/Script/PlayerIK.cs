@@ -27,6 +27,7 @@ public class PlayerIK : MonoBehaviour
     public float PelvisSharpness = 10f;
     public float FootSharpness = 18f;
     public float WeightSharpness = 10f;
+    [Tooltip("0 = lúc đánh chân theo đúng anim (bắt buộc với clip đòn không có curve IK goal, vd Naraka .anim)")]
     [Range(0f, 1f)] public float AttackFootWeight = 0.6f;
     [Tooltip("Dốc nhỏ hơn góc này coi là đất bằng: không xoay bàn chân theo mặt đất")]
     public float FlatGroundAngle = 4f;
@@ -207,6 +208,9 @@ public class PlayerIK : MonoBehaviour
             targetWeight = _character.IsAttacking ? AttackFootWeight : 1f;
         }
         _footWeight = Mathf.Lerp(_footWeight, targetWeight, 1f - Mathf.Exp(-WeightSharpness * deltaTime));
+        // clip đòn không có curve IK goal (anim .anim rời như Naraka): GetIKPosition trả sai, IK kéo chân quặp lên cao hơn hông
+        // -> nhân vật đặt AttackFootWeight = 0 thì tắt hẳn ngay khi ra đòn, không đợi giảm dần
+        if (_character != null && _character.IsAttacking && AttackFootWeight <= 0f) _footWeight = 0f;
 
         bool idle = PlantFeetWhenIdle && _character != null && _character.IsGrounded
             && !_character.HasMoveInput && !_character.IsAttacking && !_character.IsDashing

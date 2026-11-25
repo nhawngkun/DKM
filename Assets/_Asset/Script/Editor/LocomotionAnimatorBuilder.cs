@@ -289,7 +289,7 @@ public static class LocomotionAnimatorBuilder
         foreach (string guid in AssetDatabase.FindAssets("t:AnimationClip", new[] { folder.TrimEnd('/') }))
         {
             string path = AssetDatabase.GUIDToAssetPath(guid);
-            if (!path.EndsWith(".fbx", StringComparison.OrdinalIgnoreCase)) continue;
+            if (!path.EndsWith(".fbx", StringComparison.OrdinalIgnoreCase) && !path.EndsWith(".anim", StringComparison.OrdinalIgnoreCase)) continue;
             foreach (UnityEngine.Object asset in AssetDatabase.LoadAllAssetsAtPath(path))
             {
                 if (asset is AnimationClip clip && !clip.name.StartsWith("__preview")) clips[clip.name] = clip;
@@ -346,6 +346,11 @@ public static class LocomotionAnimatorBuilder
 
     private static void ApplyImport(string path, bool lockXZ, bool lockY, bool loop, int firstFrame)
     {
+        if (path.EndsWith(".anim", StringComparison.OrdinalIgnoreCase))
+        {
+            ApplyClipSettings(AssetDatabase.LoadAssetAtPath<AnimationClip>(path), lockXZ, lockY, loop);
+            return;
+        }
         ModelImporter importer = AssetImporter.GetAtPath(path) as ModelImporter;
         if (importer == null) return;
         ModelImporterClipAnimation[] clips = importer.clipAnimations.Length > 0 ? importer.clipAnimations : importer.defaultClipAnimations;
@@ -373,6 +378,25 @@ public static class LocomotionAnimatorBuilder
         if (!changed) return;
         importer.clipAnimations = clips;
         importer.SaveAndReimport();
+    }
+
+    // clip .anim rời (không có ModelImporter): cùng quy ước bake như FBX, ghi thẳng vào clip settings
+    public static void ApplyClipSettings(AnimationClip clip, bool lockXZ, bool lockY, bool loop)
+    {
+        if (clip == null) return;
+        AnimationClipSettings s = AnimationUtility.GetAnimationClipSettings(clip);
+        bool changed = !s.loopBlendOrientation || !s.keepOriginalOrientation || s.loopBlendPositionY != lockY
+            || s.keepOriginalPositionY != lockY || s.heightFromFeet == lockY || s.loopBlendPositionXZ != lockXZ || s.loopTime != loop;
+        if (!changed) return;
+        s.loopBlendOrientation = true;
+        s.keepOriginalOrientation = true;
+        s.loopBlendPositionY = lockY;
+        s.keepOriginalPositionY = lockY;
+        s.heightFromFeet = !lockY;
+        s.loopBlendPositionXZ = lockXZ;
+        s.loopTime = loop;
+        AnimationUtility.SetAnimationClipSettings(clip, s);
+        EditorUtility.SetDirty(clip);
     }
 
     #endregion

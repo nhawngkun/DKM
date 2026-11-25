@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
@@ -44,6 +44,9 @@ public static class WeaponComboBuilder
     private const float KickMaxBelowHips = 0.3f;    // bàn chân phải nhấc lên, cách hông không quá bấy nhiêu m theo chiều dọc
     private const float KickMinReach = 0.55f;       // chân duỗi ra xa hông theo chiều ngang (co gối lúc nhảy không tính)
     private const float KickMinSpacing = 0.2f;      // 2 cú đá cách nhau ít nhất bấy nhiêu giây
+    private const float KickMaxBelowHipsFist = 0.4f;
+    private const float KickHighAboveHips = 0f;     // bàn chân cao từ hông trở lên: đá cao, bỏ qua KickMinReach
+    private const float KickExtendWindow = 0.25f;   // tìm lúc chân duỗi hết trong bấy nhiêu giây sau đỉnh tốc độ
 
     private class StepDef
     {
@@ -152,9 +155,9 @@ public static class WeaponComboBuilder
                             AnimationClip gripClip = HasGunCurve(step.Clip) ? step.Clip : (HasGunCurve(rootClip) ? rootClip : null);
                             step.SlamTime = chain.Context == AttackContext.Air || chain.Context == AttackContext.Launcher
                                 ? -1f
-                                : FindSlamTime(SampleTips(rig, step.Clip, gripClip), step.Clip.length);
+                                : def.Type == WeaponType.Fist ? FindFistSlamTime(rig, step.Clip) : FindSlamTime(SampleTips(rig, step.Clip, gripClip), step.Clip.length);
                             if (step.SlamTime >= 0f) slams.Add($"{step.Name}@{step.SlamTime:F2}");
-                            step.KickTimes = FindKickTimes(rig, step.Clip);
+                            step.KickTimes = FindKickTimes(rig, step.Clip, def.Type == WeaponType.Fist);
                             if (step.KickTimes.Count > 0) kicks.Add($"{step.Name}@{string.Join("/", step.KickTimes.Select(k => k.ToString("F2")))}");
                         }
                     }
@@ -172,7 +175,8 @@ public static class WeaponComboBuilder
     }
 
     // đo so với hông để bước chân/lướt thân không bị tính là đá; lấy đỉnh tốc độ của bàn chân đang nhấc cao
-    private static List<float> FindKickTimes(Rig rig, AnimationClip clip)
+    // quyền cước (fist): nhận cả đá cao, chân hạ thấp hơn chút, mốc dời tới lúc chân duỗi hết
+    private static List<float> FindKickTimes(Rig rig, AnimationClip clip, bool fist)
     {
         int frames = Mathf.Max(2, Mathf.CeilToInt(clip.length * AnalysisRate) + 1);
         Vector3[][] feet = new Vector3[2][] { new Vector3[frames], new Vector3[frames] };
@@ -190,15 +194,35 @@ public static class WeaponComboBuilder
             for (int f = ignore; f < tail; f++)
             {
                 float speed = SmoothedSpeed(foot, f);
-                if (speed < KickMinSpeed || foot[f].y < -KickMaxBelowHips) continue;
-                if (new Vector2(foot[f].x, foot[f].z).magnitude < KickMinReach) continue;
+                if (speed < KickMinSpeed) continue;
                 if (speed < SmoothedSpeed(foot, f - 1) || speed < SmoothedSpeed(foot, f + 1)) continue;
-                if (peaks.Any(p => Mathf.Abs(p - f) / AnalysisRate < KickMinSpacing)) continue;
-                peaks.Add(f);
+                // quyền cước: đỉnh tốc độ là lúc chân còn đang vung lên -> mốc chạm (và điều kiện cao / vươn) xét ở lúc chân duỗi xa nhất ngay sau đó
+                int hit = f;
+                int until = fist ? Mathf.Min(tail, f + Mathf.RoundToInt(KickExtendWindow * AnalysisRate)) : f;
+                // chỉ xét lúc chân còn nhấc: chân đã đặt xuống bước tới thì vươn xa nhưng không phải cú đá
+                bool raised = foot[f].y >= -KickMaxBelowHipsFist;
+                for (int g = f + 1; g < until; g++)
+                {
+                    bool up = foot[g].y >= -KickMaxBelowHipsFist;
+                    if (!up) { if (raised) break; continue; }
+                    if (!raised || KickExtension(foot[g]) > KickExtension(foot[hit])) hit = g;
+                    raised = true;
+                }
+                if (foot[hit].y < -(fist ? KickMaxBelowHipsFist : KickMaxBelowHips)) continue;
+                // đá cao (chân lên ngang hông trở lên) vươn ngang ít vẫn tính
+                if ((!fist || foot[hit].y < KickHighAboveHips) && new Vector2(foot[hit].x, foot[hit].z).magnitude < KickMinReach) continue;
+                if (peaks.Any(p => Mathf.Abs(p - hit) / AnalysisRate < KickMinSpacing)) continue;
+                peaks.Add(hit);
             }
         }
         peaks.Sort();
         return peaks.Select(f => Mathf.Min(f / AnalysisRate, clip.length) / clip.length).ToList();
+    }
+
+    // chân duỗi ra trước/ngang + nhấc cao (chân trụ dưới hông không tính là duỗi)
+    private static float KickExtension(Vector3 foot)
+    {
+        return new Vector2(foot.x, foot.z).magnitude + Mathf.Max(0f, foot.y);
     }
 
     private static float SmoothedSpeed(Vector3[] points, int frame)
@@ -218,6 +242,30 @@ public static class WeaponComboBuilder
             tips[f] = rig.TipLocal();
         }
         return tips;
+    }
+
+    // 2 nắm tay theo không gian model (đập đất) hoặc theo hông (tốc độ đấm)
+    private static Vector3[][] SampleFists(Rig rig, AnimationClip clip, bool modelSpace)
+    {
+        int frames = Mathf.Max(2, Mathf.CeilToInt(clip.length * AnalysisRate) + 1);
+        Vector3[][] hands = { new Vector3[frames], new Vector3[frames] };
+        for (int f = 0; f < frames; f++)
+        {
+            rig.Sample(clip, Mathf.Min(f / AnalysisRate, clip.length), null);
+            rig.HandPoints(modelSpace, out hands[0][f], out hands[1][f]);
+        }
+        return hands;
+    }
+
+    private static float FindFistSlamTime(Rig rig, AnimationClip clip)
+    {
+        float best = -1f;
+        foreach (Vector3[] hand in SampleFists(rig, clip, true))
+        {
+            float time = FindSlamTime(hand, clip.length);
+            if (time >= 0f && (best < 0f || time < best)) best = time;
+        }
+        return best;
     }
 
     private static float FindSlamTime(Vector3[] tips, float length)
@@ -541,7 +589,7 @@ public static class WeaponComboBuilder
                         step.RootMotionScale = old.RootMotionScale;
                     }
 
-                    swing[step] = Analyze(rig, step, clip, rootClip);
+                    swing[step] = Analyze(rig, step, clip, rootClip, def.Type == WeaponType.Fist);
                     if (chainDef.Context == AttackContext.Air || chainDef.Context == AttackContext.Launcher) step.SlamTime = -1f;
                     maxSwing = Mathf.Max(maxSwing, swing[step]);
                     chain.Steps.Add(step);
@@ -570,7 +618,7 @@ public static class WeaponComboBuilder
         foreach (string guid in AssetDatabase.FindAssets("t:AnimationClip", new[] { folder.TrimEnd('/') }))
         {
             string path = AssetDatabase.GUIDToAssetPath(guid);
-            if (!path.EndsWith(".FBX", System.StringComparison.OrdinalIgnoreCase)) continue;
+            if (!path.EndsWith(".FBX", System.StringComparison.OrdinalIgnoreCase) && !path.EndsWith(".anim", System.StringComparison.OrdinalIgnoreCase)) continue;
             foreach (Object asset in AssetDatabase.LoadAllAssetsAtPath(path))
             {
                 if (asset is AnimationClip clip && !clip.name.StartsWith("__preview__") && !result.ContainsKey(clip.name))
@@ -597,7 +645,19 @@ public static class WeaponComboBuilder
             if (chain.Context == AttackContext.Air || chain.Context == AttackContext.Launcher) continue;
             foreach (StepDef stepDef in chain.Steps)
             {
-                if (clips.TryGetValue(stepDef.Clip, out AnimationClip clip)) targets.Add((AssetDatabase.GetAssetPath(clip), clip.name));
+                if (!clips.TryGetValue(stepDef.Clip, out AnimationClip clip)) continue;
+                // clip .anim rời: không có importer, bake độ cao thẳng vào clip settings
+                if (AssetDatabase.GetAssetPath(clip).EndsWith(".anim", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    AnimationClipSettings s = AnimationUtility.GetAnimationClipSettings(clip);
+                    if (s.loopBlendPositionY && s.keepOriginalPositionY) continue;
+                    s.loopBlendPositionY = true;
+                    s.keepOriginalPositionY = true;
+                    AnimationUtility.SetAnimationClipSettings(clip, s);
+                    EditorUtility.SetDirty(clip);
+                    continue;
+                }
+                targets.Add((AssetDatabase.GetAssetPath(clip), clip.name));
             }
         }
 
@@ -635,7 +695,7 @@ public static class WeaponComboBuilder
     // ------------------------------------------------------------------
 
     /// <returns>Tốc độ vung lớn nhất của mũi kiếm (m/s) để chuẩn hoá Weight.</returns>
-    private static float Analyze(Rig rig, AttackStep step, AnimationClip clip, AnimationClip rootClip)
+    private static float Analyze(Rig rig, AttackStep step, AnimationClip clip, AnimationClip rootClip, bool fist)
     {
         float length = clip.length;
         int frames = Mathf.Max(2, Mathf.CeilToInt(length * AnalysisRate) + 1);
@@ -648,9 +708,10 @@ public static class WeaponComboBuilder
         // Clip Inplace của vài đòn thiếu curve xương vũ khí -> lấy cách cầm từ bản root motion (cùng động tác)
         AnimationClip gripClip = HasGunCurve(clip) ? clip : (HasGunCurve(rootClip) ? rootClip : null);
 
-        Vector3[] tips = SampleTips(rig, clip, gripClip);
-        step.SlamTime = FindSlamTime(tips, length);
-        step.KickTimes = FindKickTimes(rig, clip);
+        step.SlamTime = fist ? FindFistSlamTime(rig, clip) : FindSlamTime(SampleTips(rig, clip, gripClip), length);
+        step.KickTimes = FindKickTimes(rig, clip, fist);
+        // quyền: đo nắm tay so với hông (thân lướt không tính là đấm); kiếm: đo mũi kiếm
+        Vector3[][] strikers = fist ? SampleFists(rig, clip, false) : new[] { SampleTips(rig, clip, gripClip) };
 
         for (int g = 0; g < gripCount; g++)
         {
@@ -663,7 +724,7 @@ public static class WeaponComboBuilder
         float[] speed = new float[frames];
         for (int f = 1; f < frames; f++)
         {
-            speed[f] = (tips[f] - tips[f - 1]).magnitude * AnalysisRate;
+            foreach (Vector3[] tips in strikers) speed[f] = Mathf.Max(speed[f], (tips[f] - tips[f - 1]).magnitude * AnalysisRate);
         }
         speed[0] = speed.Length > 1 ? speed[1] : 0f;
         float[] smooth = new float[frames];
@@ -868,7 +929,8 @@ public static class WeaponComboBuilder
             Animator sceneDante = sceneCombo != null
                 ? (sceneCombo.animator != null ? sceneCombo.animator : sceneCombo.GetComponentInParent<Animator>())
                 : null;
-            string dantePath = sceneDante != null ? AssetDatabase.GetAssetPath(sceneDante.avatar) : null;
+            // không có nhân vật trong scene (vũ khí tay không, không cần cách cầm) -> dùng chính model gói
+            string dantePath = sceneDante != null ? AssetDatabase.GetAssetPath(sceneDante.avatar) : GrrrruModel;
             _dante = Spawn(dantePath, out Animator dAnim, sceneDante != null ? sceneDante.avatar : null);
             _dHand = dAnim.GetBoneTransform(HumanBodyBones.RightHand);
             _scaleRatio = dAnim.humanScale / Mathf.Max(gAnim.humanScale, 0.0001f);
@@ -960,6 +1022,13 @@ public static class WeaponComboBuilder
             Vector3 hips = _grrrru.transform.InverseTransformPoint(_gHips.position);
             left = (_grrrru.transform.InverseTransformPoint(_poseBones[2].position) - hips) / _gScale;
             right = (_grrrru.transform.InverseTransformPoint(_poseBones[3].position) - hips) / _gScale;
+        }
+
+        public void HandPoints(bool modelSpace, out Vector3 left, out Vector3 right)
+        {
+            Vector3 origin = modelSpace ? Vector3.zero : _grrrru.transform.InverseTransformPoint(_gHips.position);
+            left = _grrrru.transform.InverseTransformPoint(_poseBones[0].position) - origin;
+            right = _grrrru.transform.InverseTransformPoint(_poseBones[1].position) - origin;
         }
 
         public Vector3 TipLocal()

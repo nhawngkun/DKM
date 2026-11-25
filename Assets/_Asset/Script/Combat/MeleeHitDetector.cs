@@ -46,6 +46,11 @@ public class MeleeHitDetector : MonoBehaviour
     [Tooltip("Đá đẩy mục tiêu lùi xa gấp bấy nhiêu lần chém")]
     public float KickKnockbackScale = 1.5f;
 
+    [Header("Quét nắm tay (vũ khí Fist)")]
+    public float FistRadius = 0.15f;
+    [Tooltip("Nắm tay nhô ra trước cổ tay bấy nhiêu m")]
+    public float FistLength = 0.1f;
+
     [Header("Tầm lưỡi kiếm (để CharacterCombat chọn khoảng dừng)")]
     [Tooltip("Lưỡi kiếm lệch sang ngang quá bấy nhiêu m so với hướng nhìn thì không tính vào tầm")]
     public float ReachHalfWidth = 0.5f;
@@ -63,6 +68,13 @@ public class MeleeHitDetector : MonoBehaviour
     private Transform[] _footBones;
     private readonly Vector3[] _previousKnees = new Vector3[2];
     private readonly Vector3[] _previousFeet = new Vector3[2];
+    private Transform[] _elbowBones;
+    private Transform[] _handBones;
+    private readonly Vector3[] _previousElbows = new Vector3[2];
+    private readonly Vector3[] _previousFists = new Vector3[2];
+    private readonly Vector3[] _elbows = new Vector3[2];
+    private readonly Vector3[] _fists = new Vector3[2];
+    private bool _hasPreviousFists;
     private int _kickIndex = -1;
     private bool _kickFeedbackPlayed;
     private CharController _character;
@@ -90,10 +102,21 @@ public class MeleeHitDetector : MonoBehaviour
         Animator animator = characterCombo.animator;
         _kneeBones = new[] { animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg), animator.GetBoneTransform(HumanBodyBones.RightLowerLeg) };
         _footBones = new[] { animator.GetBoneTransform(HumanBodyBones.LeftFoot), animator.GetBoneTransform(HumanBodyBones.RightFoot) };
+        _elbowBones = new[] { animator.GetBoneTransform(HumanBodyBones.LeftLowerArm), animator.GetBoneTransform(HumanBodyBones.RightLowerArm) };
+        _handBones = new[] { animator.GetBoneTransform(HumanBodyBones.LeftHand), animator.GetBoneTransform(HumanBodyBones.RightHand) };
     }
+
+    private bool IsFist => characterCombo.CurrentWeapon != null && characterCombo.CurrentWeapon.Type == WeaponType.Fist;
 
     private void LateUpdate()
     {
+        if (IsFist)
+        {
+            UpdateFists();
+            return;
+        }
+        _hasPreviousFists = false;
+
         if (!TryGetBlade(out Vector3 bladeBase, out Vector3 bladeTip))
         {
             _hasPrevious = false;
@@ -176,6 +199,60 @@ public class MeleeHitDetector : MonoBehaviour
         effects.PlaySwingEffect(kind, bladeTip - radial, Quaternion.LookRotation(radial / radius, up), scale);
     }
 
+    // quyền: chỉ cánh tay đang vung nhanh hơn là tay đấm (tay thủ thế đứng sát mục tiêu không tính)
+    private void UpdateFists()
+    {
+        AttackStep step = characterCombo.CurrentStep;
+        if (step != _step)
+        {
+            _step = step;
+            _windowIndex = -1;
+            _slamPlayed = false;
+            _kickIndex = -1;
+        }
+
+        Vector3[] elbows = _elbows;
+        Vector3[] fists = _fists;
+        int striker = 1;
+        float fastest = -1f;
+        for (int arm = 0; arm < 2; arm++)
+        {
+            if (_elbowBones[arm] == null || _handBones[arm] == null) return;
+            elbows[arm] = _elbowBones[arm].position;
+            Vector3 hand = _handBones[arm].position;
+            fists[arm] = hand + (hand - elbows[arm]).normalized * FistLength;
+            float moved = _hasPreviousFists ? (fists[arm] - _previousFists[arm]).sqrMagnitude : 0f;
+            if (moved > fastest) { fastest = moved; striker = arm; }
+        }
+
+        int window = characterCombo.ActiveHitIndex(WindowBefore, WindowAfter);
+        if (window != _windowIndex)
+        {
+            _windowIndex = window;
+            _hitThisWindow.Clear();
+            _feedbackPlayed = false;
+        }
+
+        foreach (TrailRenderer trail in BladeTrails)
+        {
+            if (trail == null) continue;
+            trail.transform.position = fists[striker];
+            trail.emitting = window >= 0;
+        }
+
+        if (_hasPreviousFists && window >= 0)
+            Sweep(_previousElbows[striker], _previousFists[striker], elbows[striker], fists[striker], FistRadius, window, false);
+        UpdateKick();
+        if (step != null) CheckSlam(step, fists[striker]);
+
+        for (int arm = 0; arm < 2; arm++)
+        {
+            _previousElbows[arm] = elbows[arm];
+            _previousFists[arm] = fists[arm];
+        }
+        _hasPreviousFists = true;
+    }
+
     private void UpdateKick()
     {
         int kick = characterCombo.ActiveKickIndex(KickWindowBefore, KickWindowAfter);
@@ -226,7 +303,8 @@ public class MeleeHitDetector : MonoBehaviour
         target.TakeHit(attackDirection, strength, kick ? KickKnockbackScale : 1f, info.Context == AttackContext.Launcher);
         if (effects != null)
         {
-            if (kick) effects.PlayKickHit(point, -attackDirection, strength);
+            // đấm là va chạm cùn như đá, không dùng tiếng chém của kiếm
+            if (kick || IsFist) effects.PlayKickHit(point, -attackDirection, strength);
             else effects.PlayHit(point, -attackDirection, strength);
         }
 
@@ -280,12 +358,13 @@ public class MeleeHitDetector : MonoBehaviour
     private float MeasureReach(AttackStep step)
     {
         WeaponData weapon = characterCombo.CurrentWeapon;
-        if (weapon == null || !TryGetBlade(out _, out _)) return -1f;
+        bool fist = IsFist;
+        if (weapon == null || (!fist && !TryGetBlade(out _, out _))) return -1f;
 
         Transform model = characterCombo.animator.transform;
-        Transform hand = weaponHolder.Socket.parent;
+        Transform hand = fist ? null : weaponHolder.Socket.parent;
         Transform root = _character != null ? _character.transform : transform;
-        if (hand == null) return -1f;
+        if (!fist && hand == null) return -1f;
 
         Vector3 restPosition = model.localPosition;
         Quaternion restRotation = model.localRotation;
@@ -300,6 +379,17 @@ public class MeleeHitDetector : MonoBehaviour
                 float normalized = Mathf.Clamp01(hitTime - WindowBefore + (WindowBefore + WindowAfter) * i / 4f);
                 float time = Mathf.Min(normalized * length, step.Clip.length);
                 step.Clip.SampleAnimation(model.gameObject, time);
+                if (fist)
+                {
+                    for (int arm = 0; arm < 2; arm++)
+                    {
+                        if (_elbowBones[arm] == null || _handBones[arm] == null) continue;
+                        Vector3 wrist = _handBones[arm].position;
+                        Vector3 knuckle = wrist + (wrist - _elbowBones[arm].position).normalized * FistLength;
+                        best = Mathf.Max(best, ForwardReach(root, restModel, model, _elbowBones[arm].position, knuckle));
+                    }
+                    continue;
+                }
                 if (!weapon.TrySampleAttackGrip(step, time, out Vector3 gripPosition, out Quaternion gripRotation))
                 {
                     gripPosition = weaponHolder.Socket.localPosition;
@@ -319,6 +409,20 @@ public class MeleeHitDetector : MonoBehaviour
 
         model.localPosition = restPosition;
         model.localRotation = restRotation;
+        return best;
+    }
+
+    // điểm xa nhất phía trước trên đoạn a-b (world lúc lấy mẫu), quy về khung nhân vật lúc chưa lấy mẫu
+    private float ForwardReach(Transform root, Matrix4x4 restModel, Transform model, Vector3 a, Vector3 b)
+    {
+        float best = -1f;
+        Vector3 localA = root.InverseTransformPoint(restModel.MultiplyPoint3x4(model.InverseTransformPoint(a)));
+        Vector3 localB = root.InverseTransformPoint(restModel.MultiplyPoint3x4(model.InverseTransformPoint(b)));
+        for (int s = 0; s <= 10; s++)
+        {
+            Vector3 point = Vector3.Lerp(localA, localB, s / 10f);
+            if (Mathf.Abs(point.x) <= ReachHalfWidth && point.y >= -0.1f && point.y <= ReachMaxHeight) best = Mathf.Max(best, point.z);
+        }
         return best;
     }
 

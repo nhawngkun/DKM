@@ -125,7 +125,9 @@ internal sealed class CharacterCombat
         Vector3 verticalVelocity = Vector3.Project(currentVelocity, up);
         Vector3 planarVelocity = currentVelocity - verticalVelocity;
 
-        Vector3 rootVelocity = c.Motor.TransientRotation * c.characterCombo.GetRootMotionVelocity();
+        // lướt theo hướng đòn (về mục tiêu), không theo thân đang xoay dần: đòn lướt nhanh lúc thân còn lệch sẽ trượt ngang qua mục tiêu
+        Quaternion attackFrame = _facing.sqrMagnitude > 0.01f ? Quaternion.LookRotation(_facing, up) : c.Motor.TransientRotation;
+        Vector3 rootVelocity = attackFrame * c.characterCombo.GetRootMotionVelocity();
         Vector3 rootVertical = Vector3.Project(rootVelocity, up);
         Vector3 rootPlanar = rootVelocity - rootVertical;
 
@@ -209,12 +211,16 @@ internal sealed class CharacterCombat
     private float StopDistanceFor(AttackStep step)
     {
         CharController c = _character;
-        if (step != null && step.KickTimes.Count > 0) return c.KickStopDistance;
+        bool kick = step != null && step.KickTimes.Count > 0;
+        WeaponData weapon = c.characterCombo.CurrentWeapon;
+        bool fist = weapon != null && weapon.Type == WeaponType.Fist;
+        if (kick && !fist) return c.KickStopDistance;
 
         if (_hitDetector == null) _hitDetector = c.characterCombo.GetComponent<MeleeHitDetector>();
         float reach = _hitDetector != null ? _hitDetector.BladeReach(step) : -1f;
-        if (reach <= 0f) return c.AttackStopDistance;
-        return Mathf.Clamp(reach + ReachPenetration, MinStopDistance, c.AttackStopDistance);
+        float stop = reach <= 0f ? c.AttackStopDistance : Mathf.Clamp(reach + ReachPenetration, MinStopDistance, c.AttackStopDistance);
+        // quyền cước vừa đấm vừa đá: dừng ở tầm ngắn hơn để cả 2 cùng với tới
+        return kick ? Mathf.Min(stop, c.KickStopDistance) : stop;
     }
 
     // quãng anim tự bước tới trước nhát chém đầu (m)
@@ -244,7 +250,9 @@ internal sealed class CharacterCombat
             Vector3 toTarget = PlanarTo(target);
             float distance = toTarget.magnitude;
             float angle = Vector3.Angle(aim, toTarget);
-            if (distance > c.AttackAssistRadius || angle > c.AttackAssistAngle) continue;
+            // sát người thì lệch ngang chút đã quá góc: vẫn phải nhận để ClampApproach chặn đòn lướt xuyên qua
+            bool close = distance <= c.AttackStopDistance;
+            if (distance > c.AttackAssistRadius || (!close && angle > c.AttackAssistAngle)) continue;
 
             float score = distance * (1f + angle / 90f);
             if (score < bestScore)
